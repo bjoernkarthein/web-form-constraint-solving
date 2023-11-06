@@ -1,0 +1,15 @@
+body {
+    margin: 0;
+    padding: 0;
+
+    overflow: hidden;
+}
+
+#test-page-frame {
+    margin: 0;
+    padding: 0;
+
+    width: 60vw;
+    height: 100vh;
+    border: none;
+}
