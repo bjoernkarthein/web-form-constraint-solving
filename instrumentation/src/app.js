@@ -1,12 +1,11 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const fs = require("fs");
-const exec = require("child_process");
 const path = require("path");
 
-const app = express();
+const instrumentation = require("./instrument");
 
+const app = express();
 const PORT = 4000;
 
 app.use(
@@ -26,18 +25,17 @@ app.get("/", (req, res) => {
   );
 });
 
+app.post("/instrument", (req, res) => {
+  const name = req.body.name;
+  const content = req.body.source;
+
+  instrumentation.saveFile(name, content);
+  instrumentation.runCommand(instrumentation.getBabelCommand(name)).then(() => {
+    const fileName = `${instrumentation.instrumentedDir}${name}`;
+    res.sendFile(fileName, { root: __dirname });
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Instrumentation server started on port ${PORT}...`);
 });
-
-function runCommand(cmd) {
-  return new Promise((resolve, reject) => {
-    exec(cmd, (error) => {
-      if (error) {
-        reject();
-        return;
-      }
-      resolve();
-    });
-  });
-}

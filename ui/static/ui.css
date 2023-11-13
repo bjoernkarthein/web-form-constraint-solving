@@ -12,4 +12,6 @@ body {
     width: 60vw;
     height: 100vh;
     border: none;
+
+    background: black;
 }

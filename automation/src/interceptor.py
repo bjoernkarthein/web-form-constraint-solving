@@ -21,9 +21,17 @@ class NetworkInterceptor:
         self.__instrumentation_service_base_url = 'http://localhost:4000'
 
     def instrument_files(self) -> None:
+        """Start file instrumentation.
+        All files requested by the browser are checked, instrumented if necessary and sent to the browser.
+        """
         self.__driver.response_interceptor = self.__file_interceptor
 
     def __file_interceptor(self, request, response):
+        """Intercept network responses and alter response contents to allow for dynamic analysis.
+
+        JavaScript files are sent to the instrumentation service to add statements for dynamic analysis.
+        For each HTML file a script tag is added to enable access of common methods for dynamic analysis.
+        """
         content_type = response.headers['Content-Type']
         if content_type == None:
             return
@@ -44,6 +52,8 @@ class NetworkInterceptor:
             response.headers['content-length'] = str(len(response.body))
 
     def __handle_js_file(self, request, response) -> bytes:
+        """Send JavaScript file to the instrumentation service and return instrumented content."""
+
         name = request.url.split("/")[-1]
         body_string = self.__decode_body(response.body)
 
@@ -53,6 +63,8 @@ class NetworkInterceptor:
         return res.content
 
     def __handle_html_file(self, response) -> bytes:
+        """Add script tag with common functions to HTML file body and return new content."""
+
         try:
             body_string = self.__decode_body(response.body)
             html_ast = html.fromstring(body_string)
@@ -71,6 +83,8 @@ class NetworkInterceptor:
         return html.tostring(html_ast, pretty_print=True)
 
     def __decode_body(self, body) -> str:
+        """Decode an utf-8 encoded request body to a string and return the result."""
+
         try:
             body_string = body.decode('utf-8')
         except UnicodeDecodeError as e:
