@@ -12,7 +12,7 @@ chrome_driver_path = '../chromedriver/windows/chromedriver.exe'
 """
 Driver module
 
-Handles all of the browser driver management
+Handles all of the browser driver management.
 """
 
 
@@ -26,7 +26,7 @@ class TestAutomationDriver:
         """Initialize the Test Automation
 
         Set options for selenium chrome driver and selenium wire proxy
-        Initilaize web driver
+        Initilaize web driver.
         """
         self.__config: dict = config
 
@@ -41,7 +41,6 @@ class TestAutomationDriver:
             'disable_encoding': True
         }
 
-        # create chrome web driver
         self.__driver = webdriver.Chrome(
             service=Service(chrome_driver_path),
             options=chrome_options,

@@ -5,7 +5,7 @@ from lxml import etree, html
 """
 Interceptor module
 
-Utilizes the selenium wire module to intercept and inspect network traffic
+Utilizes the selenium wire module to intercept and inspect network traffic.
 """
 
 
@@ -87,7 +87,7 @@ class NetworkInterceptor:
 
         try:
             body_string = body.decode('utf-8')
-        except UnicodeDecodeError as e:
+        except UnicodeDecodeError:
             # TODO
             return
 
