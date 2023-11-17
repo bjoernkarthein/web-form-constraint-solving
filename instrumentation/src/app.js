@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const path = require("path");
 
 const instrumentation = require("./instrument");
+const tracer = require("./trace");
 
 const app = express();
 const PORT = 4000;
@@ -32,8 +33,15 @@ app.post("/instrument", (req, res) => {
   instrumentation.saveFile(name, content);
   instrumentation.runCommand(instrumentation.getBabelCommand(name)).then(() => {
     const fileName = `${instrumentation.instrumentedDir}${name}`;
+    console.log(`instrumented file ${name}`);
     res.sendFile(fileName, { root: __dirname });
   });
+});
+
+app.post("/record", (req, res) => {
+  tracer.addToTraceLog(req);
+  res.sendFile(tracer.traceLogFile, { root: __dirname });
+  // handleEvent(action, args, time, file, location, pageFile);
 });
 
 app.listen(PORT, () => {
