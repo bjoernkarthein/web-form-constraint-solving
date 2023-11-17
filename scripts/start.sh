@@ -13,10 +13,11 @@ else
 fi
 
 # Set the path to your Node.js application
-app_path="instrumentation/src/app.js"
+app_path="instrumentation/src/"
+cd $app_path
 
 # Start the Node.js server in the background
-$node_command $app_path > /dev/null 2>&1 &
-echo $! > scripts/server_pid.txt
+$node_command "app.js" &
+echo $! > ../../scripts/server_pid.txt
 
-echo "Node.js server started in the background."
+read

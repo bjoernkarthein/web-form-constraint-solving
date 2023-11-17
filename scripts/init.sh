@@ -23,6 +23,4 @@ if [ ! -d "venv" ]; then
   $python_executable -m venv $venv_name
 fi
 
-# $venv_activate
-
 echo "Virtual environment $venv_name created."
