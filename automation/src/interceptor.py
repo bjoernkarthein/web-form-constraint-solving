@@ -2,6 +2,8 @@ import requests
 
 from lxml import etree, html
 
+from utility import instrumentation_service_base_url
+
 """
 Interceptor module
 
@@ -18,7 +20,6 @@ class NetworkInterceptor:
 
     def __init__(self, web_driver) -> None:
         self.__driver = web_driver
-        self.__instrumentation_service_base_url = 'http://localhost:4000'
 
     def instrument_files(self) -> None:
         """Start file instrumentation.
@@ -37,7 +38,7 @@ class NetworkInterceptor:
             return
 
         if content_type.startswith('application/javascript'):
-            if request.url == f'{self.__instrumentation_service_base_url}/static/script.js':
+            if request.url == f'{instrumentation_service_base_url}/static/script.js':
                 return
 
             response.body = self.__handle_js_file(request, response)
@@ -59,7 +60,7 @@ class NetworkInterceptor:
 
         data = {'name': name, 'source': body_string}
         res = requests.post(
-            f'{self.__instrumentation_service_base_url}/instrument', data)
+            f'{instrumentation_service_base_url}/instrument', data)
         return res.content
 
     def __handle_html_file(self, response) -> bytes:
@@ -77,7 +78,7 @@ class NetworkInterceptor:
             return
 
         script_tag = etree.fromstring(
-            f'<script src="{self.__instrumentation_service_base_url}/static/script.js"></script>')
+            f'<script src="{instrumentation_service_base_url}/static/script.js"></script>')
 
         html_body.append(script_tag)
         return html.tostring(html_ast, pretty_print=True)

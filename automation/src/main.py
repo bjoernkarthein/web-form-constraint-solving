@@ -1,5 +1,5 @@
-import sys
 import getopt
+import sys
 import yaml
 
 from driver import TestAutomationDriver
@@ -31,8 +31,8 @@ def main(argv):
             sys.exit()
         if opt in ('-u', '--url'):
             config = yaml.safe_load(open('../config/config.yml'))
-            test_automation_driver = TestAutomationDriver(config)
-            test_automation_driver.load_page(arg)
+            test_automation_driver = TestAutomationDriver(config, arg)
+            test_automation_driver.run()
 
 
 def print_help():

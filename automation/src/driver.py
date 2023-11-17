@@ -1,11 +1,12 @@
-from seleniumwire import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.common.exceptions import *
-
-from interceptor import NetworkInterceptor, ResponseInspector
-
 import sys
-import time
+
+from selenium.common.exceptions import *
+from selenium.webdriver.chrome.service import Service
+from seleniumwire import webdriver
+
+from html_analysis import HTMLAnalyser, FormObserver
+from interceptor import NetworkInterceptor, ResponseInspector
+from utility import record_trace
 
 chrome_driver_path = '../chromedriver/windows/chromedriver.exe'
 
@@ -22,13 +23,14 @@ class TestAutomationDriver:
     ...
     """
 
-    def __init__(self, config) -> None:
+    def __init__(self, config: dict, url: str) -> None:
         """Initialize the Test Automation
 
         Set options for selenium chrome driver and selenium wire proxy
         Initilaize web driver.
         """
-        self.__config: dict = config
+        self.__config = config
+        self.__url = url
 
         # Options for the chrome webdriver
         chrome_options = webdriver.ChromeOptions()
@@ -48,35 +50,38 @@ class TestAutomationDriver:
         )
 
         interceptor = NetworkInterceptor(self.__driver)
-        interceptor.instrument_files()
+        # interceptor.instrument_files()
 
         inspector = ResponseInspector(self.__driver)
 
-    def load_page(self, url: str) -> None:
+    def run(self) -> None:
+        self.__load_page(self.__url)
+        self.__analyse_html(self.__driver.page_source)
+
+    def __load_page(self, url: str) -> None:
         """ Open the web page by url.
         Page is opened in a headless chrome instance controlled by selenium.
         """
         try:
             self.__driver.get(url)
-            time.sleep(60)
-            # self.__exit()
         except InvalidArgumentException:
             # TODO
             pass
 
-    # def add_overlay(self) -> None:
-    #     self.driver.execute_script("""
-    #                                 const frame = document.createElement("iframe");
-    #                                 frame.setAttribute("src", "localhost:4000/static/ui.html");
-    #                                 frame.style.width = "100vw";
-    #                                 frame.style.height = "10rem";
-    #                                 frame.style.position = "fixed";
-    #                                 frame.style.top = 0;
-    #                                 frame.style.left = 0;
-    #                                 frame.style.zIndex = 1000;
-    #                                 document.body.style.marginTop = "10rem";
-    #                                 document.body.append(frame);
-    #                                """)
+    def __analyse_html(self, html_string: str) -> None:
+        html_analyser = HTMLAnalyser(html_string)
+        (form, access) = html_analyser.select_form()
+
+        if form is None or access is None:
+            self.__exit()
+
+        self.__form_observer = FormObserver(form, access)
+
+        html_constraints = html_analyser.extract_static_constraints(form)
+        if html_constraints is None:
+            self.__exit()
+
+        print(html_constraints)
 
     def __exit(self, exit_code=None) -> None:
         """Free all resources and exit"""
