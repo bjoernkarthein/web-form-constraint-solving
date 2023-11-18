@@ -2,6 +2,7 @@ import math
 import requests
 import time
 
+from enum import Enum
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver import Chrome
 from selenium.webdriver.common.by import By
@@ -15,7 +16,37 @@ Utility module
 Provides helper functions and variables that are used throughout the project
 """
 
+
+class InputType(Enum):
+    BUTTON = 'button'
+    CHECKBOX = 'checkbox'
+    COLOR = 'color'
+    DATE = 'date'
+    DATETIME_LOCAL = 'datetime-local'
+    EMAIL = 'email'
+    FILE = 'file'
+    HIDDEN = 'hidden'
+    IMAGE = 'image'
+    MONTH = 'month'
+    NUMBER = 'number'
+    PASSWORD = 'password'
+    RADIO = 'radio'
+    RANGE = 'range'
+    RESET = 'reset'
+    SEARCH = 'search'
+    SUBMIT = 'submit'
+    TEL = 'tel'
+    TEXT = 'text'
+    TEXTAREA = 'textarea'
+    TIME = 'time'
+    URL = 'url'
+    WEEK = 'week'
+
+
 instrumentation_service_base_url = 'http://localhost:4000'
+
+textual_input_types = [InputType.EMAIL.value, InputType.NUMBER.value, InputType.PASSWORD.value,
+                       InputType.SEARCH.value, InputType.TEL.value, InputType.TEXT.value, InputType.TEXTAREA.value]
 
 
 def record_trace(action, args=None):

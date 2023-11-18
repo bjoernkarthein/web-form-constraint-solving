@@ -24,6 +24,7 @@ class NetworkInterceptor:
 
     def instrument_files(self) -> None:
         """Start file instrumentation.
+
         All files requested by the browser are checked, instrumented if necessary and sent to the browser.
         """
         self.__driver.response_interceptor = self.__file_interceptor
@@ -32,6 +33,7 @@ class NetworkInterceptor:
         """Intercept network responses and alter response contents to allow for dynamic analysis.
 
         JavaScript files are sent to the instrumentation service to add statements for dynamic analysis.
+
         For each HTML file a script tag is added to enable access of common methods for dynamic analysis.
         """
         content_type = response.headers['Content-Type']

@@ -1,4 +1,5 @@
 import sys
+import time
 
 from selenium.common.exceptions import InvalidArgumentException
 from selenium.webdriver.chrome.service import Service
@@ -64,6 +65,7 @@ class TestAutomationDriver:
 
     def __load_page(self, url: str) -> None:
         """ Open the web page by url.
+
         Page is opened in a headless chrome instance controlled by selenium.
         """
         try:
@@ -73,6 +75,10 @@ class TestAutomationDriver:
             pass
 
     def __analyse_html(self, html_string: str) -> List[HTMLInputSpecification]:
+        """Analyse the HTML content of the web page.
+
+        Select a web form and extract the built-in HTML constraints for it's inputs.
+        """
         html_analyser = HTMLAnalyser(html_string)
         (form, access) = html_analyser.select_form()
 
@@ -88,7 +94,14 @@ class TestAutomationDriver:
         return html_constraints
 
     def __start_constraint_extraction(self, html_specifications: List[HTMLInputSpecification]) -> None:
+        """Start the extraction of client-side validation constraints for a set of specified HTML inputs."""
+
         constraint_finder = ConstraintCandidateFinder(self.__driver)
+        for specification in html_specifications:
+            constraint_finder.find_constraint_candidates_for_input(
+                specification)
+
+        self.__exit()
 
     def __exit(self, exit_code=None) -> None:
         """Free all resources and exit"""
