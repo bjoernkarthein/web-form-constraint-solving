@@ -4,7 +4,7 @@ from lxml import etree, html
 from typing import Dict, List, Union
 
 
-class ElementReference:
+class HTMLElementReference:
     def __init__(self, access_method: str, access_value: str) -> None:
         self.access_method = access_method
         self.access_value = access_value
@@ -158,11 +158,11 @@ class HTMLConstraints:
 
 
 class HTMLInputSpecification:
-    def __init__(self, reference: ElementReference, constraints: HTMLConstraints) -> None:
+    def __init__(self, reference: HTMLElementReference, constraints: HTMLConstraints) -> None:
         self.reference = reference
         self.contraints = constraints
 
-    def get_as_dict(self) -> Dict[str, ElementReference | HTMLConstraints]:
+    def get_as_dict(self) -> Dict[str, HTMLElementReference | HTMLConstraints]:
         return {'reference': str(self.reference), 'constraints': str(self.contraints)}
 
     def __str__(self) -> str:
@@ -241,13 +241,13 @@ class HTMLAnalyser:
 
         return result
 
-    def __get_element_reference(self, element: etree.Element) -> ElementReference:
+    def __get_element_reference(self, element: etree.Element) -> HTMLElementReference:
         if element.get('id') is not None:
-            return ElementReference('id', element.get('id'))
+            return HTMLElementReference('id', element.get('id'))
         else:
             html_ast = etree.ElementTree(self.__html_tree_root)
             xpath = html_ast.getpath(element)
-            return ElementReference('xpath', xpath)
+            return HTMLElementReference('xpath', xpath)
 
 
 class FormObserver:

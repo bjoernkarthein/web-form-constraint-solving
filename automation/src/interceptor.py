@@ -1,6 +1,7 @@
 import requests
 
 from lxml import etree, html
+from selenium.webdriver import Chrome
 
 from utility import instrumentation_service_base_url
 
@@ -18,7 +19,7 @@ class NetworkInterceptor:
     or abort outgoing requests with a certain structure.
     """
 
-    def __init__(self, web_driver) -> None:
+    def __init__(self, web_driver: Chrome) -> None:
         self.__driver = web_driver
 
     def instrument_files(self) -> None:
@@ -101,5 +102,5 @@ class ResponseInspector:
     Provides methods to inspect the response of the application.
     """
 
-    def __init__(self, web_driver) -> None:
+    def __init__(self, web_driver: Chrome) -> None:
         self.__driver = web_driver

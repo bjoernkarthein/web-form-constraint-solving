@@ -1,10 +1,12 @@
 import sys
 
-from selenium.common.exceptions import *
+from selenium.common.exceptions import InvalidArgumentException
 from selenium.webdriver.chrome.service import Service
 from seleniumwire import webdriver
+from typing import List
 
-from html_analysis import HTMLAnalyser, FormObserver
+from constraint_extraction import ConstraintCandidateFinder, SpecificationBuilder
+from html_analysis import HTMLAnalyser, HTMLInputSpecification, FormObserver
 from interceptor import NetworkInterceptor, ResponseInspector
 from utility import record_trace
 
@@ -56,7 +58,9 @@ class TestAutomationDriver:
 
     def run(self) -> None:
         self.__load_page(self.__url)
-        self.__analyse_html(self.__driver.page_source)
+        html_input_specifications = self.__analyse_html(
+            self.__driver.page_source)
+        self.__start_constraint_extraction(html_input_specifications)
 
     def __load_page(self, url: str) -> None:
         """ Open the web page by url.
@@ -68,7 +72,7 @@ class TestAutomationDriver:
             # TODO
             pass
 
-    def __analyse_html(self, html_string: str) -> None:
+    def __analyse_html(self, html_string: str) -> List[HTMLInputSpecification]:
         html_analyser = HTMLAnalyser(html_string)
         (form, access) = html_analyser.select_form()
 
@@ -81,8 +85,10 @@ class TestAutomationDriver:
         if html_constraints is None:
             self.__exit()
 
-        for constraint in html_constraints:
-            print(constraint)
+        return html_constraints
+
+    def __start_constraint_extraction(self, html_specifications: List[HTMLInputSpecification]) -> None:
+        constraint_finder = ConstraintCandidateFinder(self.__driver)
 
     def __exit(self, exit_code=None) -> None:
         """Free all resources and exit"""
