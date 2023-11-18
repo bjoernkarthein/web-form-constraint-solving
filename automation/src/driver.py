@@ -81,7 +81,8 @@ class TestAutomationDriver:
         if html_constraints is None:
             self.__exit()
 
-        print(html_constraints)
+        for constraint in html_constraints:
+            print(constraint)
 
     def __exit(self, exit_code=None) -> None:
         """Free all resources and exit"""
