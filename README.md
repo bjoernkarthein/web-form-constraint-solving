@@ -39,7 +39,7 @@ source venv/bin/activate
 on Linux and install all required packages with
 
 ```
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 
 To start all required services run
