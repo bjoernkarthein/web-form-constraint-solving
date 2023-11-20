@@ -9,7 +9,8 @@ from typing import List
 from constraint_extraction import ConstraintCandidateFinder, SpecificationBuilder
 from html_analysis import HTMLAnalyser, HTMLInputSpecification, FormObserver
 from interceptor import NetworkInterceptor, ResponseInspector
-from utility import record_trace
+from input_generation import InputGenerator
+from utility import ConfigKey, record_trace, write_to_web_element_by_reference_with_clear
 
 chrome_driver_path = '../chromedriver/windows/chromedriver.exe'
 
@@ -96,12 +97,18 @@ class TestAutomationDriver:
     def __start_constraint_extraction(self, html_specifications: List[HTMLInputSpecification]) -> None:
         """Start the extraction of client-side validation constraints for a set of specified HTML inputs."""
 
-        constraint_finder = ConstraintCandidateFinder(self.__driver)
-        for specification in html_specifications:
-            constraint_finder.find_constraint_candidates_for_input(
-                specification)
+        specification_builder = SpecificationBuilder()
+        input_generator = InputGenerator()
 
-        self.__exit()
+        for specification in html_specifications:
+            grammar, formula = specification_builder.create_specification_for_html_validation(
+                specification, self.__config[ConfigKey.GENERATION.value][ConfigKey.USE_DATALIST_OPTIONS.value])
+
+            values = input_generator.generate_valid_inputs(grammar, formula)
+            write_to_web_element_by_reference_with_clear(
+                self.__driver, specification.reference, values[0])
+
+        # self.__exit()
 
     def __exit(self, exit_code=None) -> None:
         """Free all resources and exit"""

@@ -1,10 +1,11 @@
 import numpy
 
+from enum import Enum
 from selenium.webdriver import Chrome
-from typing import List
+from typing import List, Literal
 
 from html_analysis import HTMLConstraints, HTMLElementReference, HTMLInputSpecification
-from utility import InputType, textual_input_types
+from utility import load_file_content, InputType, one_line_text_input_types, pre_built_specifications_path
 
 """
 Constraint Extraction module
@@ -44,12 +45,12 @@ class ConstraintCandidateFinder:
         'Magic values' are used to find the important code parts for validation during dynamic analysis of the source code.
         """
         match type:
-            case t if t in textual_input_types:
+            case t if t in one_line_text_input_types:
                 return 'magic_value_why_would_someone_add_this_to_their_code'
             case InputType.CHECKBOX.value:
                 return self.__get_random_checked_states(10)
             case InputType.RADIO.value:
-                pass
+                return self.__get_random_checked_states(10)
             case _:
                 raise ValueError(
                     'The provided type does not match any known html input type')
@@ -63,6 +64,58 @@ class ConstraintCandidateFinder:
         return checked_states.tolist()
 
 
+class LogicalOperator(Enum):
+    AND = "and"
+    OR = "or"
+    NOT = "not"
+    XOR = "xor"
+    IMPLIES = "implies"
+
+
 class SpecificationBuilder:
     def __init__(self) -> None:
         pass
+
+    def create_specification_for_html_validation(self, html_input_specification: HTMLInputSpecification, use_datalist_options=False) -> (str, str | None):
+        match html_input_specification.contraints.type:
+            case t if t in one_line_text_input_types:
+                return self.__add_constraints_for_one_line_text(html_input_specification.contraints, use_datalist_options)
+            case None:
+                return self.__add_constraints_for_one_line_text(html_input_specification.contraints, use_datalist_options)
+            case _:
+                raise ValueError(
+                    'The provided type does not match any known html input type')
+
+    def __add_constraints_for_one_line_text(self, html_constraints: HTMLConstraints, use_datalist_options: bool) -> (str, str | None):
+        grammar = load_file_content(
+            f'{pre_built_specifications_path}/one-line-text/one-line-text.bnf')
+        formula = None
+
+        if use_datalist_options and html_constraints.list is not None:
+            grammar = self.__replace_by_list_options(
+                grammar, 'one-line-text', html_constraints.list)
+        if html_constraints.required is not None and html_constraints.minlength is None:
+            formula = self.__add_to_formula('str.len(<start>) > 0',
+                                            formula, LogicalOperator.AND)
+        if html_constraints.required is not None and html_constraints.minlength is not None:
+            formula = self.__add_to_formula(
+                f'str.len(<start>) >= {html_constraints.minlength}', formula, LogicalOperator.AND)
+        if html_constraints.maxlength is not None:
+            formula = self.__add_to_formula(
+                f'str.len(<start>) <= {html_constraints.maxlength}', formula, LogicalOperator.AND)
+        if html_constraints.pattern is not None:
+            # TODO
+            pass
+
+        return grammar, formula
+
+    def __add_to_formula(self, additional_part: str, formula: str, operator: LogicalOperator) -> str:
+        if formula is None or len(formula) == 0:
+            return additional_part
+        else:
+            return f'{formula} {operator.value} {additional_part}'
+
+    def __replace_by_list_options(self, grammar: str, option_identifier: str, list_options: List[str]) -> str:
+        head, sep, tail = grammar.partition(f'<{option_identifier}> ::= ')
+        options = ' | '.join(list_options)
+        return f'{head}{sep}{options}'

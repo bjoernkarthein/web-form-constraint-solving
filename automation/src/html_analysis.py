@@ -17,7 +17,7 @@ class HTMLElementReference:
 
 
 class HTMLConstraints:
-    def __init__(self, list: str = None, max: str = None, maxlength: str = None, min: str = None, minlength: str = None, multiple: str = None, pattern: str = None, required: str = None, type: str = None) -> None:
+    def __init__(self, list: List[str] = None, max: str = None, maxlength: str = None, min: str = None, minlength: str = None, multiple: str = None, pattern: str = None, required: str = None, type: str = None) -> None:
         self.__list = list
         self.__max = max
         self.__maxlength = maxlength
@@ -41,12 +41,12 @@ class HTMLConstraints:
         }
 
     @property
-    def list(self) -> str:
+    def list(self) -> List[str]:
         """Getter for list"""
         return self.__list
 
     @list.setter
-    def list(self, value: str) -> None:
+    def list(self, value: List[str]) -> None:
         """Setter for list"""
         self.__list = value
         self.__html_constraint_dict['list'] = value
@@ -180,7 +180,7 @@ class HTMLAnalyser:
         all_forms = self.__html_tree_root.xpath('//form')
         if len(all_forms) == 0:
             print('The page for the provided url does not seem to contain any HTML form elements. Maybe try another url?')
-            return None
+            return (None, None)
         elif len(all_forms) == 1:
             self.__form_access_xpath = '//form[1]'
             return (all_forms[0], self.__form_access_xpath)
@@ -231,6 +231,10 @@ class HTMLAnalyser:
                 html_constraints.type = 'textarea'
 
             for attribute in list(input.attrib):
+                if attribute == 'list':
+                    html_constraints.set_by_name(
+                        'list', self.__get_datalist_options_by_id(input.get('list')))
+                    continue
                 if attribute in html_constraints.get_attributes():
                     html_constraints.set_by_name(
                         attribute, input.get(attribute))
@@ -248,6 +252,20 @@ class HTMLAnalyser:
             html_ast = etree.ElementTree(self.__html_tree_root)
             xpath = html_ast.getpath(element)
             return HTMLElementReference('xpath', xpath)
+
+    def __get_datalist_options_by_id(self, datalist_id: str) -> List[str] | None:
+        datalists: List[html.Element] = self.__html_tree_root.xpath(
+            f'//datalist[@id = "{datalist_id}"]')
+
+        if len(datalists) == 0:
+            return None
+
+        datalist = datalists[0]
+        option_elements: List[html.Element] = datalist.getchildren()
+        options = list(map(lambda option: '"' + (option.get('value') if option.get('value') is not None else option.text) +
+                           '"', option_elements))
+
+        return options
 
 
 class FormObserver:

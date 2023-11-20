@@ -17,6 +17,15 @@ Provides helper functions and variables that are used throughout the project
 """
 
 
+class Action(Enum):
+    INPUT_VALUE = 'INPUT_VALUE'
+
+
+class ConfigKey(Enum):
+    GENERATION = 'generation'
+    USE_DATALIST_OPTIONS = 'use-datalist-options'
+
+
 class InputType(Enum):
     BUTTON = 'button'
     CHECKBOX = 'checkbox'
@@ -43,15 +52,27 @@ class InputType(Enum):
     WEEK = 'week'
 
 
+pre_built_specifications_path = '../pre-built-specifications'
+
 instrumentation_service_base_url = 'http://localhost:4000'
 
-textual_input_types = [InputType.EMAIL.value, InputType.NUMBER.value, InputType.PASSWORD.value,
-                       InputType.SEARCH.value, InputType.TEL.value, InputType.TEXT.value, InputType.TEXTAREA.value]
+one_line_text_input_types = [InputType.EMAIL.value, InputType.PASSWORD.value,
+                             InputType.SEARCH.value, InputType.TEL.value, InputType.TEXT.value]
 
 
-def record_trace(action, args=None):
+def load_file_content(file_name: str) -> str:
+    try:
+        with open(file_name) as file:
+            file_content = file.read()
+    except FileNotFoundError:
+        return ""
+
+    return file_content
+
+
+def record_trace(action: Action, args=None):
     url = f'{instrumentation_service_base_url}/record'
-    requests.post(url, data={'action': action, 'args': str(args),
+    requests.post(url, data={'action': action.value, 'args': str(args),
                              'time': math.floor(time.time() * 1000), 'pageFile': 0})
 
 
