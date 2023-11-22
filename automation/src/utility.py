@@ -70,10 +70,15 @@ def load_file_content(file_name: str) -> str:
     return file_content
 
 
-def record_trace(action: Action, args=None):
+def record_trace(action: Action, args=None) -> None:
     url = f'{instrumentation_service_base_url}/record'
     requests.post(url, data={'action': action.value, 'args': str(args),
                              'time': math.floor(time.time() * 1000), 'pageFile': 0})
+
+
+def clean_instrumentation_resources() -> None:
+    url = f'{instrumentation_service_base_url}/clean'
+    requests.get(url)
 
 
 def clear_web_element(web_element: WebElement) -> None:

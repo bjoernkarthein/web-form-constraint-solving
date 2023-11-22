@@ -10,7 +10,7 @@ from constraint_extraction import ConstraintCandidateFinder, SpecificationBuilde
 from html_analysis import HTMLAnalyser, HTMLInputSpecification, FormObserver
 from interceptor import NetworkInterceptor, ResponseInspector
 from input_generation import InputGenerator
-from utility import ConfigKey, click_web_element_by_reference, record_trace, write_to_web_element_by_reference_with_clear
+from utility import ConfigKey, clean_instrumentation_resources
 
 chrome_driver_path = '../chromedriver/windows/chromedriver.exe'
 
@@ -54,7 +54,7 @@ class TestAutomationDriver:
         )
 
         interceptor = NetworkInterceptor(self.__driver)
-        # interceptor.instrument_files()
+        interceptor.instrument_files()
 
         inspector = ResponseInspector(self.__driver)
 
@@ -120,5 +120,6 @@ class TestAutomationDriver:
     def __exit(self, exit_code=None) -> None:
         """Free all resources and exit"""
 
+        # clean_instrumentation_resources()
         self.__driver.quit()
         sys.exit(exit_code)
