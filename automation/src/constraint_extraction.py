@@ -37,7 +37,11 @@ class ConstraintCandidateFinder:
     def find_constraint_candidates(self, html_input_specifications: List[HTMLInputSpecification]) -> None:
         """Try to extract as many constraint candidates as possible from the JavaScript source code for a given input."""
         for specification in html_input_specifications:
-            self.__find_constraint_candidates_for_input(specification)
+            write_to_web_element_by_reference_with_clear(
+                self.__driver, specification.reference, self.__magic_value_map.get(specification.reference)[0])
+
+        # for specification in html_input_specifications:
+        #     self.__find_constraint_candidates_for_input(specification)
 
         # TODO
 
@@ -50,13 +54,6 @@ class ConstraintCandidateFinder:
     def __find_constraint_candidates_for_input(self, html_specification: HTMLInputSpecification) -> List[ConstraintCandidate]:
         reference = html_specification.reference
         magic_value_sequence = self.__magic_value_map.get(reference)
-
-        for reference, values in self.__magic_value_map.items():
-            if reference is html_specification.reference:
-                continue
-
-            write_to_web_element_by_reference_with_clear(
-                self.__driver, reference, values[0])
 
         # TODO: Send timestamp to instrumentation server to start trace recording
 

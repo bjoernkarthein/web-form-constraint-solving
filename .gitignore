@@ -6,5 +6,6 @@ venv
 instrumentation/src/original
 instrumentation/src/instrumented
 instrumentation/src/trace.log
+instrumentation/static/server-log.log
 
 scripts/server_pid.txt

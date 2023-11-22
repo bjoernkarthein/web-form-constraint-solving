@@ -1,0 +1,7 @@
+isla-solver == 1.14.2
+lxml == 4.9.3
+numpy == 1.26.2
+pyyaml == 6.0.1
+requests == 2.31.0
+selenium == 4.10.0
+selenium-wire == 5.1.0

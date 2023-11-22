@@ -55,4 +55,15 @@ function runCommand(cmd) {
   });
 }
 
-module.exports = { saveFile, runCommand, getBabelCommand, instrumentedDir };
+function cleanUp() {
+  fs.rmSync(originalDir, { recursive: true, force: true });
+  fs.rmSync(instrumentedDir, { recursive: true, force: true });
+}
+
+module.exports = {
+  saveFile,
+  runCommand,
+  getBabelCommand,
+  cleanUp,
+  instrumentedDir,
+};

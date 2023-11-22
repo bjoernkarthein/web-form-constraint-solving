@@ -18,7 +18,9 @@ Provides helper functions and variables that are used throughout the project
 
 
 class Action(Enum):
-    INPUT_VALUE = 'INPUT_VALUE'
+    START_TRACE_RECORDING = 'START_TRACE_RECORDING'
+    STROP_TRACE_RECORDING = 'STOP_TRACE_RECORDING'
+    VALUE_INPUT = 'VALUE_INPUT'
 
 
 class ConfigKey(Enum):
