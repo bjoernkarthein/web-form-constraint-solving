@@ -5,7 +5,6 @@ const path = require("path");
 
 const instrumentation = require("./instrument");
 const tracer = require("./trace");
-const logger = require("./log");
 
 const app = express();
 const PORT = 4000;
@@ -40,7 +39,7 @@ app.post("/instrument", (req, res) => {
 });
 
 app.post("/record", (req, res) => {
-  if (tracer.checkLogState(req.action)) {
+  if (tracer.checkLogState(req.body.action)) {
     tracer.addToTraceLog(req);
   }
   res.sendFile(tracer.traceLogFile, { root: __dirname });
@@ -50,7 +49,6 @@ app.post("/record", (req, res) => {
 app.get("/clean", (req, res) => {
   instrumentation.cleanUp();
   tracer.cleanUp();
-  logger.clear();
   console.log("Cleaned up all resources");
   res.send("Cleaned up all resources");
 });

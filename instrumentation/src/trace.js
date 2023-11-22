@@ -1,7 +1,7 @@
 const fs = require("fs");
 
 const traceLogFile = "trace.log";
-const record = false;
+let record = false;
 
 const ACTION_ENUM = {
   START_TRACE_RECORDING: "START_TRACE_RECORDING",
@@ -35,7 +35,6 @@ function addToTraceLog(req) {
   data = JSON.stringify(traceEntry);
   try {
     fs.appendFileSync(traceLogFile, `${data}\n`);
-    console.log(`recorded trace: ${data}`);
   } catch (err) {
     console.error(err);
   }
