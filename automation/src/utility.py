@@ -72,10 +72,22 @@ def load_file_content(file_name: str) -> str:
     return file_content
 
 
+def start_trace_recording() -> None:
+    url = f'{instrumentation_service_base_url}/record'
+    requests.post(
+        url, data={'action': Action.START_TRACE_RECORDING.value, 'time': time.time() * 1000, 'pageFile': 0})
+
+
+def stop_trace_recording() -> None:
+    url = f'{instrumentation_service_base_url}/record'
+    requests.post(
+        url, data={'action': Action.STROP_TRACE_RECORDING.value, 'time': time.time() * 1000, 'pageFile': 0})
+
+
 def record_trace(action: Action, args=None) -> None:
     url = f'{instrumentation_service_base_url}/record'
     requests.post(url, data={'action': action.value, 'args': str(args),
-                             'time': math.floor(time.time() * 1000), 'pageFile': 0})
+                             'time': time.time() * 1000, 'pageFile': 0})
 
 
 def clean_instrumentation_resources() -> None:

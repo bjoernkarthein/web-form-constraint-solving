@@ -7,7 +7,7 @@ from typing import List, Dict
 
 from html_analysis import HTMLConstraints, HTMLElementReference, HTMLInputSpecification
 from input_generation import InputGenerator
-from utility import InputType, one_line_text_input_types, pre_built_specifications_path, load_file_content, write_to_web_element_by_reference_with_clear, click_web_element_by_reference
+from utility import InputType, one_line_text_input_types, pre_built_specifications_path, load_file_content, write_to_web_element_by_reference_with_clear, click_web_element_by_reference, start_trace_recording, stop_trace_recording
 
 """
 Constraint Extraction module
@@ -40,8 +40,8 @@ class ConstraintCandidateFinder:
             write_to_web_element_by_reference_with_clear(
                 self.__driver, specification.reference, self.__magic_value_map.get(specification.reference)[0])
 
-        # for specification in html_input_specifications:
-        #     self.__find_constraint_candidates_for_input(specification)
+        for specification in html_input_specifications:
+            self.__find_constraint_candidates_for_input(specification)
 
         # TODO
 
@@ -55,7 +55,7 @@ class ConstraintCandidateFinder:
         reference = html_specification.reference
         magic_value_sequence = self.__magic_value_map.get(reference)
 
-        # TODO: Send timestamp to instrumentation server to start trace recording
+        start_trace_recording()
 
         for magic_value in magic_value_sequence:
             write_to_web_element_by_reference_with_clear(
@@ -64,7 +64,7 @@ class ConstraintCandidateFinder:
         click_web_element_by_reference(
             self.__driver, self.__submit_element)
 
-        # TODO: Send timestamp to instrumentation server to stop trace recording
+        stop_trace_recording()
 
     # def get_magic_value_sequence_by_type(self, type: str) -> List[str | int]:
     #     """Get a sequence of 'magic values' for a given HTML input type.
