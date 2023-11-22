@@ -9,6 +9,7 @@
 | Google Chrome     | -               |
 | Node.js           | 16.13.1         |
 | Python            | 3.10            |
+| Pipenv            | 2023.11.15      |
 
 ### Setup
 
@@ -18,34 +19,22 @@ Chrome needs to be added to the PATH
 
 Clone the repository.
 
-From the root run the following command to initialize all services. This creates a python virtual environment for the test automation.
+From the /automation directory run the following command to create and start a python virtual environment with all dependencies for the test automation.
 
 ```
-./scripts/init.sh
+pipenv install
+pipenv shell
 ```
 
-To install all required python packages go into the _automation_ directory and run
+To start all required services go to the application root directory and run
 
 ```
-./venv/Scripts/actiate
+./scripts/bootstrap.sh
 ```
 
-on Windows or
+To stop all services and clean up the resources run
 
 ```
-source venv/bin/activate
+./scrpts/teardown.sh
+exit
 ```
-
-on Linux and install all required packages with
-
-```
-python -m pip install -r requirements.txt
-```
-
-To start all required services run
-
-```
-./scripts/start.sh
-```
-
-from the application root.

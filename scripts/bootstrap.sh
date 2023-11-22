@@ -4,9 +4,11 @@
 if [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     # Linux
     node_command="node"
+    pipenv_command="pipenv"
 elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ] || [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
     # Windows
     node_command="node"
+    pipenv_command="pipenv"
 else
     echo "Unsupported operating system"
     exit 1
