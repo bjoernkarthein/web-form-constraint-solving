@@ -97,10 +97,14 @@ def write_to_web_element(web_element: WebElement, value: str) -> None:
         pass
 
 
+def clear_value_of_web_element(driver: Chrome, web_element: WebElement) -> None:
+    set_value_of_web_element(driver, web_element, '')
+
+
 def set_value_of_web_element(driver: Chrome, web_element: WebElement, value: str) -> None:
     try:
         driver.execute_script(
-            "arguments[0].setAttribute('value', arguments[1])", web_element, value)
+            'arguments[0].setAttribute("value", arguments[1])', web_element, value)
     except Exception:
         pass
 
@@ -150,5 +154,5 @@ def set_value_of_web_element_by_reference(driver: Chrome, html_element_reference
 def set_value_of_web_element_by_reference_with_clear(driver: Chrome, html_element_reference: HTMLElementReference, value: str) -> None:
     web_element = get_web_element_by_reference(driver, html_element_reference)
     if web_element is not None:
-        clear_web_element(web_element)
+        clear_value_of_web_element(driver, web_element)
         set_value_of_web_element(driver, web_element, value)

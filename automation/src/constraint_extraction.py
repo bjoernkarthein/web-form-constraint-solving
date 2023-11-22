@@ -1,11 +1,13 @@
 import numpy
 
 from enum import Enum
+from lxml.html import Element
 from selenium.webdriver import Chrome
-from typing import List, Literal
+from typing import List, Dict
 
 from html_analysis import HTMLConstraints, HTMLElementReference, HTMLInputSpecification
-from utility import load_file_content, InputType, one_line_text_input_types, pre_built_specifications_path
+from input_generation import InputGenerator
+from utility import InputType, one_line_text_input_types, pre_built_specifications_path, load_file_content, write_to_web_element_by_reference_with_clear, click_web_element_by_reference
 
 """
 Constraint Extraction module
@@ -26,42 +28,70 @@ class ConstraintCandidateFinder:
     Provides methods to identify constraint candidates for a specific input of the form.
     """
 
-    def __init__(self, web_driver: Chrome) -> None:
+    def __init__(self, web_driver: Chrome, submit_element: Element) -> None:
         self.__driver = web_driver
+        self.__generator = InputGenerator()
+        self.__magic_value_map: Dict[HTMLElementReference, List[str]] = {}
+        self.__submit_element = submit_element
 
-    def find_constraint_candidates_for_input(self, html_input_specification: HTMLInputSpecification) -> List[ConstraintCandidate]:
-        """Try to extract as many constraint candidates as possible from the source code for a given input."""
+    def find_constraint_candidates(self, html_input_specifications: List[HTMLInputSpecification]) -> None:
+        """Try to extract as many constraint candidates as possible from the JavaScript source code for a given input."""
+        for specification in html_input_specifications:
+            self.__find_constraint_candidates_for_input(specification)
 
-        magic_values = self.get_magic_value_sequence_by_type(
-            html_input_specification.contraints.type)
+        # TODO
 
-        print(magic_values)
+    def set_magic_value_sequence_for_input(self, html_input_reference: HTMLElementReference, grammar: str, formula: str | None, amount=1) -> List[str | int]:
+        values = self.__generator.generate_valid_inputs(
+            grammar, formula, amount)
+        self.__magic_value_map[html_input_reference] = values
+        return values
 
-        return []
+    def __find_constraint_candidates_for_input(self, html_specification: HTMLInputSpecification) -> List[ConstraintCandidate]:
+        reference = html_specification.reference
+        magic_value_sequence = self.__magic_value_map.get(reference)
 
-    def get_magic_value_sequence_by_type(self, type: str) -> List[str]:
-        """Get a sequence of 'magic values' for a given HTML input type.
+        for reference, values in self.__magic_value_map.items():
+            if reference is html_specification.reference:
+                continue
 
-        'Magic values' are used to find the important code parts for validation during dynamic analysis of the source code.
-        """
-        match type:
-            case t if t in one_line_text_input_types:
-                return 'magic_value_why_would_someone_add_this_to_their_code'
-            case InputType.CHECKBOX.value:
-                return self.__get_random_checked_states(10)
-            case InputType.RADIO.value:
-                return self.__get_random_checked_states(10)
-            case _:
-                raise ValueError(
-                    'The provided type does not match any known html input type')
+            write_to_web_element_by_reference_with_clear(
+                self.__driver, reference, values[0])
 
-    def __get_random_checked_states(self, amount: int) -> List[int]:
-        """Get a sequence of of 0s and 1s in random order, the length of which is specified by amount."""
+        # TODO: Send timestamp to instrumentation server to start trace recording
 
-        checked_states = numpy.ones(amount, dtype=numpy.int0)
-        checked_states[:amount // 2] = 0
-        numpy.random.shuffle(checked_states)
-        return checked_states.tolist()
+        for magic_value in magic_value_sequence:
+            write_to_web_element_by_reference_with_clear(
+                self.__driver, html_specification.reference, magic_value)
+
+        click_web_element_by_reference(
+            self.__driver, self.__submit_element)
+
+        # TODO: Send timestamp to instrumentation server to stop trace recording
+
+    # def get_magic_value_sequence_by_type(self, type: str) -> List[str | int]:
+    #     """Get a sequence of 'magic values' for a given HTML input type.
+
+    #     'Magic values' are used to find the important code parts for validation during dynamic analysis of the source code.
+    #     """
+    #     match type:
+    #         case t if t in one_line_text_input_types:
+    #             return 'magic_value_why_would_someone_add_this_to_their_code'
+    #         case InputType.CHECKBOX.value:
+    #             return self.__get_random_checked_states(10)
+    #         case InputType.RADIO.value:
+    #             return self.__get_random_checked_states(10)
+    #         case _:
+    #             raise ValueError(
+    #                 'The provided type does not match any known html input type')
+
+    # def __get_random_checked_states(self, amount: int) -> List[int]:
+    #     """Get a sequence of of 0s and 1s in random order, the length of which is specified by amount."""
+
+    #     checked_states = numpy.ones(amount, dtype=numpy.int0)
+    #     checked_states[:amount // 2] = 0
+    #     numpy.random.shuffle(checked_states)
+    #     return checked_states.tolist()
 
 
 class LogicalOperator(Enum):
@@ -116,6 +146,6 @@ class SpecificationBuilder:
             return f'{formula} {operator.value} {additional_part}'
 
     def __replace_by_list_options(self, grammar: str, option_identifier: str, list_options: List[str]) -> str:
-        head, sep, tail = grammar.partition(f'<{option_identifier}> ::= ')
+        head, sep, _ = grammar.partition(f'<{option_identifier}> ::= ')
         options = ' | '.join(list_options)
         return f'{head}{sep}{options}'

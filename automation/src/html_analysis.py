@@ -207,12 +207,12 @@ class HTMLAnalyser:
             f'{self.__form_access_xpath}/descendant::button')
 
         # Find the submit element
-        self.submit_element = None
+        self.__submit_element = None
         for elem in all_inputs + all_buttons:
             if elem.get('type') == 'submit':
-                self.submit_element = elem
+                self.__submit_element = self.__get_element_reference(elem)
 
-        if self.submit_element is None:
+        if self.__submit_element is None:
             print('The form does not contain an element with type submit')
             return None
 
@@ -221,6 +221,11 @@ class HTMLAnalyser:
             input for input in all_inputs if input.get('type') != 'submit']
 
         return self.__extract_static_constraints_from_inputs(all_inputs)
+
+    @property
+    def submit_element(self) -> HTMLElementReference:
+        """Getetr for submit element of the selected form"""
+        return self.__submit_element
 
     def __extract_static_constraints_from_inputs(self, input_elements: List[HTMLInputElement]) -> List[HTMLInputSpecification]:
         result = []
