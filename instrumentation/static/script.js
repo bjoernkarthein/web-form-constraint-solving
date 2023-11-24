@@ -1,4 +1,4 @@
-function sendLog(action, args, time, file, location, pageFile) {
+function sendLog(action, args, file, location, pageFile) {
   var xhr = new XMLHttpRequest();
   xhr.open("POST", "http://localhost:4000/record", true);
   xhr.setRequestHeader("Content-Type", "application/json");
@@ -6,7 +6,7 @@ function sendLog(action, args, time, file, location, pageFile) {
     JSON.stringify({
       action,
       args,
-      time,
+      time: new Date().getTime(),
       file,
       location,
       pageFile,

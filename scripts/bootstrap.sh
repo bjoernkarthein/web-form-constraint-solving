@@ -19,5 +19,5 @@ app_path="instrumentation/src/"
 cd $app_path
 
 # Start the Node.js server in the background
-$node_command "app.js" > "../static/server-log.log" &
+$node_command "app.js" &
 echo $! > ../../scripts/server_pid.txt
