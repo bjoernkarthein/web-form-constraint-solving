@@ -1,42 +1,55 @@
 const fs = require("fs");
 
+const log = require("./log");
+const logger = log.logger;
+
 const traceLogFile = "trace.log";
 let record = false;
 
 const ACTION_ENUM = {
-  START_TRACE_RECORDING: "START_TRACE_RECORDING",
-  STROP_TRACE_RECORDING: "STOP_TRACE_RECORDING",
+  INTERACTION_START: "INTERACTION_START",
+  INTERACTION_END: "INTERACTION_END",
   VALUE_INPUT: "VALUE_INPUT",
 };
 
-function checkLogState(action) {
+function getLogState() {
+  return record;
+}
+
+function setLogState(action) {
   if (!fs.existsSync(traceLogFile)) {
     fs.writeFileSync(traceLogFile, "");
   }
 
-  if (action == ACTION_ENUM.START_TRACE_RECORDING) {
+  let oneMoreTime = false;
+
+  if (action == ACTION_ENUM.INTERACTION_START) {
     record = true;
-  } else if (action == ACTION_ENUM.STROP_TRACE_RECORDING) {
+  } else if (action == ACTION_ENUM.INTERACTION_END) {
     record = false;
+    oneMoreTime = true;
   }
 
-  return record;
+  return record || oneMoreTime;
 }
 
 function addToTraceLog(req) {
   const traceEntry = new Object();
   traceEntry.action = req.body.action;
-  traceEntry.args = req.body.args;
+  try {
+    traceEntry.args = JSON.parse(req.body.args);
+  } catch (err) {
+    traceEntry.args = req.body.args;
+  }
   traceEntry.time = req.body.time;
   traceEntry.file = req.body.file;
   traceEntry.location = req.body.location;
   traceEntry.pageFile = req.body.pageFile;
 
-  data = JSON.stringify(traceEntry);
   try {
-    fs.appendFileSync(traceLogFile, `${data}\n`);
+    fs.appendFileSync(traceLogFile, `${JSON.stringify(traceEntry)}\n`);
   } catch (err) {
-    console.error(err);
+    logger.error(err);
   }
 }
 
@@ -44,4 +57,11 @@ function cleanUp() {
   fs.rmSync(traceLogFile, { force: true });
 }
 
-module.exports = { addToTraceLog, cleanUp, checkLogState, traceLogFile };
+module.exports = {
+  addToTraceLog,
+  cleanUp,
+  setLogState,
+  getLogState,
+  traceLogFile,
+  ACTION_ENUM,
+};

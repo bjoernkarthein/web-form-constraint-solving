@@ -18,11 +18,9 @@ module.exports = function conditionalResolvePlugin() {
         code = `
         sendLog('CONDITIONAL_STATEMENT', \`{"type": "binary", "left": "\${${
           generator.default(left).code
-        }}", "operator": ${operator}, "right": "\${${
+        }}", "operator": "${operator}", "right": "\${${
           generator.default(right).code
-        }}", "test": "\${${
-          generator.default(test).code
-        }}"}\`, Date.now(), '${state.filename
+        }}", "test": \${${generator.default(test).code}}}\`, '${state.filename
           .split(op_path.sep)
           .join(op_path.posix.sep)}', ${getLocation(path)}, 1);`;
 
@@ -47,9 +45,7 @@ module.exports = function conditionalResolvePlugin() {
           generator.default(left).code
         }}", "operator": ${operator}, "right": "\${${
           generator.default(right).code
-        }}", "test": "\${${
-          generator.default(test).code
-        }}"}\`, Date.now(), '${state.filename
+        }}", "test": \${${generator.default(test).code}}}\`, '${state.filename
           .split(op_path.sep)
           .join(op_path.posix.sep)}', ${getLocation(path)}, 1);`;
 

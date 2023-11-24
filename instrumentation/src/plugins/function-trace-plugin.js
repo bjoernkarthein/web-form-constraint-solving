@@ -12,7 +12,7 @@ module.exports = function functionTracePlugin() {
       const code = `
       sendLog('NAMED_FUNCTION_CALL', \`${getCallStatement(
         path
-      )}\`, Date.now(), '${state.filename
+      )}\`, '${state.filename
         .split(op_path.sep)
         .join(op_path.posix.sep)}', ${getLocation(path)}, 1);`;
 
@@ -28,7 +28,7 @@ module.exports = function functionTracePlugin() {
       const code = `
       sendLog('UNNAMED_FUNCTION_CALL', \`${getExpressionStatement(
         path
-      )}\`, Date.now(), '${state.filename
+      )}\`, '${state.filename
         .split(op_path.sep)
         .join(op_path.posix.sep)}', ${getLocation(path)}, 1);`;
 

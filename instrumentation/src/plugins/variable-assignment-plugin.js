@@ -23,7 +23,7 @@ module.exports = function assignmentPlugin() {
         code = `
         sendLog('VARIABLE_DECLARATION', \`{"name": "${name}", "value": "\${${
           valueCode.code
-        }}"}\`, Date.now(), '${state.filename
+        }}"}\`, '${state.filename
           .split(op_path.sep)
           .join(op_path.posix.sep)}', ${getLocation(path)}, 1);`;
 
@@ -47,7 +47,7 @@ module.exports = function assignmentPlugin() {
 
       code = `sendLog('VARIABLE_ASSIGNMENT', \`{"name": "${name}", "value": "\${${
         valueCode.code
-      }}"}\`, Date.now(), '${state.filename
+      }}"}\`, '${state.filename
         .split(op_path.sep)
         .join(op_path.posix.sep)}', ${getLocation(path)}, 1);`;
 

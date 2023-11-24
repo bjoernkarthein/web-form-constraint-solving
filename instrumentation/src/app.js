@@ -5,6 +5,8 @@ const path = require("path");
 
 const instrumentation = require("./instrument");
 const tracer = require("./trace");
+const log = require("./log");
+const logger = log.logger;
 
 const app = express();
 const PORT = 4000;
@@ -33,26 +35,25 @@ app.post("/instrument", (req, res) => {
   instrumentation.saveFile(name, content);
   instrumentation.runCommand(instrumentation.getBabelCommand(name)).then(() => {
     const fileName = `${instrumentation.instrumentedDir}${name}`;
-    console.log(`instrumented file ${name}`);
+    logger.info(`instrumented file ${name}`);
     res.sendFile(fileName, { root: __dirname });
   });
 });
 
 app.post("/record", (req, res) => {
-  if (tracer.checkLogState(req.body.action)) {
+  if (tracer.setLogState(req.body.action)) {
     tracer.addToTraceLog(req);
   }
   res.sendFile(tracer.traceLogFile, { root: __dirname });
-  // handleEvent(action, args, time, file, location, pageFile);
 });
 
 app.get("/clean", (req, res) => {
   instrumentation.cleanUp();
   tracer.cleanUp();
-  console.log("Cleaned up all resources");
+  logger.info("Cleaned up all resources");
   res.send("Cleaned up all resources");
 });
 
 app.listen(PORT, () => {
-  console.log(`Instrumentation server started on port ${PORT}...`);
+  logger.info(`Instrumentation server started on port ${PORT}...`);
 });

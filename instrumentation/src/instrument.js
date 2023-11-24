@@ -1,5 +1,7 @@
 const fs = require("fs");
 const { exec } = require("child_process");
+const log = require("./log");
+const logger = log.logger;
 
 /**
  * Helper functions for instrumentation
@@ -24,7 +26,7 @@ function saveFile(originalName, originalContent) {
 
   fs.writeFile(`${originalDir}${originalName}`, originalContent, (err) => {
     if (err) {
-      console.error(err);
+      logger.error(err);
     }
   });
 }
