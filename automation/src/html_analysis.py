@@ -153,8 +153,11 @@ class HTMLConstraints:
         """Return a list of all attribute names"""
         return list(self.__html_constraint_dict)
 
+    def get_as_dict(self) -> Dict[str, str]:
+        return self.__html_constraint_dict
+
     def __str__(self) -> str:
-        return json.dumps(self.__html_constraint_dict)
+        return json.dumps(self.get_as_dict())
 
 
 class HTMLInputSpecification:
@@ -163,10 +166,10 @@ class HTMLInputSpecification:
         self.contraints = constraints
 
     def get_as_dict(self) -> Dict[str, HTMLElementReference | HTMLConstraints]:
-        return {'reference': str(self.reference), 'constraints': str(self.contraints)}
+        return {'reference': self.reference.get_as_dict(), 'constraints': self.contraints.get_as_dict()}
 
     def __str__(self) -> str:
-        return f"{self.get_as_dict()}"
+        return json.dumps(self.get_as_dict())
 
 
 HTMLInputElement = Union[html.InputElement, html.TextareaElement]

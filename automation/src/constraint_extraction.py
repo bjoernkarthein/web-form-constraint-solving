@@ -55,7 +55,8 @@ class ConstraintCandidateFinder:
         reference = html_specification.reference
         magic_value_sequence = self.__magic_value_map.get(reference)
 
-        start_trace_recording()
+        start_trace_recording(
+            {'spec': html_specification.get_as_dict(), 'values': magic_value_sequence})
 
         for magic_value in magic_value_sequence:
             write_to_web_element_by_reference_with_clear(
@@ -64,7 +65,8 @@ class ConstraintCandidateFinder:
         click_web_element_by_reference(
             self.__driver, self.__submit_element)
 
-        stop_trace_recording()
+        stop_trace_recording(
+            {'spec': html_specification.get_as_dict(), 'values': magic_value_sequence})
 
     # def get_magic_value_sequence_by_type(self, type: str) -> List[str | int]:
     #     """Get a sequence of 'magic values' for a given HTML input type.
