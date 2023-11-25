@@ -109,6 +109,8 @@ class SpecificationBuilder:
         match html_input_specification.contraints.type:
             case t if t in one_line_text_input_types:
                 return self.__add_constraints_for_one_line_text(html_input_specification.contraints, use_datalist_options)
+            case InputType.CHECKBOX.value:
+                return self.__add_constraints_for_checkbox(html_input_specification.contraints.required)
             case None:
                 return self.__add_constraints_for_one_line_text(html_input_specification.contraints, use_datalist_options)
             case _:
@@ -135,6 +137,17 @@ class SpecificationBuilder:
         if html_constraints.pattern is not None:
             # TODO
             pass
+
+        return grammar, formula
+
+    def __add_constraints_for_checkbox(self, required: str) -> (str, str | None):
+        grammar = load_file_content(
+            f'{pre_built_specifications_path}/checkbox/checkbox.bnf')
+        formula = None
+
+        if required is not None:
+            grammar = load_file_content(
+                f'{pre_built_specifications_path}/checkbox/checkbox_required.bnf')
 
         return grammar, formula
 

@@ -15,6 +15,7 @@ class InputGenerator:
                 value = str(solver.solve())
                 values.append(value)
             return values
-        except Exception:
+        except Exception as e:
             # TODO
+            print(e)
             return []

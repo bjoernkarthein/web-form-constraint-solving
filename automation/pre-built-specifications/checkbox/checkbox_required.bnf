@@ -1,0 +1,2 @@
+<start> ::= <checkbox>
+<checkbox> ::= "1"
