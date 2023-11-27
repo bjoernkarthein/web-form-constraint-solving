@@ -3,7 +3,7 @@ import requests
 from lxml import etree, html
 from selenium.webdriver import Chrome
 
-from utility import instrumentation_service_base_url
+from utility import service_base_url, instrumentation_controller
 
 """
 Interceptor module
@@ -41,7 +41,7 @@ class NetworkInterceptor:
             return
 
         if content_type.startswith('application/javascript'):
-            if request.url == f'{instrumentation_service_base_url}/static/script.js':
+            if request.url == f'{service_base_url}/static/script.js':
                 return
 
             response.body = self.__handle_js_file(request, response)
@@ -63,7 +63,7 @@ class NetworkInterceptor:
 
         data = {'name': name, 'source': body_string}
         res = requests.post(
-            f'{instrumentation_service_base_url}/instrument', data)
+            f'{instrumentation_controller}/instrument', data)
         return res.content
 
     def __handle_html_file(self, response) -> bytes:
@@ -81,7 +81,7 @@ class NetworkInterceptor:
             return
 
         script_tag = etree.fromstring(
-            f'<script src="{instrumentation_service_base_url}/static/script.js"></script>')
+            f'<script src="{service_base_url}/static/script.js"></script>')
 
         html_body.append(script_tag)
         return html.tostring(html_ast, pretty_print=True)

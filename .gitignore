@@ -3,9 +3,9 @@ __pycache__
 node_modules
 venv
 
-instrumentation/src/original
-instrumentation/src/instrumented
-instrumentation/src/trace.log
-instrumentation/static/server-log.log
+service/src/original
+service/src/instrumented
+service/src/trace.log
+service/static/server-log.log
 
 scripts/server_pid.txt

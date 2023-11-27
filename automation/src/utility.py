@@ -56,7 +56,10 @@ class InputType(Enum):
 
 pre_built_specifications_path = '../pre-built-specifications'
 
-instrumentation_service_base_url = 'http://localhost:4000'
+service_base_url = 'http://localhost:4000'
+admin_controller = f'{service_base_url}/admin'
+analysis_controller = f'{service_base_url}/analysis'
+instrumentation_controller = f'{service_base_url}/instrumentation'
 
 one_line_text_input_types = [InputType.EMAIL.value, InputType.PASSWORD.value,
                              InputType.SEARCH.value, InputType.TEL.value, InputType.TEXT.value]
@@ -73,25 +76,25 @@ def load_file_content(file_name: str) -> str:
 
 
 def start_trace_recording(data) -> None:
-    url = f'{instrumentation_service_base_url}/record'
+    url = f'{analysis_controller}/record'
     requests.post(
         url, json={'action': Action.INTERACTION_START.value, 'args': data, 'time': math.floor(time.time() * 1000), 'pageFile': 0})
 
 
 def stop_trace_recording(data) -> None:
-    url = f'{instrumentation_service_base_url}/record'
+    url = f'{analysis_controller}/record'
     requests.post(
         url, json={'action': Action.INTERACTION_END.value, 'args': data, 'time': math.floor(time.time() * 1000), 'pageFile': 0})
 
 
 def record_trace(action: Action, args=None) -> None:
-    url = f'{instrumentation_service_base_url}/record'
-    requests.post(url, json={'action': action.value, 'args': str(args),
+    url = f'{analysis_controller}/record'
+    requests.post(url, json={'action': action.value, 'args': args,
                              'time': math.floor(time.time() * 1000), 'pageFile': 0})
 
 
 def clean_instrumentation_resources() -> None:
-    url = f'{instrumentation_service_base_url}/clean'
+    url = f'{admin_controller}/clean'
     requests.get(url)
 
 
@@ -109,8 +112,10 @@ def click_web_element(web_element: WebElement) -> None:
         pass
 
 
-def write_to_web_element(web_element: WebElement, value: str) -> None:
+def write_to_web_element(web_element: WebElement, value: str, element_reference: HTMLElementReference) -> None:
     try:
+        record_trace(Action.VALUE_INPUT, {
+                     'reference': element_reference.get_as_dict(), 'value': value})
         web_element.send_keys(value)
     except Exception:
         pass
@@ -161,7 +166,7 @@ def write_to_web_element_by_reference_with_clear(driver: Chrome, html_element_re
     web_element = get_web_element_by_reference(driver, html_element_reference)
     if web_element is not None:
         clear_web_element(web_element)
-        write_to_web_element(web_element, value)
+        write_to_web_element(web_element, value, html_element_reference)
 
 
 def set_value_of_web_element_by_reference(driver: Chrome, html_element_reference: HTMLElementReference, value: str) -> None:

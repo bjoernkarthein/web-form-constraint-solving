@@ -15,7 +15,7 @@ else
 fi
 
 # Set the path to your Node.js application
-app_path="instrumentation/src/"
+app_path="service/src/"
 cd $app_path
 
 # Start the Node.js server in the background

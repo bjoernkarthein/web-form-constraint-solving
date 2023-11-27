@@ -54,7 +54,7 @@ class TestAutomationDriver:
         )
 
         interceptor = NetworkInterceptor(self.__driver)
-        # interceptor.instrument_files()
+        interceptor.instrument_files()
 
         inspector = ResponseInspector(self.__driver)
 
