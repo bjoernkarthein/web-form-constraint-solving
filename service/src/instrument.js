@@ -1,5 +1,4 @@
 const fs = require("fs");
-const { exec } = require("child_process");
 const log = require("./log");
 const logger = log.logger;
 
@@ -40,23 +39,6 @@ function getBabelCommand(originalName) {
   return `npx babel ${originalDir}${originalName} --out-file ${instrumentedDir}${originalName}`;
 }
 
-/**
- * Function to execute a command asynchronously
- * @param {String} cmd the command to be executed
- * @returns a Promise that is rejected in case of an error, otherwise resolved
- */
-function runCommand(cmd) {
-  return new Promise((resolve, reject) => {
-    exec(cmd, (error) => {
-      if (error) {
-        reject();
-        return;
-      }
-      resolve();
-    });
-  });
-}
-
 function cleanUp() {
   fs.rmSync(originalDir, { recursive: true, force: true });
   fs.rmSync(instrumentedDir, { recursive: true, force: true });
@@ -64,7 +46,6 @@ function cleanUp() {
 
 module.exports = {
   saveFile,
-  runCommand,
   getBabelCommand,
   cleanUp,
   instrumentedDir,

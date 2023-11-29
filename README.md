@@ -10,6 +10,7 @@
 | Node.js           | 16.13.1         |
 | Python            | 3.10            |
 | Pipenv            | 2023.11.15      |
+| CodeQL            | -               |
 
 ### Setup
 

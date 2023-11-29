@@ -2,10 +2,90 @@ const fs = require("fs");
 const readline = require("readline");
 const trace = require("./trace");
 const log = require("./log");
-const logger = log.logger;
 
-allTraces = [];
-groupedTraces = [];
+const allTraces = [];
+const groupedTraces = [];
+
+// class Action {
+//   constructor(actionType, args) {
+//     this.actionType = actionType;
+//     this.args = args;
+//   }
+
+//   getConstraintCandidates() {
+//     return [];
+//   }
+// }
+
+// class ValueInputAction extends Action {
+//   constructor(t) {
+//     super(trace.ACTION_ENUM.VALUE_INPUT, t.args);
+//   }
+
+//   getConstraintCandidates() {
+//     return ["value"];
+//   }
+// }
+
+// class NamedFunctionCallAction extends Action {
+//   constructor(t) {
+//     super(trace.ACTION_ENUM.NAMED_FUNCTION_CALL, t.args);
+//     this.file = t.file;
+//     this.location = t.location;
+//   }
+
+//   getConstraintCandidates() {
+//     return ["named"];
+//   }
+// }
+
+// class UnNamedFunctionCallAction extends Action {
+//   constructor(t) {
+//     super(trace.ACTION_ENUM.UNNAMED_FUNCTION_CALL, t.args);
+//     this.file = t.file;
+//     this.location = t.location;
+//   }
+
+//   getConstraintCandidates() {
+//     return ["unnamed"];
+//   }
+// }
+
+// class VariableDeclarationAction extends Action {
+//   constructor(t) {
+//     super(trace.ACTION_ENUM.VARIABLE_DECLARATION, t.args);
+//     this.file = t.file;
+//     this.location = t.location;
+//   }
+
+//   getConstraintCandidates() {
+//     return ["variable decl"];
+//   }
+// }
+
+// class VariableAssignmentAction extends Action {
+//   constructor(t) {
+//     super(trace.ACTION_ENUM.VARIABLE_ASSIGNMENT, t.args);
+//     this.file = t.file;
+//     this.location = t.location;
+//   }
+
+//   getConstraintCandidates() {
+//     return ["variable ass"];
+//   }
+// }
+
+// class ConditionStatementAction extends Action {
+//   constructor(t) {
+//     super(trace.ACTION_ENUM.VARIABLE_ASSIGNMENT, t.args);
+//     this.file = t.file;
+//     this.location = t.location;
+//   }
+
+//   getConstraintCandidates() {
+//     return ["condition statement"];
+//   }
+// }
 
 function analyseTraces() {
   const fileStream = fs.createReadStream(trace.traceLogFile);
@@ -52,25 +132,26 @@ function compareTimestamps(a, b) {
 
 function extractConstraintCandidates() {
   for (const traceGroup of groupedTraces) {
-    console.log("--");
-    for (const t of traceGroup) {
-      switch (t.action) {
-        case trace.ACTION_ENUM.INTERACTION_START:
-          console.log(t.args.spec.reference);
-          break;
-        case trace.ACTION_ENUM.INTERACTION_END:
-          console.log(t.args.spec.reference);
-          break;
-        case trace.ACTION_ENUM.VALUE_INPUT:
-          console.log(t.args.value);
-          break;
-        default:
-          logger.error(
-            `Action type ${t.action} was not recognized and can not be parsed`
-          );
-      }
+    let isEmpty = traceGroup.filter((t) => t.pageFile).length == 0;
+    if (isEmpty) {
+      continue;
     }
+    perpareForCodeQLQueries(traceGroup);
   }
+}
+
+function perpareForCodeQLQueries(traces) {
+  console.log(traces.map((t) => t.pageFile));
+  // switch (t.action) {
+  //   case trace.ACTION_ENUM.INTERACTION_START:
+  //   case trace.ACTION_ENUM.INTERACTION_END:
+  //   case trace.ACTION_ENUM.VALUE_INPUT:
+  //   case trace.ACTION_ENUM.NAMED_FUNCTION_CALL:
+  //   default:
+  //     logger.error(
+  //       `Action type ${t.action} was not recognized and can not be parsed`
+  //     );
+  // }
 }
 
 module.exports = { analyseTraces };
