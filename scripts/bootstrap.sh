@@ -19,15 +19,12 @@ else
     exit 1
 fi
 
-# Set the path to your Node.js application
+# Start the Node.js server in the background
 app_path="service/src/"
 cd $app_path
-
-# Start the Node.js server in the background
 $NODE_COMMAND "app.js" &
 pid=$!
 
-# Sleep for a moment to allow the server to start (adjust as needed)
 sleep 2
 
 # Check if the Node.js server is running

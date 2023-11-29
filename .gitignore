@@ -1,11 +1,10 @@
 __pycache__
-
 node_modules
-venv
+scripts/server_pid.txt
 
 service/src/original
 service/src/instrumented
 service/src/trace.log
 service/static/server-log.log
 
-scripts/server_pid.txt
+service/src/codeql/db
