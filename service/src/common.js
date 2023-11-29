@@ -1,4 +1,7 @@
 const { exec } = require("child_process");
+const spawn = require("cross-spawn");
+
+const { logger } = require("./log");
 
 /**
  * Function to execute a command asynchronously
@@ -13,10 +16,25 @@ function runCommand(cmd) {
         return;
       }
       resolve();
-    }).stdout.on("data", function (data) {
-      console.log(data);
     });
   });
 }
 
-module.exports = { runCommand };
+/**
+ * Function to execute a command synchronously
+ * @param {String} cmd the command to be executed
+ */
+function runCommandSync(cmd) {
+  logger.info(`Running command: ${cmd}`);
+  console.log(cmd);
+  const exec = spawn.sync(cmd, { shell: true });
+  if (exec.stderr && exec.stderr.toString().trim()) {
+    logger.error(exec.stderr.toString().trim());
+  }
+
+  if (exec.stdout && exec.stdout.toString().trim()) {
+    logger.info(exec.stdout.toString().trim());
+  }
+}
+
+module.exports = { runCommand, runCommandSync };

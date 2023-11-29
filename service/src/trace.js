@@ -1,7 +1,6 @@
 const fs = require("fs");
 
-const log = require("./log");
-const logger = log.logger;
+const { logger } = require("./log");
 
 const traceLogFile = "trace.log";
 let record = false;

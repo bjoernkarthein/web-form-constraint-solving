@@ -3,8 +3,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const path = require("path");
 
-const log = require("./log");
-const logger = log.logger;
+const { logger } = require("./log");
 
 const administrationController = require("./routers/administration");
 const analysisController = require("./routers/analysis");

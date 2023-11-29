@@ -1,7 +1,6 @@
 const fs = require("fs");
 const readline = require("readline");
 const trace = require("./trace");
-const log = require("./log");
 
 const allTraces = [];
 const groupedTraces = [];
