@@ -1,16 +1,21 @@
 #!/bin/bash
 
-# Check the operating system
-if [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
-    # Linux
-    node_command="node"
-    pipenv_command="pipenv"
-elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ] || [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
-    # Windows
-    node_command="node"
-    pipenv_command="pipenv"
+source .env
+
+# Check if required software is installed
+if $NODE_COMMAND "--version"; then
+    echo "Found node installation"
 else
-    echo "Unsupported operating system"
+    echo "No node installation found"
+    read
+    exit 1
+fi
+
+if $CODEQL_PATH "--version"; then
+    echo "Found codeql installation"
+else
+    echo "No codeql installation found"
+    read
     exit 1
 fi
 
@@ -19,5 +24,20 @@ app_path="service/src/"
 cd $app_path
 
 # Start the Node.js server in the background
-$node_command "app.js" &
-echo $! > ../../scripts/server_pid.txt
+$NODE_COMMAND "app.js" &
+pid=$!
+
+# Sleep for a moment to allow the server to start (adjust as needed)
+sleep 2
+
+# Check if the Node.js server is running
+if ps -p $pid > /dev/null; then
+    echo "Node.js server started successfully with PID: $pid"
+    echo $pid > ../../scripts/server_pid.txt
+else
+    echo "Error: Node.js server failed to start"
+    read
+    exit 1
+fi
+
+exit 0
