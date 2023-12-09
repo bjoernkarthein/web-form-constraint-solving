@@ -1,8 +1,7 @@
 const { template } = require("@babel/core");
 const generator = require("@babel/generator");
-const op_path = require("path");
 
-const { getLocation } = require("./common");
+const { getLocation, toFilePath } = require("./common");
 
 module.exports = function conditionalResolvePlugin() {
   const ConditionaltVisitor = {
@@ -17,14 +16,14 @@ module.exports = function conditionalResolvePlugin() {
         right = test.right;
         operator = test.operator;
 
-        code = `
+        const code = `
         sendLog('CONDITIONAL_STATEMENT', \`{"type": "binary", "left": "\${${
           generator.default(left).code
         }}", "operator": "${operator}", "right": "\${${
           generator.default(right).code
-        }}", "test": \${${generator.default(test).code}}}\`, '${state.filename
-          .split(op_path.sep)
-          .join(op_path.posix.sep)}', ${getLocation(path)}, 1);`;
+        }}", "test": \${${generator.default(test).code}}}\`, '${toFilePath(
+          state.filename
+        )}', ${getLocation(path, toFilePath(state.filename))}, 1);`;
 
         const ast = template.ast(code);
         path.insertBefore(ast);
@@ -42,14 +41,14 @@ module.exports = function conditionalResolvePlugin() {
         right = test.right;
         operator = test.operator;
 
-        code = `
+        const code = `
         sendLog('CONDITIONAL_EXPRESSION', \`{"type": "binary", "left": "\${${
           generator.default(left).code
         }}", "operator": ${operator}, "right": "\${${
           generator.default(right).code
-        }}", "test": \${${generator.default(test).code}}}\`, '${state.filename
-          .split(op_path.sep)
-          .join(op_path.posix.sep)}', ${getLocation(path)}, 1);`;
+        }}", "test": \${${generator.default(test).code}}}\`, '${toFilePath(
+          state.filename
+        )}', ${getLocation(path, toFilePath(state.filename))}, 1);`;
 
         const ast = template.ast(code);
         path.getStatementParent().insertBefore(ast);

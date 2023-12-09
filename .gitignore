@@ -8,3 +8,5 @@ service/src/trace.log
 service/static/server-log.log
 
 service/src/codeql/db
+service/src/codeql/results
+service/src/source

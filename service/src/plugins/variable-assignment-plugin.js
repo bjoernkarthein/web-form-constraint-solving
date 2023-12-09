@@ -1,8 +1,7 @@
 const { template } = require("@babel/core");
 const generator = require("@babel/generator");
-const op_path = require("path");
 
-const { getLocation } = require("./common");
+const { getLocation, toFilePath } = require("./common");
 
 module.exports = function assignmentPlugin() {
   const AssignmentVisitor = {
@@ -20,14 +19,15 @@ module.exports = function assignmentPlugin() {
         let name = declarations[i].id.name;
         let value = declarations[i].init;
 
-        valueCode = generator.default(value);
+        const valueCode = generator.default(value);
 
-        code = `
+        const code = `
         sendLog('VARIABLE_DECLARATION', \`{"name": "${name}", "value": "\${${
           valueCode.code
-        }}"}\`, '${state.filename
-          .split(op_path.sep)
-          .join(op_path.posix.sep)}', ${getLocation(path)}, 1);`;
+        }}"}\`, '${toFilePath(state.filename)}', ${getLocation(
+          path,
+          toFilePath(state.filename)
+        )}, 1);`;
 
         const ast = template.ast(code);
         path.insertAfter(ast);
@@ -47,11 +47,12 @@ module.exports = function assignmentPlugin() {
       let value = path.node.right;
       valueCode = generator.default(value);
 
-      code = `sendLog('VARIABLE_ASSIGNMENT', \`{"name": "${name}", "value": "\${${
+      const code = `sendLog('VARIABLE_ASSIGNMENT', \`{"name": "${name}", "value": "\${${
         valueCode.code
-      }}"}\`, '${state.filename
-        .split(op_path.sep)
-        .join(op_path.posix.sep)}', ${getLocation(path)}, 1);`;
+      }}"}\`, '${toFilePath(state.filename)}', ${getLocation(
+        path,
+        toFilePath(state.filename)
+      )}, 1);`;
 
       const ast = template.ast(code);
       path.insertAfter(ast);

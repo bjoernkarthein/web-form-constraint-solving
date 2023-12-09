@@ -1,6 +1,7 @@
 const fs = require("fs");
 const readline = require("readline");
 const trace = require("./trace");
+const codeql = require("./codeql");
 
 const allTraces = [];
 const groupedTraces = [];
@@ -86,6 +87,23 @@ const groupedTraces = [];
 //   }
 // }
 
+function jsonEuqals(jsonOne, jsonTwo) {
+  return JSON.stringify(jsonOne) === JSON.stringify(jsonTwo);
+}
+
+function hasValue(object, value) {
+  includesValue = false;
+  for (const [_, elem] of Object.entries(object)) {
+    if (typeof elem === "string") {
+      includesValue = includesValue || elem === value;
+    } else if (typeof elem === "object") {
+      includesValue = includesValue || hasValue(elem, value);
+    }
+  }
+
+  return includesValue;
+}
+
 function analyseTraces() {
   const fileStream = fs.createReadStream(trace.traceLogFile);
   const rl = readline.createInterface({
@@ -131,26 +149,70 @@ function compareTimestamps(a, b) {
 
 function extractConstraintCandidates() {
   for (const traceGroup of groupedTraces) {
-    let isEmpty = traceGroup.filter((t) => t.pageFile).length == 0;
-    if (isEmpty) {
+    const browserTraces = traceGroup.filter((t) => t.pageFile);
+    if (browserTraces.length == 0) {
       continue;
     }
-    perpareForCodeQLQueries(traceGroup);
+
+    const interestingLocations = [
+      ...new Set(
+        findMagicValues(traceGroup).map((t) => JSON.stringify(t.location))
+      ),
+    ].map((t) => JSON.parse(t));
+    console.log(interestingLocations);
+
+    if (interestingLocations.length === 0) {
+      return [];
+    }
+
+    const sourceDir = perpareForCodeQLQueries(traceGroup);
+    const databaseDir = codeql.createDatabase(sourceDir, "db");
+    for (const location of interestingLocations) {
+      codeql.prepareQueries(location.file, location.start.line);
+      codeql.runQueries(databaseDir, codeql.allQueries);
+      codeql.resetQueries();
+    }
+    fs.rmSync(sourceDir, { recursive: true, force: true });
+    fs.rmSync(databaseDir, { recursive: true, force: true });
   }
 }
 
 function perpareForCodeQLQueries(traces) {
-  console.log(traces.map((t) => t.pageFile));
-  // switch (t.action) {
-  //   case trace.ACTION_ENUM.INTERACTION_START:
-  //   case trace.ACTION_ENUM.INTERACTION_END:
-  //   case trace.ACTION_ENUM.VALUE_INPUT:
-  //   case trace.ACTION_ENUM.NAMED_FUNCTION_CALL:
-  //   default:
-  //     logger.error(
-  //       `Action type ${t.action} was not recognized and can not be parsed`
-  //     );
-  // }
+  if (!fs.existsSync("source")) {
+    fs.mkdirSync("source");
+  }
+
+  let allFiles = traces.filter((t) => t.file).map((t) => t.file);
+  allFiles = new Set(allFiles);
+
+  for (const file of allFiles) {
+    const elements = file.split("/");
+    const fileName = elements[elements.length - 1];
+    fs.copyFileSync(file, `source/${fileName}`);
+  }
+
+  return "source";
+}
+
+function findMagicValues(traceGroup) {
+  const magicValues = traceGroup[0].args.values;
+  // let found = true;
+  let tracesWithMagicValues = [];
+  const traces = traceGroup.filter((t) => t.pageFile);
+  for (const value of magicValues) {
+    const tracesWithMagicValue = traces.filter((t) => hasValue(t, value));
+    tracesWithMagicValues = tracesWithMagicValues.concat(tracesWithMagicValue);
+    // found = found && tracesWithMagicValue.length > 0;
+  }
+  return tracesWithMagicValues;
+}
+
+function runCodeQLQueries(traceGroup) {
+  for (const trace of traceGroup) {
+    if (!trace.pageFile) {
+      continue;
+    }
+  }
 }
 
 module.exports = { analyseTraces };

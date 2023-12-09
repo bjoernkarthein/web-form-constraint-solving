@@ -1,8 +1,7 @@
 const { template } = require("@babel/core");
 const generator = require("@babel/generator");
-const op_path = require("path");
 
-const { getLocation } = require("./common");
+const { getLocation, toFilePath } = require("./common");
 
 module.exports = function functionTracePlugin() {
   const FunctionVisitor = {
@@ -14,9 +13,10 @@ module.exports = function functionTracePlugin() {
       const code = `
       sendLog('NAMED_FUNCTION_CALL', \`${getCallStatement(
         path
-      )}\`, '${state.filename
-        .split(op_path.sep)
-        .join(op_path.posix.sep)}', ${getLocation(path)}, 1);`;
+      )}\`, '${toFilePath(state.filename)}', ${getLocation(
+        path,
+        toFilePath(state.filename)
+      )}, 1);`;
 
       const ast = template.ast(code);
       path.get("body").unshiftContainer("body", ast);
@@ -30,9 +30,10 @@ module.exports = function functionTracePlugin() {
       const code = `
       sendLog('UNNAMED_FUNCTION_CALL', \`${getExpressionStatement(
         path
-      )}\`, '${state.filename
-        .split(op_path.sep)
-        .join(op_path.posix.sep)}', ${getLocation(path)}, 1);`;
+      )}\`, '${toFilePath(state.filename)}', ${getLocation(
+        path,
+        toFilePath(state.filename)
+      )}, 1);`;
 
       const ast = template.ast(code);
       path.get("body").unshiftContainer("body", ast);

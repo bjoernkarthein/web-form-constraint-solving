@@ -1,4 +1,6 @@
-function getLocation(path) {
+const op_path = require("path");
+
+function getLocation(path, filePath) {
   const location = path.node.loc;
 
   const start = {
@@ -13,10 +15,17 @@ function getLocation(path) {
     index: location.end.index,
   };
 
+  const pathElements = filePath.split("/");
+  const fileName = pathElements[pathElements.length - 1];
+
   return JSON.stringify({
+    file: fileName,
     start: start,
     end: end,
   });
 }
 
-module.exports = { getLocation };
+const toFilePath = (filePath) =>
+  filePath.split(op_path.sep).join(op_path.posix.sep);
+
+module.exports = { getLocation, toFilePath };

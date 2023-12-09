@@ -1,4 +1,4 @@
-import numpy
+import time
 
 from enum import Enum
 from lxml.html import Element
@@ -7,7 +7,7 @@ from typing import List, Dict
 
 from html_analysis import HTMLConstraints, HTMLElementReference, HTMLInputSpecification
 from input_generation import InputGenerator
-from utility import InputType, one_line_text_input_types, pre_built_specifications_path, load_file_content, write_to_web_element_by_reference_with_clear, click_web_element_by_reference, start_trace_recording, stop_trace_recording
+from utility import InputType, Action, one_line_text_input_types, pre_built_specifications_path, load_file_content, write_to_web_element_by_reference_with_clear, click_web_element_by_reference, start_trace_recording, stop_trace_recording, record_trace
 
 """
 Constraint Extraction module
@@ -62,8 +62,11 @@ class ConstraintCandidateFinder:
             write_to_web_element_by_reference_with_clear(
                 self.__driver, html_specification.reference, magic_value)
 
-        click_web_element_by_reference(
-            self.__driver, self.__submit_element)
+            record_trace(Action.ATTEMPT_SUBMIT)
+            click_web_element_by_reference(
+                self.__driver, self.__submit_element)
+
+            # time.sleep(5)
 
         stop_trace_recording(
             {'spec': html_specification.get_as_dict(), 'values': magic_value_sequence})

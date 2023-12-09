@@ -214,9 +214,16 @@ class HTMLAnalyser:
         for elem in all_inputs + all_buttons:
             if elem.get('type') == 'submit':
                 self.__submit_element = self.__get_element_reference(elem)
+                break
 
         if self.__submit_element is None:
-            print('The form does not contain an element with type submit')
+            for button in all_buttons:
+                if button.get('type') is None:
+                    self.__submit_element = self.__get_element_reference(elem)
+                    break
+
+        if self.__submit_element is None:
+            print('The form does not contain an element to submit')
             return None
 
         # Remove inputs that have type submit

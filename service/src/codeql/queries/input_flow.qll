@@ -56,12 +56,17 @@ class RegExpConstructor extends InvokeExpr {
   RegExpConstructor() { this instanceof NewExpr and this.getCallee().toString() = "RegExp" }
 }
 
-predicate isRegExpConstructor(NewExpr newExpression) {
-  newExpression.getType().toString() = "RegExp"
+class VariableAssignment extends ControlFlowNode {
+  VariableAssignment() { this instanceof DeclStmt or this instanceof Assignment }
 }
 
 predicate isRegExpCheck(MethodCallExpr methodCall, VarUse use) {
   use = methodCall.getReceiver() and
   use.getADef().getSource() instanceof RegExpConstructor and
   methodCall.getCalleeName() = "test"
+}
+
+predicate hasLocation(ControlFlowNode node, string file, int startLine) {
+  node.getLocation().getFile().getBaseName() = file and
+  node.getLocation().getStartLine() = startLine
 }
