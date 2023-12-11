@@ -22,9 +22,9 @@ module.exports = function assignmentPlugin() {
         const valueCode = generator.default(value);
 
         const code = `
-        sendLog('VARIABLE_DECLARATION', \`{"name": "${name}", "value": "\${${
+        sendLog('VARIABLE_DECLARATION', { name: "${name}", value: ${
           valueCode.code
-        }}"}\`, '${toFilePath(state.filename)}', ${getLocation(
+        } }, '${toFilePath(state.filename)}', ${getLocation(
           path,
           toFilePath(state.filename)
         )}, 1);`;
@@ -47,9 +47,9 @@ module.exports = function assignmentPlugin() {
       let value = path.node.right;
       valueCode = generator.default(value);
 
-      const code = `sendLog('VARIABLE_ASSIGNMENT', \`{"name": "${name}", "value": "\${${
+      const code = `sendLog('VARIABLE_ASSIGNMENT', { name: "${name}", value: ${
         valueCode.code
-      }}"}\`, '${toFilePath(state.filename)}', ${getLocation(
+      } }, '${toFilePath(state.filename)}', ${getLocation(
         path,
         toFilePath(state.filename)
       )}, 1);`;

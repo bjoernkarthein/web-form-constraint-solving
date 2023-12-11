@@ -16,12 +16,22 @@ module.exports = function conditionalResolvePlugin() {
         right = test.right;
         operator = test.operator;
 
+        const args = `{
+          type: "binary",
+          left: {
+            name: ${JSON.stringify(generator.default(left).code)},
+            value: ${generator.default(left).code},
+          },
+          operator: ${JSON.stringify(operator)},
+          right: {
+            name: ${JSON.stringify(generator.default(right).code)},
+            value: ${generator.default(right).code},
+          },
+          test: ${generator.default(test).code},
+        }`;
+
         const code = `
-        sendLog('CONDITIONAL_STATEMENT', \`{"type": "binary", "left": "\${${
-          generator.default(left).code
-        }}", "operator": "${operator}", "right": "\${${
-          generator.default(right).code
-        }}", "test": \${${generator.default(test).code}}}\`, '${toFilePath(
+        sendLog('CONDITIONAL_STATEMENT', ${args}, '${toFilePath(
           state.filename
         )}', ${getLocation(path, toFilePath(state.filename))}, 1);`;
 
@@ -41,12 +51,22 @@ module.exports = function conditionalResolvePlugin() {
         right = test.right;
         operator = test.operator;
 
+        const args = `{
+          type: "binary",
+          left: {
+            name: ${JSON.stringify(generator.default(left).code)},
+            value: ${generator.default(left).code},
+          },
+          operator: ${JSON.stringify(operator)},
+          right: {
+            name: ${JSON.stringify(generator.default(right).code)},
+            value: ${generator.default(right).code},
+          },
+          test: ${generator.default(test).code},
+        }`;
+
         const code = `
-        sendLog('CONDITIONAL_EXPRESSION', \`{"type": "binary", "left": "\${${
-          generator.default(left).code
-        }}", "operator": ${operator}, "right": "\${${
-          generator.default(right).code
-        }}", "test": \${${generator.default(test).code}}}\`, '${toFilePath(
+        sendLog('CONDITIONAL_EXPRESSION', ${args}, '${toFilePath(
           state.filename
         )}', ${getLocation(path, toFilePath(state.filename))}, 1);`;
 

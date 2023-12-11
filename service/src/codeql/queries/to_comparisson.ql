@@ -10,5 +10,6 @@ import input_flow
 from ControlFlowNode node, Comparison comp
 where
   hasLocation(node, "FILE", 12345) and
-  node.getASuccessor*() = comp
-select node, node.toString() + " is a user controlled value going to " + comp.toString()
+  node.getASuccessor*() = comp and
+  (comp.getLeftOperand() = node or comp.getRightOperand() = node)
+select comp, node.toString() + " is a user controlled value going to " + comp.toString()

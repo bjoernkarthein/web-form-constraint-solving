@@ -17,35 +17,10 @@ const ACTION_ENUM = {
   UNNAMED_FUNCTION_CALL: "UNNAMED_FUNCTION_CALL",
 };
 
-function getLogState() {
-  return record;
-}
-
-function setLogState(action) {
-  if (!fs.existsSync(traceLogFile)) {
-    fs.writeFileSync(traceLogFile, "");
-  }
-
-  let oneMoreTime = false;
-
-  if (action == ACTION_ENUM.INTERACTION_START) {
-    record = true;
-  } else if (action == ACTION_ENUM.INTERACTION_END) {
-    record = false;
-    oneMoreTime = true;
-  }
-
-  return record || oneMoreTime;
-}
-
 function addToTraceLog(req) {
   const traceEntry = new Object();
   traceEntry.action = req.body.action;
-  try {
-    traceEntry.args = JSON.parse(req.body.args);
-  } catch (err) {
-    traceEntry.args = req.body.args;
-  }
+  traceEntry.args = req.body.args;
   traceEntry.time = req.body.time;
   traceEntry.file = req.body.file;
   traceEntry.location = req.body.location;
@@ -65,8 +40,6 @@ function cleanUp() {
 module.exports = {
   addToTraceLog,
   cleanUp,
-  setLogState,
-  getLogState,
   traceLogFile,
   ACTION_ENUM,
 };

@@ -11,12 +11,9 @@ module.exports = function functionTracePlugin() {
       }
 
       const code = `
-      sendLog('NAMED_FUNCTION_CALL', \`${getCallStatement(
-        path
-      )}\`, '${toFilePath(state.filename)}', ${getLocation(
-        path,
-        toFilePath(state.filename)
-      )}, 1);`;
+      sendLog('NAMED_FUNCTION_CALL', ${getCallStatement(path)}, '${toFilePath(
+        state.filename
+      )}', ${getLocation(path, toFilePath(state.filename))}, 1);`;
 
       const ast = template.ast(code);
       path.get("body").unshiftContainer("body", ast);
@@ -28,9 +25,9 @@ module.exports = function functionTracePlugin() {
       }
 
       const code = `
-      sendLog('UNNAMED_FUNCTION_CALL', \`${getExpressionStatement(
+      sendLog('UNNAMED_FUNCTION_CALL', ${getExpressionStatement(
         path
-      )}\`, '${toFilePath(state.filename)}', ${getLocation(
+      )}, '${toFilePath(state.filename)}', ${getLocation(
         path,
         toFilePath(state.filename)
       )}, 1);`;
@@ -46,14 +43,14 @@ function getCallStatement(path) {
   const functionName = path.node.id.name;
   const params = path.node.params;
 
-  let paramObject = {};
+  const paramList = [];
 
   for (let i = 0; i < params.length; i++) {
     let paramName = params[i].name;
-    paramObject[paramName] = "${" + paramName + "}";
+    paramList.push(`"${paramName}": ${paramName}`);
   }
 
-  return `{"name":"${functionName}","args":${JSON.stringify(paramObject)}}`;
+  return `{ name: "${functionName}", args: { ${paramList.join(", ")} } }`;
 }
 
 function getExpressionStatement(path) {
@@ -70,7 +67,7 @@ function getExpressionStatement(path) {
       }
     }
 
-    return `{"property":"${property.name}","args":[${[...paramList]}]}`;
+    return `{ property: "${property.name}", args: [${[...paramList]}]}`;
   }
 
   // TODO: what in any other case?
