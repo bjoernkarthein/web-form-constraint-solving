@@ -30,21 +30,38 @@ function runQueries(databaseDir, queryFiles) {
   }
 }
 
-function prepareQueries(sourceFile, startLine) {
+function prepareQueries(sourceFile, startLine, expression) {
   for (const query of allQueries) {
-    addLocationToQuery(query, sourceFile, startLine);
+    addDataToQuery(query, sourceFile, startLine, expression);
   }
 }
 
-function addLocationToQuery(queryFile, sourceFile, startLine) {
+function addDataToQuery(queryFile, sourceFile, startLine, expression) {
   const data = fs.readFileSync(`${queryDirectory}/${queryFile}.ql`, {
     encoding: "utf8",
   });
-  var result = data.replace(/FILE/g, sourceFile);
-  result = result.replace(/12345/g, startLine);
-  fs.writeFileSync(`${queryDirectory}/${queryFile}.ql`, result, {
-    encoding: "utf8",
-  });
+
+  fs.writeFileSync(`${queryDirectory}/${queryFile}.ql`, "");
+  const lines = data.split(/\r?\n/);
+
+  for (let i = 0; i < lines.length; i++) {
+    if (lines[i].endsWith("LOCATION")) {
+      lines[i] = lines[i].replace(/FILE/, sourceFile);
+      lines[i] = lines[i].replace(/12345/, startLine);
+    }
+
+    if (lines[i].endsWith("EXPRESSION")) {
+      lines[i] = lines[i].replace(/NAME/, expression);
+    }
+
+    fs.appendFileSync(
+      `${queryDirectory}/${queryFile}.ql`,
+      `${lines[i]}${i < lines.length - 1 ? "\n" : ""}`,
+      {
+        encoding: "utf8",
+      }
+    );
+  }
 }
 
 function resetQueries() {
@@ -57,10 +74,27 @@ function resetQuery(queryFile) {
   const data = fs.readFileSync(`${queryDirectory}/${queryFile}.ql`, {
     encoding: "utf8",
   });
-  var result = data.replace(/hasLocation\(.*\)/g, resetArgs);
-  fs.writeFileSync(`${queryDirectory}/${queryFile}.ql`, result, {
-    encoding: "utf8",
-  });
+
+  fs.writeFileSync(`${queryDirectory}/${queryFile}.ql`, "");
+  const lines = data.split(/\r?\n/);
+
+  for (let i = 0; i < lines.length; i++) {
+    if (lines[i].endsWith("LOCATION")) {
+      lines[i] = lines[i].replace(/hasLocation\(.*\)/, resetArgs);
+    }
+
+    if (lines[i].endsWith("EXPRESSION")) {
+      lines[i] = lines[i].replace(/toString\(\).*=.*".*"/, resetExpression);
+    }
+
+    fs.appendFileSync(
+      `${queryDirectory}/${queryFile}.ql`,
+      `${lines[i]}${i < lines.length - 1 ? "\n" : ""}`,
+      {
+        encoding: "utf8",
+      }
+    );
+  }
 }
 
 const resetArgs = (match) => {
@@ -74,11 +108,19 @@ const resetArgs = (match) => {
   return args.join(", ");
 };
 
+const resetExpression = (match) => {
+  if (match.includes("NAME")) {
+    return match;
+  }
+
+  const values = match.split("=");
+  return `${values[0].trim()} = "NAME"`;
+};
+
 module.exports = {
   createDatabase,
   runQuery,
   runQueries,
-  addLocationToQuery,
   prepareQueries,
   resetQuery,
   resetQueries,

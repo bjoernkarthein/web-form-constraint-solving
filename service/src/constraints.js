@@ -92,16 +92,17 @@ function jsonEuqals(jsonOne, jsonTwo) {
 }
 
 function hasValue(object, value) {
-  includesValue = false;
-  for (const [_, elem] of Object.entries(object)) {
+  for (const [key, elem] of Object.entries(object)) {
     if (typeof elem === "string") {
-      includesValue = includesValue || elem === value;
+      if (elem === value) {
+        return [true, object, key];
+      }
     } else if (typeof elem === "object") {
-      includesValue = includesValue || hasValue(elem, value);
+      return hasValue(elem, value);
     }
   }
 
-  return includesValue;
+  return [false, {}, ""];
 }
 
 function analyseTraces() {
@@ -154,24 +155,28 @@ function extractConstraintCandidates() {
       continue;
     }
 
-    const interestingLocations = [
-      ...new Set(
-        findMagicValues(traceGroup).map((t) => JSON.stringify(t.location))
-      ),
-    ].map((t) => JSON.parse(t));
-    console.log(interestingLocations);
-
-    if (interestingLocations.length === 0) {
+    let importantTraces = findMagicValues(traceGroup);
+    if (importantTraces.length === 0) {
       return [];
     }
 
+    importantTraces = [
+      ...new Set(importantTraces.map((e) => JSON.stringify(e))),
+    ].map((e) => JSON.parse(e));
+
     const sourceDir = perpareForCodeQLQueries(traceGroup);
     const databaseDir = codeql.createDatabase(sourceDir, "db");
-    for (const location of interestingLocations) {
-      codeql.prepareQueries(location.file, location.start.line);
+
+    for (const t of importantTraces) {
+      codeql.prepareQueries(
+        t.location.file,
+        t.location.start.line,
+        t.expression
+      );
       codeql.runQueries(databaseDir, codeql.allQueries);
       codeql.resetQueries();
     }
+
     fs.rmSync(sourceDir, { recursive: true, force: true });
     fs.rmSync(databaseDir, { recursive: true, force: true });
   }
@@ -194,17 +199,46 @@ function perpareForCodeQLQueries(traces) {
   return "source";
 }
 
+function getExpressionByKey(t, element, key) {
+  switch (t.action) {
+    case trace.ACTION_ENUM.NAMED_FUNCTION_CALL:
+      return key;
+    case trace.ACTION_ENUM.CONDITIONAL_EXPRESSION:
+    case trace.ACTION_ENUM.CONDITIONAL_STATEMENT:
+      return element.name;
+    default:
+      // TODO
+      return null;
+  }
+}
+
 function findMagicValues(traceGroup) {
   const magicValues = traceGroup[0].args.values;
-  // let found = true;
-  let tracesWithMagicValues = [];
   const traces = traceGroup.filter((t) => t.pageFile);
+  let tracesWithMagicValues = [];
+  let found = true;
   for (const value of magicValues) {
-    const tracesWithMagicValue = traces.filter((t) => hasValue(t, value));
+    const tracesWithMagicValue = [];
+    // Find first occurence of variable that contains the magic values in every execution
+    for (const t of traces) {
+      const [hasMagicValue, element, key] = hasValue(t, value);
+      if (hasMagicValue) {
+        tracesWithMagicValue.push({
+          expression: getExpressionByKey(t, element, key),
+          location: t.location,
+        });
+      }
+    }
+
     tracesWithMagicValues = tracesWithMagicValues.concat(tracesWithMagicValue);
-    // found = found && tracesWithMagicValue.length > 0;
+    found = found && tracesWithMagicValue.length > 0;
   }
-  return tracesWithMagicValues;
+
+  if (found) {
+    return tracesWithMagicValues;
+  } else {
+    return [];
+  }
 }
 
 function runCodeQLQueries(traceGroup) {

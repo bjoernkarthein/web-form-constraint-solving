@@ -9,7 +9,8 @@ import input_flow
 
 from DataFlow::SourceNode source, MethodCallExpr methodCall, VarUse use
 where
-  hasLocation(source.asExpr(), "FILE", 12345) and
+  hasLocation(source.asExpr(), "FILE", 12345) and // LOCATION
+  source.asExpr().toString() = "NAME" and // EXPRESSION
   isRegExpCheck(methodCall, use) and
   source.flowsToExpr(methodCall.getArgument(0))
 select methodCall,
