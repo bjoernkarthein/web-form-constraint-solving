@@ -1,0 +1,2 @@
+str.to.int(<year>) > 0 and 
+str.to.int(<month>) >= 1 and str.to.int(<month>) <= 12

@@ -17,7 +17,7 @@ class HTMLElementReference:
 
 
 class HTMLConstraints:
-    def __init__(self, list: List[str] = None, max: str = None, maxlength: str = None, min: str = None, minlength: str = None, multiple: str = None, pattern: str = None, required: str = None, type: str = None) -> None:
+    def __init__(self, list: List[str] = None, max: str = None, maxlength: str = None, min: str = None, minlength: str = None, multiple: str = None, pattern: str = None, required: str = None, step: str = None, type: str = None) -> None:
         self.__list = list
         self.__max = max
         self.__maxlength = maxlength
@@ -26,6 +26,7 @@ class HTMLConstraints:
         self.__multiple = multiple
         self.__pattern = pattern
         self.__required = required
+        self.__step = step
         self.__type = type
 
         self.__html_constraint_dict: dict = {
@@ -37,6 +38,7 @@ class HTMLConstraints:
             'multiple': multiple,
             'pattern': pattern,
             'required': required,
+            'step': step,
             'type': type,
         }
 
@@ -127,6 +129,17 @@ class HTMLConstraints:
         """Setter for required"""
         self.__required = value
         self.__html_constraint_dict['required'] = value
+
+    @property
+    def step(self) -> str:
+        """Getter for type"""
+        return self.__step
+
+    @step.setter
+    def step(self, value: str) -> None:
+        """Setter for type"""
+        self.__step = value
+        self.__html_constraint_dict['step'] = value
 
     @property
     def type(self) -> str:

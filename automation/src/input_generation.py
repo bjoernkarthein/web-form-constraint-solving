@@ -13,6 +13,8 @@ class InputGenerator:
         if required and not self.required_string in formula:
             formula = f'{formula} and {self.required_string}'
 
+        print(formula)
+
         solver = ISLaSolver(grammar, formula)
 
         try:

@@ -1,2 +1,4 @@
+analysis:
+  magic-value-amount: 5
 generation:
   use-datalist-options: false

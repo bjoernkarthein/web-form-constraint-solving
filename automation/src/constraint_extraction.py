@@ -148,6 +148,22 @@ class SpecificationBuilder:
         if html_constraints.required is not None:
             formula = self.__add_to_formula('str.len(<start>) > 0',
                                             formula, LogicalOperator.AND)
+        if html_constraints.min is not None:
+            [year_str, month_str] = html_constraints.min.split('-')
+            year = int(year_str)
+            month = int(month_str)
+            formula = self.__add_to_formula(f'str.to.int(<year>) >= {year} and str.to.int(<year>) + str.to.int(<month>) >= {year + month}',
+                                            formula, LogicalOperator.AND)
+        if html_constraints.max is not None:
+            [year_str, month_str] = html_constraints.max.split('-')
+            year = int(year_str)
+            month = int(month_str)
+            formula = self.__add_to_formula(f'str.to.int(<year>) <= {year} and str.to.int(<year>) + str.to.int(<month>) <= {year + month}',
+                                            formula, LogicalOperator.AND)
+        # TODO: step not working because can not set calculation in parantheses
+        # if html_constraints.step is not None:
+        #     formula = self.__add_to_formula(f'(str.to.int(<year>) + str.to.int(<month>)) mod {html_constraints.step} = 0',
+        #                                     formula, LogicalOperator.AND)
 
         return grammar, formula
 
