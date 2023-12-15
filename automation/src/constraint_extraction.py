@@ -66,8 +66,6 @@ class ConstraintCandidateFinder:
             click_web_element_by_reference(
                 self.__driver, self.__submit_element)
 
-            # time.sleep(5)
-
         stop_trace_recording(
             {'spec': html_specification.get_as_dict(), 'values': magic_value_sequence})
 
