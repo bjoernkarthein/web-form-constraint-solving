@@ -25,6 +25,8 @@ class Action(Enum):
 
 
 class ConfigKey(Enum):
+    ANALYSIS = 'analysis'
+    MAGIC_VALUE_AMOUNT = 'magic-value-amount'
     GENERATION = 'generation'
     USE_DATALIST_OPTIONS = 'use-datalist-options'
 
@@ -64,6 +66,8 @@ instrumentation_controller = f'{service_base_url}/instrumentation'
 
 one_line_text_input_types = [InputType.EMAIL.value, InputType.PASSWORD.value,
                              InputType.SEARCH.value, InputType.TEL.value, InputType.TEXT.value]
+
+binary_input_types = [InputType.CHECKBOX.value, InputType.RADIO.value]
 
 
 def load_file_content(file_name: str) -> str:

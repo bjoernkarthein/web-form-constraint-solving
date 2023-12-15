@@ -7,7 +7,7 @@ from typing import List, Dict
 
 from html_analysis import HTMLConstraints, HTMLElementReference, HTMLInputSpecification
 from input_generation import InputGenerator
-from utility import InputType, Action, one_line_text_input_types, pre_built_specifications_path, load_file_content, write_to_web_element_by_reference_with_clear, click_web_element_by_reference, start_trace_recording, stop_trace_recording, record_trace
+from utility import *
 
 """
 Constraint Extraction module
@@ -45,9 +45,15 @@ class ConstraintCandidateFinder:
 
         # TODO
 
-    def set_magic_value_sequence_for_input(self, html_input_reference: HTMLElementReference, grammar: str, formula: str | None, amount=1) -> List[str | int]:
+    def set_magic_value_sequence_for_input(self, html_specification: HTMLInputSpecification, grammar: str, formula: str | None, amount=1) -> List[str | int]:
+        html_input_reference = html_specification.reference
+
+        # allows to make the magic values more diverse for inputs that are not required instead of only getting empty strings
+        required = html_specification.contraints.type in one_line_text_input_types + \
+            [InputType.DATE.value, InputType.MONTH.value]
+
         values = self.__generator.generate_valid_inputs(
-            grammar, formula, amount)
+            grammar, formula, amount, required)
         self.__magic_value_map[html_input_reference] = values
         return values
 
@@ -86,8 +92,10 @@ class SpecificationBuilder:
         match html_input_specification.contraints.type:
             case t if t in one_line_text_input_types:
                 return self.__add_constraints_for_one_line_text(html_input_specification.contraints, use_datalist_options)
-            case InputType.CHECKBOX.value:
+            case t if t in binary_input_types:
                 return self.__add_constraints_for_checkbox(html_input_specification.contraints.required)
+            case InputType.MONTH.value:
+                return self.__add_constraints_for_month(html_input_specification.contraints, use_datalist_options)
             case None:
                 return self.__add_constraints_for_one_line_text(html_input_specification.contraints, use_datalist_options)
             case _:
@@ -125,6 +133,21 @@ class SpecificationBuilder:
         if required is not None:
             grammar = load_file_content(
                 f'{pre_built_specifications_path}/checkbox/checkbox_required.bnf')
+
+        return grammar, formula
+
+    def __add_constraints_for_month(self, html_constraints: HTMLConstraints, use_datalist_options=False) -> (str, str | None):
+        grammar = load_file_content(
+            f'{pre_built_specifications_path}/month/month.bnf')
+        formula = load_file_content(
+            f'{pre_built_specifications_path}/month/month.isla')
+
+        if use_datalist_options and html_constraints.list is not None:
+            grammar = self.__replace_by_list_options(
+                grammar, 'yearmonth', html_constraints.list)
+        if html_constraints.required is not None:
+            formula = self.__add_to_formula('str.len(<start>) > 0',
+                                            formula, LogicalOperator.AND)
 
         return grammar, formula
 

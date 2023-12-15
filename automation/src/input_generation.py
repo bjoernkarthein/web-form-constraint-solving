@@ -3,9 +3,15 @@ from typing import List
 
 
 class InputGenerator:
-    def generate_valid_inputs(self, grammar: str, formula: str | None, amount: int = 1) -> List[str]:
+    def __init__(self) -> None:
+        self.required_string = 'str.len(<start>) > 0'
+
+    def generate_valid_inputs(self, grammar: str, formula: str | None, amount: int = 1, required=False) -> List[str]:
         if amount < 1:
             return []
+
+        if required and not self.required_string in formula:
+            formula = f'{formula} and {self.required_string}'
 
         solver = ISLaSolver(grammar, formula)
 

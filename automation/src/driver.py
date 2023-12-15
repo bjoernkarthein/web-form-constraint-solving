@@ -108,13 +108,21 @@ class TestAutomationDriver:
 
     def __generate_valid_html_magic_values(self, html_specifications: List[HTMLInputSpecification]) -> None:
         self.__specification_builder = SpecificationBuilder()
+        use_datalist_options = self.__config[ConfigKey.GENERATION.value][ConfigKey.USE_DATALIST_OPTIONS.value]
+        magic_value_amount = self.__config[ConfigKey.ANALYSIS.value][ConfigKey.MAGIC_VALUE_AMOUNT.value]
 
-        for specification in html_specifications:
-            grammar, formula = self.__specification_builder.create_specification_for_html_validation(
-                specification, self.__config[ConfigKey.GENERATION.value][ConfigKey.USE_DATALIST_OPTIONS.value])
+        try:
+            for specification in html_specifications:
+                grammar, formula = self.__specification_builder.create_specification_for_html_validation(
+                    specification, use_datalist_options)
 
-            self.__constraint_candidate_finder.set_magic_value_sequence_for_input(
-                specification.reference, grammar, formula, 5)
+                values = self.__constraint_candidate_finder.set_magic_value_sequence_for_input(
+                    specification, grammar, formula, magic_value_amount)
+                print(specification.get_as_dict(), values)
+        except Exception as e:
+            print(e)
+
+        self.__exit()
 
     def __exit(self, exit_code=None) -> None:
         """Free all resources and exit"""
