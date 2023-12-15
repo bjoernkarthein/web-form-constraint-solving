@@ -7,7 +7,8 @@ const common = require("./common");
 const codeqlPath = process.env.CODEQL_PATH;
 const codeqlDirectory = "codeql";
 const queryDirectory = `${codeqlDirectory}/queries`;
-const allQueries = ["to_comparisson", "to_regex"];
+// const allQueries = ["to_comparisson", "to_regex"];
+const allQueries = ["data_flow"];
 
 function createDatabase(source, database) {
   const databaseDir = `${codeqlDirectory}/${database}`;
@@ -19,7 +20,7 @@ function createDatabase(source, database) {
 let number = 0;
 
 function runQuery(databaseDir, queryFile) {
-  const command = `${codeqlPath} database analyze --format=sarifv2.1.0 --output=${codeqlDirectory}/results/${queryFile}-${number}-results.sarif ${databaseDir} ${queryDirectory}/${queryFile}.ql`;
+  const command = `${codeqlPath} database analyze --format=csv --output=${codeqlDirectory}/results/${queryFile}-${number}-results.csv ${databaseDir} ${queryDirectory}/${queryFile}.ql`;
   number++;
   common.runCommandSync(command);
 }

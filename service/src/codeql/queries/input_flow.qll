@@ -60,10 +60,12 @@ class VariableAssignment extends ControlFlowNode {
   VariableAssignment() { this instanceof DeclStmt or this instanceof Assignment }
 }
 
-predicate isRegExpCheck(MethodCallExpr methodCall, VarUse use) {
-  use = methodCall.getReceiver() and
-  use.getADef().getSource() instanceof RegExpConstructor and
-  methodCall.getCalleeName() = "test"
+predicate isRegExpCheck(MethodCallExpr methodCall) {
+  exists(VarUse use |
+    use = methodCall.getReceiver() and
+    use.getADef().getSource() instanceof RegExpConstructor and
+    methodCall.getCalleeName() = "test"
+  )
 }
 
 predicate hasLocation(ControlFlowNode node, string file, int startLine) {

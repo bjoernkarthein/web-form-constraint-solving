@@ -34,6 +34,37 @@ app.get("/", (req, res) => {
   );
 });
 
-app.listen(PORT, () => {
-  logger.info(`Instrumentation server started on port ${PORT}...`);
+const server = app.listen(PORT, () => {
+  logger.info(`Instrumentation server started on port ${PORT}`);
 });
+
+process.on("SIGTERM", shutDown);
+process.on("SIGINT", shutDown);
+
+let connections = [];
+
+server.on("connection", (connection) => {
+  connections.push(connection);
+  connection.on(
+    "close",
+    () => (connections = connections.filter((curr) => curr !== connection))
+  );
+});
+
+function shutDown() {
+  logger.info("Received kill signal, shutting down gracefully");
+  server.close(() => {
+    logger.info("Closed out remaining connections");
+    process.exit(0);
+  });
+
+  setTimeout(() => {
+    logger.error(
+      "Could not close connections in time, forcefully shutting down"
+    );
+    process.exit(1);
+  }, 10000);
+
+  connections.forEach((curr) => curr.end());
+  setTimeout(() => connections.forEach((curr) => curr.destroy()), 5000);
+}
