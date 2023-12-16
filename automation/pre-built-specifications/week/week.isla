@@ -1,0 +1,2 @@
+str.to.int(<year>) > 0 and 
+str.to.int(<week>) >= 1 and str.to.int(<week>) <= 52
