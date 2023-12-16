@@ -72,6 +72,9 @@ one_line_text_input_types = [InputType.EMAIL.value, InputType.PASSWORD.value,
 
 binary_input_types = [InputType.CHECKBOX.value, InputType.RADIO.value]
 
+magic_value_required_input_types = one_line_text_input_types + \
+    [InputType.DATE.value, InputType.MONTH.value, InputType.WEEK.value]
+
 
 def load_file_content(file_name: str) -> str:
     try:
@@ -199,6 +202,11 @@ def write_to_web_element_by_reference_with_clear(driver: Chrome, type: str, html
             web_element.clear()
             ActionChains(driver).click(web_element).send_keys(month).key_down(
                 Keys.TAB).key_up(Keys.TAB).send_keys(year).perform()
+        case InputType.WEEK.value:
+            [year, week] = value.split('-W')
+            web_element.clear()
+            ActionChains(driver).click(web_element).send_keys(
+                week).send_keys(year).perform()
         case _:
             clear_web_element(web_element)
             write_to_web_element(web_element, value, html_element_reference)

@@ -37,8 +37,12 @@ class ConstraintCandidateFinder:
     def find_constraint_candidates(self, html_input_specifications: List[HTMLInputSpecification]) -> None:
         """Try to extract as many constraint candidates as possible from the JavaScript source code for a given input."""
         for specification in html_input_specifications:
+            magic_values = self.__magic_value_map.get(specification.reference)
+            if magic_values is None or len(magic_values) == 0:
+                continue
+
             write_to_web_element_by_reference_with_clear(
-                self.__driver, specification.contraints.type, specification.reference, self.__magic_value_map.get(specification.reference)[0])
+                self.__driver, specification.contraints.type, specification.reference, magic_values[0])
 
         for specification in html_input_specifications:
             self.__find_constraint_candidates_for_input(specification)
@@ -49,8 +53,7 @@ class ConstraintCandidateFinder:
         html_input_reference = html_specification.reference
 
         # allows to make the magic values more diverse for inputs that are not required instead of only getting empty strings
-        required = html_specification.contraints.type in one_line_text_input_types + \
-            [InputType.DATE.value, InputType.MONTH.value]
+        required = html_specification.contraints.type in magic_value_required_input_types
 
         values = self.__generator.generate_valid_inputs(
             grammar, formula, amount, required)
@@ -61,6 +64,9 @@ class ConstraintCandidateFinder:
         reference = html_specification.reference
         magic_value_sequence = self.__magic_value_map.get(reference)
 
+        if magic_value_sequence is None:
+            return []
+
         start_trace_recording(
             {'spec': html_specification.get_as_dict(), 'values': magic_value_sequence})
 
@@ -68,9 +74,9 @@ class ConstraintCandidateFinder:
             write_to_web_element_by_reference_with_clear(
                 self.__driver, html_specification.contraints.type, html_specification.reference, magic_value)
 
-            # record_trace(Action.ATTEMPT_SUBMIT)
-            # click_web_element_by_reference(
-            #     self.__driver, self.__submit_element)
+            record_trace(Action.ATTEMPT_SUBMIT)
+            click_web_element_by_reference(
+                self.__driver, self.__submit_element)
 
             time.sleep(2)
 
@@ -98,6 +104,8 @@ class SpecificationBuilder:
                 return self.__add_constraints_for_checkbox(html_input_specification.contraints.required)
             case InputType.MONTH.value:
                 return self.__add_constraints_for_month(html_input_specification.contraints, use_datalist_options)
+            case InputType.WEEK.value:
+                return self.__add_constraints_for_week(html_input_specification.contraints, use_datalist_options)
             case None:
                 return self.__add_constraints_for_one_line_text(html_input_specification.contraints, use_datalist_options)
             case _:
@@ -161,6 +169,37 @@ class SpecificationBuilder:
             year = int(year_str)
             month = int(month_str)
             formula = self.__add_to_formula(f'str.to.int(<year>) <= {year} and str.to.int(<year>) + str.to.int(<month>) <= {year + month}',
+                                            formula, LogicalOperator.AND)
+        # TODO: step not working because can not set calculation in parantheses
+        # if html_constraints.step is not None:
+        #     formula = self.__add_to_formula(f'(str.to.int(<year>) + str.to.int(<month>)) mod {html_constraints.step} = 0',
+        #                                     formula, LogicalOperator.AND)
+
+        return grammar, formula
+
+    def __add_constraints_for_week(self, html_constraints: HTMLConstraints, use_datalist_options=False) -> (str, str | None):
+        grammar = load_file_content(
+            f'{pre_built_specifications_path}/week/week.bnf')
+        formula = load_file_content(
+            f'{pre_built_specifications_path}/week/week.isla')
+
+        if use_datalist_options and html_constraints.list is not None:
+            grammar = self.__replace_by_list_options(
+                grammar, 'yearmonth', html_constraints.list)
+        if html_constraints.required is not None:
+            formula = self.__add_to_formula('str.len(<start>) > 0',
+                                            formula, LogicalOperator.AND)
+        if html_constraints.min is not None:
+            [year_str, week_str] = html_constraints.min.split('-W')
+            year = int(year_str)
+            week = int(week_str)
+            formula = self.__add_to_formula(f'str.to.int(<year>) >= {year} and str.to.int(<year>) + str.to.int(<week>) >= {year + week}',
+                                            formula, LogicalOperator.AND)
+        if html_constraints.max is not None:
+            [year_str, week_str] = html_constraints.max.split('-W')
+            year = int(year_str)
+            week = int(week_str)
+            formula = self.__add_to_formula(f'str.to.int(<year>) <= {year} and str.to.int(<year>) + str.to.int(<week>) <= {year + week}',
                                             formula, LogicalOperator.AND)
         # TODO: step not working because can not set calculation in parantheses
         # if html_constraints.step is not None:
