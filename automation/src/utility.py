@@ -5,8 +5,11 @@ import time
 from enum import Enum
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver import Chrome
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webelement import WebElement
+from typing import List
 
 from html_analysis import HTMLElementReference
 
@@ -117,11 +120,19 @@ def click_web_element(web_element: WebElement) -> None:
         pass
 
 
-def write_to_web_element(web_element: WebElement, value: str, element_reference: HTMLElementReference) -> None:
+def write_to_web_element(web_element: WebElement, value: str | List[str], element_reference: HTMLElementReference) -> None:
     try:
         record_trace(Action.VALUE_INPUT, {
                      'reference': element_reference.get_as_dict(), 'value': value})
-        web_element.send_keys(value)
+        if isinstance(value, str):
+            print("value is a string")
+            print(value)
+            web_element.send_keys(value)
+        else:
+            print("value is an array")
+            print(value)
+            for v in value:
+                web_element.send_keys(v)
     except Exception:
         pass
 
@@ -167,11 +178,30 @@ def write_to_web_element_by_reference(driver: Chrome, html_element_reference: HT
         write_to_web_element(web_element, value)
 
 
-def write_to_web_element_by_reference_with_clear(driver: Chrome, html_element_reference: HTMLElementReference, value: str) -> None:
+def write_to_web_element_by_reference_with_clear(driver: Chrome, type: str, html_element_reference: HTMLElementReference, value: str) -> None:
     web_element = get_web_element_by_reference(driver, html_element_reference)
-    if web_element is not None:
-        clear_web_element(web_element)
-        write_to_web_element(web_element, value, html_element_reference)
+    if web_element is None:
+        return
+
+    # TODO: move every input type to dedicated function
+    match type:
+        case t if t in one_line_text_input_types:
+            clear_web_element(web_element)
+            write_to_web_element(web_element, value, html_element_reference)
+        case t if t in binary_input_types:
+            # deselect if already selected
+            if web_element.is_selected():
+                click_web_element(web_element)
+            if int(value):
+                click_web_element(web_element)
+        case InputType.MONTH.value:
+            [year, month] = value.split('-')
+            web_element.clear()
+            ActionChains(driver).click(web_element).send_keys(month).key_down(
+                Keys.TAB).key_up(Keys.TAB).send_keys(year).perform()
+        case _:
+            clear_web_element(web_element)
+            write_to_web_element(web_element, value, html_element_reference)
 
 
 def set_value_of_web_element_by_reference(driver: Chrome, html_element_reference: HTMLElementReference, value: str) -> None:

@@ -38,7 +38,7 @@ class ConstraintCandidateFinder:
         """Try to extract as many constraint candidates as possible from the JavaScript source code for a given input."""
         for specification in html_input_specifications:
             write_to_web_element_by_reference_with_clear(
-                self.__driver, specification.reference, self.__magic_value_map.get(specification.reference)[0])
+                self.__driver, specification.contraints.type, specification.reference, self.__magic_value_map.get(specification.reference)[0])
 
         for specification in html_input_specifications:
             self.__find_constraint_candidates_for_input(specification)
@@ -66,11 +66,13 @@ class ConstraintCandidateFinder:
 
         for magic_value in magic_value_sequence:
             write_to_web_element_by_reference_with_clear(
-                self.__driver, html_specification.reference, magic_value)
+                self.__driver, html_specification.contraints.type, html_specification.reference, magic_value)
 
-            record_trace(Action.ATTEMPT_SUBMIT)
-            click_web_element_by_reference(
-                self.__driver, self.__submit_element)
+            # record_trace(Action.ATTEMPT_SUBMIT)
+            # click_web_element_by_reference(
+            #     self.__driver, self.__submit_element)
+
+            time.sleep(2)
 
         stop_trace_recording(
             {'spec': html_specification.get_as_dict(), 'values': magic_value_sequence})

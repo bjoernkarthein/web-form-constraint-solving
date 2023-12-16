@@ -104,6 +104,7 @@ class TestAutomationDriver:
         self.__constraint_candidate_finder.find_constraint_candidates(
             html_specifications)
 
+        time.sleep(5)
         self.__exit()
 
     def __generate_valid_html_magic_values(self, html_specifications: List[HTMLInputSpecification]) -> None:
@@ -122,7 +123,7 @@ class TestAutomationDriver:
         except Exception as e:
             print(e)
 
-        self.__exit()
+        # self.__exit()
 
     def __exit(self, exit_code=None) -> None:
         """Free all resources and exit"""
