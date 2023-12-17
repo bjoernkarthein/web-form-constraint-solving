@@ -102,6 +102,10 @@ class SpecificationBuilder:
                 return self.__add_constraints_for_one_line_text(html_input_specification.contraints, use_datalist_options)
             case t if t in binary_input_types:
                 return self.__add_constraints_for_checkbox(html_input_specification.contraints.required)
+            case InputType.DATE.value:
+                return self.__add_constraints_for_date(html_input_specification.contraints, use_datalist_options)
+            case InputType.DATETIME_LOCAL.value:
+                return self.__add_constraints_for_datetime(html_input_specification.contraints, use_datalist_options)
             case InputType.MONTH.value:
                 return self.__add_constraints_for_month(html_input_specification.contraints, use_datalist_options)
             case InputType.WEEK.value:
@@ -146,6 +150,68 @@ class SpecificationBuilder:
 
         return grammar, formula
 
+    def __add_constraints_for_date(self, html_constraints: HTMLConstraints, use_datalist_options=False) -> (str, str | None):
+        grammar = load_file_content(
+            f'{pre_built_specifications_path}/date/date.bnf')
+        formula = load_file_content(
+            f'{pre_built_specifications_path}/date/date.isla')
+
+        if use_datalist_options and html_constraints.list is not None:
+            grammar = self.__replace_by_list_options(
+                grammar, 'year-month', html_constraints.list)
+        if html_constraints.required is not None:
+            formula = self.__add_to_formula('str.len(<start>) > 0',
+                                            formula, LogicalOperator.AND)
+        # if html_constraints.min is not None:
+        #     [year_str, month_str] = html_constraints.min.split('-')
+        #     year = int(year_str)
+        #     month = int(month_str)
+        #     formula = self.__add_to_formula(f'str.to.int(<year>) >= {year} and str.to.int(<year>) + str.to.int(<month>) >= {year + month}',
+        #                                     formula, LogicalOperator.AND)
+        # if html_constraints.max is not None:
+        #     [year_str, month_str] = html_constraints.max.split('-')
+        #     year = int(year_str)
+        #     month = int(month_str)
+        #     formula = self.__add_to_formula(f'str.to.int(<year>) <= {year} and str.to.int(<year>) + str.to.int(<month>) <= {year + month}',
+        #                                     formula, LogicalOperator.AND)
+        # TODO: step not working because can not set calculation in parantheses
+        # if html_constraints.step is not None:
+        #     formula = self.__add_to_formula(f'(str.to.int(<year>) + str.to.int(<month>)) mod {html_constraints.step} = 0',
+        #                                     formula, LogicalOperator.AND)
+
+        return grammar, formula
+
+    def __add_constraints_for_datetime(self, html_constraints: HTMLConstraints, use_datalist_options=False) -> (str, str | None):
+        grammar = load_file_content(
+            f'{pre_built_specifications_path}/datetime/datetime.bnf')
+        formula = load_file_content(
+            f'{pre_built_specifications_path}/datetime/datetime.isla')
+
+        if use_datalist_options and html_constraints.list is not None:
+            grammar = self.__replace_by_list_options(
+                grammar, 'datetime', html_constraints.list)
+        if html_constraints.required is not None:
+            formula = self.__add_to_formula('str.len(<start>) > 0',
+                                            formula, LogicalOperator.AND)
+        # if html_constraints.min is not None:
+        #     [year_str, month_str] = html_constraints.min.split('-')
+        #     year = int(year_str)
+        #     month = int(month_str)
+        #     formula = self.__add_to_formula(f'str.to.int(<year>) >= {year} and str.to.int(<year>) + str.to.int(<month>) >= {year + month}',
+        #                                     formula, LogicalOperator.AND)
+        # if html_constraints.max is not None:
+        #     [year_str, month_str] = html_constraints.max.split('-')
+        #     year = int(year_str)
+        #     month = int(month_str)
+        #     formula = self.__add_to_formula(f'str.to.int(<year>) <= {year} and str.to.int(<year>) + str.to.int(<month>) <= {year + month}',
+        #                                     formula, LogicalOperator.AND)
+        # TODO: step not working because can not set calculation in parantheses
+        # if html_constraints.step is not None:
+        #     formula = self.__add_to_formula(f'(str.to.int(<year>) + str.to.int(<month>)) mod {html_constraints.step} = 0',
+        #                                     formula, LogicalOperator.AND)
+
+        return grammar, formula
+
     def __add_constraints_for_month(self, html_constraints: HTMLConstraints, use_datalist_options=False) -> (str, str | None):
         grammar = load_file_content(
             f'{pre_built_specifications_path}/month/month.bnf')
@@ -154,7 +220,7 @@ class SpecificationBuilder:
 
         if use_datalist_options and html_constraints.list is not None:
             grammar = self.__replace_by_list_options(
-                grammar, 'yearmonth', html_constraints.list)
+                grammar, 'date', html_constraints.list)
         if html_constraints.required is not None:
             formula = self.__add_to_formula('str.len(<start>) > 0',
                                             formula, LogicalOperator.AND)

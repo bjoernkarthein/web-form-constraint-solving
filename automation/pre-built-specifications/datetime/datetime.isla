@@ -18,4 +18,7 @@ or str.to.int(<month>) = 11)
 implies str.to.int(<day>) <= 30) and
 
 (str.to.int(<month>) = 2 and (str.to.int(<year>) mod 400 = 0 or str.to.int(<year>) mod 4 = 0 and not str.to.int(<year>) mod 100 = 0) implies str.to.int(<day>) <= 29) and
-(str.to.int(<month>) = 2 and not (str.to.int(<year>) mod 400 = 0 or str.to.int(<year>) mod 4 = 0 and not str.to.int(<year>) mod 100 = 0) implies str.to.int(<day>) <= 28)
+(str.to.int(<month>) = 2 and not (str.to.int(<year>) mod 400 = 0 or str.to.int(<year>) mod 4 = 0 and not str.to.int(<year>) mod 100 = 0) implies str.to.int(<day>) <= 28) and
+
+str.to.int(<hour>) >= 0 and str.to.int(<hour>) <= 23 and
+str.to.int(<minute>) >= 0 and str.to.int(<minute>) <= 59

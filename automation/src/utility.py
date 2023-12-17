@@ -9,7 +9,6 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webelement import WebElement
-from typing import List
 
 from html_analysis import HTMLElementReference
 
@@ -73,7 +72,8 @@ one_line_text_input_types = [InputType.EMAIL.value, InputType.PASSWORD.value,
 binary_input_types = [InputType.CHECKBOX.value, InputType.RADIO.value]
 
 magic_value_required_input_types = one_line_text_input_types + \
-    [InputType.DATE.value, InputType.MONTH.value, InputType.WEEK.value]
+    [InputType.DATE.value, InputType.DATETIME_LOCAL.value,
+        InputType.MONTH.value, InputType.WEEK.value]
 
 
 def load_file_content(file_name: str) -> str:
@@ -123,19 +123,11 @@ def click_web_element(web_element: WebElement) -> None:
         pass
 
 
-def write_to_web_element(web_element: WebElement, value: str | List[str], element_reference: HTMLElementReference) -> None:
+def write_to_web_element(web_element: WebElement, value: str, element_reference: HTMLElementReference) -> None:
     try:
         record_trace(Action.VALUE_INPUT, {
                      'reference': element_reference.get_as_dict(), 'value': value})
-        if isinstance(value, str):
-            print("value is a string")
-            print(value)
-            web_element.send_keys(value)
-        else:
-            print("value is an array")
-            print(value)
-            for v in value:
-                web_element.send_keys(v)
+        web_element.send_keys(value)
     except Exception:
         pass
 
@@ -197,16 +189,47 @@ def write_to_web_element_by_reference_with_clear(driver: Chrome, type: str, html
                 click_web_element(web_element)
             if int(value):
                 click_web_element(web_element)
+        case InputType.DATE.value:
+            [year, month, day] = value.split('-')
+            web_element.clear()
+            web_element.send_keys(month)
+            web_element.send_keys(day)
+            web_element.send_keys(year)
+        case InputType.DATETIME_LOCAL.value:
+            split_char = 'T' if 'T' in value else ' '
+            [date, time] = value.split(split_char)
+            [year, month, day] = date.split('-')
+            [hours, minutes] = time.split(':')
+            period_of_day = 'AM'
+            if int(hours) == 0:
+                hours = int(hours) + 12
+            elif int(hours) == 12:
+                period_of_day = 'PM'
+            elif int(hours) > 12:
+                hours = int(hours) - 12
+                period_of_day = 'PM'
+            hours = f'{int(hours):02d}'
+            web_element.clear()
+            web_element.send_keys(month)
+            web_element.send_keys(day)
+            web_element.send_keys(year)
+            ActionChains(driver).key_down(
+                Keys.TAB).key_up(Keys.TAB).perform()
+            web_element.send_keys(hours)
+            web_element.send_keys(minutes)
+            web_element.send_keys(period_of_day)
         case InputType.MONTH.value:
             [year, month] = value.split('-')
             web_element.clear()
-            ActionChains(driver).click(web_element).send_keys(month).key_down(
-                Keys.TAB).key_up(Keys.TAB).send_keys(year).perform()
+            web_element.send_keys(month)
+            ActionChains(driver).key_down(
+                Keys.TAB).key_up(Keys.TAB).perform()
+            web_element.send_keys(year)
         case InputType.WEEK.value:
             [year, week] = value.split('-W')
             web_element.clear()
-            ActionChains(driver).click(web_element).send_keys(
-                week).send_keys(year).perform()
+            web_element.send_keys(week)
+            web_element.send_keys(year)
         case _:
             clear_web_element(web_element)
             write_to_web_element(web_element, value, html_element_reference)
