@@ -1,0 +1,2 @@
+str.to.int(<hour>) >= 0 and str.to.int(<hour>) <= 23 and
+str.to.int(<minute>) >= 0 and str.to.int(<minute>) <= 59

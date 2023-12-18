@@ -73,7 +73,7 @@ binary_input_types = [InputType.CHECKBOX.value, InputType.RADIO.value]
 
 magic_value_required_input_types = one_line_text_input_types + \
     [InputType.DATE.value, InputType.DATETIME_LOCAL.value,
-        InputType.MONTH.value, InputType.WEEK.value]
+        InputType.MONTH.value, InputType.TIME.value, InputType.WEEK.value]
 
 
 def load_file_content(file_name: str) -> str:
@@ -225,6 +225,21 @@ def write_to_web_element_by_reference_with_clear(driver: Chrome, type: str, html
             ActionChains(driver).key_down(
                 Keys.TAB).key_up(Keys.TAB).perform()
             web_element.send_keys(year)
+        case InputType.TIME.value:
+            [hours, minutes] = value.split(':')
+            period_of_day = 'AM'
+            if int(hours) == 0:
+                hours = int(hours) + 12
+            elif int(hours) == 12:
+                period_of_day = 'PM'
+            elif int(hours) > 12:
+                hours = int(hours) - 12
+                period_of_day = 'PM'
+            hours = f'{int(hours):02d}'
+            web_element.clear()
+            web_element.send_keys(hours)
+            web_element.send_keys(minutes)
+            web_element.send_keys(period_of_day)
         case InputType.WEEK.value:
             [year, week] = value.split('-W')
             web_element.clear()
