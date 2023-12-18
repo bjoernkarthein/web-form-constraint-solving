@@ -112,16 +112,14 @@ class TestAutomationDriver:
         use_datalist_options = self.__config[ConfigKey.GENERATION.value][ConfigKey.USE_DATALIST_OPTIONS.value]
         magic_value_amount = self.__config[ConfigKey.ANALYSIS.value][ConfigKey.MAGIC_VALUE_AMOUNT.value]
 
-        try:
-            for specification in html_specifications:
-                grammar, formula = self.__specification_builder.create_specification_for_html_validation(
-                    specification, use_datalist_options)
+        for specification in html_specifications:
+            specification.contraints.required = True  # more diversity for magic values
+            grammar, formula = self.__specification_builder.create_specification_for_html_validation(
+                specification, use_datalist_options)
 
-                values = self.__constraint_candidate_finder.set_magic_value_sequence_for_input(
-                    specification, grammar, formula, magic_value_amount)
-                print(specification.get_as_dict(), values)
-        except Exception as e:
-            print(e)
+            values = self.__constraint_candidate_finder.set_magic_value_sequence_for_input(
+                specification, grammar, formula, magic_value_amount)
+            print(specification.get_as_dict(), values)
 
         # self.__exit()
 

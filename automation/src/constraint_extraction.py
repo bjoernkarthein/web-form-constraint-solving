@@ -51,12 +51,8 @@ class ConstraintCandidateFinder:
 
     def set_magic_value_sequence_for_input(self, html_specification: HTMLInputSpecification, grammar: str, formula: str | None, amount=1) -> List[str | int]:
         html_input_reference = html_specification.reference
-
-        # allows to make the magic values more diverse for inputs that are not required instead of only getting empty strings
-        required = html_specification.contraints.type in magic_value_required_input_types
-
         values = self.__generator.generate_valid_inputs(
-            grammar, formula, amount, required)
+            grammar, formula, amount)
         self.__magic_value_map[html_input_reference] = values
         return values
 
@@ -106,6 +102,8 @@ class SpecificationBuilder:
                 return self.__add_constraints_for_date(html_input_specification.contraints, use_datalist_options)
             case InputType.DATETIME_LOCAL.value:
                 return self.__add_constraints_for_datetime(html_input_specification.contraints, use_datalist_options)
+            case InputType.EMAIL.value:
+                return self.__add_constraints_for_email(html_input_specification.contraints, use_datalist_options)
             case InputType.MONTH.value:
                 return self.__add_constraints_for_month(html_input_specification.contraints, use_datalist_options)
             case InputType.TIME.value:
@@ -117,29 +115,6 @@ class SpecificationBuilder:
             case _:
                 raise ValueError(
                     'The provided type does not match any known html input type')
-
-    def __add_constraints_for_one_line_text(self, html_constraints: HTMLConstraints, use_datalist_options: bool) -> (str, str | None):
-        grammar = load_file_content(
-            f'{pre_built_specifications_path}/one-line-text/one-line-text.bnf')
-        formula = None
-
-        if use_datalist_options and html_constraints.list is not None:
-            grammar = self.__replace_by_list_options(
-                grammar, 'one-line-text', html_constraints.list)
-        if html_constraints.required is not None and html_constraints.minlength is None:
-            formula = self.__add_to_formula('str.len(<start>) > 0',
-                                            formula, LogicalOperator.AND)
-        if html_constraints.required is not None and html_constraints.minlength is not None:
-            formula = self.__add_to_formula(
-                f'str.len(<start>) >= {html_constraints.minlength}', formula, LogicalOperator.AND)
-        if html_constraints.maxlength is not None:
-            formula = self.__add_to_formula(
-                f'str.len(<start>) <= {html_constraints.maxlength}', formula, LogicalOperator.AND)
-        if html_constraints.pattern is not None:
-            # TODO
-            pass
-
-        return grammar, formula
 
     def __add_constraints_for_checkbox(self, required: str) -> (str, str | None):
         grammar = load_file_content(
@@ -213,6 +188,32 @@ class SpecificationBuilder:
 
         return grammar, formula
 
+    def __add_constraints_for_email(self, html_constraints: HTMLConstraints, use_datalist_options=False) -> (str, str | None):
+        grammar = load_file_content(
+            f'{pre_built_specifications_path}/email/email.bnf')
+        formula = None
+
+        if use_datalist_options and html_constraints.list is not None:
+            grammar = self.__replace_by_list_options(
+                grammar, 'email', html_constraints.list)
+        if html_constraints.required is not None:
+            formula = self.__add_to_formula('str.len(<start>) >= 3',
+                                            formula, LogicalOperator.AND)
+        if html_constraints.minlength is not None:
+            formula = self.__add_to_formula(f'str.len(<email>) >= {html_constraints.minlength}',
+                                            formula, LogicalOperator.AND)
+        if html_constraints.maxlength is not None:
+            formula = self.__add_to_formula(f'str.len(<email>) <= {html_constraints.maxlength}',
+                                            formula, LogicalOperator.AND)
+        if html_constraints.multiple is not None:
+            # TODO
+            pass
+        if html_constraints.pattern is not None:
+            # TODO
+            pass
+
+        return grammar, formula
+
     def __add_constraints_for_month(self, html_constraints: HTMLConstraints, use_datalist_options=False) -> (str, str | None):
         grammar = load_file_content(
             f'{pre_built_specifications_path}/month/month.bnf')
@@ -241,6 +242,29 @@ class SpecificationBuilder:
         # if html_constraints.step is not None:
         #     formula = self.__add_to_formula(f'(str.to.int(<year>) + str.to.int(<month>)) mod {html_constraints.step} = 0',
         #                                     formula, LogicalOperator.AND)
+
+        return grammar, formula
+
+    def __add_constraints_for_one_line_text(self, html_constraints: HTMLConstraints, use_datalist_options: bool) -> (str, str | None):
+        grammar = load_file_content(
+            f'{pre_built_specifications_path}/one-line-text/one-line-text.bnf')
+        formula = None
+
+        if use_datalist_options and html_constraints.list is not None:
+            grammar = self.__replace_by_list_options(
+                grammar, 'one-line-text', html_constraints.list)
+        if html_constraints.required is not None and html_constraints.minlength is None:
+            formula = self.__add_to_formula('str.len(<start>) > 0',
+                                            formula, LogicalOperator.AND)
+        elif html_constraints.minlength is not None:
+            formula = self.__add_to_formula(
+                f'str.len(<start>) >= {html_constraints.minlength}', formula, LogicalOperator.AND)
+        if html_constraints.maxlength is not None:
+            formula = self.__add_to_formula(
+                f'str.len(<start>) <= {html_constraints.maxlength}', formula, LogicalOperator.AND)
+        if html_constraints.pattern is not None:
+            # TODO
+            pass
 
         return grammar, formula
 

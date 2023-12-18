@@ -66,14 +66,10 @@ admin_controller = f'{service_base_url}/admin'
 analysis_controller = f'{service_base_url}/analysis'
 instrumentation_controller = f'{service_base_url}/instrumentation'
 
-one_line_text_input_types = [InputType.EMAIL.value, InputType.PASSWORD.value,
+one_line_text_input_types = [InputType.PASSWORD.value,
                              InputType.SEARCH.value, InputType.TEL.value, InputType.TEXT.value]
 
 binary_input_types = [InputType.CHECKBOX.value, InputType.RADIO.value]
-
-magic_value_required_input_types = one_line_text_input_types + \
-    [InputType.DATE.value, InputType.DATETIME_LOCAL.value,
-        InputType.MONTH.value, InputType.TIME.value, InputType.WEEK.value]
 
 
 def load_file_content(file_name: str) -> str:
@@ -180,9 +176,6 @@ def write_to_web_element_by_reference_with_clear(driver: Chrome, type: str, html
 
     # TODO: move every input type to dedicated function
     match type:
-        case t if t in one_line_text_input_types:
-            clear_web_element(web_element)
-            write_to_web_element(web_element, value, html_element_reference)
         case t if t in binary_input_types:
             # deselect if already selected
             if web_element.is_selected():
