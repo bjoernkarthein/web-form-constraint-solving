@@ -1,0 +1,8 @@
+<start> ::= <empty> | <float>
+<empty> ::= ""
+<float> ::= <numeric> | "-" <numeric> | <numeric><euler> | "-" <numeric><euler>
+<numeric> ::= <numbers> | <numbers> "." <numbers> | "." <numbers>
+<euler> ::= "E" <exponent> | "e" <exponent>
+<exponent> ::= "+" <numbers> | "-" <numbers> | <numbers>
+<numbers> ::= <digit> | <digit><numbers>
+<digit> ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"

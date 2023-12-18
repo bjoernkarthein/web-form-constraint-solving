@@ -106,6 +106,8 @@ class SpecificationBuilder:
                 return self.__add_constraints_for_email(html_input_specification.contraints, use_datalist_options)
             case InputType.MONTH.value:
                 return self.__add_constraints_for_month(html_input_specification.contraints, use_datalist_options)
+            case InputType.NUMBER.value:
+                return self.__add_constraints_for_number(html_input_specification.contraints, use_datalist_options)
             case InputType.TIME.value:
                 return self.__add_constraints_for_time(html_input_specification.contraints, use_datalist_options)
             case InputType.WEEK.value:
@@ -242,6 +244,33 @@ class SpecificationBuilder:
         # if html_constraints.step is not None:
         #     formula = self.__add_to_formula(f'(str.to.int(<year>) + str.to.int(<month>)) mod {html_constraints.step} = 0',
         #                                     formula, LogicalOperator.AND)
+
+        return grammar, formula
+
+    def __add_constraints_for_number(self, html_constraints: HTMLConstraints, use_datalist_options=False) -> (str, str | None):
+        grammar = load_file_content(
+            f'{pre_built_specifications_path}/number/whole.bnf')
+        formula = None
+
+        if html_constraints.required is not None:
+            grammar = grammar = load_file_content(
+                f'{pre_built_specifications_path}/number/whole_required.bnf')
+
+        if use_datalist_options and html_constraints.list is not None:
+            grammar = self.__replace_by_list_options(
+                grammar, 'number', html_constraints.list)
+
+        if html_constraints.min is not None:
+            formula = self.__add_to_formula(f'str.to.int(<start>) >= {html_constraints.min}',
+                                            formula, LogicalOperator.AND)
+
+        if html_constraints.max is not None:
+            formula = self.__add_to_formula(f'str.to.int(<start>) <= {html_constraints.max}',
+                                            formula, LogicalOperator.AND)
+
+        if html_constraints.step is not None:
+            formula = self.__add_to_formula(f'str.to.int(<start>) mod {html_constraints.step} = 0',
+                                            formula, LogicalOperator.AND)
 
         return grammar, formula
 
