@@ -221,16 +221,13 @@ class SpecificationBuilder:
 
     def __add_constraints_for_email(self, html_constraints: HTMLConstraints, use_datalist_options=False) -> (str, str | None):
         grammar = load_file_content(
-            f'{pre_built_specifications_path}/email/email.bnf')
+            f'{pre_built_specifications_path}/email/email.bnf' if html_constraints.required is None else f'{pre_built_specifications_path}/email/email-required.bnf')
         formula = load_file_content(
             f'{pre_built_specifications_path}/email/email.isla')
 
         if use_datalist_options and html_constraints.list is not None:
             grammar = self.__replace_by_list_options(
                 grammar, 'email', html_constraints.list)
-        if html_constraints.required is not None:
-            formula = self.__add_to_formula('str.len(<start>) >= 3',
-                                            formula, LogicalOperator.AND)
         if html_constraints.minlength is not None:
             formula = self.__add_to_formula(f'str.len(<email>) >= {html_constraints.minlength}',
                                             formula, LogicalOperator.AND)

@@ -120,17 +120,13 @@ class TestAutomationDriver:
 
                 grammar, formula = self.__specification_builder.create_specification_for_html_input(
                     specification, use_datalist_options)
-
-                values = self.__constraint_candidate_finder.set_magic_value_sequence_for_input(
-                    specification, grammar, formula, magic_value_amount)
-                print(specification.get_as_dict(), values)
             else:
                 grammar, formula = self.__specification_builder.create_specification_for_html_radio_group(
                     specification)
 
-                values = self.__constraint_candidate_finder.set_magic_value_sequence(
-                    specification, grammar, formula, magic_value_amount)
-                print(specification.get_as_dict(), values)
+            values = self.__constraint_candidate_finder.set_magic_value_sequence(
+                specification, grammar, formula, magic_value_amount)
+            print(specification.get_as_dict(), values)
 
     def __exit(self, exit_code=None) -> None:
         """Free all resources and exit"""
