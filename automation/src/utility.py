@@ -9,6 +9,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webelement import WebElement
+from typing import List
 
 from html_analysis import HTMLElementReference
 
@@ -146,6 +147,20 @@ def get_web_element_by_reference(driver: Chrome, html_element_reference: HTMLEle
             return driver.find_element(By.ID, html_element_reference.access_value)
         elif html_element_reference.access_method == 'xpath':
             return driver.find_element(By.XPATH, html_element_reference.access_value)
+        elif html_element_reference.access_method == 'name':
+            return driver.find_element(By.NAME, html_element_reference.access_value)
+    except NoSuchElementException:
+        return None
+
+
+def get_web_elements_by_reference(driver: Chrome, html_element_reference: HTMLElementReference) -> List[WebElement]:
+    try:
+        if html_element_reference.access_method == 'id':
+            return driver.find_elements(By.ID, html_element_reference.access_value)
+        elif html_element_reference.access_method == 'xpath':
+            return driver.find_elements(By.XPATH, html_element_reference.access_value)
+        elif html_element_reference.access_method == 'name':
+            return driver.find_elements(By.NAME, html_element_reference.access_value)
     except NoSuchElementException:
         return None
 
@@ -176,7 +191,7 @@ def write_to_web_element_by_reference_with_clear(driver: Chrome, type: str, html
 
     # TODO: move every input type to dedicated function
     match type:
-        case t if t in binary_input_types:
+        case InputType.CHECKBOX.value:
             # deselect if already selected
             if web_element.is_selected():
                 click_web_element(web_element)
@@ -218,6 +233,13 @@ def write_to_web_element_by_reference_with_clear(driver: Chrome, type: str, html
             ActionChains(driver).key_down(
                 Keys.TAB).key_up(Keys.TAB).perform()
             web_element.send_keys(year)
+        case InputType.RADIO.value:
+            # TODO: Radio options without value attribute. Go by index
+            elements = get_web_elements_by_reference(
+                driver, html_element_reference)
+            for elem in elements:
+                if elem.get_attribute('value') == value:
+                    elem.click()
         case InputType.TIME.value:
             [hours, minutes] = value.split(':')
             period_of_day = 'AM'

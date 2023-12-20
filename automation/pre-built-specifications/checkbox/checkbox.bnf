@@ -1,2 +1,0 @@
-<start> ::= <checkbox>
-<checkbox> ::= "0" | "1"

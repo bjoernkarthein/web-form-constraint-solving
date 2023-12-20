@@ -1,0 +1,2 @@
+<start> ::= <binary>
+<binary> ::= "1"

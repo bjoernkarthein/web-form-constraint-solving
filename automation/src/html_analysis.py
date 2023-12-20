@@ -1,7 +1,7 @@
 import json
 
 from lxml import etree, html
-from typing import Dict, List, Union
+from typing import Dict, List, Tuple, Union
 
 
 class HTMLElementReference:
@@ -188,6 +188,19 @@ class HTMLInputSpecification:
 HTMLInputElement = Union[html.InputElement, html.TextareaElement]
 
 
+class HTMLRadioGroupSpecification:
+    def __init__(self, name: str, required: bool, options: List[Tuple[HTMLElementReference, str]]) -> None:
+        self.name = name
+        self.required = required
+        self.options = options
+
+    def get_as_dict(self) -> Dict[str, str | bool | List[Tuple[HTMLElementReference, str]]]:
+        return {'name': self.name, 'required': self.required, 'options': [(o[0].get_as_dict(), o[1]) for o in self.options]}
+
+    def __str__(self) -> str:
+        return json.dumps(self.get_as_dict())
+
+
 class HTMLAnalyser:
     def __init__(self, html_dom_snapshot: str) -> None:
         self.__html_tree_root = html.fromstring(html_dom_snapshot)
@@ -250,11 +263,35 @@ class HTMLAnalyser:
         """Getetr for submit element of the selected form"""
         return self.__submit_element
 
-    def __extract_static_constraints_from_inputs(self, input_elements: List[HTMLInputElement]) -> List[HTMLInputSpecification]:
-        result = []
+    def __extract_static_constraints_from_inputs(self, input_elements: List[HTMLInputElement]) -> List[HTMLInputSpecification | HTMLRadioGroupSpecification]:
+        result: List[HTMLInputSpecification | HTMLRadioGroupSpecification] = []
+        radio_groups: Dict[str, List[HTMLInputElement]] = {}
+        radio_items = list(filter(lambda i: i.get('type')
+                                  == 'radio', input_elements))
+        for item in radio_items:
+            key = item.get('name')
+            if key not in radio_groups:
+                radio_groups[key] = [item]
+            else:
+                radio_groups[key] = radio_groups[key] + [item]
+
+        for name, values in radio_groups.items():
+            specifications: List[Tuple[HTMLElementReference, str]] = []
+            required = False
+            for v in values:
+                ref = self.__get_element_reference(v)
+                value = v.get('value')
+                specifications.append((ref, value))
+                required = required or v.get('required') is not None
+            spec = HTMLRadioGroupSpecification(name, required, specifications)
+            result.append(spec)
 
         for input in input_elements:
             html_constraints = HTMLConstraints()
+
+            if input.get('type') == 'radio':
+                continue
+
             if input.tag == 'textarea':
                 html_constraints.type = 'textarea'
 

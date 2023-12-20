@@ -7,10 +7,10 @@ from seleniumwire import webdriver
 from typing import List
 
 from constraint_extraction import ConstraintCandidateFinder, SpecificationBuilder
-from html_analysis import HTMLAnalyser, HTMLInputSpecification, FormObserver
+from html_analysis import HTMLAnalyser, HTMLInputSpecification, FormObserver, HTMLRadioGroupSpecification
 from interceptor import NetworkInterceptor, ResponseInspector
 from input_generation import InputGenerator
-from utility import ConfigKey, clean_instrumentation_resources
+from utility import binary_input_types, ConfigKey, clean_instrumentation_resources
 
 chrome_driver_path = '../chromedriver/windows/chromedriver.exe'
 
@@ -75,7 +75,7 @@ class TestAutomationDriver:
             # TODO
             pass
 
-    def __analyse_html(self, html_string: str) -> List[HTMLInputSpecification]:
+    def __analyse_html(self, html_string: str) -> List[HTMLInputSpecification | HTMLRadioGroupSpecification]:
         """Analyse the HTML content of the web page.
 
         Select a web form and extract the built-in HTML constraints for it's inputs.
@@ -95,7 +95,7 @@ class TestAutomationDriver:
 
         return html_constraints
 
-    def __start_constraint_extraction(self, html_specifications: List[HTMLInputSpecification]) -> None:
+    def __start_constraint_extraction(self, html_specifications: List[HTMLInputSpecification | HTMLRadioGroupSpecification]) -> None:
         """Start the extraction of client-side validation constraints for a set of specified HTML inputs."""
 
         self.__constraint_candidate_finder = ConstraintCandidateFinder(
@@ -107,21 +107,30 @@ class TestAutomationDriver:
         time.sleep(5)
         self.__exit()
 
-    def __generate_valid_html_magic_values(self, html_specifications: List[HTMLInputSpecification]) -> None:
+    def __generate_valid_html_magic_values(self, html_specifications: List[HTMLInputSpecification | HTMLRadioGroupSpecification]) -> None:
         self.__specification_builder = SpecificationBuilder()
         use_datalist_options = self.__config[ConfigKey.GENERATION.value][ConfigKey.USE_DATALIST_OPTIONS.value]
         magic_value_amount = self.__config[ConfigKey.ANALYSIS.value][ConfigKey.MAGIC_VALUE_AMOUNT.value]
 
         for specification in html_specifications:
-            specification.contraints.required = True  # more diversity for magic values
-            grammar, formula = self.__specification_builder.create_specification_for_html_validation(
-                specification, use_datalist_options)
+            if isinstance(specification, HTMLInputSpecification):
+                # more diversity for magic values that are not binary
+                if specification.contraints.type not in binary_input_types:
+                    specification.contraints.required = True
 
-            values = self.__constraint_candidate_finder.set_magic_value_sequence_for_input(
-                specification, grammar, formula, magic_value_amount)
-            print(specification.get_as_dict(), values)
+                grammar, formula = self.__specification_builder.create_specification_for_html_input(
+                    specification, use_datalist_options)
 
-        # self.__exit()
+                values = self.__constraint_candidate_finder.set_magic_value_sequence_for_input(
+                    specification, grammar, formula, magic_value_amount)
+                print(specification.get_as_dict(), values)
+            else:
+                grammar, formula = self.__specification_builder.create_specification_for_html_radio_group(
+                    specification)
+
+                values = self.__constraint_candidate_finder.set_magic_value_sequence(
+                    specification, grammar, formula, magic_value_amount)
+                print(specification.get_as_dict(), values)
 
     def __exit(self, exit_code=None) -> None:
         """Free all resources and exit"""

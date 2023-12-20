@@ -5,7 +5,7 @@ from lxml.html import Element
 from selenium.webdriver import Chrome
 from typing import List, Dict
 
-from html_analysis import HTMLConstraints, HTMLElementReference, HTMLInputSpecification
+from html_analysis import HTMLConstraints, HTMLElementReference, HTMLInputSpecification, HTMLRadioGroupSpecification
 from input_generation import InputGenerator
 from utility import *
 
@@ -34,30 +34,51 @@ class ConstraintCandidateFinder:
         self.__magic_value_map: Dict[HTMLElementReference, List[str]] = {}
         self.__submit_element = submit_element
 
-    def find_constraint_candidates(self, html_input_specifications: List[HTMLInputSpecification]) -> None:
+    def find_constraint_candidates(self, html_input_specifications: List[HTMLInputSpecification | HTMLRadioGroupSpecification]) -> None:
         """Try to extract as many constraint candidates as possible from the JavaScript source code for a given input."""
         for specification in html_input_specifications:
-            magic_values = self.__magic_value_map.get(specification.reference)
+            key = specification.reference if isinstance(
+                specification, HTMLInputSpecification) else specification.name
+
+            magic_values = self.__magic_value_map.get(key)
             if magic_values is None or len(magic_values) == 0:
                 continue
 
-            write_to_web_element_by_reference_with_clear(
-                self.__driver, specification.contraints.type, specification.reference, magic_values[0])
+            if isinstance(specification, HTMLRadioGroupSpecification):
+                write_to_web_element_by_reference_with_clear(
+                    self.__driver, 'radio', HTMLElementReference('name', specification.name), magic_values[0])
+            else:
+                write_to_web_element_by_reference_with_clear(
+                    self.__driver, specification.contraints.type, specification.reference, magic_values[0])
 
         for specification in html_input_specifications:
             self.__find_constraint_candidates_for_input(specification)
 
         # TODO
 
-    def set_magic_value_sequence_for_input(self, html_specification: HTMLInputSpecification, grammar: str, formula: str | None, amount=1) -> List[str | int]:
+    def set_magic_value_sequence(self, html_specification: HTMLInputSpecification | HTMLRadioGroupSpecification, grammar: str, formula: str | None, amount=1) -> List[str]:
+        if isinstance(html_specification, HTMLInputSpecification):
+            return self.__set_magic_value_sequence_for_input(html_specification, grammar, formula, amount)
+        else:
+            return self.__set_magic_value_sequence_for_radio_group(html_specification, grammar, formula, amount)
+
+    def __set_magic_value_sequence_for_input(self, html_specification: HTMLInputSpecification, grammar: str, formula: str | None, amount: int) -> List[str]:
         html_input_reference = html_specification.reference
         values = self.__generator.generate_valid_inputs(
             grammar, formula, amount)
         self.__magic_value_map[html_input_reference] = values
         return values
 
-    def __find_constraint_candidates_for_input(self, html_specification: HTMLInputSpecification) -> List[ConstraintCandidate]:
-        reference = html_specification.reference
+    def __set_magic_value_sequence_for_radio_group(self, html_specification: HTMLRadioGroupSpecification, grammar: str, formula: str | None, amount: int) -> List[str]:
+        # html_input_reference = html_specification.reference
+        values = self.__generator.generate_valid_inputs(
+            grammar, formula, amount)
+        self.__magic_value_map[html_specification.name] = values
+        return values
+
+    def __find_constraint_candidates_for_input(self, html_specification: HTMLInputSpecification | HTMLRadioGroupSpecification) -> List[ConstraintCandidate]:
+        reference = html_specification.reference if isinstance(
+            html_specification, HTMLInputSpecification) else html_specification.name
         magic_value_sequence = self.__magic_value_map.get(reference)
 
         if magic_value_sequence is None:
@@ -67,8 +88,13 @@ class ConstraintCandidateFinder:
             {'spec': html_specification.get_as_dict(), 'values': magic_value_sequence})
 
         for magic_value in magic_value_sequence:
+            type = html_specification.contraints.type if isinstance(
+                html_specification, HTMLInputSpecification) else 'radio'
+            reference = html_specification.reference if isinstance(
+                html_specification, HTMLInputSpecification) else HTMLElementReference('name', html_specification.name)
+
             write_to_web_element_by_reference_with_clear(
-                self.__driver, html_specification.contraints.type, html_specification.reference, magic_value)
+                self.__driver, type, reference, magic_value)
 
             record_trace(Action.ATTEMPT_SUBMIT)
             click_web_element_by_reference(
@@ -92,12 +118,20 @@ class SpecificationBuilder:
     def __init__(self) -> None:
         pass
 
-    def create_specification_for_html_validation(self, html_input_specification: HTMLInputSpecification, use_datalist_options=False) -> (str, str | None):
+    def create_specification_for_html_radio_group(self, html_radio_group_specification: HTMLRadioGroupSpecification) -> (str, str | None):
+        grammar = load_file_content(
+            f'{pre_built_specifications_path}/radio-group/radio-group.bnf')
+        grammar = self.__replace_by_list_options(grammar, 'start', list(
+            map(lambda o: f'"{o[1]}"', html_radio_group_specification.options)))
+
+        return grammar, None
+
+    def create_specification_for_html_input(self, html_input_specification: HTMLInputSpecification, use_datalist_options=False) -> (str, str | None):
         match html_input_specification.contraints.type:
             case t if t in one_line_text_input_types:
                 return self.__add_constraints_for_one_line_text(html_input_specification.contraints, use_datalist_options)
             case t if t in binary_input_types:
-                return self.__add_constraints_for_checkbox(html_input_specification.contraints.required)
+                return self.__add_constraints_for_binary(html_input_specification.contraints.required)
             case InputType.DATE.value:
                 return self.__add_constraints_for_date(html_input_specification.contraints, use_datalist_options)
             case InputType.DATETIME_LOCAL.value:
@@ -118,16 +152,11 @@ class SpecificationBuilder:
                 raise ValueError(
                     'The provided type does not match any known html input type')
 
-    def __add_constraints_for_checkbox(self, required: str) -> (str, str | None):
+    def __add_constraints_for_binary(self, required: str) -> (str, str | None):
         grammar = load_file_content(
-            f'{pre_built_specifications_path}/checkbox/checkbox.bnf')
-        formula = None
+            f'{pre_built_specifications_path}/binary/binary.bnf' if required is None else f'{pre_built_specifications_path}/binary/binary-required.bnf')
 
-        if required is not None:
-            grammar = load_file_content(
-                f'{pre_built_specifications_path}/checkbox/checkbox_required.bnf')
-
-        return grammar, formula
+        return grammar, None
 
     def __add_constraints_for_date(self, html_constraints: HTMLConstraints, use_datalist_options=False) -> (str, str | None):
         grammar = load_file_content(
@@ -193,7 +222,8 @@ class SpecificationBuilder:
     def __add_constraints_for_email(self, html_constraints: HTMLConstraints, use_datalist_options=False) -> (str, str | None):
         grammar = load_file_content(
             f'{pre_built_specifications_path}/email/email.bnf')
-        formula = None
+        formula = load_file_content(
+            f'{pre_built_specifications_path}/email/email.isla')
 
         if use_datalist_options and html_constraints.list is not None:
             grammar = self.__replace_by_list_options(
@@ -249,12 +279,8 @@ class SpecificationBuilder:
 
     def __add_constraints_for_number(self, html_constraints: HTMLConstraints, use_datalist_options=False) -> (str, str | None):
         grammar = load_file_content(
-            f'{pre_built_specifications_path}/number/whole.bnf')
+            f'{pre_built_specifications_path}/number/whole.bnf' if html_constraints.required is None else f'{pre_built_specifications_path}/number/whole-required.bnf')
         formula = None
-
-        if html_constraints.required is not None:
-            grammar = grammar = load_file_content(
-                f'{pre_built_specifications_path}/number/whole_required.bnf')
 
         if use_datalist_options and html_constraints.list is not None:
             grammar = self.__replace_by_list_options(
@@ -365,7 +391,20 @@ class SpecificationBuilder:
         else:
             return f'{formula} {operator.value} {additional_part}'
 
+    # def __replace_by_list_options(self, grammar: str, option_identifier: str, list_options: List[str]) -> str:
+    #     head, sep, _ = grammar.partition(f'<{option_identifier}> ::= ')
+    #     options = ' | '.join(list_options)
+    #     return f'{head}{sep}{options}'
+
     def __replace_by_list_options(self, grammar: str, option_identifier: str, list_options: List[str]) -> str:
-        head, sep, _ = grammar.partition(f'<{option_identifier}> ::= ')
-        options = ' | '.join(list_options)
-        return f'{head}{sep}{options}'
+        lines = grammar.split('\n')
+        for i in range(len(lines)):
+            if f'<{option_identifier}> ::=' in lines[i]:
+                new_line = lines[i]
+                head, sep, _ = new_line.partition(
+                    f'<{option_identifier}> ::= ')
+                options = ' | '.join(list_options)
+                new_line = f'{head}{sep}{options}'
+                lines[i] = new_line
+
+        return '\n'.join(lines)
