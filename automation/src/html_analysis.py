@@ -281,10 +281,14 @@ class HTMLAnalyser:
             for v in values:
                 ref = self.__get_element_reference(v)
                 value = v.get('value')
-                specifications.append((ref, value))
-                required = required or v.get('required') is not None
-            spec = HTMLRadioGroupSpecification(name, required, specifications)
-            result.append(spec)
+                # For the case that the radio option does not have a value, we do not add it to the spec
+                if value is not None:
+                    specifications.append((ref, value))
+                    required = required or v.get('required') is not None
+            if len(specifications) > 0:
+                spec = HTMLRadioGroupSpecification(
+                    name, required, specifications)
+                result.append(spec)
 
         for input in input_elements:
             html_constraints = HTMLConstraints()

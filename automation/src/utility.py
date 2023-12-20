@@ -234,7 +234,6 @@ def write_to_web_element_by_reference_with_clear(driver: Chrome, type: str, html
                 Keys.TAB).key_up(Keys.TAB).perform()
             web_element.send_keys(year)
         case InputType.RADIO.value:
-            # TODO: Radio options without value attribute. Go by index
             elements = get_web_elements_by_reference(
                 driver, html_element_reference)
             for elem in elements:
