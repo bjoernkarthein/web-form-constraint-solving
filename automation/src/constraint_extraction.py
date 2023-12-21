@@ -144,6 +144,8 @@ class SpecificationBuilder:
                 return self.__add_constraints_for_number(html_input_specification.contraints, use_datalist_options)
             case InputType.TIME.value:
                 return self.__add_constraints_for_time(html_input_specification.contraints, use_datalist_options)
+            case InputType.URL.value:
+                return self.__add_constraints_for_url(html_input_specification.contraints, use_datalist_options)
             case InputType.WEEK.value:
                 return self.__add_constraints_for_week(html_input_specification.contraints, use_datalist_options)
             case None:
@@ -348,6 +350,30 @@ class SpecificationBuilder:
         # if html_constraints.step is not None:
         #     formula = self.__add_to_formula(f'(str.to.int(<year>) + str.to.int(<month>)) mod {html_constraints.step} = 0',
         #                                     formula, LogicalOperator.AND)
+
+        return grammar, formula
+
+    def __add_constraints_for_url(self, html_constraints: HTMLConstraints, use_datalist_options=False) -> (str, str | None):
+        grammar = load_file_content(
+            f'{pre_built_specifications_path}/url/url.bnf')
+        formula = load_file_content(
+            f'{pre_built_specifications_path}/url/url.isla')
+
+        if use_datalist_options and html_constraints.list is not None:
+            grammar = self.__replace_by_list_options(
+                grammar, 'url', html_constraints.list)
+        if html_constraints.required is not None and html_constraints.minlength is None:
+            formula = self.__add_to_formula('str.len(<start>) > 0',
+                                            formula, LogicalOperator.AND)
+        else:
+            formula = self.__add_to_formula(f'str.len(<start>) >= {html_constraints.minlength}',
+                                            formula, LogicalOperator.AND)
+        if html_constraints.maxlength is not None:
+            formula = self.__add_to_formula(f'str.len(<start>) <= {html_constraints.maxlength}',
+                                            formula, LogicalOperator.AND)
+        if html_constraints.pattern is not None:
+            # TODO
+            pass
 
         return grammar, formula
 

@@ -1,0 +1,19 @@
+<start> ::= <empty> | <url>
+<empty> ::= ""
+<url> ::= <scheme> <host> ":" <port> <path> "?" <query>
+
+<scheme> ::= "file" | <special-scheme>
+<special-scheme> ::= "ftp" | "http" | "https" | "ws" | "wss"
+
+<scheme-relative-special-url> ::= ""
+<scheme-relative-url> ::= ""
+<path-absolute-url> ::= ""
+<path-relative-schemeless-url> ::= ""
+<scheme-relative-file-url> ::= ""
+<path-absolute-non-windows-file-url> ::= ""
+
+<scheme> ::= ""
+<host> ::= ""
+<port> ::= ""
+<path> ::= "/"
+<query> ::= ""
