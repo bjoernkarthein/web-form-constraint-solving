@@ -12,7 +12,8 @@ from interceptor import NetworkInterceptor, ResponseInspector
 from input_generation import InputGenerator
 from utility import binary_input_types, ConfigKey, clean_instrumentation_resources
 
-chrome_driver_path = '../chromedriver/windows/chromedriver.exe'
+# chrome_driver_path = '../chromedriver/windows/chromedriver.exe'
+chrome_driver_path = '../chromedriver/linux/chromedriver'
 
 """
 Driver module

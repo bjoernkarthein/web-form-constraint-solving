@@ -1,19 +1,40 @@
 <start> ::= <empty> | <url>
 <empty> ::= ""
-<url> ::= <scheme> <host> ":" <port> <path> "?" <query>
+<url> ::= <special-scheme> ":" <scheme-relative-special-url> | <special-scheme> ":" <scheme-relative-special-url> "?" <query> | "file:" <scheme-relative-file-url> | "file:" <scheme-relative-file-url> "?" <query>
 
-<scheme> ::= "file" | <special-scheme>
 <special-scheme> ::= "ftp" | "http" | "https" | "ws" | "wss"
 
-<scheme-relative-special-url> ::= ""
-<scheme-relative-url> ::= ""
-<path-absolute-url> ::= ""
-<path-relative-schemeless-url> ::= ""
-<scheme-relative-file-url> ::= ""
-<path-absolute-non-windows-file-url> ::= ""
+<scheme-relative-special-url> ::= "//" <host-port-path>
+<scheme-relative-file-url> ::= "//" <host> | "//" <host><path-absolute-non-windows-file-url> | "//" <path-absolute-url>
 
-<scheme> ::= ""
-<host> ::= ""
-<port> ::= ""
-<path> ::= "/"
-<query> ::= ""
+<host-port-path> ::= <host> | <host><path-absolute-url> | <host> ":" <port><path-absolute-url>
+<host> ::= <domain> | <ipv4-address> | "[" <ipv6-address> "]"
+<port> ::= "" | <digit-with-zero> | <digit-without-zero><port>
+<path-absolute-url> ::= "/" <path-relative-url>
+<query> ::= "" | <url-code-point> | <url-code-point><query>
+
+<domain> ::= <word> "." <word> | <word> "." <domain>
+<path-absolute-non-windows-file-url> ::= <path-relative-url> "/" <windows-drive-letter> "/"
+<windows-drive-letter> ::= <letter> ":" | <letter>
+
+<ipv4-address> ::= <ipv4-number> "." <ipv4-number> "." <ipv4-number> "." <ipv4-number>
+<ipv4-number> ::= <digit-with-zero> | <digit-without-zero><digit-with-zero> | <digit-without-zero><digit-with-zero><digit-with-zero>
+
+<ipv6-address> ::= <ipv6-number> ":" <ipv6-number> ":" <ipv6-number> ":" <ipv6-number> ":" <ipv6-number> ":" <ipv6-number> ":" <ipv6-number> ":" <ipv6-number>
+<ipv6-number> ::= <hex-digit> | <hex-digit><hex-digit> | <hex-digit><hex-digit><hex-digit>  | <hex-digit><hex-digit><hex-digit><hex-digit>
+
+<path-relative-url> ::= "" | <url-path-segment> | <url-path-segment> "/" <path-relative-url>
+<url-path-segment> ::= <url-code-point> | <url-code-point><url-path-segment>
+<url-code-point> ::= <digit-with-zero> | <letter> | "!" | "$" | "&" | "'" | "(" | ")" | "*" | "+" | "," | "-" | "." | ":" | ";" | "=" | "@" | "_" | "~"
+
+<digit-with-zero> ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+<digit-without-zero> ::= "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+<hex-digit> ::= <digit-with-zero> | "A" | "B" | "C" | "D" | "E" | "F"
+
+<word> ::= <letter> | <letter><word>
+<letter> ::= "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | 
+             "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" | "S" | "T" |
+             "U" | "V" | "W" | "X" | "Y" | "Z" | 
+             "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | 
+             "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" |
+             "u" | "v" | "w" | "x" | "y" | "z"

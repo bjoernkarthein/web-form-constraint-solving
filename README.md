@@ -14,7 +14,7 @@
 
 ### Setup
 
-Chrome needs to be added to the PATH
+Optionally change node and codeql path
 
 ## Getting started
 
@@ -26,6 +26,14 @@ From the /automation directory run the following command to create and start a p
 pipenv install
 pipenv shell
 ```
+
+Go to the /service directory and run
+
+```
+npm i
+```
+
+to install all required node dependencies.
 
 To start all required services go to the application root directory and run
 

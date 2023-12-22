@@ -1,0 +1,1 @@
+str.to.int(<port>) <= 65535 and str.to.int(<ipv4-number>) <= 255

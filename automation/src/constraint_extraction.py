@@ -356,15 +356,16 @@ class SpecificationBuilder:
     def __add_constraints_for_url(self, html_constraints: HTMLConstraints, use_datalist_options=False) -> (str, str | None):
         grammar = load_file_content(
             f'{pre_built_specifications_path}/url/url.bnf')
-        formula = load_file_content(
-            f'{pre_built_specifications_path}/url/url.isla')
+        formula = None
+        # formula = load_file_content(
+        #     f'{pre_built_specifications_path}/url/url.isla')
 
         if use_datalist_options and html_constraints.list is not None:
             grammar = self.__replace_by_list_options(
                 grammar, 'url', html_constraints.list)
-        if html_constraints.required is not None and html_constraints.minlength is None:
-            formula = self.__add_to_formula('str.len(<start>) > 0',
-                                            formula, LogicalOperator.AND)
+        # if html_constraints.required is not None and html_constraints.minlength is None:
+        #     formula = self.__add_to_formula('str.len(<start>) > 0',
+        #                                     formula, LogicalOperator.AND)
         else:
             formula = self.__add_to_formula(f'str.len(<start>) >= {html_constraints.minlength}',
                                             formula, LogicalOperator.AND)
@@ -375,7 +376,7 @@ class SpecificationBuilder:
             # TODO
             pass
 
-        return grammar, formula
+        return grammar, None
 
     def __add_constraints_for_week(self, html_constraints: HTMLConstraints, use_datalist_options=False) -> (str, str | None):
         grammar = load_file_content(
@@ -414,20 +415,22 @@ class SpecificationBuilder:
         else:
             return f'{formula} {operator.value} {additional_part}'
 
-    # def __replace_by_list_options(self, grammar: str, option_identifier: str, list_options: List[str]) -> str:
-    #     head, sep, _ = grammar.partition(f'<{option_identifier}> ::= ')
-    #     options = ' | '.join(list_options)
-    #     return f'{head}{sep}{options}'
-
+    # TODO: decide which one to use. Should structure grammars in a way that disgarding the parts
+    # after the list options does not matter. Otherwise we might get tokens that are unreachable and errors
     def __replace_by_list_options(self, grammar: str, option_identifier: str, list_options: List[str]) -> str:
-        lines = grammar.split('\n')
-        for i in range(len(lines)):
-            if f'<{option_identifier}> ::=' in lines[i]:
-                new_line = lines[i]
-                head, sep, _ = new_line.partition(
-                    f'<{option_identifier}> ::= ')
-                options = ' | '.join(list_options)
-                new_line = f'{head}{sep}{options}'
-                lines[i] = new_line
+        head, sep, _ = grammar.partition(f'<{option_identifier}> ::= ')
+        options = ' | '.join(list_options)
+        return f'{head}{sep}{options}'
 
-        return '\n'.join(lines)
+    # def __replace_by_list_options(self, grammar: str, option_identifier: str, list_options: List[str]) -> str:
+    #     lines = grammar.split('\n')
+    #     for i in range(len(lines)):
+    #         if f'<{option_identifier}> ::=' in lines[i]:
+    #             new_line = lines[i]
+    #             head, sep, _ = new_line.partition(
+    #                 f'<{option_identifier}> ::= ')
+    #             options = ' | '.join(list_options)
+    #             new_line = f'{head}{sep}{options}'
+    #             lines[i] = new_line
+
+    #     return '\n'.join(lines)
