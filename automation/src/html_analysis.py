@@ -3,6 +3,8 @@ import json
 from lxml import etree, html
 from typing import Dict, List, Tuple, Union
 
+from utility import non_writable_input_types
+
 
 class HTMLElementReference:
     def __init__(self, access_method: str, access_value: str) -> None:
@@ -293,7 +295,7 @@ class HTMLAnalyser:
         for input in input_elements:
             html_constraints = HTMLConstraints()
 
-            if input.get('type') == 'radio':
+            if input.get('type') in ['radio'] + non_writable_input_types:
                 continue
 
             if input.tag == 'textarea':

@@ -128,7 +128,7 @@ class SpecificationBuilder:
 
     def create_specification_for_html_input(self, html_input_specification: HTMLInputSpecification, use_datalist_options=False) -> (str, str | None):
         match html_input_specification.contraints.type:
-            case t if t in one_line_text_input_types:
+            case t if t in one_line_text_input_types + [None]:
                 return self.__add_constraints_for_one_line_text(html_input_specification.contraints, use_datalist_options)
             case t if t in binary_input_types:
                 return self.__add_constraints_for_binary(html_input_specification.contraints.required)
@@ -142,14 +142,14 @@ class SpecificationBuilder:
                 return self.__add_constraints_for_month(html_input_specification.contraints, use_datalist_options)
             case InputType.NUMBER.value:
                 return self.__add_constraints_for_number(html_input_specification.contraints, use_datalist_options)
+            case InputType.TEXTAREA.value:
+                return self.__add_constraints_for_multi_line_text(html_input_specification.contraints, use_datalist_options)
             case InputType.TIME.value:
                 return self.__add_constraints_for_time(html_input_specification.contraints, use_datalist_options)
             case InputType.URL.value:
                 return self.__add_constraints_for_url(html_input_specification.contraints, use_datalist_options)
             case InputType.WEEK.value:
                 return self.__add_constraints_for_week(html_input_specification.contraints, use_datalist_options)
-            case None:
-                return self.__add_constraints_for_one_line_text(html_input_specification.contraints, use_datalist_options)
             case _:
                 raise ValueError(
                     'The provided type does not match any known html input type')
@@ -299,9 +299,26 @@ class SpecificationBuilder:
 
         return grammar, formula
 
+    def __add_constraints_for_multi_line_text(self, html_constraints: HTMLConstraints, use_datalist_options: bool) -> (str, str | None):
+        grammar = load_file_content(
+            f'{pre_built_specifications_path}/text/multi-line-text.bnf')
+        formula = None
+
+        if html_constraints.required is not None and html_constraints.minlength is None:
+            formula = self.__add_to_formula('str.len(<start>) > 0',
+                                            formula, LogicalOperator.AND)
+        elif html_constraints.minlength is not None:
+            formula = self.__add_to_formula(
+                f'str.len(<start>) >= {html_constraints.minlength}', formula, LogicalOperator.AND)
+        if html_constraints.maxlength is not None:
+            formula = self.__add_to_formula(
+                f'str.len(<start>) <= {html_constraints.maxlength}', formula, LogicalOperator.AND)
+
+        return grammar, formula
+
     def __add_constraints_for_one_line_text(self, html_constraints: HTMLConstraints, use_datalist_options: bool) -> (str, str | None):
         grammar = load_file_content(
-            f'{pre_built_specifications_path}/one-line-text/one-line-text.bnf')
+            f'{pre_built_specifications_path}/text/one-line-text.bnf')
         formula = None
 
         if use_datalist_options and html_constraints.list is not None:
@@ -363,9 +380,9 @@ class SpecificationBuilder:
         if use_datalist_options and html_constraints.list is not None:
             grammar = self.__replace_by_list_options(
                 grammar, 'url', html_constraints.list)
-        # if html_constraints.required is not None and html_constraints.minlength is None:
-        #     formula = self.__add_to_formula('str.len(<start>) > 0',
-        #                                     formula, LogicalOperator.AND)
+        if html_constraints.required is not None and html_constraints.minlength is None:
+            formula = self.__add_to_formula('str.len(<start>) > 8',
+                                            formula, LogicalOperator.AND)
         else:
             formula = self.__add_to_formula(f'str.len(<start>) >= {html_constraints.minlength}',
                                             formula, LogicalOperator.AND)
