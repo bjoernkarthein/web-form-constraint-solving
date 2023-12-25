@@ -373,15 +373,14 @@ class SpecificationBuilder:
     def __add_constraints_for_url(self, html_constraints: HTMLConstraints, use_datalist_options=False) -> (str, str | None):
         grammar = load_file_content(
             f'{pre_built_specifications_path}/url/url.bnf')
-        formula = None
-        # formula = load_file_content(
-        #     f'{pre_built_specifications_path}/url/url.isla')
+        formula = load_file_content(
+            f'{pre_built_specifications_path}/url/url.isla')
 
         if use_datalist_options and html_constraints.list is not None:
             grammar = self.__replace_by_list_options(
                 grammar, 'url', html_constraints.list)
         if html_constraints.required is not None and html_constraints.minlength is None:
-            formula = self.__add_to_formula('str.len(<start>) > 8',
+            formula = self.__add_to_formula('str.len(<start>) >= 8',
                                             formula, LogicalOperator.AND)
         else:
             formula = self.__add_to_formula(f'str.len(<start>) >= {html_constraints.minlength}',
@@ -393,7 +392,7 @@ class SpecificationBuilder:
             # TODO
             pass
 
-        return grammar, None
+        return grammar, formula
 
     def __add_constraints_for_week(self, html_constraints: HTMLConstraints, use_datalist_options=False) -> (str, str | None):
         grammar = load_file_content(
