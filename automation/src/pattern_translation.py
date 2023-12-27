@@ -1,100 +1,198 @@
+import string
+import sys
+
 from typing import List, Dict
 
-class PatternTranslator:
+"""
+pattern = disjunction
+disjunction = term | term '|' disjunction
+term = atom | atom quantifier | atom term
+
+atom = patterncharacter | '.' | '\' printable | '(' disjunction ')' | '[' list ']'
+
+quantifier = '*' | '+' | '?' | '{' number '}' | '{' number ',}' | '{' number ',' number '}'
+
+syntaxcharacter = '^' | '$' | '\' | '.' | '*' | '+' | '?' | '(' | ')' | '[' | ']' | '{' | '}' | '|'
+patterncharacter = printable without syntaxcharacter
+"""
+
+class RegEx:
     def __init__(self) -> None:
-        self.__special_characters = ['^', '$', '\\', '.', '*', '+', '?', '(', ')', '[', ']', '{', '}', '|']
+        pass
 
-    def convert_pattern_to_specification(self, javascript_pattern: str) -> (str, str | None):
-        formula = None
+class Blank(RegEx):
+    pass
 
-        # According to html standard the user agent checks the input against ^(?:javascript_pattern)$
-        if javascript_pattern[0] == '^':
-            javascript_pattern = javascript_pattern[1:]
+class Alternative(RegEx):
+    def __init__(self, this: RegEx, that: RegEx) -> None:
+        self.__this = this
+        self.__that = that
+
+    def __str__(self) -> str:
+        return f'({self.__this}) or ({self.__that})'
+
+class Sequence(RegEx):
+    def __init__(self, first: RegEx, second: RegEx) -> None:
+        self.__first = first
+        self.__second = second
+
+    def __str__(self) -> str:
+        return f'{self.__first} -> {self.__second}'
+
+class Quantifier(RegEx):
+    def __init__(self, min_repeat: int, max_repeat: int = None) -> None:
+        self.__min_repeat = min_repeat
+        self.__max_repeat = max_repeat
+
+    def __str__(self) -> str:
+        result = 'times '
+        if self.__max_repeat is None:
+            return f'times {self.__min_repeat}'
+        elif self.__max_repeat == sys.maxsize:
+            return f'times {self.__min_repeat} to unlimited'
+        else:
+            return f'times {self.__min_repeat} to {self.__max_repeat}'
+
+class Repetition(RegEx):
+    def __init__(self, atom: RegEx, quantifier: RegEx) -> None:
+        self.__atom = atom
+        self.__quantifier = quantifier
+
+    def __str__(self) -> str:
+        return f'{self.__atom} {self.__quantifier}'
+
+class Primitive(RegEx):
+    def __init__(self, char: str) -> None:
+        self.__char = char
+
+    def __str__(self) -> str:
+        return self.__char
+
+class PrimitiveChoice(RegEx):
+    def __init__(self, choices) -> None:
+        self.__choices = choices
+
+    def __str__(self) -> str:
+        return f'one from {self.__choices}'
+
+class PatternTranslator:
+    def __init__(self, javascript_pattern: str) -> None:
+        self.__pattern: str = javascript_pattern
+        self.__syntax_characters: List[str] = ['^', '$', '\\', '.', '*', '+', '?', '(', ')', '[', ']', '{', '}', '|']
+        self.__printable_characters: List[str] = [*string.printable]
+        self.__digits: List[str] = [*string.digits]
+
+    def convert(self):
+        tree = self.parse()
+        print(tree)
+
+    def parse(self) -> RegEx:
+        return self.disjunction()
+
+    # recursive descent methods
+    def peek(self) -> str:
+        return self.__pattern[0]
         
-        if javascript_pattern[-1] == '$':
-            javascript_pattern = javascript_pattern[:-1]
+    def eat(self, c: str) -> None:
+        if self.peek() == c:
+            self.__pattern = self.__pattern[1:]
+        else:
+            raise ValueError(f'eat expected next character to be "{c}" but was "{self.peek()}"')
 
-        quantifiers = self.__find_between(javascript_pattern, '{', '}')
-        lists = self.__find_between(javascript_pattern, '[', ']')
+    def next(self) -> str:
+        c = self.peek()
+        self.eat(c)
+        return c
 
-        print(quantifiers)
-        print(lists)
+    def more(self) -> bool:
+        return len(self.__pattern) > 0
 
-        grammar = self.__find_terminals(javascript_pattern)
-        print(grammar)
 
-        groups = self.__find_groups(javascript_pattern)
-        print(groups)
+    # pattern element types
+    def disjunction(self) -> RegEx:
+        term = self.term()
 
-        return grammar, formula
+        if self.more() and self.peek() == '|':
+            self.eat('|')
+            disjunction = self.disjunction()
+            return Alternative(term, disjunction)
+        else:
+            return term  
 
-    def __find_between(self, string: str, start_character: str, end_character: str) -> List[str]:
-        elements = []
-        start_index = None
-        end_index = None
-
-        for i in range(len(string)):
-            c = string[i]
-
-            # TODO: nested quantifiers?
-            if c == start_character:
-                start_index = i
-            if c == end_character:
-                end_index = i
-                print(start_index, end_index)
-                elements.append(string[start_index:end_index+1])
-                start_index = None
-                end_index = None
+    def term(self) -> RegEx:
+        term = self.atom()
         
-        return elements
-
-    def __find_terminals(self, javascript_pattern: str) -> Dict[int, List[str]]:
-        grammar = {}
-        for i in range(len(javascript_pattern)):
-            c = javascript_pattern[i]
-            if not c in self.__special_characters or i > 0 and javascript_pattern[i-1] == '\\':
-                self.__add_rule_to_grammar(grammar, [c])
+        if self.more() and self.peek() in ['*', '+', '?', '{']:
+            quantifier = self.quantifier()
+            term = Repetition(term, quantifier)
         
-        return grammar
-
-    def __find_groups(self, javascript_pattern: str) -> List[str]:
-        groups = []
-        unmatched_parentheses = 0
-        start_index = None
-        end_index = None
-
-        for i in range(len(javascript_pattern)):
-            c = javascript_pattern[i]
-
-            if c == '(':
-                if unmatched_parentheses == 0:
-                    start_index = i
-                unmatched_parentheses += 1
-            if c == ')':
-                unmatched_parentheses -= 1
-                if unmatched_parentheses == 0:
-                    end_index = i
-                    javascript_pattern[start_index:end_index]
-                    group = javascript_pattern[start_index:end_index+1]
-                    
-                    # recursively add subgroups from inner most to outermost
-                    groups.extend(self.__find_groups(group[1:-1]))
-                    groups.append(group)
+        while self.more() and self.peek() != ')' and self.peek() != '|':
+            next_term = self.term()
+            term = Sequence(term, next_term)
             
-                    start_index = None
-                    end_index = None
+        return term
+
+    def atom(self) -> RegEx:
+        c = self.peek()
+        match c:
+            case '.':
+                self.eat('.')
+                no_line_terminators = self.__printable_characters.copy()
+                no_line_terminators.remove('\n')
+                no_line_terminators.remove('\r')
+                return PrimitiveChoice(no_line_terminators)
+            case '\\':
+                # TODO: what about \s etc?
+                self.eat('\\')
+                char = self.next()
+                return Primitive(char)
+            case '(':
+                # TODO: handle groups correctly
+                self.eat('(')
+                disjunction = self.disjunction()
+                self.eat(')')
+                return disjunction
+            case '[':
+                # TODO: list
+                pass
+            case _:
+                self.eat(c)
+                return Primitive(c)
+
+    def quantifier(self) -> RegEx:
+        c = self.peek()
+        match c:
+            case '*':
+                self.eat('*')
+                return Quantifier(0, sys.maxsize)
+            case '+':
+                self.eat('+')
+                return Quantifier(1, sys.maxsize)
+            case '?':
+                self.eat('?')
+                return Quantifier(0, 1)
+            case '{':
+                self.eat('{')
+                quantifier = self.__handle_quantification_with_numbers()
+                self.eat('}')
+                return quantifier
     
-        return groups
-
-    def __add_group_to_grammar(self, group: str, grammar: Dict[int, List[str]]) -> Dict[int, List[str]]:
+    def __handle_quantification_with_numbers(self) -> Quantifier:
+        min = self.next()
+        while (self.more() and self.peek() not in [',', '}']):
+            min = min + self.next()
         
-        return grammar
+        if self.peek() == '}':
+            return Quantifier(int(min), None)
 
-    def __add_rule_to_grammar(self, grammar: Dict[int, List[str]], rules: List[str]) -> Dict[int, List[str]]:
-        next_free_index = len(grammar) + 1
-        grammar[next_free_index] = rules
-        return grammar
+        if self.peek() == ',':
+            self.eat(',')
+            max = self.next()
+            while (self.more() and self.peek() not in ['}']):
+                max = max + self.next()
+
+            return Quantifier(min, max)
 
 
-t = PatternTranslator()
-t.convert_pattern_to_specification("""((a(b))\.c)[a-z]{1,5}(d)""")
+t = PatternTranslator('^x\+$|a.?(bc)*')
+t.convert()
