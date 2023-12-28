@@ -2,7 +2,7 @@ import string
 import uuid
 
 from abc import ABC, abstractmethod
-from typing import List, Dict, Self
+from typing import List, Dict, Self, Set
 
 """
 pattern = disjunction
@@ -25,8 +25,26 @@ class RegEx(ABC):
         pass
 
     @abstractmethod
-    def build_grammar(self, grammar: Grammar, next_free_label: int):
+    def leaves(self) -> List[Self]:
         pass
+
+class Pattern:
+    def __init__(self, regex_tree: RegEx) -> None:
+        self.__tree = regex_tree
+        self.leaves: Set[Primitive] = set(self.__tree.leaves())
+    
+    # def __iter__(self) -> Self:
+    #     self.__items = self.__tree.leaves()
+    #     self.__curr = 0
+    #     return self
+
+    # def __next__(self) -> RegEx:
+    #     if self.__curr < len(self.__items):
+    #         res = self.__items[self.__curr]
+    #         self.__curr += 1
+    #         return res
+    #     else: 
+    #         raise StopIteration
 
 class Alternative(RegEx):
     def __init__(self, this: RegEx, that: RegEx) -> None:
@@ -36,25 +54,8 @@ class Alternative(RegEx):
     def __str__(self) -> str:
         return f'{self.__this} or {self.__that}'
 
-    def build_grammar(self, grammar: Grammar, next_free_label: int):
-        current = list(grammar.keys())[-1]
-        if is_primitive(self.__this):
-            grammar[current].append(f'"{str(self.__this)}"')
-        else:
-            label = f'<{next_free_label}>'
-            next_free_label += 1
-            grammar[current].append(label)
-            grammar[label] = []
-            self.__this.build_grammar(grammar, next_free_label)
-        if is_primitive(self.__that):
-            grammar[current].append(f'"{str(self.__that)}"')
-        else:
-            label = f'<{next_free_label}>'
-            next_free_label += 1
-            grammar[current].append(label)
-            grammar[label] = []
-            self.__that.build_grammar(grammar, next_free_label)
-
+    def leaves(self) -> List[Self]:
+        return self.__this.leaves() + self.__that.leaves()
 
 class Sequence(RegEx):
     def __init__(self, first: RegEx, second: RegEx) -> None:
@@ -64,11 +65,10 @@ class Sequence(RegEx):
     def __str__(self) -> str:
         return f'{self.__first} -> {self.__second}'
 
-    def build_grammar(self, grammar: Grammar, next_free_label: int):
-        print(self.__first)
-        print(self.__second)
+    def leaves(self) -> List[Self]:
+        return self.__first.leaves() + self.__second.leaves()
 
-class Quantifier(RegEx):
+class Quantifier:
     def __init__(self, min_repeat: int, max_repeat: int = None) -> None:
         self.__min_repeat = min_repeat
         self.__max_repeat = max_repeat
@@ -90,9 +90,6 @@ class Quantifier(RegEx):
     def max_repeat(self) -> int:
         return self.__max_repeat
 
-    def build_grammar(self, grammar: Grammar):
-        pass
-
 class Repetition(RegEx):
     def __init__(self, atom: RegEx, quantifier: Quantifier) -> None:
         self.__atom = atom
@@ -101,28 +98,8 @@ class Repetition(RegEx):
     def __str__(self) -> str:
         return f'{self.__atom} {self.__quantifier}'
 
-    def build_grammar(self, grammar: Grammar, next_free_label: int):
-        current = list(grammar.keys())[-1]
-        min = self.__quantifier.min_repeat
-        max = self.__quantifier.max_repeat
-
-        label = f'<{next_free_label}>'
-        next_free_label += 1
-        if min == max:
-            grammar[current].append(label * min)
-        elif min == 0 and max == None:
-            grammar[current].extend(['""', f'{label}{current}'])
-        elif min == 1 and max == None:
-            grammar[current].extend([label, f'{label}{current}'])
-        else:
-            for i in range(min, max+1):
-                if i == 0:
-                    grammar[current].append('""')
-                else:
-                    grammar[current].append(label*i)
-
-        grammar[label] = []
-        self.__atom.build_grammar(grammar, next_free_label)
+    def leaves(self) -> List[Self]:
+        return self.__atom.leaves()
 
 class Primitive(RegEx):
     def __init__(self, char: str) -> None:
@@ -131,12 +108,24 @@ class Primitive(RegEx):
     def __str__(self) -> str:
         return self.__char
 
-    def build_grammar(self, grammar: Grammar, next_free_label: int):
-        current = list(grammar.keys())[-1]
-        grammar[current].append(f'"{self.__char}"')
+    def __eq__(self, other) -> bool:
+        """Checks for equality of two Primitives"""
+        if isinstance(other, Primitive):
+            return self.__char == other.char
+        return False
 
-def is_primitive(elem: RegEx) -> bool:
-    return isinstance(elem, Primitive)
+    def __ne__(self, other) -> bool:
+        return not self.__eq__(other)
+
+    def __hash__(self) -> bool:
+        return hash(self.__char)
+
+    @property
+    def char(self) -> str:
+        return self.__char
+
+    def leaves(self) -> List[Self]:
+        return [self]
 
 class PatternTranslator:
     def __init__(self, javascript_pattern: str) -> None:
@@ -147,13 +136,16 @@ class PatternTranslator:
 
     def convert(self):
         tree = self.parse()
-        grammar = self.build_grammar(tree)
+        pattern = Pattern(tree)
+        grammar = self.build_grammar(pattern)
         print(self.write_gammar(grammar))
         
-    def build_grammar(self, regex: RegEx) -> Grammar:
+    def build_grammar(self, pattern: Pattern) -> Grammar:
+        next_free_label = 1
         grammar: Grammar = {'<start>': []}
-        print(regex)
-        regex.build_grammar(grammar, 1)
+        for elem in pattern.leaves:
+            grammar[f'<{next_free_label}>'] = [f'"{elem}"']
+            next_free_label += 1
         return grammar
 
     def write_gammar(self, grammar: Grammar) -> str:
@@ -279,5 +271,5 @@ class PatternTranslator:
             return Quantifier(min, max)
 
 
-t = PatternTranslator('abcd')
+t = PatternTranslator('aabcd')
 t.convert()
