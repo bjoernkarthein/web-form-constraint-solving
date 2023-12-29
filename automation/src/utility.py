@@ -68,7 +68,7 @@ instrumentation_controller = f'{service_base_url}/instrumentation'
 one_line_text_input_types = [InputType.PASSWORD.value,
                              InputType.SEARCH.value, InputType.TEL.value, InputType.TEXT.value]
 binary_input_types = [InputType.CHECKBOX.value, InputType.RADIO.value]
-non_writable_input_types = [InputType.SUBMIT.value, InputType.HIDDEN.value, InputType.RESET.value, InputType.FILE.value, InputType.COLOR.value, InputType.IMAGE.value]
+non_writable_input_types = [InputType.SUBMIT.value, InputType.HIDDEN.value, InputType.RESET.value, InputType.RANGE.value, InputType.FILE.value, InputType.COLOR.value, InputType.IMAGE.value]
 
 
 def load_file_content(file_name: str) -> str:

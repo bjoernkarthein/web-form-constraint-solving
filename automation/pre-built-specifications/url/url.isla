@@ -1,1 +1,2 @@
-str.to.int(<port>) <= 65535 and str.to.int(<ipv4-number>) <= 255
+(str.len(<port>) > 0 implies str.to.int(<port>) <= 65535) and
+str.to.int(<ipv4-number>) <= 255

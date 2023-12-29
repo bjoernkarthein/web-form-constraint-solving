@@ -371,10 +371,13 @@ class SpecificationBuilder:
         return grammar, formula
 
     def __add_constraints_for_url(self, html_constraints: HTMLConstraints, use_datalist_options=False) -> (str, str | None):
+        # TODO: grammar not always accepted by chrome
         grammar = load_file_content(
             f'{pre_built_specifications_path}/url/url.bnf')
-        formula = load_file_content(
-            f'{pre_built_specifications_path}/url/url.isla')
+        # TODO: formula not working
+        # formula = load_file_content(
+        #     f'{pre_built_specifications_path}/url/url.isla')
+        formula = None
 
         if use_datalist_options and html_constraints.list is not None:
             grammar = self.__replace_by_list_options(
@@ -418,7 +421,7 @@ class SpecificationBuilder:
             week = int(week_str)
             formula = self.__add_to_formula(f'str.to.int(<year>) <= {year} and str.to.int(<year>) + str.to.int(<week>) <= {year + week}',
                                             formula, LogicalOperator.AND)
-        # TODO: step not working because can not set calculation in parantheses
+        # TODO: step not working because can not set modulo calculation in parantheses
         # if html_constraints.step is not None:
         #     formula = self.__add_to_formula(f'(str.to.int(<year>) + str.to.int(<month>)) mod {html_constraints.step} = 0',
         #                                     formula, LogicalOperator.AND)
