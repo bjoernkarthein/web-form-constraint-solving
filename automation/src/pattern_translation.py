@@ -25,26 +25,18 @@ class RegEx(ABC):
         pass
 
     @abstractmethod
+    def nodes(self) -> List[Self]:
+        pass
+
+    @abstractmethod
     def leaves(self) -> List[Self]:
         pass
 
 class Pattern:
     def __init__(self, regex_tree: RegEx) -> None:
         self.__tree = regex_tree
-        self.leaves: Set[Primitive] = set(self.__tree.leaves())
-    
-    # def __iter__(self) -> Self:
-    #     self.__items = self.__tree.leaves()
-    #     self.__curr = 0
-    #     return self
-
-    # def __next__(self) -> RegEx:
-    #     if self.__curr < len(self.__items):
-    #         res = self.__items[self.__curr]
-    #         self.__curr += 1
-    #         return res
-    #     else: 
-    #         raise StopIteration
+        self.nodes: Set[RegEx] = self.__tree.nodes()
+        self.leaves: Set[Primitive] = self.__tree.leaves()
 
 class Alternative(RegEx):
     def __init__(self, this: RegEx, that: RegEx) -> None:
@@ -53,6 +45,9 @@ class Alternative(RegEx):
 
     def __str__(self) -> str:
         return f'{self.__this} or {self.__that}'
+
+    def nodes(self) -> List[Self]:
+        return self.__this.nodes() + self.__that.nodes() + [self]
 
     def leaves(self) -> List[Self]:
         return self.__this.leaves() + self.__that.leaves()
@@ -64,6 +59,17 @@ class Sequence(RegEx):
 
     def __str__(self) -> str:
         return f'{self.__first} -> {self.__second}'
+
+    @property
+    def first(self) -> int:
+        return self.__first
+
+    @property
+    def second(self) -> int:
+        return self.__second
+
+    def nodes(self) -> List[Self]:
+        return self.__first.nodes() + self.__second.nodes() + [self]
 
     def leaves(self) -> List[Self]:
         return self.__first.leaves() + self.__second.leaves()
@@ -98,6 +104,9 @@ class Repetition(RegEx):
     def __str__(self) -> str:
         return f'{self.__atom} {self.__quantifier}'
 
+    def nodes(self) -> List[Self]:
+        return self.__atom.nodes() + [self]
+
     def leaves(self) -> List[Self]:
         return self.__atom.leaves()
 
@@ -124,6 +133,9 @@ class Primitive(RegEx):
     def char(self) -> str:
         return self.__char
 
+    def nodes(self) -> List[Self]:
+        return []
+
     def leaves(self) -> List[Self]:
         return [self]
 
@@ -143,10 +155,34 @@ class PatternTranslator:
     def build_grammar(self, pattern: Pattern) -> Grammar:
         next_free_label = 1
         grammar: Grammar = {'<start>': []}
-        for elem in pattern.leaves:
-            grammar[f'<{next_free_label}>'] = [f'"{elem}"']
+
+        terminals = []
+        [terminals.append(t) for t in pattern.leaves if t not in terminals] # remove duplicates
+        for terminal in terminals:
+            grammar[f'<{next_free_label}>'] = [f'"{terminal}"']
             next_free_label += 1
+        
+        # for node in pattern.nodes:
+        #     print(node)
+        #     if isinstance(node, Sequence):
+        #         self.__add_sequence_to_grammar(node, grammar, next_free_label)
+        #         break
+        #     elif isinstance(node, Alternative):
+        #         pass
+        #     elif isinstance(node, Repetition):
+        #         pass
+        
         return grammar
+
+    # def __add_sequence_to_grammar(self, regex: Sequence, grammar: Grammar, next_free_label: int) -> None:
+    #     if isinstance(regex.first, Primitive) and isinstance(regex.second, Primitive):
+    #         terminal_one = Primitive(regex.first).char
+    #         label_one = [k for k, v in grammar.items() if f'"{terminal_one}"' in v]
+    #         terminal_two = Primitive(regex.second).char
+    #         label_two = [k for k, v in grammar.items() if f'"{terminal_two}"' in v]
+    #         if len(label_one + label_two) == 2:
+    #             grammar[f'<{next_free_label}>'] = [f'{label_one[0]} {label_two[0]}']
+    #             next_free_label += 1
 
     def write_gammar(self, grammar: Grammar) -> str:
         lines = []
