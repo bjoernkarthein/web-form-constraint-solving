@@ -9,7 +9,7 @@ pattern = disjunction
 disjunction = term | term '|' disjunction
 term = atom | atom quantifier | atom term
 
-atom = patterncharacter | '.' | '\' printable | '(' disjunction ')' | '[' list ']'
+atom = patterncharacter | '.' | '\' printable | '(' disjunction ')' | '[' options ']'
 
 quantifier = '*' | '+' | '?' | '{' number '}' | '{' number ',}' | '{' number ',' number '}'
 
@@ -148,9 +148,10 @@ class PatternTranslator:
 
     def convert(self):
         tree = self.parse()
+        print(tree)
         pattern = Pattern(tree)
-        grammar = self.build_grammar(pattern)
-        print(self.write_gammar(grammar))
+        # grammar = self.build_grammar(pattern)
+        # print(self.write_gammar(grammar))
         
     def build_grammar(self, pattern: Pattern) -> Grammar:
         next_free_label = 1
@@ -162,27 +163,7 @@ class PatternTranslator:
             grammar[f'<{next_free_label}>'] = [f'"{terminal}"']
             next_free_label += 1
         
-        # for node in pattern.nodes:
-        #     print(node)
-        #     if isinstance(node, Sequence):
-        #         self.__add_sequence_to_grammar(node, grammar, next_free_label)
-        #         break
-        #     elif isinstance(node, Alternative):
-        #         pass
-        #     elif isinstance(node, Repetition):
-        #         pass
-        
         return grammar
-
-    # def __add_sequence_to_grammar(self, regex: Sequence, grammar: Grammar, next_free_label: int) -> None:
-    #     if isinstance(regex.first, Primitive) and isinstance(regex.second, Primitive):
-    #         terminal_one = Primitive(regex.first).char
-    #         label_one = [k for k, v in grammar.items() if f'"{terminal_one}"' in v]
-    #         terminal_two = Primitive(regex.second).char
-    #         label_two = [k for k, v in grammar.items() if f'"{terminal_two}"' in v]
-    #         if len(label_one + label_two) == 2:
-    #             grammar[f'<{next_free_label}>'] = [f'{label_one[0]} {label_two[0]}']
-    #             next_free_label += 1
 
     def write_gammar(self, grammar: Grammar) -> str:
         lines = []
@@ -238,6 +219,42 @@ class PatternTranslator:
             
         return term
 
+    def options(self) -> RegEx:
+        if self.peek() == '^':
+            self.eat('^')
+            excluded = self.not_in()
+            print(excluded)
+            choices = list(set(self.__printable_characters) - set(excluded))
+            return self.__create_choice_from_list(choices)
+
+        options = self.atom()
+
+        if self.more() and self.peek() == '-':
+            self.eat('-')
+            end = self.atom()
+            options = self.__build_alternative_from_range(options.char, end.char)
+
+        while self.more() and self.peek() != ']':
+            next_option = self.options()
+            options = Alternative(options, next_option)
+
+        return options
+
+    def not_in(self) -> List[str]:
+        choice = self.atom()
+        excluded = [str(c) for c in choice.leaves()]
+
+        if self.more() and self.peek() == '-':
+            self.eat('-')
+            end = str(self.atom().leaves()[0])
+            excluded = self.__get_characters_from_range(excluded[0], end)
+
+        while self.more() and self.peek() != ']':
+            next = self.not_in()
+            excluded = excluded + next
+
+        return excluded
+
     def atom(self) -> RegEx:
         c = self.peek()
         match c:
@@ -248,10 +265,21 @@ class PatternTranslator:
                 no_line_terminators.remove('"')
                 return self.__create_choice_from_list(no_line_terminators[:-6])
             case '\\':
-                # TODO: what about \s etc?
                 self.eat('\\')
-                char = self.next()
-                return Primitive(char)
+                if self.peek() == 'd':
+                    self.eat('d')
+                    digits = self.__printable_characters[0:10]
+                    return self.__create_choice_from_list(digits)
+                elif self.peek() == 's':
+                    self.eat('s')
+                    return self.__create_choice_from_list(['\r', '\n', '\t', '\f', '\v'])
+                elif self.peek() == 'w':
+                    self.eat('w')
+                    letters = self.__printable_characters[0:62]
+                    return self.__create_choice_from_list(letters + ['_'])
+                else:
+                    char = self.next()
+                    return Primitive(char)
             case '(':
                 # TODO: handle groups correctly with quantifiers
                 self.eat('(')
@@ -259,8 +287,10 @@ class PatternTranslator:
                 self.eat(')')
                 return disjunction
             case '[':
-                # TODO: list
-                pass
+                self.eat('[')
+                options = self.options()
+                self.eat(']')
+                return options
             case _:
                 self.eat(c)
                 return Primitive(c)
@@ -282,6 +312,18 @@ class PatternTranslator:
                 quantifier = self.__handle_quantification_with_numbers()
                 self.eat('}')
                 return quantifier
+
+    def __get_characters_from_range(self, start: str, end: str) -> List[str]:
+        try:
+            start_index = self.__printable_characters.index(start)
+            end_index = self.__printable_characters.index(end)
+            return self.__printable_characters[start_index:end_index+1]
+        except Exception as e:
+            raise RuntimeError(f'Can not get sublist for values from {start} to {end}')
+
+    def __build_alternative_from_range(self, start: str, end: str) -> Alternative:
+        options = self.__get_characters_from_range(start, end)
+        return self.__create_choice_from_list(options)
 
     def __create_choice_from_list(self, characters: List[str]) -> Alternative:
         if len(characters) == 2:
@@ -307,5 +349,5 @@ class PatternTranslator:
             return Quantifier(min, max)
 
 
-t = PatternTranslator('aabcd')
+t = PatternTranslator('[a]')
 t.convert()
