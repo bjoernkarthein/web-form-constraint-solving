@@ -9,7 +9,7 @@ pattern = disjunction
 disjunction = term | term '|' disjunction
 term = atom | atom quantifier | atom term
 
-atom = patterncharacter | '.' | '\' printable | '(' disjunction ')' | '[' options ']'
+atom = patterncharacter | '.' | '\' printable | '(' group ')' | '[' options ']'
 
 quantifier = '*' | '+' | '?' | '{' number '}' | '{' number ',}' | '{' number ',' number '}'
 
@@ -97,18 +97,18 @@ class Quantifier:
         return self.__max_repeat
 
 class Repetition(RegEx):
-    def __init__(self, atom: RegEx, quantifier: Quantifier) -> None:
-        self.__atom = atom
+    def __init__(self, term: RegEx, quantifier: Quantifier) -> None:
+        self.__term = term
         self.__quantifier = quantifier
 
     def __str__(self) -> str:
-        return f'{self.__atom} {self.__quantifier}'
+        return f'{self.__term} {self.__quantifier}'
 
     def nodes(self) -> List[Self]:
-        return self.__atom.nodes() + [self]
+        return self.__term.nodes() + [self]
 
     def leaves(self) -> List[Self]:
-        return self.__atom.leaves()
+        return self.__term.leaves()
 
 class Primitive(RegEx):
     def __init__(self, char: str) -> None:
@@ -281,7 +281,6 @@ class PatternTranslator:
                     char = self.next()
                     return Primitive(char)
             case '(':
-                # TODO: handle groups correctly with quantifiers
                 self.eat('(')
                 disjunction = self.disjunction()
                 self.eat(')')
@@ -349,5 +348,6 @@ class PatternTranslator:
             return Quantifier(min, max)
 
 
-t = PatternTranslator('[a]')
-t.convert()
+t = PatternTranslator('(a|bc)?')
+tree = t.parse()
+print(tree)
