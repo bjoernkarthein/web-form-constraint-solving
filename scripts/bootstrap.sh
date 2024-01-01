@@ -3,6 +3,7 @@
 source .env
 
 # Check if required software is installed
+echo "Checking node installation"
 if $NODE_COMMAND "--version"; then
     echo "Found node installation"
 else
@@ -11,10 +12,11 @@ else
     exit 1
 fi
 
+echo "Checking CodeQL installation"
 if $CODEQL_PATH "--version"; then
-    echo "Found codeql installation"
+    echo "Found CodeQL installation"
 else
-    echo "No codeql installation found"
+    echo "No CodeQL installation found"
     read
     exit 1
 fi

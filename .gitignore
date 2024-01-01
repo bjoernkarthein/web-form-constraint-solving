@@ -2,6 +2,8 @@ __pycache__
 node_modules
 scripts/server_pid.txt
 
+automation/src/specification
+
 service/src/original
 service/src/instrumented
 service/src/trace.log
