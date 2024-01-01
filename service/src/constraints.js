@@ -6,91 +6,6 @@ const codeql = require("./codeql");
 const allTraces = [];
 const groupedTraces = [];
 
-// class Action {
-//   constructor(actionType, args) {
-//     this.actionType = actionType;
-//     this.args = args;
-//   }
-
-//   getConstraintCandidates() {
-//     return [];
-//   }
-// }
-
-// class ValueInputAction extends Action {
-//   constructor(t) {
-//     super(trace.ACTION_ENUM.VALUE_INPUT, t.args);
-//   }
-
-//   getConstraintCandidates() {
-//     return ["value"];
-//   }
-// }
-
-// class NamedFunctionCallAction extends Action {
-//   constructor(t) {
-//     super(trace.ACTION_ENUM.NAMED_FUNCTION_CALL, t.args);
-//     this.file = t.file;
-//     this.location = t.location;
-//   }
-
-//   getConstraintCandidates() {
-//     return ["named"];
-//   }
-// }
-
-// class UnNamedFunctionCallAction extends Action {
-//   constructor(t) {
-//     super(trace.ACTION_ENUM.UNNAMED_FUNCTION_CALL, t.args);
-//     this.file = t.file;
-//     this.location = t.location;
-//   }
-
-//   getConstraintCandidates() {
-//     return ["unnamed"];
-//   }
-// }
-
-// class VariableDeclarationAction extends Action {
-//   constructor(t) {
-//     super(trace.ACTION_ENUM.VARIABLE_DECLARATION, t.args);
-//     this.file = t.file;
-//     this.location = t.location;
-//   }
-
-//   getConstraintCandidates() {
-//     return ["variable decl"];
-//   }
-// }
-
-// class VariableAssignmentAction extends Action {
-//   constructor(t) {
-//     super(trace.ACTION_ENUM.VARIABLE_ASSIGNMENT, t.args);
-//     this.file = t.file;
-//     this.location = t.location;
-//   }
-
-//   getConstraintCandidates() {
-//     return ["variable ass"];
-//   }
-// }
-
-// class ConditionStatementAction extends Action {
-//   constructor(t) {
-//     super(trace.ACTION_ENUM.VARIABLE_ASSIGNMENT, t.args);
-//     this.file = t.file;
-//     this.location = t.location;
-//   }
-
-//   getConstraintCandidates() {
-//     return ["condition statement"];
-//   }
-// }
-
-function jsonEuqals(jsonOne, jsonTwo) {
-  return JSON.stringify(jsonOne) === JSON.stringify(jsonTwo);
-}
-
 function hasValue(object, value) {
   for (const [key, elem] of Object.entries(object)) {
     if (typeof elem === "string") {
@@ -140,7 +55,7 @@ function analyseTraces() {
       }
     }
 
-    extractConstraintCandidates();
+    runQueries();
   });
 }
 
@@ -148,7 +63,7 @@ function compareTimestamps(a, b) {
   return a.time - b.time;
 }
 
-function extractConstraintCandidates() {
+function runQueries() {
   for (const traceGroup of groupedTraces) {
     const browserTraces = traceGroup.filter((t) => t.pageFile);
     if (browserTraces.length == 0) {
@@ -180,6 +95,11 @@ function extractConstraintCandidates() {
     fs.rmSync(sourceDir, { recursive: true, force: true });
     fs.rmSync(databaseDir, { recursive: true, force: true });
   }
+}
+
+function extractConstraintCandidates() {
+
+  fs.rmSync(codeql.resultDirectory, { recursive: true, force: true });
 }
 
 function perpareForCodeQLQueries(traces) {
@@ -238,14 +158,6 @@ function findMagicValues(traceGroup) {
     return tracesWithMagicValues;
   } else {
     return [];
-  }
-}
-
-function runCodeQLQueries(traceGroup) {
-  for (const trace of traceGroup) {
-    if (!trace.pageFile) {
-      continue;
-    }
   }
 }
 

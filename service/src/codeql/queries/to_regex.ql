@@ -5,7 +5,7 @@
  * @id javascript/to-regex
  */
 
-import input_flow
+import lib.input_flow
 
 from DataFlow::SourceNode source, MethodCallExpr methodCall
 where

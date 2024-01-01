@@ -7,10 +7,14 @@ const common = require("./common");
 const codeqlPath = process.env.CODEQL_PATH;
 const codeqlDirectory = "codeql";
 const queryDirectory = `${codeqlDirectory}/queries`;
-// const allQueries = ["to_comparisson", "to_regex"];
-const allQueries = ["data_flow"];
+const resultDirectory = `${codeqlDirectory}/results`;
+const allQueries = ["to_comparisson", "to_regex"];
 
 function createDatabase(source, database) {
+  if (!fs.existsSync(resultDirectory)) {
+    fs.mkdirSync(resultDirectory);
+  }
+
   const databaseDir = `${codeqlDirectory}/${database}`;
   const command = `${codeqlPath} database create --language=javascript --source-root=${source} ${databaseDir}`;
   common.runCommandSync(command);
@@ -126,4 +130,5 @@ module.exports = {
   resetQuery,
   resetQueries,
   allQueries,
+  resultDirectory
 };

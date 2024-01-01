@@ -5,7 +5,7 @@
  * @id javascript/to-comp
  */
 
-import input_flow
+import lib.input_flow
 
 from ControlFlowNode node, Comparison comp
 where

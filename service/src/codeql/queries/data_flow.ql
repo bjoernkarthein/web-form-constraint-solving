@@ -5,7 +5,7 @@
  * @id javascript/data-flow
  */
 
-import input_flow
+import lib.input_flow
 
 from DataFlow::SourceNode source, DataFlow::Node node
 where
