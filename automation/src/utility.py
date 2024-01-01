@@ -1,6 +1,7 @@
 import math
 import requests
 import time
+import json
 
 from enum import Enum
 from selenium.common.exceptions import NoSuchElementException
@@ -9,7 +10,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webelement import WebElement
-from typing import List
+from typing import List, Dict
 
 """
 Utility module
@@ -79,6 +80,13 @@ def load_file_content(file_name: str) -> str:
         return ""
 
     return file_content
+
+def write_to_file(file_name: str, data: str | Dict) -> None:
+    with open(file_name, 'w') as file:
+        if isinstance(data, str):
+            file.write(data)
+        else:
+            json.dump(data, file, indent=4)
 
 
 def start_trace_recording(data) -> None:

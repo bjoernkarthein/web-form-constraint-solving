@@ -1,5 +1,6 @@
 import sys
 import time
+import json
 
 from selenium.common.exceptions import InvalidArgumentException
 from selenium.webdriver.chrome.service import Service
@@ -10,7 +11,7 @@ from constraint_extraction import ConstraintCandidateFinder, SpecificationBuilde
 from html_analysis import HTMLAnalyser, HTMLInputSpecification, FormObserver, HTMLRadioGroupSpecification
 from interceptor import NetworkInterceptor, ResponseInspector
 from input_generation import InputGenerator
-from utility import binary_input_types, ConfigKey, clean_instrumentation_resources
+from utility import binary_input_types, ConfigKey, clean_instrumentation_resources, write_to_file
 
 # chrome_driver_path = '../chromedriver/windows/chromedriver.exe'
 chrome_driver_path = '../chromedriver/linux/chromedriver'
@@ -108,10 +109,14 @@ class TestAutomationDriver:
         time.sleep(5)
         self.__exit()
 
+    # TODO: refactor to not be this complex
     def __generate_valid_html_magic_values(self, html_specifications: List[HTMLInputSpecification | HTMLRadioGroupSpecification]) -> None:
         self.__specification_builder = SpecificationBuilder()
         use_datalist_options = self.__config[ConfigKey.GENERATION.value][ConfigKey.USE_DATALIST_OPTIONS.value]
         magic_value_amount = self.__config[ConfigKey.ANALYSIS.value][ConfigKey.MAGIC_VALUE_AMOUNT.value]
+
+        next_file_index = 1
+        form_specification = {'controls': []}
 
         for specification in html_specifications:
             if isinstance(specification, HTMLInputSpecification):
@@ -125,9 +130,16 @@ class TestAutomationDriver:
                 grammar, formula = self.__specification_builder.create_specification_for_html_radio_group(
                     specification)
 
-            values = self.__constraint_candidate_finder.set_magic_value_sequence(
-                specification, grammar, formula, magic_value_amount)
-            print(specification.get_as_dict(), values)
+            grammar_file, formula_file = self.__specification_builder.write_specification_to_file(str(next_file_index), grammar, formula)
+            form_specification['controls'].append(specification.get_representation(grammar_file, formula_file))
+            next_file_index += 1
+
+            # self.__constraint_candidate_finder.set_magic_value_sequence(
+            #     specification, grammar, formula, magic_value_amount)
+
+        write_to_file('specification/specification.json', form_specification)
+        self.__exit()
+        
 
     def __exit(self, exit_code=None) -> None:
         """Free all resources and exit"""

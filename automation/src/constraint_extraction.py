@@ -2,6 +2,7 @@ import time
 
 from enum import Enum
 from lxml.html import Element
+from pathlib import Path
 from selenium.webdriver import Chrome
 from typing import List, Dict
 
@@ -100,8 +101,6 @@ class ConstraintCandidateFinder:
             click_web_element_by_reference(
                 self.__driver, self.__submit_element)
 
-            time.sleep(2)
-
         stop_trace_recording(
             {'spec': html_specification.get_as_dict(), 'values': magic_value_sequence})
 
@@ -153,6 +152,17 @@ class SpecificationBuilder:
             case _:
                 raise ValueError(
                     'The provided type does not match any known html input type')
+
+    def write_specification_to_file(self, name: str, grammar: str, formula: str = None) -> (str, str):
+        # TODO: create directory and handle permission denied error
+        # Path('/specification').mkdir(exist_ok=True)
+        grammar_file_name = f'{name}.bnf'
+        formula_file_name = f'{name}.isla'
+
+        write_to_file(f'specification/{grammar_file_name}', grammar)
+        write_to_file(f'specification/{formula_file_name}', formula if formula is not None else '')
+
+        return grammar_file_name, formula_file_name
 
     def __add_constraints_for_binary(self, required: str) -> (str, str | None):
         grammar = load_file_content(

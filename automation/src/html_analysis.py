@@ -183,6 +183,9 @@ class HTMLInputSpecification:
     def get_as_dict(self) -> Dict[str, HTMLElementReference | HTMLConstraints]:
         return {'reference': self.reference.get_as_dict(), 'constraints': self.contraints.get_as_dict()}
 
+    def get_representation(self, grammar_file: str, formula_file: str) -> Dict[str, str | Dict[str, str]]:
+        return {'type': self.contraints.type, 'reference': self.reference.get_as_dict(), 'grammar': grammar_file, 'formula': formula_file}
+
     def __str__(self) -> str:
         return json.dumps(self.get_as_dict())
 
@@ -198,6 +201,9 @@ class HTMLRadioGroupSpecification:
 
     def get_as_dict(self) -> Dict[str, str | bool | List[Tuple[HTMLElementReference, str]]]:
         return {'name': self.name, 'required': self.required, 'options': [(o[0].get_as_dict(), o[1]) for o in self.options]}
+
+    def get_representation(self, grammar_file: str, formula_file: str) -> Dict[str, str | Dict[str, str]]:
+        return {'type': 'radio', 'reference': self.name, 'grammar': grammar_file, 'formula': formula_file}
 
     def __str__(self) -> str:
         return json.dumps(self.get_as_dict())

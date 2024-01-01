@@ -9,7 +9,8 @@ pattern = disjunction
 disjunction = term | term '|' disjunction
 term = atom | atom quantifier | atom term
 
-atom = patterncharacter | '.' | '\' printable | '(' group ')' | '[' options ']'
+atom = patterncharacter | '.' | '\' printable | '(' group ')' | '[' list ']'
+list = options | '^' options
 
 quantifier = '*' | '+' | '?' | '{' number '}' | '{' number ',}' | '{' number ',' number '}'
 

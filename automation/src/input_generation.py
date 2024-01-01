@@ -7,8 +7,6 @@ class InputGenerator:
         if amount < 1:
             return []
 
-        print(grammar)
-        print(formula)
         solver = ISLaSolver(grammar, formula)
 
         # try:
