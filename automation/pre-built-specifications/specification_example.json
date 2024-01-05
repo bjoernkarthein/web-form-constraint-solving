@@ -1,5 +1,5 @@
 {
-  "url": "https://my-test-website.com",
+  "url": "https://some-test-website-with-a-form.com",
   "controls": [
     {
       "type": "email",
@@ -21,9 +21,29 @@
     },
     {
       "type": "radio",
-      "reference": "gender",
+      "reference": "underage",
+      "options": [
+        {
+          "reference": {
+            "access_method": "xpath",
+            "access_value": "/html/body/form/input[2]"
+          },
+          "value": "1"
+        },
+        {
+          "reference": {
+            "access_method": "xpath",
+            "access_value": "/html/body/form/input[3]"
+          },
+          "value": "0"
+        }
+      ],
       "grammar": "...",
       "formula": "..."
     }
-  ]
+  ],
+  "submit": {
+    "access_method": "xpath",
+    "access_value": "/html/form/button[1]"
+  }
 }
