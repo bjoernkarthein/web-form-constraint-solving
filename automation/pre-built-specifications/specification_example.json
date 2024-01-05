@@ -1,0 +1,29 @@
+{
+  "url": "https://my-test-website.com",
+  "controls": [
+    {
+      "type": "email",
+      "reference": {
+        "access_method": "id",
+        "access_value": "mail"
+      },
+      "grammar": "grammar_example.bnf",
+      "formula": "formula_example.isla"
+    },
+    {
+      "type": "text",
+      "reference": {
+        "access_method": "xpath",
+        "access_value": "/html/body/form/input[1]"
+      },
+      "grammar": "...",
+      "formula": "..."
+    },
+    {
+      "type": "radio",
+      "reference": "gender",
+      "grammar": "...",
+      "formula": "..."
+    }
+  ]
+}

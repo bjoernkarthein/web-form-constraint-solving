@@ -1,4 +1,5 @@
 analysis:
+  html-only: true
   magic-value-amount: 5
 generation:
   use-datalist-options: false
