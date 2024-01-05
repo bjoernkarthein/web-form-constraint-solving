@@ -28,6 +28,7 @@ class Action(Enum):
 
 class ConfigKey(Enum):
     ANALYSIS = 'analysis'
+    HTML_ONLY = 'html-only'
     MAGIC_VALUE_AMOUNT = 'magic-value-amount'
     GENERATION = 'generation'
     USE_DATALIST_OPTIONS = 'use-datalist-options'
@@ -69,7 +70,8 @@ instrumentation_controller = f'{service_base_url}/instrumentation'
 one_line_text_input_types = [InputType.PASSWORD.value,
                              InputType.SEARCH.value, InputType.TEL.value, InputType.TEXT.value]
 binary_input_types = [InputType.CHECKBOX.value, InputType.RADIO.value]
-non_writable_input_types = [InputType.SUBMIT.value, InputType.HIDDEN.value, InputType.RESET.value, InputType.RANGE.value, InputType.FILE.value, InputType.COLOR.value, InputType.IMAGE.value]
+non_writable_input_types = [InputType.SUBMIT.value, InputType.HIDDEN.value, InputType.RESET.value,
+                            InputType.RANGE.value, InputType.FILE.value, InputType.COLOR.value, InputType.IMAGE.value]
 
 
 def load_file_content(file_name: str) -> str:
@@ -77,9 +79,10 @@ def load_file_content(file_name: str) -> str:
         with open(file_name) as file:
             file_content = file.read()
     except FileNotFoundError:
-        return ""
+        return ''
 
     return file_content
+
 
 def write_to_file(file_name: str, data: str | Dict) -> None:
     with open(file_name, 'w') as file:

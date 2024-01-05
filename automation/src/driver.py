@@ -1,6 +1,5 @@
 import sys
 import time
-import json
 
 from selenium.common.exceptions import InvalidArgumentException
 from selenium.webdriver.chrome.service import Service
@@ -8,13 +7,14 @@ from seleniumwire import webdriver
 from typing import List
 
 from constraint_extraction import ConstraintCandidateFinder, SpecificationBuilder
+from specification_parser import SpecificationParser
 from html_analysis import HTMLAnalyser, HTMLInputSpecification, FormObserver, HTMLRadioGroupSpecification
 from interceptor import NetworkInterceptor, ResponseInspector
 from input_generation import InputGenerator
 from utility import binary_input_types, ConfigKey, clean_instrumentation_resources, write_to_file
 
-# chrome_driver_path = '../chromedriver/windows/chromedriver.exe'
-chrome_driver_path = '../chromedriver/linux/chromedriver'
+chrome_driver_path = '../chromedriver/windows/chromedriver.exe'
+# chrome_driver_path = '../chromedriver/linux/chromedriver'
 
 """
 Driver module
@@ -29,7 +29,7 @@ class TestAutomationDriver:
     ...
     """
 
-    def __init__(self, config: dict, url: str) -> None:
+    def __init__(self, config: dict, url: str = None, start_interceptor: bool = False, start_inspector: bool = True) -> None:
         """Initialize the Test Automation
 
         Set options for selenium chrome driver and selenium wire proxy
@@ -55,16 +55,31 @@ class TestAutomationDriver:
             seleniumwire_options=wire_options
         )
 
-        interceptor = NetworkInterceptor(self.__driver)
-        interceptor.instrument_files()
+        if start_interceptor:
+            interceptor = NetworkInterceptor(self.__driver)
+            interceptor.instrument_files()
 
-        inspector = ResponseInspector(self.__driver)
+        if start_inspector:
+            inspector = ResponseInspector(self.__driver)
 
-    def run(self) -> None:
+    def run_analysis(self) -> None:
         self.__load_page(self.__url)
         html_input_specifications = self.__analyse_html(
             self.__driver.page_source)
         self.__start_constraint_extraction(html_input_specifications)
+
+        self.__exit()
+
+    def run_test(self, specification_file: str | None = None) -> None:
+        specification_parser = SpecificationParser(specification_file)
+        spec = specification_parser.parse()
+        if spec is None:
+            self.__exit()
+
+        url = spec['url']
+        self.__load_page(url)
+
+        self.__exit()
 
     def __load_page(self, url: str) -> None:
         """ Open the web page by url.
@@ -73,9 +88,8 @@ class TestAutomationDriver:
         """
         try:
             self.__driver.get(url)
-        except InvalidArgumentException:
-            # TODO
-            pass
+        except InvalidArgumentException as e:
+            print('The provided url can not be loaded by selenium web driver. Please provide a url of the format http(s)://(www).example.com')
 
     def __analyse_html(self, html_string: str) -> List[HTMLInputSpecification | HTMLRadioGroupSpecification]:
         """Analyse the HTML content of the web page.
@@ -88,6 +102,7 @@ class TestAutomationDriver:
         if form is None or access is None:
             self.__exit()
 
+        # TODO check for form changes and handle
         self.__form_observer = FormObserver(form, access)
 
         html_constraints = self.__html_analyser.extract_static_constraints(
@@ -99,11 +114,16 @@ class TestAutomationDriver:
 
     def __start_constraint_extraction(self, html_specifications: List[HTMLInputSpecification | HTMLRadioGroupSpecification]) -> None:
         """Start the extraction of client-side validation constraints for a set of specified HTML inputs."""
+        html_only = self.__config[ConfigKey.ANALYSIS.value][ConfigKey.HTML_ONLY.value]
 
         self.__constraint_candidate_finder = ConstraintCandidateFinder(
             self.__driver, self.__html_analyser.submit_element)
         self.__generate_valid_html_magic_values(html_specifications)
-        self.__constraint_candidate_finder.find_constraint_candidates(
+
+        if html_only:
+            self.__exit()
+
+        self.__constraint_candidate_finder.find_js_constraint_candidates(
             html_specifications)
 
         time.sleep(5)
@@ -116,7 +136,7 @@ class TestAutomationDriver:
         magic_value_amount = self.__config[ConfigKey.ANALYSIS.value][ConfigKey.MAGIC_VALUE_AMOUNT.value]
 
         next_file_index = 1
-        form_specification = {'controls': []}
+        form_specification = {'url': self.__url, 'controls': []}
 
         for specification in html_specifications:
             if isinstance(specification, HTMLInputSpecification):
@@ -130,16 +150,16 @@ class TestAutomationDriver:
                 grammar, formula = self.__specification_builder.create_specification_for_html_radio_group(
                     specification)
 
-            grammar_file, formula_file = self.__specification_builder.write_specification_to_file(str(next_file_index), grammar, formula)
-            form_specification['controls'].append(specification.get_representation(grammar_file, formula_file))
+            grammar_file, formula_file = self.__specification_builder.write_specification_to_file(
+                str(next_file_index), grammar, formula)
+            form_specification['controls'].append(
+                specification.get_representation(grammar_file, formula_file))
             next_file_index += 1
 
-            # self.__constraint_candidate_finder.set_magic_value_sequence(
-            #     specification, grammar, formula, magic_value_amount)
+            self.__constraint_candidate_finder.set_magic_value_sequence(
+                specification, grammar, formula, magic_value_amount)
 
         write_to_file('specification/specification.json', form_specification)
-        self.__exit()
-        
 
     def __exit(self, exit_code=None) -> None:
         """Free all resources and exit"""

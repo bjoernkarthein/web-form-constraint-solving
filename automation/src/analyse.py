@@ -5,19 +5,20 @@ import yaml
 from driver import TestAutomationDriver
 
 """
-Main module
+Analysis module
 
-Handles all command line options and arguments.
+Serves as the entry point to analyse a given url and extract
+client side validation constraints.
 """
 
 
 def main(argv):
-    """Handle command line arguments and start the test automation."""
+    """Handle command line arguments and start the analysis."""
 
     try:
         opts, _ = getopt.getopt(argv, '?hu:', ['help', 'url='])
     except getopt.GetoptError:
-        print('Wrong format provided')
+        print('Unknown argument structure')
         print_help()
         sys.exit()
 
@@ -30,15 +31,16 @@ def main(argv):
             print_help()
             sys.exit()
         if opt in ('-u', '--url'):
-            config = yaml.safe_load(open('../config/config.yml'))
-            test_automation_driver = TestAutomationDriver(config, arg)
-            test_automation_driver.run()
+            config = yaml.safe_load(open('../config/analysis_config.yml'))
+            test_automation_driver = TestAutomationDriver(
+                config, arg, start_interceptor=True)
+            test_automation_driver.run_analysis()
 
 
 def print_help():
     """Print the help message."""
 
-    print("""usage: python main.py [option] -u <url>
+    print("""usage: python analyse.py -u <url> [option]
 Options and arguments:
 -?, -h, --help: print this help message and exit
 -u, --url:      url of the web page that includes the form which is to be tested""")

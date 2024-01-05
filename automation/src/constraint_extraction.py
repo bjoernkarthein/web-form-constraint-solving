@@ -35,7 +35,7 @@ class ConstraintCandidateFinder:
         self.__magic_value_map: Dict[HTMLElementReference, List[str]] = {}
         self.__submit_element = submit_element
 
-    def find_constraint_candidates(self, html_input_specifications: List[HTMLInputSpecification | HTMLRadioGroupSpecification]) -> None:
+    def find_js_constraint_candidates(self, html_input_specifications: List[HTMLInputSpecification | HTMLRadioGroupSpecification]) -> None:
         """Try to extract as many constraint candidates as possible from the JavaScript source code for a given input."""
         for specification in html_input_specifications:
             key = specification.reference if isinstance(
@@ -160,7 +160,8 @@ class SpecificationBuilder:
         formula_file_name = f'{name}.isla'
 
         write_to_file(f'specification/{grammar_file_name}', grammar)
-        write_to_file(f'specification/{formula_file_name}', formula if formula is not None else '')
+        write_to_file(f'specification/{formula_file_name}',
+                      formula if formula is not None else '')
 
         return grammar_file_name, formula_file_name
 
