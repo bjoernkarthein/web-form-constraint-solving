@@ -176,12 +176,12 @@ class HTMLConstraints:
 
 
 class HTMLInputSpecification:
-    def __init__(self, reference: HTMLElementReference, constraints: HTMLConstraints) -> None:
+    def __init__(self, reference: HTMLElementReference, constraints: HTMLConstraints | None = None) -> None:
         self.reference = reference
         self.contraints = constraints
 
     def get_as_dict(self) -> Dict[str, HTMLElementReference | HTMLConstraints]:
-        return {'reference': self.reference.get_as_dict(), 'constraints': self.contraints.get_as_dict()}
+        return {'reference': self.reference.get_as_dict(), 'constraints': self.contraints.get_as_dict() if self.contraints is not None else None}
 
     def get_representation(self, grammar_file: str, formula_file: str) -> Dict[str, str | Dict[str, str]]:
         return {'type': self.contraints.type, 'reference': self.reference.get_as_dict(), 'grammar': grammar_file, 'formula': formula_file}
@@ -194,16 +194,15 @@ HTMLInputElement = Union[html.InputElement, html.TextareaElement]
 
 
 class HTMLRadioGroupSpecification:
-    def __init__(self, name: str, required: bool, options: List[Tuple[HTMLElementReference, str]]) -> None:
+    def __init__(self, name: str, options: List[Tuple[HTMLElementReference, str]]) -> None:
         self.name = name
-        self.required = required
         self.options = options
 
     def get_as_dict(self) -> Dict[str, str | bool | List[Tuple[HTMLElementReference, str]]]:
-        return {'name': self.name, 'required': self.required, 'options': [(o[0].get_as_dict(), o[1]) for o in self.options]}
+        return {'name': self.name, 'options': [{'reference': o[0].get_as_dict(), 'value': o[1]} for o in self.options]}
 
     def get_representation(self, grammar_file: str, formula_file: str) -> Dict[str, str | Dict[str, str]]:
-        return {'type': 'radio', 'reference': self.name, 'grammar': grammar_file, 'formula': formula_file}
+        return {'type': 'radio', 'reference': self.name, 'options': [{'reference': o[0].get_as_dict(), 'value': o[1]} for o in self.options], 'grammar': grammar_file, 'formula': formula_file}
 
     def __str__(self) -> str:
         return json.dumps(self.get_as_dict())
@@ -238,6 +237,8 @@ class HTMLAnalyser:
             return (all_forms[position - 1], self.__form_access_xpath)
 
     def extract_static_constraints(self, form: html.FormElement) -> List[HTMLInputSpecification]:
+        # TODO does order here matter with selection dependent inputs? If so order should be kept
+
         all_inputs: List[HTMLInputElement] = form.xpath(
             f'{self.__form_access_xpath}/descendant::input') + form.xpath(f'{self.__form_access_xpath}/descendant::textarea')
         all_buttons = form.xpath(
@@ -285,7 +286,6 @@ class HTMLAnalyser:
 
         for name, values in radio_groups.items():
             specifications: List[Tuple[HTMLElementReference, str]] = []
-            required = False
             for v in values:
                 ref = self.__get_element_reference(v)
                 value = v.get('value')
@@ -293,10 +293,9 @@ class HTMLAnalyser:
                 # For the case that the radio option does not have a value, we do not add it to the spec
                 if value is not None:
                     specifications.append((ref, value))
-                    required = required or v.get('required') is not None
             if len(specifications) > 0:
                 spec = HTMLRadioGroupSpecification(
-                    name, required, specifications)
+                    name, specifications)
                 result.append(spec)
 
         for input in input_elements:

@@ -7,10 +7,9 @@ from seleniumwire import webdriver
 from typing import List
 
 from constraint_extraction import ConstraintCandidateFinder, SpecificationBuilder
-from specification_parser import SpecificationParser
+from form_testing import FormTester, SpecificationParser
 from html_analysis import HTMLAnalyser, HTMLInputSpecification, FormObserver, HTMLRadioGroupSpecification
-from interceptor import NetworkInterceptor, ResponseInspector
-from input_generation import InputGenerator
+from proxy import NetworkInterceptor, ResponseInspector
 from utility import binary_input_types, ConfigKey, clean_instrumentation_resources, write_to_file
 
 chrome_driver_path = '../chromedriver/windows/chromedriver.exe'
@@ -29,7 +28,7 @@ class TestAutomationDriver:
     ...
     """
 
-    def __init__(self, config: dict, url: str = None, start_interceptor: bool = False, start_inspector: bool = True) -> None:
+    def __init__(self, config: dict, url: str = None) -> None:
         """Initialize the Test Automation
 
         Set options for selenium chrome driver and selenium wire proxy
@@ -55,14 +54,14 @@ class TestAutomationDriver:
             seleniumwire_options=wire_options
         )
 
-        if start_interceptor:
+    def run_analysis(self) -> None:
+        html_only = self.__config[ConfigKey.ANALYSIS.value][ConfigKey.HTML_ONLY.value]
+
+        if not html_only:
             interceptor = NetworkInterceptor(self.__driver)
             interceptor.instrument_files()
+        inspector = ResponseInspector(self.__driver)
 
-        if start_inspector:
-            inspector = ResponseInspector(self.__driver)
-
-    def run_analysis(self) -> None:
         self.__load_page(self.__url)
         html_input_specifications = self.__analyse_html(
             self.__driver.page_source)
@@ -72,12 +71,14 @@ class TestAutomationDriver:
 
     def run_test(self, specification_file: str | None = None) -> None:
         specification_parser = SpecificationParser(specification_file)
-        spec = specification_parser.parse()
+        spec, specification_dir = specification_parser.parse()
         if spec is None:
             self.__exit()
 
         url = spec['url']
         self.__load_page(url)
+        form_tester = FormTester(self.__driver, spec, specification_dir)
+        form_tester.start_generation()
 
         self.__exit()
 
@@ -88,7 +89,7 @@ class TestAutomationDriver:
         """
         try:
             self.__driver.get(url)
-        except InvalidArgumentException as e:
+        except InvalidArgumentException:
             print('The provided url can not be loaded by selenium web driver. Please provide a url of the format http(s)://(www).example.com')
 
     def __analyse_html(self, html_string: str) -> List[HTMLInputSpecification | HTMLRadioGroupSpecification]:
@@ -136,7 +137,8 @@ class TestAutomationDriver:
         magic_value_amount = self.__config[ConfigKey.ANALYSIS.value][ConfigKey.MAGIC_VALUE_AMOUNT.value]
 
         next_file_index = 1
-        form_specification = {'url': self.__url, 'controls': []}
+        form_specification = {'url': self.__url, 'controls': [
+        ], 'submit': self.__html_analyser.submit_element.get_as_dict()}
 
         for specification in html_specifications:
             if isinstance(specification, HTMLInputSpecification):

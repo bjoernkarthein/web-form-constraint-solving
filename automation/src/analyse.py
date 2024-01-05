@@ -33,7 +33,7 @@ def main(argv):
         if opt in ('-u', '--url'):
             config = yaml.safe_load(open('../config/analysis_config.yml'))
             test_automation_driver = TestAutomationDriver(
-                config, arg, start_interceptor=True)
+                config, arg)
             test_automation_driver.run_analysis()
 
 

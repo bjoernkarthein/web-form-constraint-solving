@@ -1,5 +1,4 @@
 import string
-import uuid
 
 from abc import ABC, abstractmethod
 from typing import List, Dict, Self, Set
@@ -20,6 +19,7 @@ patterncharacter = printable without syntaxcharacter
 
 Grammar = Dict[str, List[str]]
 
+
 class RegEx(ABC):
     @abstractmethod
     def __str__(self) -> str:
@@ -33,11 +33,13 @@ class RegEx(ABC):
     def leaves(self) -> List[Self]:
         pass
 
+
 class Pattern:
     def __init__(self, regex_tree: RegEx) -> None:
         self.__tree = regex_tree
         self.nodes: Set[RegEx] = self.__tree.nodes()
         self.leaves: Set[Primitive] = self.__tree.leaves()
+
 
 class Alternative(RegEx):
     def __init__(self, this: RegEx, that: RegEx) -> None:
@@ -52,6 +54,7 @@ class Alternative(RegEx):
 
     def leaves(self) -> List[Self]:
         return self.__this.leaves() + self.__that.leaves()
+
 
 class Sequence(RegEx):
     def __init__(self, first: RegEx, second: RegEx) -> None:
@@ -75,6 +78,7 @@ class Sequence(RegEx):
     def leaves(self) -> List[Self]:
         return self.__first.leaves() + self.__second.leaves()
 
+
 class Quantifier:
     def __init__(self, min_repeat: int, max_repeat: int = None) -> None:
         self.__min_repeat = min_repeat
@@ -97,6 +101,7 @@ class Quantifier:
     def max_repeat(self) -> int:
         return self.__max_repeat
 
+
 class Repetition(RegEx):
     def __init__(self, term: RegEx, quantifier: Quantifier) -> None:
         self.__term = term
@@ -110,6 +115,7 @@ class Repetition(RegEx):
 
     def leaves(self) -> List[Self]:
         return self.__term.leaves()
+
 
 class Primitive(RegEx):
     def __init__(self, char: str) -> None:
@@ -140,10 +146,12 @@ class Primitive(RegEx):
     def leaves(self) -> List[Self]:
         return [self]
 
+
 class PatternTranslator:
     def __init__(self, javascript_pattern: str) -> None:
         self.__pattern: str = javascript_pattern
-        self.__syntax_characters: List[str] = ['^', '$', '\\', '.', '*', '+', '?', '(', ')', '[', ']', '{', '}', '|']
+        self.__syntax_characters: List[str] = [
+            '^', '$', '\\', '.', '*', '+', '?', '(', ')', '[', ']', '{', '}', '|']
         self.__printable_characters: List[str] = [*string.printable]
         self.__digits: List[str] = [*string.digits]
 
@@ -153,17 +161,18 @@ class PatternTranslator:
         pattern = Pattern(tree)
         # grammar = self.build_grammar(pattern)
         # print(self.write_gammar(grammar))
-        
+
     def build_grammar(self, pattern: Pattern) -> Grammar:
         next_free_label = 1
         grammar: Grammar = {'<start>': []}
 
         terminals = []
-        [terminals.append(t) for t in pattern.leaves if t not in terminals] # remove duplicates
+        # remove duplicates
+        [terminals.append(t) for t in pattern.leaves if t not in terminals]
         for terminal in terminals:
             grammar[f'<{next_free_label}>'] = [f'"{terminal}"']
             next_free_label += 1
-        
+
         return grammar
 
     def write_gammar(self, grammar: Grammar) -> str:
@@ -171,7 +180,7 @@ class PatternTranslator:
         for label, values in grammar.items():
             options = " | ".join(values)
             lines.append(f'{label} ::= {options}')
-        
+
         return '\n'.join(lines)
 
     def parse(self) -> RegEx:
@@ -180,12 +189,13 @@ class PatternTranslator:
     # recursive descent methods
     def peek(self) -> str:
         return self.__pattern[0]
-        
+
     def eat(self, c: str) -> None:
         if self.peek() == c:
             self.__pattern = self.__pattern[1:]
         else:
-            raise ValueError(f'eat expected next character to be "{c}" but was "{self.peek()}"')
+            raise ValueError(
+                f'eat expected next character to be "{c}" but was "{self.peek()}"')
 
     def next(self) -> str:
         c = self.peek()
@@ -195,8 +205,8 @@ class PatternTranslator:
     def more(self) -> bool:
         return len(self.__pattern) > 0
 
-
     # pattern element types
+
     def disjunction(self) -> RegEx:
         term = self.term()
 
@@ -205,19 +215,19 @@ class PatternTranslator:
             disjunction = self.disjunction()
             return Alternative(term, disjunction)
         else:
-            return term  
+            return term
 
     def term(self) -> RegEx:
         term = self.atom()
-        
+
         if self.more() and self.peek() in ['*', '+', '?', '{']:
             quantifier = self.quantifier()
             term = Repetition(term, quantifier)
-        
+
         while self.more() and self.peek() != ')' and self.peek() != '|':
             next_term = self.term()
             term = Sequence(term, next_term)
-            
+
         return term
 
     def options(self) -> RegEx:
@@ -233,7 +243,8 @@ class PatternTranslator:
         if self.more() and self.peek() == '-':
             self.eat('-')
             end = self.atom()
-            options = self.__build_alternative_from_range(options.char, end.char)
+            options = self.__build_alternative_from_range(
+                options.char, end.char)
 
         while self.more() and self.peek() != ']':
             next_option = self.options()
@@ -319,7 +330,8 @@ class PatternTranslator:
             end_index = self.__printable_characters.index(end)
             return self.__printable_characters[start_index:end_index+1]
         except Exception as e:
-            raise RuntimeError(f'Can not get sublist for values from {start} to {end}')
+            raise RuntimeError(
+                f'Can not get sublist for values from {start} to {end}')
 
     def __build_alternative_from_range(self, start: str, end: str) -> Alternative:
         options = self.__get_characters_from_range(start, end)
@@ -331,12 +343,12 @@ class PatternTranslator:
 
         c = characters[0]
         return Alternative(Primitive(c), self.__create_choice_from_list(characters[1:]))
-    
+
     def __handle_quantification_with_numbers(self) -> Quantifier:
         min = self.next()
         while (self.more() and self.peek() not in [',', '}']):
             min = min + self.next()
-        
+
         if self.peek() == '}':
             return Quantifier(int(min), int(min))
 
