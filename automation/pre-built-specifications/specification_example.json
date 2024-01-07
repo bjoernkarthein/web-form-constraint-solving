@@ -21,7 +21,10 @@
     },
     {
       "type": "radio",
-      "reference": "underage",
+      "reference": {
+        "access_method": "name",
+        "access_value": "of-legal-age"
+      },
       "options": [
         {
           "reference": {
