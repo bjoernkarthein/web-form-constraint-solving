@@ -1,13 +1,14 @@
 import json
+import time
 
 from pathlib import Path
 from selenium.webdriver import Chrome
-from selenium.webdriver.remote.webelement import WebElement
 from typing import Dict, List
 
 from html_analysis import HTMLInputSpecification, HTMLRadioGroupSpecification, HTMLElementReference
+from input_generation import InputGenerator
 from proxy import ResponseInspector
-from utility import load_file_content, get_web_element_by_reference, get_web_elements_by_reference
+from utility import ConfigKey, load_file_content, load_page, write_to_web_element_by_reference_with_clear, click_web_element_by_reference
 
 
 class SpecificationParser:
@@ -20,19 +21,19 @@ class SpecificationParser:
         specification_str = load_file_content(file_name)
         if specification_str == '':
             print(
-                'No existing specification file found. Either pass a path to a valid specification file via the -s flag or run the analyse.py to extract a specification automatically.')
-            return None
+                'No existing specification file found. Either pass a path to a valid specification file via the -s flag or run the analyse.py to extract a specification automatically.\nRun test.py -h for help.')
+            return None, ""
 
         try:
             specification = json.loads(specification_str)
         except json.JSONDecodeError as e:
             print('Error parsing specification file')
             print(e)
-            return None
+            return None, ""
 
         if self.__specification_file_path is not None and not self.__check_specification_format(specification):
             print('The given specification file does not have the correct format')
-            return None
+            return None, ""
 
         return specification, parent_dir
 
@@ -42,8 +43,9 @@ class SpecificationParser:
 
 
 class ValueGenerationSpecification:
-    def __init__(self, input_spec: HTMLInputSpecification | HTMLRadioGroupSpecification, grammar: str, formula: str | None = None):
+    def __init__(self, input_spec: HTMLInputSpecification | HTMLRadioGroupSpecification, type: str, grammar: str, formula: str | None = None):
         self.input_spec = input_spec
+        self.type = type
         self.grammar = grammar
         self.formula = formula
 
@@ -52,39 +54,44 @@ class ValueGenerationSpecification:
 
 
 class FormTester:
-    def __init__(self, driver: Chrome, specification: Dict, specification_directory: str, repetitions: int = 1) -> None:
+    def __init__(self, driver: Chrome, url: str, specification: Dict, specification_directory: str, config: Dict) -> None:
         self.__driver = driver
-        self.__repetitions = repetitions
+        self.__repetitions = config[ConfigKey.TESTING.value][ConfigKey.REPETITIONS.value]
         self.__specification = specification
         self.__specification_directory = specification_directory
+        self.__url = url
 
     def start_generation(self) -> None:
         inspector = ResponseInspector(self.__driver)
         # TODO: start inspecting
 
-        self.__submit_element = self.__get_submit_element_from_json(
+        self.__submit_element_reference = self.__get_submit_element_from_json(
             self.__specification)
-        print(self.__submit_element)
 
+        self.__generation_templates: List[ValueGenerationSpecification] = []
         for json_spec in self.__specification['controls']:
-            generation_template = self.__convert_json_to_specification(
-                json_spec)
-            print(generation_template)
+            self.__generation_templates.append(self.__convert_json_to_specification(
+                json_spec))
 
-    def __get_submit_element_from_json(self, spec: Dict) -> WebElement:
-        submit_reference = HTMLElementReference(
+        generator = InputGenerator()
+        # TODO generate all values in advance for better diversity and just fill in afterwards?
+        for _ in range(self.__repetitions):
+            load_page(self.__driver, self.__url)
+            self.__fill_form_with_values_and_submit(generator)
+
+    def __get_submit_element_from_json(self, spec: Dict) -> HTMLElementReference:
+        return HTMLElementReference(
             spec['submit']['access_method'], spec['submit']['access_value'])
-        return get_web_element_by_reference(
-            self.__driver, submit_reference)
 
     def __convert_json_to_specification(self, control: Dict) -> ValueGenerationSpecification:
         grammar = load_file_content(
             f'{self.__specification_directory}/{control["grammar"]}')
         formula = load_file_content(
             f'{self.__specification_directory}/{control["formula"]}')
+        type = control['type']
 
         if control['type'] == 'radio':
-            name = control['reference']
+            name = control['reference']['access_value']
             options = control['options']
             options = list(
                 map(lambda o: (HTMLElementReference(o['reference']['access_method'], o['reference']['access_value']), o['value']), options))
@@ -94,4 +101,15 @@ class FormTester:
                 control['reference']['access_method'], control['reference']['access_value'])
             element_spec = HTMLInputSpecification(element_reference)
 
-        return ValueGenerationSpecification(element_spec, grammar, formula if formula != "" else None)
+        return ValueGenerationSpecification(element_spec, type, grammar, formula if formula != "" else None)
+
+    # TODO: handle invalid value generation here
+    def __fill_form_with_values_and_submit(self, generator: InputGenerator) -> None:
+        for template in self.__generation_templates:
+            value = generator.generate_valid_inputs(
+                template.grammar, template.formula)[0]
+            write_to_web_element_by_reference_with_clear(
+                self.__driver, template.type, template.input_spec.reference, value)
+
+        click_web_element_by_reference(
+            self.__driver, self.__submit_element_reference)

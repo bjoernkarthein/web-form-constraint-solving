@@ -10,7 +10,7 @@ from constraint_extraction import ConstraintCandidateFinder, SpecificationBuilde
 from form_testing import FormTester, SpecificationParser
 from html_analysis import HTMLAnalyser, HTMLInputSpecification, FormObserver, HTMLRadioGroupSpecification
 from proxy import NetworkInterceptor, ResponseInspector
-from utility import binary_input_types, ConfigKey, clean_instrumentation_resources, write_to_file
+from utility import binary_input_types, ConfigKey, load_page, clean_instrumentation_resources, write_to_file
 
 chrome_driver_path = '../chromedriver/windows/chromedriver.exe'
 # chrome_driver_path = '../chromedriver/linux/chromedriver'
@@ -60,9 +60,11 @@ class TestAutomationDriver:
         if not html_only:
             interceptor = NetworkInterceptor(self.__driver)
             interceptor.instrument_files()
-        inspector = ResponseInspector(self.__driver)
 
-        self.__load_page(self.__url)
+        inspector = ResponseInspector(self.__driver)
+        # TODO Start inspecting
+
+        load_page(self.__driver, self.__url)
         html_input_specifications = self.__analyse_html(
             self.__driver.page_source)
         self.__start_constraint_extraction(html_input_specifications)
@@ -76,21 +78,11 @@ class TestAutomationDriver:
             self.__exit()
 
         url = spec['url']
-        self.__load_page(url)
-        form_tester = FormTester(self.__driver, spec, specification_dir)
+        form_tester = FormTester(
+            self.__driver, url, spec, specification_dir, self.__config)
         form_tester.start_generation()
 
         self.__exit()
-
-    def __load_page(self, url: str) -> None:
-        """ Open the web page by url.
-
-        Page is opened in a headless chrome instance controlled by selenium.
-        """
-        try:
-            self.__driver.get(url)
-        except InvalidArgumentException:
-            print('The provided url can not be loaded by selenium web driver. Please provide a url of the format http(s)://(www).example.com')
 
     def __analyse_html(self, html_string: str) -> List[HTMLInputSpecification | HTMLRadioGroupSpecification]:
         """Analyse the HTML content of the web page.

@@ -45,12 +45,8 @@ class ConstraintCandidateFinder:
             if magic_values is None or len(magic_values) == 0:
                 continue
 
-            if isinstance(specification, HTMLRadioGroupSpecification):
-                write_to_web_element_by_reference_with_clear(
-                    self.__driver, 'radio', HTMLElementReference('name', specification.name), magic_values[0])
-            else:
-                write_to_web_element_by_reference_with_clear(
-                    self.__driver, specification.contraints.type, specification.reference, magic_values[0])
+            write_to_web_element_by_reference_with_clear(
+                self.__driver, specification.contraints.type, specification.reference, magic_values[0])
 
         for specification in html_input_specifications:
             self.__find_constraint_candidates_for_input(specification)
@@ -91,11 +87,9 @@ class ConstraintCandidateFinder:
         for magic_value in magic_value_sequence:
             type = html_specification.contraints.type if isinstance(
                 html_specification, HTMLInputSpecification) else 'radio'
-            reference = html_specification.reference if isinstance(
-                html_specification, HTMLInputSpecification) else HTMLElementReference('name', html_specification.name)
 
             write_to_web_element_by_reference_with_clear(
-                self.__driver, type, reference, magic_value)
+                self.__driver, type, html_specification.reference, magic_value)
 
             record_trace(Action.ATTEMPT_SUBMIT)
             click_web_element_by_reference(

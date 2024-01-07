@@ -4,7 +4,7 @@ import time
 import json
 
 from enum import Enum
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException, InvalidArgumentException
 from selenium.webdriver import Chrome
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
@@ -31,7 +31,10 @@ class ConfigKey(Enum):
     HTML_ONLY = 'html-only'
     MAGIC_VALUE_AMOUNT = 'magic-value-amount'
     GENERATION = 'generation'
+    REPETITIONS = 'repetitions'
+    TESTING = 'testing'
     USE_DATALIST_OPTIONS = 'use-datalist-options'
+    VALID = 'valid'
 
 
 class InputType(Enum):
@@ -113,6 +116,13 @@ def record_trace(action: Action, args=None) -> None:
 def clean_instrumentation_resources() -> None:
     url = f'{admin_controller}/clean'
     requests.get(url)
+
+
+def load_page(driver: Chrome, url: str) -> None:
+    try:
+        driver.get(url)
+    except InvalidArgumentException:
+        print('The provided url can not be loaded by selenium web driver. Please provide a url of the format http(s)://(www).example.com')
 
 
 def clear_web_element(web_element: WebElement) -> None:

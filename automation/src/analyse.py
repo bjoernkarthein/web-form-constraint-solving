@@ -40,10 +40,10 @@ def main(argv):
 def print_help():
     """Print the help message."""
 
-    print("""usage: python analyse.py -u <url> [option]
+    print('''usage: python analyse.py -u <url> [option]
 Options and arguments:
 -?, -h, --help: print this help message and exit
--u, --url:      url of the web page that includes the form which is to be tested""")
+-u, --url:      url of the web page that includes the form which is to be tested''')
 
 
 if __name__ == '__main__':

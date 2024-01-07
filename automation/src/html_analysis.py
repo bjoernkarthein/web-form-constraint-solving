@@ -196,13 +196,14 @@ HTMLInputElement = Union[html.InputElement, html.TextareaElement]
 class HTMLRadioGroupSpecification:
     def __init__(self, name: str, options: List[Tuple[HTMLElementReference, str]]) -> None:
         self.name = name
+        self.reference = HTMLElementReference('name', self.name)
         self.options = options
 
     def get_as_dict(self) -> Dict[str, str | bool | List[Tuple[HTMLElementReference, str]]]:
         return {'name': self.name, 'options': [{'reference': o[0].get_as_dict(), 'value': o[1]} for o in self.options]}
 
     def get_representation(self, grammar_file: str, formula_file: str) -> Dict[str, str | Dict[str, str]]:
-        return {'type': 'radio', 'reference': self.name, 'options': [{'reference': o[0].get_as_dict(), 'value': o[1]} for o in self.options], 'grammar': grammar_file, 'formula': formula_file}
+        return {'type': 'radio', 'reference': self.reference.get_as_dict(), 'options': [{'reference': o[0].get_as_dict(), 'value': o[1]} for o in self.options], 'grammar': grammar_file, 'formula': formula_file}
 
     def __str__(self) -> str:
         return json.dumps(self.get_as_dict())
