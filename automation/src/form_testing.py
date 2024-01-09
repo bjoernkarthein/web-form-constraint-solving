@@ -8,7 +8,7 @@ from typing import Dict, List
 from html_analysis import HTMLInputSpecification, HTMLRadioGroupSpecification, HTMLElementReference
 from input_generation import InputGenerator
 from proxy import ResponseInspector
-from utility import ConfigKey, load_file_content, load_page, write_to_web_element_by_reference_with_clear, click_web_element_by_reference
+from utility import ConfigKey, InputType, load_file_content, load_page, write_to_web_element_by_reference_with_clear, click_web_element_by_reference
 
 
 class SpecificationParser:
@@ -22,18 +22,18 @@ class SpecificationParser:
         if specification_str == '':
             print(
                 'No existing specification file found. Either pass a path to a valid specification file via the -s flag or run the analyse.py to extract a specification automatically.\nRun test.py -h for help.')
-            return None, ""
+            return None, ''
 
         try:
             specification = json.loads(specification_str)
         except json.JSONDecodeError as e:
             print('Error parsing specification file')
             print(e)
-            return None, ""
+            return None, ''
 
         if self.__specification_file_path is not None and not self.__check_specification_format(specification):
             print('The given specification file does not have the correct format')
-            return None, ""
+            return None, ''
 
         return specification, parent_dir
 
@@ -62,8 +62,8 @@ class FormTester:
         self.__url = url
 
     def start_generation(self) -> None:
-        inspector = ResponseInspector(self.__driver)
-        # TODO: start inspecting
+        self.__inspector = ResponseInspector(self.__driver)
+        self.__inspector.scan_for_form_submission()
 
         self.__submit_element_reference = self.__get_submit_element_from_json(
             self.__specification)
@@ -76,6 +76,7 @@ class FormTester:
         generator = InputGenerator()
         # TODO generate all values in advance for better diversity and just fill in afterwards?
         for _ in range(self.__repetitions):
+            self.__inspector.generated_values = []
             load_page(self.__driver, self.__url)
             self.__fill_form_with_values_and_submit(generator)
 
@@ -90,7 +91,7 @@ class FormTester:
             f'{self.__specification_directory}/{control["formula"]}')
         type = control['type']
 
-        if control['type'] == 'radio':
+        if control['type'] == InputType.RADIO.value:
             name = control['reference']['access_value']
             options = control['options']
             options = list(
@@ -110,6 +111,12 @@ class FormTester:
                 template.grammar, template.formula)[0]
             write_to_web_element_by_reference_with_clear(
                 self.__driver, template.type, template.input_spec.reference, value)
+
+            if template.type != InputType.CHECKBOX.value:
+                self.__inspector.generated_values.append(value)
+            else:
+                if value == '1':
+                    self.__inspector.generated_values.append('on')
 
         click_web_element_by_reference(
             self.__driver, self.__submit_element_reference)

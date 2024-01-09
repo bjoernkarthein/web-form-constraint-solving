@@ -86,7 +86,7 @@ class ConstraintCandidateFinder:
 
         for magic_value in magic_value_sequence:
             type = html_specification.contraints.type if isinstance(
-                html_specification, HTMLInputSpecification) else 'radio'
+                html_specification, HTMLInputSpecification) else InputType.RADIO.value
 
             write_to_web_element_by_reference_with_clear(
                 self.__driver, type, html_specification.reference, magic_value)

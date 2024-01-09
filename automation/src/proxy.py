@@ -2,11 +2,12 @@ import requests
 
 from lxml import etree, html
 from selenium.webdriver import Chrome
+from typing import List
 
 from utility import service_base_url, instrumentation_controller
 
 """
-Interceptor module
+Proxy module
 
 Utilizes the selenium wire module to intercept and inspect network traffic.
 """
@@ -29,7 +30,7 @@ class NetworkInterceptor:
         """
         self.__driver.response_interceptor = self.__file_interceptor
 
-    def __file_interceptor(self, request, response):
+    def __file_interceptor(self, request, response) -> None:
         """Intercept network responses and alter response contents to allow for dynamic analysis.
 
         JavaScript files are sent to the instrumentation service to add statements for dynamic analysis.
@@ -93,7 +94,7 @@ class NetworkInterceptor:
             body_string = body.decode('utf-8')
         except UnicodeDecodeError:
             # TODO
-            return
+            return ''
 
         return body_string
 
@@ -105,4 +106,28 @@ class ResponseInspector:
     """
 
     def __init__(self, web_driver: Chrome) -> None:
+        self.generated_values: List[str] = []
         self.__driver = web_driver
+
+    def scan_for_form_submission(self) -> None:
+        self.__driver.request_interceptor = self.__request_interceptor
+
+    def __request_interceptor(self, request) -> None:
+        if request.method != 'GET' and request.method != 'POST':
+            return
+
+        if request.method == 'GET':
+            self.__scan_for_values_in_url(request)
+        elif request.method == 'POST':
+            content_type = request.headers['Content-Type']
+            match content_type:
+                case 'application/x-www-form-urlencoded':
+                    pass
+                case 'multipart/form-data':
+                    pass
+                case 'text/plain':
+                    pass
+
+    def __scan_for_values_in_url(self, request):
+        if all(v in request.querystring for v in self.generated_values):
+            request.abort()

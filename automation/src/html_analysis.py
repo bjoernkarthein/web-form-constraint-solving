@@ -3,7 +3,7 @@ import json
 from lxml import etree, html
 from typing import Dict, List, Tuple, Union
 
-from utility import non_writable_input_types
+from utility import InputType, non_writable_input_types
 
 
 class HTMLElementReference:
@@ -203,7 +203,7 @@ class HTMLRadioGroupSpecification:
         return {'name': self.name, 'options': [{'reference': o[0].get_as_dict(), 'value': o[1]} for o in self.options]}
 
     def get_representation(self, grammar_file: str, formula_file: str) -> Dict[str, str | Dict[str, str]]:
-        return {'type': 'radio', 'reference': self.reference.get_as_dict(), 'options': [{'reference': o[0].get_as_dict(), 'value': o[1]} for o in self.options], 'grammar': grammar_file, 'formula': formula_file}
+        return {'type': InputType.RADIO.value, 'reference': self.reference.get_as_dict(), 'options': [{'reference': o[0].get_as_dict(), 'value': o[1]} for o in self.options], 'grammar': grammar_file, 'formula': formula_file}
 
     def __str__(self) -> str:
         return json.dumps(self.get_as_dict())
@@ -277,7 +277,7 @@ class HTMLAnalyser:
         result: List[HTMLInputSpecification | HTMLRadioGroupSpecification] = []
         radio_groups: Dict[str, List[HTMLInputElement]] = {}
         radio_items = list(filter(lambda i: i.get('type')
-                                  == 'radio', input_elements))
+                                  == InputType.RADIO.value, input_elements))
         for item in radio_items:
             key = item.get('name')
             if key not in radio_groups:
@@ -302,7 +302,7 @@ class HTMLAnalyser:
         for input in input_elements:
             html_constraints = HTMLConstraints()
 
-            if input.get('type') in ['radio'] + non_writable_input_types:
+            if input.get('type') in [InputType.RADIO.value] + non_writable_input_types:
                 continue
 
             if input.tag == 'textarea':
