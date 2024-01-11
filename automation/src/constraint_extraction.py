@@ -173,7 +173,7 @@ class SpecificationBuilder:
 
         if use_datalist_options and html_constraints.list is not None:
             grammar = self.__replace_by_list_options(
-                grammar, 'year-month', html_constraints.list)
+                grammar, 'data', html_constraints.list)
         if html_constraints.required is not None:
             formula = self.__add_to_formula('str.len(<start>) > 0',
                                             formula, LogicalOperator.AND)
@@ -228,13 +228,16 @@ class SpecificationBuilder:
 
     def __add_constraints_for_email(self, html_constraints: HTMLConstraints, use_datalist_options=False) -> (str, str | None):
         grammar = load_file_content(
-            f'{pre_built_specifications_path}/email/email.bnf' if html_constraints.required is None else f'{pre_built_specifications_path}/email/email-required.bnf')
+            f'{pre_built_specifications_path}/email/email.bnf')
         formula = load_file_content(
             f'{pre_built_specifications_path}/email/email.isla')
 
         if use_datalist_options and html_constraints.list is not None:
             grammar = self.__replace_by_list_options(
                 grammar, 'email', html_constraints.list)
+        if html_constraints.required is not None:
+            formula = self.__add_to_formula(f'str.len(<start>) >= 3',
+                                            formula, LogicalOperator.AND)
         if html_constraints.minlength is not None:
             formula = self.__add_to_formula(f'str.len(<email>) >= {html_constraints.minlength}',
                                             formula, LogicalOperator.AND)
@@ -258,7 +261,7 @@ class SpecificationBuilder:
 
         if use_datalist_options and html_constraints.list is not None:
             grammar = self.__replace_by_list_options(
-                grammar, 'date', html_constraints.list)
+                grammar, 'month', html_constraints.list)
         if html_constraints.required is not None:
             formula = self.__add_to_formula('str.len(<start>) > 0',
                                             formula, LogicalOperator.AND)
@@ -283,12 +286,16 @@ class SpecificationBuilder:
 
     def __add_constraints_for_number(self, html_constraints: HTMLConstraints, use_datalist_options=False) -> (str, str | None):
         grammar = load_file_content(
-            f'{pre_built_specifications_path}/number/whole.bnf' if html_constraints.required is None else f'{pre_built_specifications_path}/number/whole-required.bnf')
+            f'{pre_built_specifications_path}/number/whole.bnf')
         formula = None
 
         if use_datalist_options and html_constraints.list is not None:
             grammar = self.__replace_by_list_options(
                 grammar, 'number', html_constraints.list)
+
+        if html_constraints.required is not None:
+            formula = self.__add_to_formula(f'str.to.int(<start>) > 0',
+                                            formula, LogicalOperator.AND)
 
         if html_constraints.min is not None:
             formula = self.__add_to_formula(f'str.to.int(<start>) >= {html_constraints.min}',
@@ -328,7 +335,7 @@ class SpecificationBuilder:
 
         if use_datalist_options and html_constraints.list is not None:
             grammar = self.__replace_by_list_options(
-                grammar, 'one-line-text', html_constraints.list)
+                grammar, 'text', html_constraints.list)
         if html_constraints.required is not None and html_constraints.minlength is None:
             formula = self.__add_to_formula('str.len(<start>) > 0',
                                             formula, LogicalOperator.AND)
@@ -410,7 +417,7 @@ class SpecificationBuilder:
 
         if use_datalist_options and html_constraints.list is not None:
             grammar = self.__replace_by_list_options(
-                grammar, 'yearmonth', html_constraints.list)
+                grammar, 'week', html_constraints.list)
         if html_constraints.required is not None:
             formula = self.__add_to_formula('str.len(<start>) > 0',
                                             formula, LogicalOperator.AND)

@@ -1,5 +1,5 @@
-<start> ::= <empty> | <time>
-<empty> ::= ""
+<start> ::= <time-or-empty>
+<time-or-empty> ::= "" | <time>
 <time> ::= <hour> ":" <minute>
 <hour> ::= <digit><digit>
 <minute> ::= <digit><digit>

@@ -1,5 +1,5 @@
-<start> ::= <empty> | <float>
-<empty> ::= ""
+<start> ::= <float-or-empty>
+<float-or-empty> ::= "" | <float>
 <float> ::= <numeric> | "-" <numeric> | <numeric><euler> | "-" <numeric><euler>
 <numeric> ::= <numbers> | <numbers> "." <numbers> | "." <numbers>
 <euler> ::= "E" <exponent> | "e" <exponent>

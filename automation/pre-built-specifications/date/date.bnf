@@ -1,5 +1,5 @@
-<start> ::= <empty> | <date>
-<empty> ::= ""
+<start> ::= <date-or-empty>
+<date-or-empty> ::= "" | <date>
 <date> ::= <yearmonth> "-" <day>
 <yearmonth> ::= <year> "-" <month>
 <year> ::= <digit><digit><digit><digit>

@@ -12,8 +12,8 @@ from html_analysis import HTMLAnalyser, HTMLInputSpecification, FormObserver, HT
 from proxy import NetworkInterceptor, ResponseInspector
 from utility import binary_input_types, ConfigKey, load_page, clean_instrumentation_resources, write_to_file
 
-chrome_driver_path = '../chromedriver/windows/chromedriver.exe'
-# chrome_driver_path = '../chromedriver/linux/chromedriver'
+# chrome_driver_path = '../chromedriver/windows/chromedriver.exe'
+chrome_driver_path = '../chromedriver/linux/chromedriver'
 
 """
 Driver module

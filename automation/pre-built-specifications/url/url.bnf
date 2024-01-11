@@ -1,5 +1,5 @@
-<start> ::= <empty> | <url>
-<empty> ::= ""
+<start> ::= <url-or-empty>
+<url-or-empty> ::= "" | <url>
 <url> ::= <special-scheme> ":" <scheme-relative-special-url> | <special-scheme> ":" <scheme-relative-special-url> "?" <query> | "file:" <scheme-relative-file-url> | "file:" <scheme-relative-file-url> "?" <query>
 
 <special-scheme> ::= "ftp" | "http" | "https" | "ws" | "wss"

@@ -1,5 +1,5 @@
-<start> ::= <empty> | <email>
-<empty> ::= ""
+<start> ::= <email-or-empty>
+<email-or-empty> ::= "" | <email>
 <email> ::= <local> "@" <domain>
 <local> ::= <atextordot> | <atextordot><local>
 <domain> ::= <label> | <label> "." <domain>
