@@ -12,8 +12,8 @@ from html_analysis import HTMLAnalyser, HTMLInputSpecification, FormObserver, HT
 from proxy import NetworkInterceptor, ResponseInspector
 from utility import binary_input_types, ConfigKey, load_page, clean_instrumentation_resources, write_to_file
 
-# chrome_driver_path = '../chromedriver/windows/chromedriver.exe'
-chrome_driver_path = '../chromedriver/linux/chromedriver'
+chrome_driver_path = '../chromedriver/windows/chromedriver.exe'
+# chrome_driver_path = '../chromedriver/linux/chromedriver'
 
 """
 Driver module
@@ -56,18 +56,18 @@ class TestAutomationDriver:
 
     def run_analysis(self) -> None:
         html_only = self.__config[ConfigKey.ANALYSIS.value][ConfigKey.HTML_ONLY.value]
+        interceptor = NetworkInterceptor(self.__driver)
 
         if not html_only:
-            interceptor = NetworkInterceptor(self.__driver)
             interceptor.instrument_files()
 
-        inspector = ResponseInspector(self.__driver)
-        # TODO Start inspecting
-
         load_page(self.__driver, self.__url)
+        interceptor.scan_for_form_submission()
+
         html_input_specifications = self.__analyse_html(
             self.__driver.page_source)
-        self.__start_constraint_extraction(html_input_specifications)
+        self.__start_constraint_extraction(
+            html_input_specifications, interceptor)
 
         self.__exit()
 
@@ -105,12 +105,12 @@ class TestAutomationDriver:
 
         return html_constraints
 
-    def __start_constraint_extraction(self, html_specifications: List[HTMLInputSpecification | HTMLRadioGroupSpecification]) -> None:
+    def __start_constraint_extraction(self, html_specifications: List[HTMLInputSpecification | HTMLRadioGroupSpecification], interceptor: NetworkInterceptor) -> None:
         """Start the extraction of client-side validation constraints for a set of specified HTML inputs."""
         html_only = self.__config[ConfigKey.ANALYSIS.value][ConfigKey.HTML_ONLY.value]
 
         self.__constraint_candidate_finder = ConstraintCandidateFinder(
-            self.__driver, self.__html_analyser.submit_element)
+            self.__driver, self.__html_analyser.submit_element, interceptor)
         self.__generate_valid_html_magic_values(html_specifications)
 
         if html_only:

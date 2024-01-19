@@ -8,6 +8,7 @@ from typing import List, Dict
 
 from html_analysis import HTMLConstraints, HTMLElementReference, HTMLInputSpecification, HTMLRadioGroupSpecification
 from input_generation import InputGenerator
+from proxy import NetworkInterceptor
 from utility import *
 
 """
@@ -29,9 +30,10 @@ class ConstraintCandidateFinder:
     Provides methods to identify constraint candidates for a specific input of the form.
     """
 
-    def __init__(self, web_driver: Chrome, submit_element: Element) -> None:
+    def __init__(self, web_driver: Chrome, submit_element: Element, interceptor: NetworkInterceptor) -> None:
         self.__driver = web_driver
         self.__generator = InputGenerator()
+        self.__interceptor = interceptor
         self.__magic_value_map: Dict[HTMLElementReference, List[str]] = {}
         self.__submit_element = submit_element
 
@@ -91,12 +93,18 @@ class ConstraintCandidateFinder:
             write_to_web_element_by_reference_with_clear(
                 self.__driver, type, html_specification.reference, magic_value)
 
-            record_trace(Action.ATTEMPT_SUBMIT)
-            click_web_element_by_reference(
-                self.__driver, self.__submit_element)
+            self.__attempt_submit()
 
         stop_trace_recording(
             {'spec': html_specification.get_as_dict(), 'values': magic_value_sequence})
+
+    def __attempt_submit(self) -> None:
+        self.__interceptor.generated_values = get_current_value_mapping()
+        clear_value_mapping()
+
+        record_trace(Action.ATTEMPT_SUBMIT)
+        click_web_element_by_reference(
+            self.__driver, self.__submit_element)
 
 
 class LogicalOperator(Enum):
