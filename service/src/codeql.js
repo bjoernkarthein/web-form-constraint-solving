@@ -9,6 +9,7 @@ const codeqlDirectory = "codeql";
 const queryDirectory = `${codeqlDirectory}/queries`;
 const resultDirectory = `${codeqlDirectory}/results`;
 const allQueries = ["to_comparisson", "to_regex"];
+// const allQueries = ["data_flow"];
 
 function createDatabase(source, database) {
   if (!fs.existsSync(resultDirectory)) {
@@ -130,5 +131,5 @@ module.exports = {
   resetQuery,
   resetQueries,
   allQueries,
-  resultDirectory
+  resultDirectory,
 };

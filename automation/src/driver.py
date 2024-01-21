@@ -10,7 +10,7 @@ from constraint_extraction import ConstraintCandidateFinder, SpecificationBuilde
 from form_testing import FormTester, SpecificationParser
 from html_analysis import HTMLAnalyser, HTMLInputSpecification, FormObserver, HTMLRadioGroupSpecification
 from proxy import NetworkInterceptor, ResponseInspector
-from utility import binary_input_types, ConfigKey, load_page, clean_instrumentation_resources, write_to_file
+from utility import binary_input_types, ConfigKey, clamp_to_range, load_page, write_to_file
 
 chrome_driver_path = '../chromedriver/windows/chromedriver.exe'
 # chrome_driver_path = '../chromedriver/linux/chromedriver'
@@ -108,6 +108,8 @@ class TestAutomationDriver:
     def __start_constraint_extraction(self, html_specifications: List[HTMLInputSpecification | HTMLRadioGroupSpecification], interceptor: NetworkInterceptor) -> None:
         """Start the extraction of client-side validation constraints for a set of specified HTML inputs."""
         html_only = self.__config[ConfigKey.ANALYSIS.value][ConfigKey.HTML_ONLY.value]
+        analysis_rounds = self.__config[ConfigKey.ANALYSIS.value][ConfigKey.ANALYSIS_ROUNDS.value]
+        analysis_rounds = clamp_to_range(analysis_rounds, 1, None)
 
         self.__constraint_candidate_finder = ConstraintCandidateFinder(
             self.__driver, self.__html_analyser.submit_element, interceptor)
@@ -116,8 +118,14 @@ class TestAutomationDriver:
         if html_only:
             self.__exit()
 
-        self.__constraint_candidate_finder.find_js_constraint_candidates(
+        # for _ in range(analysis_rounds):
+        #     # TODO: repeat everything this many times. The find_js_constraint_candidates needs to be able to work with a grammar and formula too probably
+        #     pass
+
+        new_constraints = self.__constraint_candidate_finder.find_js_constraint_candidates(
             html_specifications)
+        self.__specification_builder.add_constraints_to_current_specification(
+            new_constraints)
 
         time.sleep(5)
         self.__exit()
@@ -127,6 +135,7 @@ class TestAutomationDriver:
         self.__specification_builder = SpecificationBuilder()
         use_datalist_options = self.__config[ConfigKey.GENERATION.value][ConfigKey.USE_DATALIST_OPTIONS.value]
         magic_value_amount = self.__config[ConfigKey.ANALYSIS.value][ConfigKey.MAGIC_VALUE_AMOUNT.value]
+        magic_value_amount = clamp_to_range(magic_value_amount, 1, 10)
 
         next_file_index = 1
         form_specification = {'url': self.__url, 'controls': [

@@ -30,6 +30,7 @@ class ConfigKey(Enum):
     ANALYSIS = 'analysis'
     HTML_ONLY = 'html-only'
     MAGIC_VALUE_AMOUNT = 'magic-value-amount'
+    ANALYSIS_ROUNDS = 'analysis-rounds'
     GENERATION = 'generation'
     REPETITIONS = 'repetitions'
     TESTING = 'testing'
@@ -123,9 +124,9 @@ def record_trace(action: Action, args=None) -> None:
                              'time': math.floor(time.time() * 1000), 'pageFile': 0})
 
 
-def clean_instrumentation_resources() -> None:
-    url = f'{admin_controller}/clean'
-    requests.get(url)
+def get_constraint_candidates() -> Dict:
+    url = f'{analysis_controller}/candidates'
+    return requests.get(url).json()
 
 
 def load_page(driver: Chrome, url: str) -> None:
@@ -306,3 +307,10 @@ def set_value_of_web_element_by_reference_with_clear(driver: Chrome, html_elemen
     if web_element is not None:
         clear_value_of_web_element(driver, web_element)
         set_value_of_web_element(driver, web_element, value)
+
+
+def clamp_to_range(input: int, start: int, end: int | None) -> int:
+    if end is None:
+        return max(start, input)
+    else:
+        return max(start, min(input, end))

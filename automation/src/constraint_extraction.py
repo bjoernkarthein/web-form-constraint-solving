@@ -20,8 +20,17 @@ build a specification for these inputs.
 
 
 class ConstraintCandidate:
-    def __init__(self) -> None:
-        pass
+    def __init__(self, json: Dict) -> None:
+        self.reference: HTMLElementReference = HTMLElementReference(
+            'test', 'test')
+        self.bla: List = []
+
+
+class ConstraintCandidateResult:
+    def __init__(self, request_response: Dict) -> None:
+        self.candidates: List[ConstraintCandidate] = []
+        for elem in request_response['candidates']:
+            self.candidates.append(ConstraintCandidate(elem))
 
 
 class ConstraintCandidateFinder:
@@ -37,7 +46,7 @@ class ConstraintCandidateFinder:
         self.__magic_value_map: Dict[HTMLElementReference, List[str]] = {}
         self.__submit_element = submit_element
 
-    def find_js_constraint_candidates(self, html_input_specifications: List[HTMLInputSpecification | HTMLRadioGroupSpecification]) -> None:
+    def find_js_constraint_candidates(self, html_input_specifications: List[HTMLInputSpecification | HTMLRadioGroupSpecification]) -> ConstraintCandidateResult:
         """Try to extract as many constraint candidates as possible from the JavaScript source code for a given input."""
         for specification in html_input_specifications:
             key = specification.reference if isinstance(
@@ -53,7 +62,8 @@ class ConstraintCandidateFinder:
         for specification in html_input_specifications:
             self.__find_constraint_candidates_for_input(specification)
 
-        # TODO
+        # TODO: Make ConstraintCandidate type more sensible for use
+        return ConstraintCandidateResult(get_constraint_candidates())
 
     def set_magic_value_sequence(self, html_specification: HTMLInputSpecification | HTMLRadioGroupSpecification, grammar: str, formula: str | None, amount=1) -> List[str]:
         if isinstance(html_specification, HTMLInputSpecification):
@@ -116,9 +126,6 @@ class LogicalOperator(Enum):
 
 
 class SpecificationBuilder:
-    def __init__(self) -> None:
-        pass
-
     def create_specification_for_html_radio_group(self, html_radio_group_specification: HTMLRadioGroupSpecification) -> (str, str | None):
         grammar = load_file_content(
             f'{pre_built_specifications_path}/radio-group/radio-group.bnf')
@@ -166,6 +173,11 @@ class SpecificationBuilder:
                       formula if formula is not None else '')
 
         return grammar_file_name, formula_file_name
+
+    def add_constraints_to_current_specification(self, new_constraints: ConstraintCandidateResult) -> None:
+        for candidate in new_constraints.candidates:
+            # TODO: Add. Should I have a mapping to easily get the current grammars somehow? Getting them from the file seems icky
+            pass
 
     def __add_constraints_for_binary(self, required: str) -> (str, str | None):
         grammar = load_file_content(

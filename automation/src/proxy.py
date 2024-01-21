@@ -101,7 +101,6 @@ class NetworkInterceptor:
         try:
             body_string = body.decode('utf-8')
         except UnicodeDecodeError:
-            # TODO
             return ''
 
         return body_string
@@ -114,14 +113,15 @@ class NetworkInterceptor:
             self.__scan_for_values_in_url(request)
         elif request.method == 'POST':
             content_type = str(request.headers['Content-Type'])
-            print(request, content_type)
             if content_type.startswith('application/x-www-form-urlencoded'):
                 self.__scan_for_values_in_urlencoded_form_data(request)
-            if content_type.startswith('multipart/form-data'):
+            elif content_type.startswith('multipart/form-data'):
                 self.__scan_for_values_in_multipart_form_data(
                     request, content_type)
-            if content_type.startswith('text/plain'):
+            elif content_type.startswith('text/plain'):
                 self.__scan_for_values_in_plain_text(request)
+            else:
+                self.__scan_for_values(request)
 
     def __scan_for_values_in_url(self, request):
         if self.__all_values_in_query_string(request.querystring):
@@ -149,6 +149,11 @@ class NetworkInterceptor:
         if set(values) == set(self.generated_values):
             self.__stop_request(request)
 
+    def __scan_for_values(self, request):
+        body = self.__decode_body(request.body)
+        if all(s in body for s in self.generated_values):
+            self.__stop_request(request)
+
     def __all_values_in_query_string(self, query_string: str) -> bool:
         if '&' not in query_string:
             return False
@@ -161,12 +166,14 @@ class NetworkInterceptor:
         return set(plain_values) == set(self.generated_values)
 
     def __stop_request(self, request):
-        request.create_response(
-            status_code=200,
-            headers={'Content-Type': 'text/html',
-                     'successful-form-submission': 'true'},
-            body='<html>Form successfully submitetd with generated values. Stopping analysis...</html>'
-        )
+        # TODO: What to do in case of success?
+        request.abort()
+        # request.create_response(
+        #     status_code=200,
+        #     headers={'Content-Type': 'text/html',
+        #              'successful-form-submission': 'true'},
+        #     body='<html>Form successfully submitetd with generated values. Stopping analysis...</html>'
+        # )
 
 
 class ResponseInspector:

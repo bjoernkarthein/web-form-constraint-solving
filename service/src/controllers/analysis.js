@@ -9,4 +9,10 @@ let record = (req, res) => {
   });
 };
 
-module.exports = { record };
+let getConstraintCandidates = (req, res) => {
+  res.json({
+    candidates: [],
+  });
+};
+
+module.exports = { getConstraintCandidates, record };

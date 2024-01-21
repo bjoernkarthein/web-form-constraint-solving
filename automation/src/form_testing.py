@@ -8,7 +8,7 @@ from typing import Dict, List
 from html_analysis import HTMLInputSpecification, HTMLRadioGroupSpecification, HTMLElementReference
 from input_generation import InputGenerator
 from proxy import ResponseInspector
-from utility import ConfigKey, InputType, load_file_content, load_page, write_to_web_element_by_reference_with_clear, click_web_element_by_reference
+from utility import ConfigKey, InputType, load_file_content, load_page, write_to_web_element_by_reference_with_clear, click_web_element_by_reference, clamp_to_range
 
 
 class SpecificationParser:
@@ -56,7 +56,8 @@ class ValueGenerationSpecification:
 class FormTester:
     def __init__(self, driver: Chrome, url: str, specification: Dict, specification_directory: str, config: Dict) -> None:
         self.__driver = driver
-        self.__repetitions = config[ConfigKey.TESTING.value][ConfigKey.REPETITIONS.value]
+        repetitions = config[ConfigKey.TESTING.value][ConfigKey.REPETITIONS.value]
+        self.__repetitions = clamp_to_range(repetitions, 1, None)
         self.__specification = specification
         self.__specification_directory = specification_directory
         self.__url = url
@@ -112,11 +113,12 @@ class FormTester:
             write_to_web_element_by_reference_with_clear(
                 self.__driver, template.type, template.input_spec.reference, value)
 
-            if template.type != InputType.CHECKBOX.value:
-                self.__inspector.generated_values.append(value)
-            else:
-                if value == '1':
-                    self.__inspector.generated_values.append('on')
+            # TODO: handle checkboxes correctly
+            # if template.type != InputType.CHECKBOX.value:
+            #     self.__inspector.generated_values.append(value)
+            # else:
+            #     if value == '1':
+            #         self.__inspector.generated_values.append('on')
 
         click_web_element_by_reference(
             self.__driver, self.__submit_element_reference)

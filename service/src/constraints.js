@@ -1,7 +1,8 @@
 const fs = require("fs");
 const readline = require("readline");
-const trace = require("./trace");
 const codeql = require("./codeql");
+const instrument = require("./instrument");
+const trace = require("./trace");
 
 const allTraces = [];
 const groupedTraces = [];
@@ -35,28 +36,36 @@ function analyseTraces() {
   });
 
   rl.on("close", () => {
-    console.log("Finished reading the file.");
-    allTraces.sort(compareTimestamps);
-    let add = false;
-    let interactions = [];
-    for (const t of allTraces) {
-      if (t.action == trace.ACTION_ENUM.INTERACTION_START) {
-        add = true;
-      }
+    console.log("Finished reading trace log file");
+    processTraces();
+  });
+}
 
-      if (add) {
-        interactions.push(t);
-      }
+function processTraces() {
+  // Clean up resources
+  // trace.cleanUp();
+  // instrument.cleanUp();
 
-      if (t.action == trace.ACTION_ENUM.INTERACTION_END) {
-        add = false;
-        groupedTraces.push(interactions);
-        interactions = [];
-      }
+  allTraces.sort(compareTimestamps);
+  let add = false;
+  let interactions = [];
+  for (const t of allTraces) {
+    if (t.action == trace.ACTION_ENUM.INTERACTION_START) {
+      add = true;
     }
 
-    runQueries();
-  });
+    if (add) {
+      interactions.push(t);
+    }
+
+    if (t.action == trace.ACTION_ENUM.INTERACTION_END) {
+      add = false;
+      groupedTraces.push(interactions);
+      interactions = [];
+    }
+  }
+
+  runQueries();
 }
 
 function compareTimestamps(a, b) {
@@ -98,7 +107,6 @@ function runQueries() {
 }
 
 function extractConstraintCandidates() {
-
   fs.rmSync(codeql.resultDirectory, { recursive: true, force: true });
 }
 

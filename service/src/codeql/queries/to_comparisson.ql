@@ -13,4 +13,4 @@ where
   node.toString() = "NAME" and // EXPRESSION
   node.getASuccessor*() = comp and
   (comp.getLeftOperand() = node or comp.getRightOperand() = node)
-select comp, node.toString() + " is a user controlled value going to " + comp.toString()
+select comp, ""

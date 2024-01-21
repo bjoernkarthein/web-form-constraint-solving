@@ -13,5 +13,4 @@ where
   source.asExpr().toString() = "NAME" and // EXPRESSION
   isRegExpCheck(methodCall) and
   source.flowsToExpr(methodCall.getArgument(0))
-select methodCall,
-  source.toString() + " is a user controlled value going into " + methodCall.toString()
+select methodCall, ""

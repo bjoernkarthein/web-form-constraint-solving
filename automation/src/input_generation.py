@@ -22,6 +22,7 @@ class InputGenerator:
             print(e)
             return []
 
+    # TODO: Needs to be tested a lot to see if it works reliably
     def generate_invalid_inputs(self, grammar: str, formula: str | None, amount: int = 1) -> List[str]:
         if formula is not None:
             negated_formula = f'not ({formula})'
