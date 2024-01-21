@@ -7,8 +7,8 @@ from typing import Dict, List
 
 from html_analysis import HTMLInputSpecification, HTMLRadioGroupSpecification, HTMLElementReference
 from input_generation import InputGenerator
-from proxy import ResponseInspector
-from utility import ConfigKey, InputType, load_file_content, load_page, write_to_web_element_by_reference_with_clear, click_web_element_by_reference, clamp_to_range
+from proxy import NetworkInterceptor, RequestScanner
+from utility import ConfigKey, InputType, load_file_content, load_page, write_to_web_element_by_reference_with_clear, click_web_element_by_reference, clamp_to_range, get_current_values_from_form, clear_value_mapping
 
 
 class SpecificationParser:
@@ -63,8 +63,9 @@ class FormTester:
         self.__url = url
 
     def start_generation(self) -> None:
-        self.__inspector = ResponseInspector(self.__driver)
-        self.__inspector.scan_for_form_submission()
+        # TODO: scan for submission here the same way?
+        # self.__interceptor = NetworkInterceptor(self.__driver)
+        # self.__interceptor.scan_for_form_submission()
 
         self.__submit_element_reference = self.__get_submit_element_from_json(
             self.__specification)
@@ -75,9 +76,12 @@ class FormTester:
                 json_spec))
 
         generator = InputGenerator()
+        self.__test_monitor = TestMonitor(
+            self.__driver, self.__submit_element_reference)
+
         # TODO generate all values in advance for better diversity and just fill in afterwards?
         for _ in range(self.__repetitions):
-            self.__inspector.generated_values = []
+            clear_value_mapping()
             load_page(self.__driver, self.__url)
             self.__fill_form_with_values_and_submit(generator)
 
@@ -106,6 +110,7 @@ class FormTester:
         return ValueGenerationSpecification(element_spec, type, grammar, formula if formula != "" else None)
 
     # TODO: handle invalid value generation here
+    # TODO: Annotate all values with valid or invalid
     def __fill_form_with_values_and_submit(self, generator: InputGenerator) -> None:
         for template in self.__generation_templates:
             value = generator.generate_valid_inputs(
@@ -113,12 +118,29 @@ class FormTester:
             write_to_web_element_by_reference_with_clear(
                 self.__driver, template.type, template.input_spec.reference, value)
 
-            # TODO: handle checkboxes correctly
-            # if template.type != InputType.CHECKBOX.value:
-            #     self.__inspector.generated_values.append(value)
-            # else:
-            #     if value == '1':
-            #         self.__inspector.generated_values.append('on')
+        self.__test_monitor.attempt_submit_and_save_response()
 
-        click_web_element_by_reference(
-            self.__driver, self.__submit_element_reference)
+
+class TestMonitor:
+    def __init__(self, driver: Chrome, submit_element: HTMLElementReference) -> None:
+        self.__driver = driver
+        self.__request_scanner = RequestScanner()
+        self.__saved_responses = []
+        self.__submit_element = submit_element
+
+    def start(self) -> None:
+        # self.__response_inspector = ResponseInspector(self.__driver)
+        # self.__response_inspector.check_and_save_responses()
+        pass
+
+    def attempt_submit_and_save_response(self) -> None:
+        values = get_current_values_from_form()
+        print(values)
+        click_web_element_by_reference(self.__driver, self.__submit_element)
+        response = None
+        for request in self.__driver.requests:
+            if self.__request_scanner.all_values_in_form_request(request, values):
+                response = request.response
+
+        self.__saved_responses.append((values, response))
+        print(self.__saved_responses)

@@ -77,15 +77,19 @@ binary_input_types = [InputType.CHECKBOX.value, InputType.RADIO.value]
 non_writable_input_types = [InputType.SUBMIT.value, InputType.HIDDEN.value, InputType.RESET.value,
                             InputType.RANGE.value, InputType.FILE.value, InputType.COLOR.value, InputType.IMAGE.value]
 
-__current_value_map = {}
+__current_value_map: Dict = {}
 
 
 def clear_value_mapping() -> None:
     __current_value_map = {}
 
 
-def get_current_value_mapping() -> List[str]:
+def get_current_values_from_form() -> List[str]:
     return list(__current_value_map.values())
+
+
+def get_current_value_mapping() -> Dict:
+    return __current_value_map
 
 
 def load_file_content(file_name: str) -> str:
@@ -215,7 +219,11 @@ def write_to_web_element_by_reference(driver: Chrome, html_element_reference, va
 
 
 def write_to_web_element_by_reference_with_clear(driver: Chrome, type: str, html_element_reference, value: str) -> None:
-    __current_value_map[str(html_element_reference)] = value
+    if type == InputType.CHECKBOX.value:
+        if value == '1':
+            __current_value_map[html_element_reference] = 'on'
+    else:
+        __current_value_map[html_element_reference] = value
 
     web_element = get_web_element_by_reference(driver, html_element_reference)
     if web_element is None:

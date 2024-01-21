@@ -43,27 +43,9 @@ class ConstraintCandidateFinder:
         self.__driver = web_driver
         self.__generator = InputGenerator()
         self.__interceptor = interceptor
-        self.__magic_value_map: Dict[HTMLElementReference, List[str]] = {}
+        self.__magic_value_map: Dict[HTMLInputSpecification |
+                                     HTMLRadioGroupSpecification, List[str]] = {}
         self.__submit_element = submit_element
-
-    def find_js_constraint_candidates(self, html_input_specifications: List[HTMLInputSpecification | HTMLRadioGroupSpecification]) -> ConstraintCandidateResult:
-        """Try to extract as many constraint candidates as possible from the JavaScript source code for a given input."""
-        for specification in html_input_specifications:
-            key = specification.reference if isinstance(
-                specification, HTMLInputSpecification) else specification.name
-
-            magic_values = self.__magic_value_map.get(key)
-            if magic_values is None or len(magic_values) == 0:
-                continue
-
-            write_to_web_element_by_reference_with_clear(
-                self.__driver, specification.contraints.type, specification.reference, magic_values[0])
-
-        for specification in html_input_specifications:
-            self.__find_constraint_candidates_for_input(specification)
-
-        # TODO: Make ConstraintCandidate type more sensible for use
-        return ConstraintCandidateResult(get_constraint_candidates())
 
     def set_magic_value_sequence(self, html_specification: HTMLInputSpecification | HTMLRadioGroupSpecification, grammar: str, formula: str | None, amount=1) -> List[str]:
         if isinstance(html_specification, HTMLInputSpecification):
@@ -71,33 +53,40 @@ class ConstraintCandidateFinder:
         else:
             return self.__set_magic_value_sequence_for_radio_group(html_specification, grammar, formula, amount)
 
+    def find_initial_js_constraint_candidates(self, specification: HTMLInputSpecification | HTMLRadioGroupSpecification) -> ConstraintCandidateResult:
+        """Try to extract as many constraint candidates as possible from the JavaScript source code for a given input."""
+
+        for spec, values in self.__magic_value_map.items():
+            write_to_web_element_by_reference_with_clear(
+                self.__driver, spec.type, spec.reference, values[0])
+
+        return self.__find_constraint_candidates_for_input(specification)
+
+    def find_additional_js_constraint_candidates(self, grammar: str, formula: str | None = None) -> ConstraintCandidateResult:
+        return ConstraintCandidateResult({'candidates': []})
+
     def __set_magic_value_sequence_for_input(self, html_specification: HTMLInputSpecification, grammar: str, formula: str | None, amount: int) -> List[str]:
-        html_input_reference = html_specification.reference
         values = self.__generator.generate_valid_inputs(
             grammar, formula, amount)
-        self.__magic_value_map[html_input_reference] = values
+        self.__magic_value_map[html_specification] = values
         return values
 
     def __set_magic_value_sequence_for_radio_group(self, html_specification: HTMLRadioGroupSpecification, grammar: str, formula: str | None, amount: int) -> List[str]:
-        # html_input_reference = html_specification.reference
         values = self.__generator.generate_valid_inputs(
             grammar, formula, amount)
-        self.__magic_value_map[html_specification.name] = values
+        self.__magic_value_map[html_specification] = values
         return values
 
-    def __find_constraint_candidates_for_input(self, html_specification: HTMLInputSpecification | HTMLRadioGroupSpecification) -> List[ConstraintCandidate]:
-        reference = html_specification.reference if isinstance(
-            html_specification, HTMLInputSpecification) else html_specification.name
-        magic_value_sequence = self.__magic_value_map.get(reference)
-
+    def __find_constraint_candidates_for_input(self, html_specification: HTMLInputSpecification | HTMLRadioGroupSpecification) -> ConstraintCandidateResult:
+        magic_value_sequence = self.__magic_value_map.get(html_specification)
         if magic_value_sequence is None:
-            return []
+            ConstraintCandidateResult({'candidates': []})
 
         start_trace_recording(
             {'spec': html_specification.get_as_dict(), 'values': magic_value_sequence})
 
         for magic_value in magic_value_sequence:
-            type = html_specification.contraints.type if isinstance(
+            type = html_specification.constraints.type if isinstance(
                 html_specification, HTMLInputSpecification) else InputType.RADIO.value
 
             write_to_web_element_by_reference_with_clear(
@@ -108,8 +97,11 @@ class ConstraintCandidateFinder:
         stop_trace_recording(
             {'spec': html_specification.get_as_dict(), 'values': magic_value_sequence})
 
+        # TODO: Make ConstraintCandidate type more sensible for use
+        return ConstraintCandidateResult(get_constraint_candidates())
+
     def __attempt_submit(self) -> None:
-        self.__interceptor.generated_values = get_current_value_mapping()
+        self.__interceptor.generated_values = get_current_values_from_form()
         clear_value_mapping()
 
         record_trace(Action.ATTEMPT_SUBMIT)
@@ -135,29 +127,29 @@ class SpecificationBuilder:
         return grammar, None
 
     def create_specification_for_html_input(self, html_input_specification: HTMLInputSpecification, use_datalist_options=False) -> (str, str | None):
-        match html_input_specification.contraints.type:
+        match html_input_specification.constraints.type:
             case t if t in one_line_text_input_types + [None]:
-                return self.__add_constraints_for_one_line_text(html_input_specification.contraints, use_datalist_options)
+                return self.__add_constraints_for_one_line_text(html_input_specification.constraints, use_datalist_options)
             case t if t in binary_input_types:
-                return self.__add_constraints_for_binary(html_input_specification.contraints.required)
+                return self.__add_constraints_for_binary(html_input_specification.constraints.required)
             case InputType.DATE.value:
-                return self.__add_constraints_for_date(html_input_specification.contraints, use_datalist_options)
+                return self.__add_constraints_for_date(html_input_specification.constraints, use_datalist_options)
             case InputType.DATETIME_LOCAL.value:
-                return self.__add_constraints_for_datetime(html_input_specification.contraints, use_datalist_options)
+                return self.__add_constraints_for_datetime(html_input_specification.constraints, use_datalist_options)
             case InputType.EMAIL.value:
-                return self.__add_constraints_for_email(html_input_specification.contraints, use_datalist_options)
+                return self.__add_constraints_for_email(html_input_specification.constraints, use_datalist_options)
             case InputType.MONTH.value:
-                return self.__add_constraints_for_month(html_input_specification.contraints, use_datalist_options)
+                return self.__add_constraints_for_month(html_input_specification.constraints, use_datalist_options)
             case InputType.NUMBER.value:
-                return self.__add_constraints_for_number(html_input_specification.contraints, use_datalist_options)
+                return self.__add_constraints_for_number(html_input_specification.constraints, use_datalist_options)
             case InputType.TEXTAREA.value:
-                return self.__add_constraints_for_multi_line_text(html_input_specification.contraints, use_datalist_options)
+                return self.__add_constraints_for_multi_line_text(html_input_specification.constraints, use_datalist_options)
             case InputType.TIME.value:
-                return self.__add_constraints_for_time(html_input_specification.contraints, use_datalist_options)
+                return self.__add_constraints_for_time(html_input_specification.constraints, use_datalist_options)
             case InputType.URL.value:
-                return self.__add_constraints_for_url(html_input_specification.contraints, use_datalist_options)
+                return self.__add_constraints_for_url(html_input_specification.constraints, use_datalist_options)
             case InputType.WEEK.value:
-                return self.__add_constraints_for_week(html_input_specification.contraints, use_datalist_options)
+                return self.__add_constraints_for_week(html_input_specification.constraints, use_datalist_options)
             case _:
                 raise ValueError(
                     'The provided type does not match any known html input type')
@@ -174,10 +166,12 @@ class SpecificationBuilder:
 
         return grammar_file_name, formula_file_name
 
-    def add_constraints_to_current_specification(self, new_constraints: ConstraintCandidateResult) -> None:
+    def add_constraints_to_current_specification(self, new_constraints: ConstraintCandidateResult) -> (str, str):
         for candidate in new_constraints.candidates:
             # TODO: Add. Should I have a mapping to easily get the current grammars somehow? Getting them from the file seems icky
             pass
+
+        return '', ''
 
     def __add_constraints_for_binary(self, required: str) -> (str, str | None):
         grammar = load_file_content(

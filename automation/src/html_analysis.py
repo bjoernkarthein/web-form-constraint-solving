@@ -178,13 +178,14 @@ class HTMLConstraints:
 class HTMLInputSpecification:
     def __init__(self, reference: HTMLElementReference, constraints: HTMLConstraints | None = None) -> None:
         self.reference = reference
-        self.contraints = constraints
+        self.constraints = constraints
+        self.type = self.constraints.type if self.constraints is not None else None
 
     def get_as_dict(self) -> Dict[str, HTMLElementReference | HTMLConstraints]:
-        return {'reference': self.reference.get_as_dict(), 'constraints': self.contraints.get_as_dict() if self.contraints is not None else None}
+        return {'reference': self.reference.get_as_dict(), 'constraints': self.constraints.get_as_dict() if self.constraints is not None else None}
 
     def get_representation(self, grammar_file: str, formula_file: str) -> Dict[str, str | Dict[str, str]]:
-        return {'type': self.contraints.type, 'reference': self.reference.get_as_dict(), 'grammar': grammar_file, 'formula': formula_file}
+        return {'type': self.constraints.type, 'reference': self.reference.get_as_dict(), 'grammar': grammar_file, 'formula': formula_file}
 
     def __str__(self) -> str:
         return json.dumps(self.get_as_dict())
@@ -198,6 +199,7 @@ class HTMLRadioGroupSpecification:
         self.name = name
         self.reference = HTMLElementReference('name', self.name)
         self.options = options
+        self.type = 'radio'
 
     def get_as_dict(self) -> Dict[str, str | bool | List[Tuple[HTMLElementReference, str]]]:
         return {'name': self.name, 'options': [{'reference': o[0].get_as_dict(), 'value': o[1]} for o in self.options]}
@@ -216,7 +218,7 @@ class HTMLAnalyser:
     def select_form(self) -> (etree.Element, str):
         all_forms = self.__html_tree_root.xpath('//form')
         if len(all_forms) == 0:
-            print('The page for the provided url does not seem to contain any HTML form elements. Maybe try another url?')
+            print('The page for the provided url does not seem to contain any HTML form elements. Try checking the url in the browser or check your internet connection.')
             return (None, None)
         elif len(all_forms) == 1:
             self.__form_access_xpath = '//form[1]'

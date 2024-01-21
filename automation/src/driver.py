@@ -9,7 +9,7 @@ from typing import List
 from constraint_extraction import ConstraintCandidateFinder, SpecificationBuilder
 from form_testing import FormTester, SpecificationParser
 from html_analysis import HTMLAnalyser, HTMLInputSpecification, FormObserver, HTMLRadioGroupSpecification
-from proxy import NetworkInterceptor, ResponseInspector
+from proxy import NetworkInterceptor
 from utility import binary_input_types, ConfigKey, clamp_to_range, load_page, write_to_file
 
 chrome_driver_path = '../chromedriver/windows/chromedriver.exe'
@@ -118,17 +118,15 @@ class TestAutomationDriver:
         if html_only:
             self.__exit()
 
-        # for _ in range(analysis_rounds):
-        #     # TODO: repeat everything this many times. The find_js_constraint_candidates needs to be able to work with a grammar and formula too probably
-        #     pass
+        for spec in html_specifications:
+            new_constraints = self.__constraint_candidate_finder.find_initial_js_constraint_candidates(
+                spec)
 
-        new_constraints = self.__constraint_candidate_finder.find_js_constraint_candidates(
-            html_specifications)
-        self.__specification_builder.add_constraints_to_current_specification(
-            new_constraints)
-
-        time.sleep(5)
-        self.__exit()
+            for _ in range(analysis_rounds):
+                grammar, formula = self.__specification_builder.add_constraints_to_current_specification(
+                    new_constraints)
+                self.__constraint_candidate_finder.find_additional_js_constraint_candidates(
+                    grammar, formula)
 
     # TODO: refactor to not be this complex
     def __generate_valid_html_magic_values(self, html_specifications: List[HTMLInputSpecification | HTMLRadioGroupSpecification]) -> None:
@@ -144,8 +142,8 @@ class TestAutomationDriver:
         for specification in html_specifications:
             if isinstance(specification, HTMLInputSpecification):
                 # more diversity for magic values that are not binary
-                if specification.contraints.type not in binary_input_types:
-                    specification.contraints.required = True
+                if specification.constraints.type not in binary_input_types:
+                    specification.constraints.required = True
 
                 grammar, formula = self.__specification_builder.create_specification_for_html_input(
                     specification, use_datalist_options)

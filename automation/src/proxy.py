@@ -31,10 +31,11 @@ class NetworkInterceptor:
 
         All files requested by the browser are checked, instrumented if necessary and sent to the browser.
         """
-        del self.__driver.request_interceptor
+        del self.__driver.response_interceptor
         self.__driver.response_interceptor = self.__file_interceptor
 
     def scan_for_form_submission(self) -> None:
+        self.__request_scanner = RequestScanner()
         del self.__driver.request_interceptor
         self.__driver.request_interceptor = self.__form_submission_interceptor
 
@@ -68,7 +69,7 @@ class NetworkInterceptor:
         """Send JavaScript file to the instrumentation service and return instrumented content."""
 
         name = request.url.split("/")[-1]
-        body_string = self.__decode_body(response.body)
+        body_string = decode_body(response.body)
 
         data = {'name': name, 'source': body_string}
         res = requests.post(
@@ -79,7 +80,7 @@ class NetworkInterceptor:
         """Add script tag with common functions to HTML file body and return new content."""
 
         try:
-            body_string = self.__decode_body(response.body)
+            body_string = decode_body(response.body)
             html_ast = html.fromstring(body_string)
             html_body = html_ast.find('.//body')
         except Exception:
@@ -95,75 +96,9 @@ class NetworkInterceptor:
         html_body.append(script_tag)
         return html.tostring(html_ast, pretty_print=True)
 
-    def __decode_body(self, body) -> str:
-        """Decode an utf-8 encoded request body to a string and return the result."""
-
-        try:
-            body_string = body.decode('utf-8')
-        except UnicodeDecodeError:
-            return ''
-
-        return body_string
-
     def __form_submission_interceptor(self, request) -> None:
-        if request.method != 'GET' and request.method != 'POST':
-            return
-
-        if request.method == 'GET':
-            self.__scan_for_values_in_url(request)
-        elif request.method == 'POST':
-            content_type = str(request.headers['Content-Type'])
-            if content_type.startswith('application/x-www-form-urlencoded'):
-                self.__scan_for_values_in_urlencoded_form_data(request)
-            elif content_type.startswith('multipart/form-data'):
-                self.__scan_for_values_in_multipart_form_data(
-                    request, content_type)
-            elif content_type.startswith('text/plain'):
-                self.__scan_for_values_in_plain_text(request)
-            else:
-                self.__scan_for_values(request)
-
-    def __scan_for_values_in_url(self, request):
-        if self.__all_values_in_query_string(request.querystring):
+        if self.__request_scanner.all_values_in_form_request(request, self.generated_values):
             self.__stop_request(request)
-
-    def __scan_for_values_in_urlencoded_form_data(self, request):
-        body = self.__decode_body(request.body)
-        if self.__all_values_in_query_string(body):
-            self.__stop_request(request)
-
-    def __scan_for_values_in_multipart_form_data(self, request, content_type: str):
-        elements = decoder.MultipartDecoder(request.body, content_type).parts
-        values = list(map(lambda e: e.text, elements))
-
-        if set(values) == set(self.generated_values):
-            self.__stop_request(request)
-
-    def __scan_for_values_in_plain_text(self, request):
-        body = self.__decode_body(request.body)
-        elements = body.split('\r\n')
-        values = list(map(lambda e: e.split('=', 1)[
-                      1] if '=' in e else None, elements))
-        values = [v for v in values if v is not None]
-
-        if set(values) == set(self.generated_values):
-            self.__stop_request(request)
-
-    def __scan_for_values(self, request):
-        body = self.__decode_body(request.body)
-        if all(s in body for s in self.generated_values):
-            self.__stop_request(request)
-
-    def __all_values_in_query_string(self, query_string: str) -> bool:
-        if '&' not in query_string:
-            return False
-
-        vars = query_string.split('&')
-        values = list(map(lambda v: v.split('=', 1)[1], vars))
-        plain_values = list(
-            map(lambda v: urllib.parse.unquote_plus(v), values))
-
-        return set(plain_values) == set(self.generated_values)
 
     def __stop_request(self, request):
         # TODO: What to do in case of success?
@@ -176,11 +111,72 @@ class NetworkInterceptor:
         # )
 
 
-class ResponseInspector:
-    """ResponseInspector class
+class RequestScanner:
+    def all_values_in_form_request(self, request, generated_values: List[str]) -> bool:
+        self.generated_values = generated_values
 
-    Provides methods to inspect the response of the application.
-    """
+        if request.method != 'GET' and request.method != 'POST':
+            return False
 
-    def __init__(self, web_driver: Chrome) -> None:
-        self.__driver = web_driver
+        if request.method == 'GET':
+            return self.__scan_for_values_in_url(request)
+        elif request.method == 'POST':
+            content_type = str(request.headers['Content-Type'])
+
+        if content_type.startswith('application/x-www-form-urlencoded'):
+            return self.__scan_for_values_in_urlencoded_form_data(request)
+        elif content_type.startswith('multipart/form-data'):
+            return self.__scan_for_values_in_multipart_form_data(
+                request, content_type)
+        elif content_type.startswith('text/plain'):
+            return self.__scan_for_values_in_plain_text(request)
+        else:
+            return self.__scan_for_values(request)
+
+    def __scan_for_values_in_url(self, request) -> bool:
+        return self.__all_values_in_query_string(request.querystring)
+
+    def __scan_for_values_in_urlencoded_form_data(self, request) -> bool:
+        body = decode_body(request.body)
+        return self.__all_values_in_query_string(body)
+
+    def __scan_for_values_in_multipart_form_data(self, request, content_type: str) -> bool:
+        elements = decoder.MultipartDecoder(request.body, content_type).parts
+        values = list(map(lambda e: e.text, elements))
+
+        return set(values) == set(self.generated_values)
+
+    def __scan_for_values_in_plain_text(self, request) -> bool:
+        body = decode_body(request.body)
+        elements = body.split('\r\n')
+        values = list(map(lambda e: e.split('=', 1)[
+                      1] if '=' in e else None, elements))
+        values = [v for v in values if v is not None]
+
+        return set(values) == set(self.generated_values)
+
+    def __scan_for_values(self, request) -> bool:
+        body = decode_body(request.body)
+        return all(s in body for s in self.generated_values)
+
+    def __all_values_in_query_string(self, query_string: str) -> bool:
+        if '&' not in query_string:
+            return False
+
+        vars = query_string.split('&')
+        values = list(map(lambda v: v.split('=', 1)[1], vars))
+        plain_values = list(
+            map(lambda v: urllib.parse.unquote_plus(v), values))
+
+        return set(plain_values) == set(self.generated_values)
+
+
+def decode_body(body) -> str:
+    """Decode a request body in bytes to an utf-8 string and return the result."""
+
+    try:
+        body_string = body.decode('utf-8')
+    except UnicodeDecodeError:
+        return ''
+
+    return body_string
