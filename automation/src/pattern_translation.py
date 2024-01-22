@@ -1,7 +1,9 @@
+import re
 import string
 
 from abc import ABC, abstractmethod
-from typing import List, Dict, Self, Set
+from typing_extensions import Self
+from typing import List, Dict, Set
 
 """
 pattern = disjunction
@@ -25,35 +27,22 @@ class RegEx(ABC):
     def __str__(self) -> str:
         pass
 
-    @abstractmethod
-    def nodes(self) -> List[Self]:
-        pass
-
-    @abstractmethod
-    def leaves(self) -> List[Self]:
-        pass
-
-
-class Pattern:
-    def __init__(self, regex_tree: RegEx) -> None:
-        self.__tree = regex_tree
-        self.nodes: Set[RegEx] = self.__tree.nodes()
-        self.leaves: Set[Primitive] = self.__tree.leaves()
-
 
 class Alternative(RegEx):
     def __init__(self, this: RegEx, that: RegEx) -> None:
         self.__this = this
         self.__that = that
 
+    @property
+    def this(self) -> RegEx:
+        return self.__this
+
+    @property
+    def that(self) -> RegEx:
+        return self.__that
+
     def __str__(self) -> str:
         return f"{self.__this} or {self.__that}"
-
-    def nodes(self) -> List[Self]:
-        return self.__this.nodes() + self.__that.nodes() + [self]
-
-    def leaves(self) -> List[Self]:
-        return self.__this.leaves() + self.__that.leaves()
 
 
 class Sequence(RegEx):
@@ -65,18 +54,12 @@ class Sequence(RegEx):
         return f"{self.__first} -> {self.__second}"
 
     @property
-    def first(self) -> int:
+    def first(self) -> RegEx:
         return self.__first
 
     @property
-    def second(self) -> int:
+    def second(self) -> RegEx:
         return self.__second
-
-    def nodes(self) -> List[Self]:
-        return self.__first.nodes() + self.__second.nodes() + [self]
-
-    def leaves(self) -> List[Self]:
-        return self.__first.leaves() + self.__second.leaves()
 
 
 class Quantifier:
@@ -85,7 +68,6 @@ class Quantifier:
         self.__max_repeat = max_repeat
 
     def __str__(self) -> str:
-        result = "times "
         if self.__min_repeat == self.__max_repeat:
             return f"times {self.__min_repeat}"
         elif self.__max_repeat == None:
@@ -110,11 +92,13 @@ class Repetition(RegEx):
     def __str__(self) -> str:
         return f"{self.__term} {self.__quantifier}"
 
-    def nodes(self) -> List[Self]:
-        return self.__term.nodes() + [self]
+    @property
+    def term(self) -> RegEx:
+        return self.__term
 
-    def leaves(self) -> List[Self]:
-        return self.__term.leaves()
+    @property
+    def quantifier(self) -> Quantifier:
+        return self.__quantifier
 
 
 class Primitive(RegEx):
@@ -140,64 +124,13 @@ class Primitive(RegEx):
     def char(self) -> str:
         return self.__char
 
-    def nodes(self) -> List[Self]:
-        return []
 
-    def leaves(self) -> List[Self]:
-        return [self]
-
-
-class PatternTranslator:
+class PatternParser:
     def __init__(self, javascript_pattern: str) -> None:
         self.__pattern: str = javascript_pattern
-        self.__syntax_characters: List[str] = [
-            "^",
-            "$",
-            "\\",
-            ".",
-            "*",
-            "+",
-            "?",
-            "(",
-            ")",
-            "[",
-            "]",
-            "{",
-            "}",
-            "|",
-        ]
         self.__printable_characters: List[str] = [*string.printable]
-        self.__digits: List[str] = [*string.digits]
 
-    def convert(self):
-        tree = self.parse()
-        print(tree)
-        pattern = Pattern(tree)
-        # grammar = self.build_grammar(pattern)
-        # print(self.write_gammar(grammar))
-
-    def build_grammar(self, pattern: Pattern) -> Grammar:
-        next_free_label = 1
-        grammar: Grammar = {"<start>": []}
-
-        terminals = []
-        # remove duplicates
-        [terminals.append(t) for t in pattern.leaves if t not in terminals]
-        for terminal in terminals:
-            grammar[f"<{next_free_label}>"] = [f'"{terminal}"']
-            next_free_label += 1
-
-        return grammar
-
-    def write_gammar(self, grammar: Grammar) -> str:
-        lines = []
-        for label, values in grammar.items():
-            options = " | ".join(values)
-            lines.append(f"{label} ::= {options}")
-
-        return "\n".join(lines)
-
-    def parse(self) -> RegEx:
+    def parse(self):
         return self.disjunction()
 
     # recursive descent methods
@@ -376,6 +309,58 @@ class PatternTranslator:
             return Quantifier(min, max)
 
 
-t = PatternTranslator("(a|bc)?")
-tree = t.parse()
+class GrammarBuilder:
+    def __init__(self) -> None:
+        self.__non_terminal_counter = 0
+
+    def convert_pattern_to_cfg(self, pattern_ast: RegEx) -> str:
+        start_symbol = self.__generate_non_terminal()
+        pattern_cfg = self.__convert_ast_to_cfg(pattern_ast)
+        prettified = self.__perttify_grammar(pattern_cfg)
+        return f"{start_symbol} ::= {prettified}"
+
+    def __generate_non_terminal(self):
+        non_terminal = f"<nt{self.__non_terminal_counter}>"
+        self.__non_terminal_counter += 1
+        return non_terminal if self.__non_terminal_counter > 1 else "<start>"
+
+    def __convert_ast_to_cfg(self, ast: RegEx) -> str:
+        if isinstance(ast, Sequence):
+            left = self.__convert_ast_to_cfg(ast.first)
+            right = self.__convert_ast_to_cfg(ast.second)
+            return f"{left} {right}"
+
+        elif isinstance(ast, Alternative):
+            this = self.__convert_ast_to_cfg(ast.this)
+            that = self.__convert_ast_to_cfg(ast.that)
+            non_terminal = self.__generate_non_terminal()
+            return f"{non_terminal} ::= {this} | {that}"
+
+        elif isinstance(ast, Repetition):
+            expression = self.__convert_ast_to_cfg(ast.term)
+            non_terminal = self.__generate_non_terminal()
+            quantifier = ast.quantifier
+
+            result = f"{non_terminal} ::= "
+            if quantifier.min_repeat == 0:
+                result += '"" | '
+            if quantifier.max_repeat is None:
+                result += f"{expression} {non_terminal}"
+            else:
+                result += expression * quantifier.max_repeat
+
+            return result
+
+        elif isinstance(ast, Primitive):
+            return f'"{ast.char}"'
+
+    # TODO: is this the best approach? Revisit grammar string building maybe
+    def __perttify_grammar(self, grammar: str) -> str:
+        return re.sub(r"(<[^>]+>) ::=", r"\1\n\1 ::=", grammar)
+
+
+patternconv = PatternParser("ab|cd+")
+tree = patternconv.parse()
 print(tree)
+grammarbuildr = GrammarBuilder()
+print(grammarbuildr.convert_pattern_to_cfg(tree))
