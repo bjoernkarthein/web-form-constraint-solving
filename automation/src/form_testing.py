@@ -6,10 +6,23 @@ from selenium.webdriver import Chrome
 from typing import Dict, List, Tuple
 from seleniumwire.request import Request, Response
 
-from html_analysis import HTMLInputSpecification, HTMLRadioGroupSpecification, HTMLElementReference
+from html_analysis import (
+    HTMLInputSpecification,
+    HTMLRadioGroupSpecification,
+    HTMLElementReference,
+)
 from input_generation import InputGenerator, GeneratedValue, ValidityEnum
-from proxy import NetworkInterceptor, RequestScanner
-from utility import ConfigKey, InputType, load_file_content, load_page, write_to_web_element_by_reference_with_clear, click_web_element_by_reference, clamp_to_range, get_current_values_from_form, clear_value_mapping, write_to_file
+from proxy import NetworkInterceptor, RequestScanner, submission_interception_header
+from utility import (
+    ConfigKey,
+    InputType,
+    load_file_content,
+    load_page,
+    write_to_web_element_by_reference_with_clear,
+    click_web_element_by_reference,
+    clamp_to_range,
+    clear_value_mapping,
+)
 
 
 class SpecificationParser:
@@ -17,24 +30,32 @@ class SpecificationParser:
         self.__specification_file_path = specification_file_path
 
     def parse(self) -> (Dict | None, str):
-        file_name = 'specification/specification.json' if self.__specification_file_path is None else self.__specification_file_path
+        file_name = (
+            "specification/specification.json"
+            if self.__specification_file_path is None
+            else self.__specification_file_path
+        )
         parent_dir = str(Path(file_name).parent.absolute())
         specification_str = load_file_content(file_name)
-        if specification_str == '':
+        if specification_str == "":
             print(
-                'No existing specification file found. Either pass a path to a valid specification file via the -s flag or run the analyse.py to extract a specification automatically.\nRun test.py -h for help.')
-            return None, ''
+                "No existing specification file found. Either pass a path to a valid specification file via the -s flag or run the analyse.py to extract a specification automatically.\nRun test.py -h for help."
+            )
+            return None, ""
 
         try:
             specification = json.loads(specification_str)
         except json.JSONDecodeError as e:
-            print('Error parsing specification file')
+            print("Error parsing specification file")
             print(e)
-            return None, ''
+            return None, ""
 
-        if self.__specification_file_path is not None and not self.__check_specification_format(specification):
-            print('The given specification file does not have the correct format')
-            return None, ''
+        if (
+            self.__specification_file_path is not None
+            and not self.__check_specification_format(specification)
+        ):
+            print("The given specification file does not have the correct format")
+            return None, ""
 
         return specification, parent_dir
 
@@ -44,18 +65,34 @@ class SpecificationParser:
 
 
 class ValueGenerationSpecification:
-    def __init__(self, input_spec: HTMLInputSpecification | HTMLRadioGroupSpecification, type: str, grammar: str, formula: str | None = None):
+    def __init__(
+        self,
+        input_spec: HTMLInputSpecification | HTMLRadioGroupSpecification,
+        type: str,
+        grammar: str,
+        formula: str | None = None,
+    ):
         self.input_spec = input_spec
         self.type = type
         self.grammar = grammar
         self.formula = formula
 
     def __str__(self):
-        return f'ValueGenenerationSpecification:\nspec: {self.input_spec}\ngrammar: {self.grammar}\nformula: {self.formula}'
+        return f"ValueGenenerationSpecification:\nspec: {self.input_spec}\ngrammar: {self.grammar}\nformula: {self.formula}"
 
 
 class FormTester:
-    def __init__(self, driver: Chrome, url: str, specification: Dict, specification_directory: str, config: Dict) -> None:
+    def __init__(
+        self,
+        driver: Chrome,
+        url: str,
+        specification: Dict,
+        specification_directory: str,
+        config: Dict,
+    ) -> None:
+        self.__block_successful_submissions = config[ConfigKey.TESTING.value][
+            ConfigKey.BLOCK_SUBMISSION.value
+        ]
         self.__driver = driver
         repetitions = config[ConfigKey.TESTING.value][ConfigKey.REPETITIONS.value]
         self.__repetitions = clamp_to_range(repetitions, 1, None)
@@ -64,21 +101,24 @@ class FormTester:
         self.__url = url
 
     def start_generation(self) -> None:
-        # TODO: scan for submission here the same way?
-        # self.__interceptor = NetworkInterceptor(self.__driver)
-        # self.__interceptor.scan_for_form_submission()
+        self.__interceptor = NetworkInterceptor(self.__driver)
+        if self.__block_successful_submissions:
+            self.__interceptor.scan_for_form_submission()
 
         self.__submit_element_reference = self.__get_submit_element_from_json(
-            self.__specification)
+            self.__specification
+        )
 
         self.__generation_templates: List[ValueGenerationSpecification] = []
-        for json_spec in self.__specification['controls']:
-            self.__generation_templates.append(self.__convert_json_to_specification(
-                json_spec))
+        for json_spec in self.__specification["controls"]:
+            self.__generation_templates.append(
+                self.__convert_json_to_specification(json_spec)
+            )
 
         generator = InputGenerator()
         self.__test_monitor = TestMonitor(
-            self.__driver, self.__submit_element_reference)
+            self.__driver, self.__submit_element_reference, self.__interceptor
+        )
 
         # TODO generate all values in advance for better diversity and just fill in afterwards?
         for _ in range(self.__repetitions):
@@ -90,27 +130,46 @@ class FormTester:
 
     def __get_submit_element_from_json(self, spec: Dict) -> HTMLElementReference:
         return HTMLElementReference(
-            spec['submit']['access_method'], spec['submit']['access_value'])
+            spec["submit"]["access_method"], spec["submit"]["access_value"]
+        )
 
-    def __convert_json_to_specification(self, control: Dict) -> ValueGenerationSpecification:
+    def __convert_json_to_specification(
+        self, control: Dict
+    ) -> ValueGenerationSpecification:
         grammar = load_file_content(
-            f'{self.__specification_directory}/{control["grammar"]}')
+            f'{self.__specification_directory}/{control["grammar"]}'
+        )
         formula = load_file_content(
-            f'{self.__specification_directory}/{control["formula"]}')
-        type = control['type']
+            f'{self.__specification_directory}/{control["formula"]}'
+        )
+        type = control["type"]
 
-        if control['type'] == InputType.RADIO.value:
-            name = control['reference']['access_value']
-            options = control['options']
+        if control["type"] == InputType.RADIO.value:
+            name = control["reference"]["access_value"]
+            options = control["options"]
             options = list(
-                map(lambda o: (HTMLElementReference(o['reference']['access_method'], o['reference']['access_value']), o['value']), options))
+                map(
+                    lambda o: (
+                        HTMLElementReference(
+                            o["reference"]["access_method"],
+                            o["reference"]["access_value"],
+                        ),
+                        o["value"],
+                    ),
+                    options,
+                )
+            )
             element_spec = HTMLRadioGroupSpecification(name, options)
         else:
             element_reference = HTMLElementReference(
-                control['reference']['access_method'], control['reference']['access_value'])
+                control["reference"]["access_method"],
+                control["reference"]["access_value"],
+            )
             element_spec = HTMLInputSpecification(element_reference)
 
-        return ValueGenerationSpecification(element_spec, type, grammar, formula if formula != "" else None)
+        return ValueGenerationSpecification(
+            element_spec, type, grammar, formula if formula != "" else None
+        )
 
     # TODO: handle invalid value generation here
     # TODO: Annotate all values with valid or invalid for reporting later
@@ -118,26 +177,42 @@ class FormTester:
         values: List[GeneratedValue] = []
         for template in self.__generation_templates:
             generated_value = generator.generate_inputs(
-                template.grammar, template.formula)[0]
+                template.grammar, template.formula
+            )[0]
             values.append(generated_value)
 
             write_to_web_element_by_reference_with_clear(
-                self.__driver, template.type, template.input_spec.reference, generated_value.value)
+                self.__driver,
+                template.type,
+                template.input_spec.reference,
+                generated_value.value,
+            )
 
         self.__test_monitor.attempt_submit_and_save_response(values)
 
 
 class TestMonitor:
-    def __init__(self, driver: Chrome, submit_element: HTMLElementReference) -> None:
+    def __init__(
+        self,
+        driver: Chrome,
+        submit_element: HTMLElementReference,
+        interceptor: NetworkInterceptor,
+    ) -> None:
         self.__driver = driver
+        self.__interceptor = interceptor
         self.__request_scanner = RequestScanner()
-        self.__saved_submissions: List[Tuple[List[GeneratedValue], Response | None]] = [
-        ]
+        self.__saved_submissions: List[
+            Tuple[List[GeneratedValue], Response | None]
+        ] = []
         self.__submit_element = submit_element
 
-    def attempt_submit_and_save_response(self, current_values: List[GeneratedValue]) -> None:
+    def attempt_submit_and_save_response(
+        self, current_values: List[GeneratedValue]
+    ) -> None:
         str_values = list(map(lambda v: v.value, current_values))
+        self.__interceptor.generated_values = str_values
         click_web_element_by_reference(self.__driver, self.__submit_element)
+
         response = None
         all_requests: List[Request] = self.__driver.requests
         # TODO: Only look at the interesting subset of requests
@@ -150,15 +225,18 @@ class TestMonitor:
     def process_saved_submissions(self) -> None:
         for i in range(len(self.__saved_submissions)):
             values, response = self.__saved_submissions[i]
-            print(f'Test round {i + 1}')
-            print('---')
-            print('VALUES:')
+            print(f"Test round {i + 1}")
+            print("---")
+            print("VALUES:")
             for value in values:
                 print(value)
 
-            print('SERVER RESPONSE:')
+            print("SERVER RESPONSE:")
             if response is None:
-                print('No outgoing request detected')
+                print(
+                    "Submission did not cause any outgoing requests including the entered data."
+                )
+            elif response.headers[submission_interception_header] is not None:
+                print("Form was submitted successfully but the request was blocked.")
             else:
                 print(response.status_code, response.reason)
-            print('')

@@ -16,9 +16,9 @@ def main(argv):
     """Handle command line arguments and start the analysis."""
 
     try:
-        opts, _ = getopt.getopt(argv, '?hu:', ['help', 'url='])
+        opts, _ = getopt.getopt(argv, "?hu:", ["help", "url="])
     except getopt.GetoptError:
-        print('Unknown argument structure')
+        print("Unknown argument structure")
         print_help()
         sys.exit()
 
@@ -27,24 +27,25 @@ def main(argv):
         sys.exit()
 
     for opt, arg in opts:
-        if opt in ('-?', '-h', '--help'):
+        if opt in ("-?", "-h", "--help"):
             print_help()
             sys.exit()
-        if opt in ('-u', '--url'):
-            config = yaml.safe_load(open('../config/analysis_config.yml'))
-            test_automation_driver = TestAutomationDriver(
-                config, arg)
+        if opt in ("-u", "--url"):
+            config = yaml.safe_load(open("../config/analysis_config.yml"))
+            test_automation_driver = TestAutomationDriver(config, arg)
             test_automation_driver.run_analysis()
 
 
 def print_help():
     """Print the help message."""
 
-    print('''usage: python analyse.py -u <url> [option]
+    print(
+        """usage: python analyse.py -u <url> [option]
 Options and arguments:
 -?, -h, --help: print this help message and exit
--u, --url:      url of the web page that includes the form which is to be tested''')
+-u, --url:      url of the web page that includes the form which is to be tested"""
+    )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main(sys.argv[1:])

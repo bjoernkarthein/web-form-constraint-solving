@@ -8,11 +8,22 @@ from typing import List
 
 from constraint_extraction import ConstraintCandidateFinder, SpecificationBuilder
 from form_testing import FormTester, SpecificationParser
-from html_analysis import HTMLAnalyser, HTMLInputSpecification, FormObserver, HTMLRadioGroupSpecification
+from html_analysis import (
+    HTMLAnalyser,
+    HTMLInputSpecification,
+    FormObserver,
+    HTMLRadioGroupSpecification,
+)
 from proxy import NetworkInterceptor
-from utility import binary_input_types, ConfigKey, clamp_to_range, load_page, write_to_file
+from utility import (
+    binary_input_types,
+    ConfigKey,
+    clamp_to_range,
+    load_page,
+    write_to_file,
+)
 
-chrome_driver_path = '../chromedriver/windows/chromedriver.exe'
+chrome_driver_path = "../chromedriver/windows/chromedriver.exe"
 # chrome_driver_path = '../chromedriver/linux/chromedriver'
 
 """
@@ -39,19 +50,16 @@ class TestAutomationDriver:
 
         # Options for the chrome webdriver
         chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_experimental_option(
-            'excludeSwitches', ['enable-logging'])
-        chrome_options.add_argument('--lang=en')
+        chrome_options.add_experimental_option("excludeSwitches", ["enable-logging"])
+        chrome_options.add_argument("--lang=en")
 
         # Options for the selenium wire proxy
-        wire_options = {
-            'disable_encoding': True
-        }
+        wire_options = {"disable_encoding": True}
 
         self.__driver = webdriver.Chrome(
             service=Service(chrome_driver_path),
             options=chrome_options,
-            seleniumwire_options=wire_options
+            seleniumwire_options=wire_options,
         )
 
     def run_analysis(self) -> None:
@@ -64,10 +72,8 @@ class TestAutomationDriver:
         load_page(self.__driver, self.__url)
         interceptor.scan_for_form_submission()
 
-        html_input_specifications = self.__analyse_html(
-            self.__driver.page_source)
-        self.__start_constraint_extraction(
-            html_input_specifications, interceptor)
+        html_input_specifications = self.__analyse_html(self.__driver.page_source)
+        self.__start_constraint_extraction(html_input_specifications, interceptor)
 
         self.__exit()
 
@@ -78,14 +84,17 @@ class TestAutomationDriver:
         if spec is None:
             self.__exit()
 
-        url = spec['url']
+        url = spec["url"]
         form_tester = FormTester(
-            self.__driver, url, spec, specification_dir, self.__config)
+            self.__driver, url, spec, specification_dir, self.__config
+        )
         form_tester.start_generation()
 
         self.__exit()
 
-    def __analyse_html(self, html_string: str) -> List[HTMLInputSpecification | HTMLRadioGroupSpecification]:
+    def __analyse_html(
+        self, html_string: str
+    ) -> List[HTMLInputSpecification | HTMLRadioGroupSpecification]:
         """Analyse the HTML content of the web page.
 
         Select a web form and extract the built-in HTML constraints for it's inputs.
@@ -99,21 +108,27 @@ class TestAutomationDriver:
         # TODO check for form changes and handle
         self.__form_observer = FormObserver(form, access)
 
-        html_constraints = self.__html_analyser.extract_static_constraints(
-            form)
+        html_constraints = self.__html_analyser.extract_static_constraints(form)
         if html_constraints is None:
             self.__exit()
 
         return html_constraints
 
-    def __start_constraint_extraction(self, html_specifications: List[HTMLInputSpecification | HTMLRadioGroupSpecification], interceptor: NetworkInterceptor) -> None:
+    def __start_constraint_extraction(
+        self,
+        html_specifications: List[HTMLInputSpecification | HTMLRadioGroupSpecification],
+        interceptor: NetworkInterceptor,
+    ) -> None:
         """Start the extraction of client-side validation constraints for a set of specified HTML inputs."""
         html_only = self.__config[ConfigKey.ANALYSIS.value][ConfigKey.HTML_ONLY.value]
-        analysis_rounds = self.__config[ConfigKey.ANALYSIS.value][ConfigKey.ANALYSIS_ROUNDS.value]
+        analysis_rounds = self.__config[ConfigKey.ANALYSIS.value][
+            ConfigKey.ANALYSIS_ROUNDS.value
+        ]
         analysis_rounds = clamp_to_range(analysis_rounds, 1, None)
 
         self.__constraint_candidate_finder = ConstraintCandidateFinder(
-            self.__driver, self.__html_analyser.submit_element, interceptor)
+            self.__driver, self.__html_analyser.submit_element, interceptor
+        )
         self.__generate_valid_html_magic_values(html_specifications)
 
         if html_only:
@@ -121,24 +136,40 @@ class TestAutomationDriver:
 
         for spec in html_specifications:
             new_constraints = self.__constraint_candidate_finder.find_initial_js_constraint_candidates(
-                spec)
+                spec
+            )
 
             for _ in range(analysis_rounds):
-                grammar, formula = self.__specification_builder.add_constraints_to_current_specification(
-                    new_constraints)
+                (
+                    grammar,
+                    formula,
+                ) = self.__specification_builder.add_constraints_to_current_specification(
+                    new_constraints
+                )
                 self.__constraint_candidate_finder.find_additional_js_constraint_candidates(
-                    grammar, formula)
+                    grammar, formula
+                )
 
     # TODO: refactor to not be this complex
-    def __generate_valid_html_magic_values(self, html_specifications: List[HTMLInputSpecification | HTMLRadioGroupSpecification]) -> None:
+    def __generate_valid_html_magic_values(
+        self,
+        html_specifications: List[HTMLInputSpecification | HTMLRadioGroupSpecification],
+    ) -> None:
         self.__specification_builder = SpecificationBuilder()
-        use_datalist_options = self.__config[ConfigKey.GENERATION.value][ConfigKey.USE_DATALIST_OPTIONS.value]
-        magic_value_amount = self.__config[ConfigKey.ANALYSIS.value][ConfigKey.MAGIC_VALUE_AMOUNT.value]
+        use_datalist_options = self.__config[ConfigKey.GENERATION.value][
+            ConfigKey.USE_DATALIST_OPTIONS.value
+        ]
+        magic_value_amount = self.__config[ConfigKey.ANALYSIS.value][
+            ConfigKey.MAGIC_VALUE_AMOUNT.value
+        ]
         magic_value_amount = clamp_to_range(magic_value_amount, 1, 10)
 
         next_file_index = 1
-        form_specification = {'url': self.__url, 'controls': [
-        ], 'submit': self.__html_analyser.submit_element.get_as_dict()}
+        form_specification = {
+            "url": self.__url,
+            "controls": [],
+            "submit": self.__html_analyser.submit_element.get_as_dict(),
+        }
 
         for specification in html_specifications:
             if isinstance(specification, HTMLInputSpecification):
@@ -146,22 +177,36 @@ class TestAutomationDriver:
                 if specification.constraints.type not in binary_input_types:
                     specification.constraints.required = True
 
-                grammar, formula = self.__specification_builder.create_specification_for_html_input(
-                    specification, use_datalist_options)
+                (
+                    grammar,
+                    formula,
+                ) = self.__specification_builder.create_specification_for_html_input(
+                    specification, use_datalist_options
+                )
             else:
-                grammar, formula = self.__specification_builder.create_specification_for_html_radio_group(
-                    specification)
+                (
+                    grammar,
+                    formula,
+                ) = self.__specification_builder.create_specification_for_html_radio_group(
+                    specification
+                )
 
-            grammar_file, formula_file = self.__specification_builder.write_specification_to_file(
-                str(next_file_index), grammar, formula)
-            form_specification['controls'].append(
-                specification.get_representation(grammar_file, formula_file))
+            (
+                grammar_file,
+                formula_file,
+            ) = self.__specification_builder.write_specification_to_file(
+                str(next_file_index), grammar, formula
+            )
+            form_specification["controls"].append(
+                specification.get_representation(grammar_file, formula_file)
+            )
             next_file_index += 1
 
             self.__constraint_candidate_finder.set_magic_value_sequence(
-                specification, grammar, formula, magic_value_amount)
+                specification, grammar, formula, magic_value_amount
+            )
 
-        write_to_file('specification/specification.json', form_specification)
+        write_to_file("specification/specification.json", form_specification)
 
     def __exit(self, exit_code=None) -> None:
         """Free all resources and exit"""

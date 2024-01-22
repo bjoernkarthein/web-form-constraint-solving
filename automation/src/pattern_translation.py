@@ -47,7 +47,7 @@ class Alternative(RegEx):
         self.__that = that
 
     def __str__(self) -> str:
-        return f'{self.__this} or {self.__that}'
+        return f"{self.__this} or {self.__that}"
 
     def nodes(self) -> List[Self]:
         return self.__this.nodes() + self.__that.nodes() + [self]
@@ -62,7 +62,7 @@ class Sequence(RegEx):
         self.__second = second
 
     def __str__(self) -> str:
-        return f'{self.__first} -> {self.__second}'
+        return f"{self.__first} -> {self.__second}"
 
     @property
     def first(self) -> int:
@@ -85,13 +85,13 @@ class Quantifier:
         self.__max_repeat = max_repeat
 
     def __str__(self) -> str:
-        result = 'times '
+        result = "times "
         if self.__min_repeat == self.__max_repeat:
-            return f'times {self.__min_repeat}'
+            return f"times {self.__min_repeat}"
         elif self.__max_repeat == None:
-            return f'times {self.__min_repeat} to unlimited'
+            return f"times {self.__min_repeat} to unlimited"
         else:
-            return f'times {self.__min_repeat} to {self.__max_repeat}'
+            return f"times {self.__min_repeat} to {self.__max_repeat}"
 
     @property
     def min_repeat(self) -> int:
@@ -108,7 +108,7 @@ class Repetition(RegEx):
         self.__quantifier = quantifier
 
     def __str__(self) -> str:
-        return f'{self.__term} {self.__quantifier}'
+        return f"{self.__term} {self.__quantifier}"
 
     def nodes(self) -> List[Self]:
         return self.__term.nodes() + [self]
@@ -151,7 +151,21 @@ class PatternTranslator:
     def __init__(self, javascript_pattern: str) -> None:
         self.__pattern: str = javascript_pattern
         self.__syntax_characters: List[str] = [
-            '^', '$', '\\', '.', '*', '+', '?', '(', ')', '[', ']', '{', '}', '|']
+            "^",
+            "$",
+            "\\",
+            ".",
+            "*",
+            "+",
+            "?",
+            "(",
+            ")",
+            "[",
+            "]",
+            "{",
+            "}",
+            "|",
+        ]
         self.__printable_characters: List[str] = [*string.printable]
         self.__digits: List[str] = [*string.digits]
 
@@ -164,13 +178,13 @@ class PatternTranslator:
 
     def build_grammar(self, pattern: Pattern) -> Grammar:
         next_free_label = 1
-        grammar: Grammar = {'<start>': []}
+        grammar: Grammar = {"<start>": []}
 
         terminals = []
         # remove duplicates
         [terminals.append(t) for t in pattern.leaves if t not in terminals]
         for terminal in terminals:
-            grammar[f'<{next_free_label}>'] = [f'"{terminal}"']
+            grammar[f"<{next_free_label}>"] = [f'"{terminal}"']
             next_free_label += 1
 
         return grammar
@@ -179,9 +193,9 @@ class PatternTranslator:
         lines = []
         for label, values in grammar.items():
             options = " | ".join(values)
-            lines.append(f'{label} ::= {options}')
+            lines.append(f"{label} ::= {options}")
 
-        return '\n'.join(lines)
+        return "\n".join(lines)
 
     def parse(self) -> RegEx:
         return self.disjunction()
@@ -195,7 +209,8 @@ class PatternTranslator:
             self.__pattern = self.__pattern[1:]
         else:
             raise ValueError(
-                f'eat expected next character to be "{c}" but was "{self.peek()}"')
+                f'eat expected next character to be "{c}" but was "{self.peek()}"'
+            )
 
     def next(self) -> str:
         c = self.peek()
@@ -210,8 +225,8 @@ class PatternTranslator:
     def disjunction(self) -> RegEx:
         term = self.term()
 
-        if self.more() and self.peek() == '|':
-            self.eat('|')
+        if self.more() and self.peek() == "|":
+            self.eat("|")
             disjunction = self.disjunction()
             return Alternative(term, disjunction)
         else:
@@ -220,19 +235,19 @@ class PatternTranslator:
     def term(self) -> RegEx:
         term = self.atom()
 
-        if self.more() and self.peek() in ['*', '+', '?', '{']:
+        if self.more() and self.peek() in ["*", "+", "?", "{"]:
             quantifier = self.quantifier()
             term = Repetition(term, quantifier)
 
-        while self.more() and self.peek() != ')' and self.peek() != '|':
+        while self.more() and self.peek() != ")" and self.peek() != "|":
             next_term = self.term()
             term = Sequence(term, next_term)
 
         return term
 
     def options(self) -> RegEx:
-        if self.peek() == '^':
-            self.eat('^')
+        if self.peek() == "^":
+            self.eat("^")
             excluded = self.not_in()
             print(excluded)
             choices = list(set(self.__printable_characters) - set(excluded))
@@ -240,13 +255,12 @@ class PatternTranslator:
 
         options = self.atom()
 
-        if self.more() and self.peek() == '-':
-            self.eat('-')
+        if self.more() and self.peek() == "-":
+            self.eat("-")
             end = self.atom()
-            options = self.__build_alternative_from_range(
-                options.char, end.char)
+            options = self.__build_alternative_from_range(options.char, end.char)
 
-        while self.more() and self.peek() != ']':
+        while self.more() and self.peek() != "]":
             next_option = self.options()
             options = Alternative(options, next_option)
 
@@ -256,12 +270,12 @@ class PatternTranslator:
         choice = self.atom()
         excluded = [str(c) for c in choice.leaves()]
 
-        if self.more() and self.peek() == '-':
-            self.eat('-')
+        if self.more() and self.peek() == "-":
+            self.eat("-")
             end = str(self.atom().leaves()[0])
             excluded = self.__get_characters_from_range(excluded[0], end)
 
-        while self.more() and self.peek() != ']':
+        while self.more() and self.peek() != "]":
             next = self.not_in()
             excluded = excluded + next
 
@@ -270,37 +284,39 @@ class PatternTranslator:
     def atom(self) -> RegEx:
         c = self.peek()
         match c:
-            case '.':
+            case ".":
                 # TODO: handle . correctly with quantifiers
-                self.eat('.')
+                self.eat(".")
                 no_line_terminators = self.__printable_characters.copy()
                 no_line_terminators.remove('"')
                 return self.__create_choice_from_list(no_line_terminators[:-6])
-            case '\\':
-                self.eat('\\')
-                if self.peek() == 'd':
-                    self.eat('d')
+            case "\\":
+                self.eat("\\")
+                if self.peek() == "d":
+                    self.eat("d")
                     digits = self.__printable_characters[0:10]
                     return self.__create_choice_from_list(digits)
-                elif self.peek() == 's':
-                    self.eat('s')
-                    return self.__create_choice_from_list(['\r', '\n', '\t', '\f', '\v'])
-                elif self.peek() == 'w':
-                    self.eat('w')
+                elif self.peek() == "s":
+                    self.eat("s")
+                    return self.__create_choice_from_list(
+                        ["\r", "\n", "\t", "\f", "\v"]
+                    )
+                elif self.peek() == "w":
+                    self.eat("w")
                     letters = self.__printable_characters[0:62]
-                    return self.__create_choice_from_list(letters + ['_'])
+                    return self.__create_choice_from_list(letters + ["_"])
                 else:
                     char = self.next()
                     return Primitive(char)
-            case '(':
-                self.eat('(')
+            case "(":
+                self.eat("(")
                 disjunction = self.disjunction()
-                self.eat(')')
+                self.eat(")")
                 return disjunction
-            case '[':
-                self.eat('[')
+            case "[":
+                self.eat("[")
                 options = self.options()
-                self.eat(']')
+                self.eat("]")
                 return options
             case _:
                 self.eat(c)
@@ -309,29 +325,28 @@ class PatternTranslator:
     def quantifier(self) -> RegEx:
         c = self.peek()
         match c:
-            case '*':
-                self.eat('*')
+            case "*":
+                self.eat("*")
                 return Quantifier(0, None)
-            case '+':
-                self.eat('+')
+            case "+":
+                self.eat("+")
                 return Quantifier(1, None)
-            case '?':
-                self.eat('?')
+            case "?":
+                self.eat("?")
                 return Quantifier(0, 1)
-            case '{':
-                self.eat('{')
+            case "{":
+                self.eat("{")
                 quantifier = self.__handle_quantification_with_numbers()
-                self.eat('}')
+                self.eat("}")
                 return quantifier
 
     def __get_characters_from_range(self, start: str, end: str) -> List[str]:
         try:
             start_index = self.__printable_characters.index(start)
             end_index = self.__printable_characters.index(end)
-            return self.__printable_characters[start_index:end_index+1]
+            return self.__printable_characters[start_index : end_index + 1]
         except Exception as e:
-            raise RuntimeError(
-                f'Can not get sublist for values from {start} to {end}')
+            raise RuntimeError(f"Can not get sublist for values from {start} to {end}")
 
     def __build_alternative_from_range(self, start: str, end: str) -> Alternative:
         options = self.__get_characters_from_range(start, end)
@@ -346,21 +361,21 @@ class PatternTranslator:
 
     def __handle_quantification_with_numbers(self) -> Quantifier:
         min = self.next()
-        while (self.more() and self.peek() not in [',', '}']):
+        while self.more() and self.peek() not in [",", "}"]:
             min = min + self.next()
 
-        if self.peek() == '}':
+        if self.peek() == "}":
             return Quantifier(int(min), int(min))
 
-        if self.peek() == ',':
-            self.eat(',')
+        if self.peek() == ",":
+            self.eat(",")
             max = self.next()
-            while (self.more() and self.peek() not in ['}']):
+            while self.more() and self.peek() not in ["}"]:
                 max = max + self.next()
 
             return Quantifier(min, max)
 
 
-t = PatternTranslator('(a|bc)?')
+t = PatternTranslator("(a|bc)?")
 tree = t.parse()
 print(tree)

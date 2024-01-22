@@ -4,6 +4,7 @@ import urllib.parse
 from lxml import etree, html
 from requests_toolbelt.multipart import decoder
 from selenium.webdriver import Chrome
+from seleniumwire.request import Request, Response
 from typing import List
 
 from utility import service_base_url, instrumentation_controller
@@ -13,6 +14,8 @@ Proxy module
 
 Utilizes the selenium wire module to intercept and inspect network traffic.
 """
+
+submission_interception_header = "Successful-Form-Submission"
 
 
 class NetworkInterceptor:
@@ -39,50 +42,49 @@ class NetworkInterceptor:
         del self.__driver.request_interceptor
         self.__driver.request_interceptor = self.__form_submission_interceptor
 
-    def __file_interceptor(self, request, response) -> None:
+    def __file_interceptor(self, request: Request, response: Response) -> None:
         """Intercept network responses and alter response contents to allow for dynamic analysis.
 
         JavaScript files are sent to the instrumentation service to add statements for dynamic analysis.
 
         For each HTML file a script tag is added to enable access of common methods for dynamic analysis.
         """
-        content_type = response.headers['Content-Type']
+        content_type = response.headers["Content-Type"]
         if content_type == None:
             return
 
-        if content_type.startswith('application/javascript'):
-            if request.url == f'{service_base_url}/static/script.js':
+        if content_type.startswith("application/javascript"):
+            if request.url == f"{service_base_url}/static/script.js":
                 return
 
             response.body = self.__handle_js_file(request, response)
 
-        if content_type.startswith('text/html'):
+        if content_type.startswith("text/html"):
             response.body = self.__handle_html_file(response)
 
         # Set correct new content length header
-        content_length = response.headers.get('content-length')
+        content_length = response.headers.get("content-length")
         if content_length:
-            del response.headers['content-length']
-            response.headers['content-length'] = str(len(response.body))
+            del response.headers["content-length"]
+            response.headers["content-length"] = str(len(response.body))
 
-    def __handle_js_file(self, request, response) -> bytes:
+    def __handle_js_file(self, request: Request, response: Response) -> bytes:
         """Send JavaScript file to the instrumentation service and return instrumented content."""
 
         name = request.url.split("/")[-1]
-        body_string = decode_body(response.body)
+        body_string = decode_bytes(response.body)
 
-        data = {'name': name, 'source': body_string}
-        res = requests.post(
-            f'{instrumentation_controller}/instrument', data)
+        data = {"name": name, "source": body_string}
+        res = requests.post(f"{instrumentation_controller}/instrument", data)
         return res.content
 
-    def __handle_html_file(self, response) -> bytes:
+    def __handle_html_file(self, response: Response) -> bytes:
         """Add script tag with common functions to HTML file body and return new content."""
 
         try:
-            body_string = decode_body(response.body)
+            body_string = decode_bytes(response.body)
             html_ast = html.fromstring(body_string)
-            html_body = html_ast.find('.//body')
+            html_body = html_ast.find(".//body")
         except Exception:
             # TODO
             return response.body
@@ -91,92 +93,96 @@ class NetworkInterceptor:
             return
 
         script_tag = etree.fromstring(
-            f'<script src="{service_base_url}/static/script.js"></script>')
+            f'<script src="{service_base_url}/static/script.js"></script>'
+        )
 
         html_body.append(script_tag)
         return html.tostring(html_ast, pretty_print=True)
 
-    def __form_submission_interceptor(self, request) -> None:
-        if self.__request_scanner.all_values_in_form_request(request, self.generated_values):
+    def __form_submission_interceptor(self, request: Request) -> None:
+        if self.__request_scanner.all_values_in_form_request(
+            request, self.generated_values
+        ):
             self.__stop_request(request)
 
     def __stop_request(self, request):
-        # TODO: What to do in case of success?
-        request.abort()
-        # request.create_response(
-        #     status_code=200,
-        #     headers={'Content-Type': 'text/html',
-        #              'successful-form-submission': 'true'},
-        #     body='<html>Form successfully submitetd with generated values. Stopping analysis...</html>'
-        # )
+        request.create_response(
+            status_code=202,
+            headers={
+                "Content-Type": "application/json",
+                submission_interception_header: "true",
+            },
+            body=b"{}",
+        )
 
 
 class RequestScanner:
-    def all_values_in_form_request(self, request, generated_values: List[str]) -> bool:
+    def all_values_in_form_request(
+        self, request: Request, generated_values: List[str]
+    ) -> bool:
         self.generated_values = generated_values
 
-        if request.method != 'GET' and request.method != 'POST':
+        if request.method != "GET" and request.method != "POST":
             return False
 
-        if request.method == 'GET':
+        if request.method == "GET":
             return self.__scan_for_values_in_url(request)
-        elif request.method == 'POST':
-            content_type = str(request.headers['Content-Type'])
+        elif request.method == "POST":
+            content_type = str(request.headers["Content-Type"])
 
-        if content_type.startswith('application/x-www-form-urlencoded'):
+        if content_type.startswith("application/x-www-form-urlencoded"):
             return self.__scan_for_values_in_urlencoded_form_data(request)
-        elif content_type.startswith('multipart/form-data'):
-            return self.__scan_for_values_in_multipart_form_data(
-                request, content_type)
-        elif content_type.startswith('text/plain'):
+        elif content_type.startswith("multipart/form-data"):
+            return self.__scan_for_values_in_multipart_form_data(request, content_type)
+        elif content_type.startswith("text/plain"):
             return self.__scan_for_values_in_plain_text(request)
         else:
             return self.__scan_for_values(request)
 
-    def __scan_for_values_in_url(self, request) -> bool:
+    def __scan_for_values_in_url(self, request: Request) -> bool:
         return self.__all_values_in_query_string(request.querystring)
 
-    def __scan_for_values_in_urlencoded_form_data(self, request) -> bool:
-        body = decode_body(request.body)
+    def __scan_for_values_in_urlencoded_form_data(self, request: Request) -> bool:
+        body = decode_bytes(request.body)
         return self.__all_values_in_query_string(body)
 
-    def __scan_for_values_in_multipart_form_data(self, request, content_type: str) -> bool:
+    def __scan_for_values_in_multipart_form_data(
+        self, request: Request, content_type: str
+    ) -> bool:
         elements = decoder.MultipartDecoder(request.body, content_type).parts
         values = list(map(lambda e: e.text, elements))
 
         return set(values) == set(self.generated_values)
 
-    def __scan_for_values_in_plain_text(self, request) -> bool:
-        body = decode_body(request.body)
-        elements = body.split('\r\n')
-        values = list(map(lambda e: e.split('=', 1)[
-                      1] if '=' in e else None, elements))
+    def __scan_for_values_in_plain_text(self, request: Request) -> bool:
+        body = decode_bytes(request.body)
+        elements = body.split("\r\n")
+        values = list(map(lambda e: e.split("=", 1)[1] if "=" in e else None, elements))
         values = [v for v in values if v is not None]
 
         return set(values) == set(self.generated_values)
 
-    def __scan_for_values(self, request) -> bool:
-        body = decode_body(request.body)
+    def __scan_for_values(self, request: Request) -> bool:
+        body = decode_bytes(request.body)
         return all(s in body for s in self.generated_values)
 
     def __all_values_in_query_string(self, query_string: str) -> bool:
-        if '&' not in query_string:
+        if "&" not in query_string:
             return False
 
-        vars = query_string.split('&')
-        values = list(map(lambda v: v.split('=', 1)[1], vars))
-        plain_values = list(
-            map(lambda v: urllib.parse.unquote_plus(v), values))
+        vars = query_string.split("&")
+        values = list(map(lambda v: v.split("=", 1)[1], vars))
+        plain_values = list(map(lambda v: urllib.parse.unquote_plus(v), values))
 
         return set(plain_values) == set(self.generated_values)
 
 
-def decode_body(body) -> str:
+def decode_bytes(body: bytes) -> str:
     """Decode a request body in bytes to an utf-8 string and return the result."""
 
     try:
-        body_string = body.decode('utf-8')
+        body_string = body.decode("utf-8")
     except UnicodeDecodeError:
-        return ''
+        return ""
 
     return body_string

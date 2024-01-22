@@ -7,8 +7,8 @@ from mutation import ValueMutator
 
 
 class ValidityEnum(Enum):
-    VALID = 'valid'
-    INVALID = 'invalid'
+    VALID = "valid"
+    INVALID = "invalid"
 
 
 class GeneratedValue:
@@ -29,13 +29,21 @@ class GeneratedValue:
 
 
 class InputGenerator:
-    def generate_inputs(self, grammar: str, formula: str, validity: ValidityEnum = ValidityEnum.VALID, amount: int = 1) -> List[GeneratedValue]:
+    def generate_inputs(
+        self,
+        grammar: str,
+        formula: str,
+        validity: ValidityEnum = ValidityEnum.VALID,
+        amount: int = 1,
+    ) -> List[GeneratedValue]:
         if validity == ValidityEnum.VALID:
             return self.__generate_valid_inputs(grammar, formula, amount)
         else:
             return self.__generate_invalid_inputs(grammar, formula, amount)
 
-    def __generate_valid_inputs(self, grammar: str, formula: str | None, amount: int = 1) -> List[GeneratedValue]:
+    def __generate_valid_inputs(
+        self, grammar: str, formula: str | None, amount: int = 1
+    ) -> List[GeneratedValue]:
         values: List[GeneratedValue] = []
         if amount < 1:
             return []
@@ -54,16 +62,21 @@ class InputGenerator:
             return []
 
     # TODO: Needs to be tested a lot to see if it works reliably
-    def __generate_invalid_inputs(self, grammar: str, formula: str | None, amount: int = 1) -> List[GeneratedValue]:
+    def __generate_invalid_inputs(
+        self, grammar: str, formula: str | None, amount: int = 1
+    ) -> List[GeneratedValue]:
         if formula is not None:
-            negated_formula = f'not ({formula})'
-            values = self.__generate_valid_inputs(
-                grammar, negated_formula, amount)
-            return list(map(lambda v: GeneratedValue(v.value, ValidityEnum.INVALID), values))
+            negated_formula = f"not ({formula})"
+            values = self.__generate_valid_inputs(grammar, negated_formula, amount)
+            return list(
+                map(lambda v: GeneratedValue(v.value, ValidityEnum.INVALID), values)
+            )
 
         return self.__generate_invalid_values_for_non_existent_formula(grammar, amount)
 
-    def __generate_invalid_values_for_non_existent_formula(self, grammar: str, amount: int = 1) -> List[GeneratedValue]:
+    def __generate_invalid_values_for_non_existent_formula(
+        self, grammar: str, amount: int = 1
+    ) -> List[GeneratedValue]:
         values = []
 
         for _ in range(amount):
@@ -85,4 +98,4 @@ class InputGenerator:
 
             if not found_invalid_value:
                 # TODO: What if I don't find something invalid
-                values.append(GeneratedValue('', ValidityEnum.INVALID))
+                values.append(GeneratedValue("", ValidityEnum.INVALID))
