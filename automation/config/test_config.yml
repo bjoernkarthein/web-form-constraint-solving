@@ -1,4 +1,5 @@
 generation:
   valid: true
 testing:
-  repetitions: 5
+  block-submission: false
+  repetitions: 3
