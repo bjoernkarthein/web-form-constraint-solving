@@ -7,7 +7,7 @@ from selenium.webdriver import Chrome
 from typing import List, Dict
 
 from html_analysis import HTMLConstraints, HTMLElementReference, HTMLInputSpecification, HTMLRadioGroupSpecification
-from input_generation import InputGenerator
+from input_generation import InputGenerator, ValidityEnum
 from proxy import NetworkInterceptor
 from utility import *
 
@@ -66,14 +66,16 @@ class ConstraintCandidateFinder:
         return ConstraintCandidateResult({'candidates': []})
 
     def __set_magic_value_sequence_for_input(self, html_specification: HTMLInputSpecification, grammar: str, formula: str | None, amount: int) -> List[str]:
-        values = self.__generator.generate_valid_inputs(
-            grammar, formula, amount)
+        generated_values = self.__generator.generate_inputs(
+            grammar, formula, ValidityEnum.VALID, amount)
+        values = list(map(lambda v: v.value, generated_values))
         self.__magic_value_map[html_specification] = values
         return values
 
     def __set_magic_value_sequence_for_radio_group(self, html_specification: HTMLRadioGroupSpecification, grammar: str, formula: str | None, amount: int) -> List[str]:
-        values = self.__generator.generate_valid_inputs(
-            grammar, formula, amount)
+        generated_values = self.__generator.generate_inputs(
+            grammar, formula, ValidityEnum.VALID, amount)
+        values = list(map(lambda v: v.value, generated_values))
         self.__magic_value_map[html_specification] = values
         return values
 

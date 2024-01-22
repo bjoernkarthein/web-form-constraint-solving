@@ -3,12 +3,13 @@ import time
 
 from pathlib import Path
 from selenium.webdriver import Chrome
-from typing import Dict, List
+from typing import Dict, List, Tuple
+from seleniumwire.request import Request, Response
 
 from html_analysis import HTMLInputSpecification, HTMLRadioGroupSpecification, HTMLElementReference
-from input_generation import InputGenerator
+from input_generation import InputGenerator, GeneratedValue, ValidityEnum
 from proxy import NetworkInterceptor, RequestScanner
-from utility import ConfigKey, InputType, load_file_content, load_page, write_to_web_element_by_reference_with_clear, click_web_element_by_reference, clamp_to_range, get_current_values_from_form, clear_value_mapping
+from utility import ConfigKey, InputType, load_file_content, load_page, write_to_web_element_by_reference_with_clear, click_web_element_by_reference, clamp_to_range, get_current_values_from_form, clear_value_mapping, write_to_file
 
 
 class SpecificationParser:
@@ -85,6 +86,8 @@ class FormTester:
             load_page(self.__driver, self.__url)
             self.__fill_form_with_values_and_submit(generator)
 
+        self.__test_monitor.process_saved_submissions()
+
     def __get_submit_element_from_json(self, spec: Dict) -> HTMLElementReference:
         return HTMLElementReference(
             spec['submit']['access_method'], spec['submit']['access_value'])
@@ -110,37 +113,52 @@ class FormTester:
         return ValueGenerationSpecification(element_spec, type, grammar, formula if formula != "" else None)
 
     # TODO: handle invalid value generation here
-    # TODO: Annotate all values with valid or invalid
+    # TODO: Annotate all values with valid or invalid for reporting later
     def __fill_form_with_values_and_submit(self, generator: InputGenerator) -> None:
+        values: List[GeneratedValue] = []
         for template in self.__generation_templates:
-            value = generator.generate_valid_inputs(
+            generated_value = generator.generate_inputs(
                 template.grammar, template.formula)[0]
-            write_to_web_element_by_reference_with_clear(
-                self.__driver, template.type, template.input_spec.reference, value)
+            values.append(generated_value)
 
-        self.__test_monitor.attempt_submit_and_save_response()
+            write_to_web_element_by_reference_with_clear(
+                self.__driver, template.type, template.input_spec.reference, generated_value.value)
+
+        self.__test_monitor.attempt_submit_and_save_response(values)
 
 
 class TestMonitor:
     def __init__(self, driver: Chrome, submit_element: HTMLElementReference) -> None:
         self.__driver = driver
         self.__request_scanner = RequestScanner()
-        self.__saved_responses = []
+        self.__saved_submissions: List[Tuple[List[GeneratedValue], Response | None]] = [
+        ]
         self.__submit_element = submit_element
 
-    def start(self) -> None:
-        # self.__response_inspector = ResponseInspector(self.__driver)
-        # self.__response_inspector.check_and_save_responses()
-        pass
-
-    def attempt_submit_and_save_response(self) -> None:
-        values = get_current_values_from_form()
-        print(values)
+    def attempt_submit_and_save_response(self, current_values: List[GeneratedValue]) -> None:
+        str_values = list(map(lambda v: v.value, current_values))
         click_web_element_by_reference(self.__driver, self.__submit_element)
         response = None
-        for request in self.__driver.requests:
-            if self.__request_scanner.all_values_in_form_request(request, values):
+        all_requests: List[Request] = self.__driver.requests
+        # TODO: Only look at the interesting subset of requests
+        for request in all_requests:
+            if self.__request_scanner.all_values_in_form_request(request, str_values):
                 response = request.response
 
-        self.__saved_responses.append((values, response))
-        print(self.__saved_responses)
+        self.__saved_submissions.append((current_values, response))
+
+    def process_saved_submissions(self) -> None:
+        for i in range(len(self.__saved_submissions)):
+            values, response = self.__saved_submissions[i]
+            print(f'Test round {i + 1}')
+            print('---')
+            print('VALUES:')
+            for value in values:
+                print(value)
+
+            print('SERVER RESPONSE:')
+            if response is None:
+                print('No outgoing request detected')
+            else:
+                print(response.status_code, response.reason)
+            print('')

@@ -71,6 +71,7 @@ class TestAutomationDriver:
 
         self.__exit()
 
+    # TODO: Selection dependent inputs during testing?
     def run_test(self, specification_file: str | None = None) -> None:
         specification_parser = SpecificationParser(specification_file)
         spec, specification_dir = specification_parser.parse()
