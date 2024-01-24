@@ -1,11 +1,10 @@
+const events = require("events");
 const fs = require("fs");
 const readline = require("readline");
 const codeql = require("./codeql");
-const instrument = require("./instrument");
 const trace = require("./trace");
 
 let allTraces = [];
-let groupedTraces = [];
 
 function hasValue(object, value) {
   for (const [key, elem] of Object.entries(object)) {
@@ -21,7 +20,7 @@ function hasValue(object, value) {
   return [false, {}, ""];
 }
 
-function analyseTraces() {
+async function analyseTraces() {
   const fileStream = fs.createReadStream(trace.traceLogFile);
   const rl = readline.createInterface({
     input: fileStream,
@@ -35,77 +34,74 @@ function analyseTraces() {
     allTraces.push(JSON.parse(line));
   });
 
-  rl.on("close", () => {
-    processTraces();
-  });
+  await events.once(rl, "close");
+  const pointsOfInterest = processTraces();
+  runQueries(pointsOfInterest);
+  return extractConstraintCandidates();
 }
 
 function processTraces() {
-  // Clean up resources
-  // trace.cleanUp();
+  trace.cleanUp();
+  const start = allTraces.filter(
+    (t) => t.action == trace.ACTION_ENUM.INTERACTION_START
+  )[0].time;
+  const end = allTraces.filter(
+    (t) => t.action == trace.ACTION_ENUM.INTERACTION_END
+  )[0].time;
+  const interaction_traces = allTraces.filter(
+    (t) => t.time >= start && t.time <= end
+  );
+  interaction_traces.sort(compareTimestamps);
 
-  allTraces.sort(compareTimestamps);
-  // let add = false;
-  // let interactions = [];
-  // for (const t of allTraces) {
-  //   if (t.action == trace.ACTION_ENUM.INTERACTION_START) {
-  //     add = true;
-  //   }
+  // If there are no functions called in the browser we can return
+  const browserTraces = interaction_traces.filter((t) => t.pageFile);
+  if (browserTraces.length == 0) {
+    return [];
+  }
 
-  //   if (add) {
-  //     interactions.push(t);
-  //   }
+  // If the magic values are not included in the traces we can also return
+  let importantTraces = findMagicValues(interaction_traces);
+  if (importantTraces.length == 0) {
+    return [];
+  }
 
-  //   if (t.action == trace.ACTION_ENUM.INTERACTION_END) {
-  //     add = false;
-  //     groupedTraces.push(interactions);
-  //     interactions = [];
-  //   }
-  // }
-
-  runQueries();
+  return [...new Set(importantTraces.map((e) => JSON.stringify(e)))].map((e) =>
+    JSON.parse(e)
+  );
 }
 
 function compareTimestamps(a, b) {
   return a.time - b.time;
 }
 
-function runQueries() {
-  const browserTraces = allTraces.filter((t) => t.pageFile);
-  if (browserTraces.length == 0) {
+function runQueries(pointsOfInterest) {
+  if (pointsOfInterest.length == 0) {
     return;
   }
 
-  let importantTraces = findMagicValues(allTraces);
-  console.log(importantTraces);
-  if (importantTraces.length === 0) {
-    return [];
+  const sourceDir = perpareForCodeQLQueries(allTraces);
+  allTraces = [];
+
+  const databaseDir = codeql.createDatabase(sourceDir, "db");
+
+  for (const point of pointsOfInterest) {
+    codeql.prepareQueries(
+      point.location.file,
+      point.location.start.line,
+      point.expression
+    );
+    codeql.runQueries(databaseDir, codeql.allQueries);
+    codeql.resetQueries();
   }
 
-  // importantTraces = [
-  //   ...new Set(importantTraces.map((e) => JSON.stringify(e))),
-  // ].map((e) => JSON.parse(e));
-  // console.log(importantTraces);
-
-  // const sourceDir = perpareForCodeQLQueries(traceGroup);
-  // const databaseDir = codeql.createDatabase(sourceDir, "db");
-
-  // for (const t of importantTraces) {
-  //   codeql.prepareQueries(
-  //     t.location.file,
-  //     t.location.start.line,
-  //     t.expression
-  //   );
-  //   codeql.runQueries(databaseDir, codeql.allQueries);
-  //   codeql.resetQueries();
-  // }
-
-  // fs.rmSync(sourceDir, { recursive: true, force: true });
-  // fs.rmSync(databaseDir, { recursive: true, force: true });
+  fs.rmSync(sourceDir, { recursive: true, force: true });
+  fs.rmSync(databaseDir, { recursive: true, force: true });
 }
 
 function extractConstraintCandidates() {
-  fs.rmSync(codeql.resultDirectory, { recursive: true, force: true });
+  const results = codeql.readResults();
+  return { candidates: results };
+  // fs.rmSync(codeql.resultDirectory, { recursive: true, force: true });
 }
 
 function perpareForCodeQLQueries(traces) {
@@ -125,6 +121,7 @@ function perpareForCodeQLQueries(traces) {
   return "source";
 }
 
+// TODO: Would be nicer if there was a universal way to get the right data for all types to only leave codeql queries and babel plugins as extension
 function getExpressionByKey(t, element, key) {
   switch (t.action) {
     case trace.ACTION_ENUM.NAMED_FUNCTION_CALL:
@@ -140,9 +137,7 @@ function getExpressionByKey(t, element, key) {
 
 function findMagicValues(traceGroup) {
   const magicValues = traceGroup[0].args.values;
-  console.log(magicValues);
   const traces = traceGroup.filter((t) => t.pageFile);
-  console.log(traces);
   let tracesWithMagicValues = [];
   let found = true;
   for (const value of magicValues) {
@@ -152,13 +147,13 @@ function findMagicValues(traceGroup) {
       const [hasMagicValue, element, key] = hasValue(t, value);
       if (hasMagicValue) {
         tracesWithMagicValue.push({
+          // TODO: Would be nicer if this was not needed somehow
           expression: getExpressionByKey(t, element, key),
           location: t.location,
         });
       }
     }
 
-    console.log(value, tracesWithMagicValue);
     tracesWithMagicValues = tracesWithMagicValues.concat(tracesWithMagicValue);
     found = found && tracesWithMagicValue.length > 0;
   }
@@ -171,5 +166,3 @@ function findMagicValues(traceGroup) {
 }
 
 module.exports = { analyseTraces };
-
-analyseTraces();

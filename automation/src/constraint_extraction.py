@@ -1,4 +1,5 @@
 import sys
+import time
 
 from enum import Enum
 from lxml.html import Element
@@ -32,9 +33,12 @@ class ConstraintCandidate:
 
 class ConstraintCandidateResult:
     def __init__(self, request_response: Dict) -> None:
-        self.candidates: List[ConstraintCandidate] = []
+        self.candidates: List = []
         for elem in request_response["candidates"]:
-            self.candidates.append(ConstraintCandidate(elem))
+            self.candidates.append(elem)
+
+    def __str__(self) -> str:
+        return f"candidates: {self.candidates}"
 
 
 class ConstraintCandidateFinder:
@@ -147,7 +151,9 @@ class ConstraintCandidateFinder:
             {"spec": html_specification.get_as_dict(), "values": magic_value_sequence}
         )
 
-        # TODO: Make ConstraintCandidate type more sensible for use
+        # TODO: How to guarantee that all traces are at the server side? Google?
+
+        time.sleep(5)
         return ConstraintCandidateResult(get_constraint_candidates())
         # return ConstraintCandidateResult({"candidates": []})
 

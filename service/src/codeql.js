@@ -1,6 +1,7 @@
 require("dotenv").config({ path: "../../.env" });
 
 const fs = require("fs");
+const CSV = require("csv-string");
 
 const common = require("./common");
 
@@ -70,6 +71,24 @@ function addDataToQuery(queryFile, sourceFile, startLine, expression) {
   }
 }
 
+function readResults() {
+  results = [];
+
+  if (!fs.existsSync(resultDirectory)) {
+    return [];
+  }
+
+  const files = fs.readdirSync(resultDirectory);
+  for (const file of files) {
+    const csv_str = fs.readFileSync(`${resultDirectory}/${file}`, "utf-8");
+    if (csv_str.trim()) {
+      const csv = CSV.parse(csv_str);
+      results = results.concat(csv);
+    }
+  }
+  return results;
+}
+
 function resetQueries() {
   for (const query of allQueries) {
     resetQuery(query);
@@ -125,6 +144,7 @@ const resetExpression = (match) => {
 
 module.exports = {
   createDatabase,
+  readResults,
   runQuery,
   runQueries,
   prepareQueries,

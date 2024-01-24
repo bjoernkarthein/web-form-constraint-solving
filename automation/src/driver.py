@@ -139,6 +139,8 @@ class TestAutomationDriver:
             new_constraints = self.__constraint_candidate_finder.find_initial_js_constraint_candidates(
                 spec
             )
+            print(new_constraints)
+            self.__exit()
 
             for _ in range(analysis_rounds):
                 (
