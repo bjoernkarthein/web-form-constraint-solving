@@ -1,8 +1,7 @@
-import time
+import sys
 
 from enum import Enum
 from lxml.html import Element
-from pathlib import Path
 from selenium.webdriver import Chrome
 from typing import List, Dict
 
@@ -13,6 +12,7 @@ from html_analysis import (
     HTMLRadioGroupSpecification,
 )
 from input_generation import InputGenerator, ValidityEnum
+from pattern_translation import PatternConverter
 from proxy import NetworkInterceptor
 from utility import *
 
@@ -73,16 +73,17 @@ class ConstraintCandidateFinder:
                 html_specification, grammar, formula, amount
             )
 
-    def find_initial_js_constraint_candidates(
-        self, specification: HTMLInputSpecification | HTMLRadioGroupSpecification
-    ) -> ConstraintCandidateResult:
-        """Try to extract as many constraint candidates as possible from the JavaScript source code for a given input."""
-
+    # TODO: Somehow make the order of filling with html values and then calling find initial js values with only one other function call nicer
+    def fill_with_magic_values(self):
         for spec, values in self.__magic_value_map.items():
             write_to_web_element_by_reference_with_clear(
                 self.__driver, spec.type, spec.reference, values[0]
             )
 
+    def find_initial_js_constraint_candidates(
+        self, specification: HTMLInputSpecification | HTMLRadioGroupSpecification
+    ) -> ConstraintCandidateResult:
+        """Try to extract as many constraint candidates as possible from the JavaScript source code for a given input."""
         return self.__find_constraint_candidates_for_input(specification)
 
     def find_additional_js_constraint_candidates(
@@ -148,6 +149,7 @@ class ConstraintCandidateFinder:
 
         # TODO: Make ConstraintCandidate type more sensible for use
         return ConstraintCandidateResult(get_constraint_candidates())
+        # return ConstraintCandidateResult({"candidates": []})
 
     def __attempt_submit(self) -> None:
         self.__interceptor.generated_values = get_current_values_from_form()

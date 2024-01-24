@@ -4,8 +4,8 @@ const codeql = require("./codeql");
 const instrument = require("./instrument");
 const trace = require("./trace");
 
-const allTraces = [];
-const groupedTraces = [];
+let allTraces = [];
+let groupedTraces = [];
 
 function hasValue(object, value) {
   for (const [key, elem] of Object.entries(object)) {
@@ -36,7 +36,6 @@ function analyseTraces() {
   });
 
   rl.on("close", () => {
-    console.log("Finished reading trace log file");
     processTraces();
   });
 }
@@ -44,26 +43,25 @@ function analyseTraces() {
 function processTraces() {
   // Clean up resources
   // trace.cleanUp();
-  // instrument.cleanUp();
 
   allTraces.sort(compareTimestamps);
-  let add = false;
-  let interactions = [];
-  for (const t of allTraces) {
-    if (t.action == trace.ACTION_ENUM.INTERACTION_START) {
-      add = true;
-    }
+  // let add = false;
+  // let interactions = [];
+  // for (const t of allTraces) {
+  //   if (t.action == trace.ACTION_ENUM.INTERACTION_START) {
+  //     add = true;
+  //   }
 
-    if (add) {
-      interactions.push(t);
-    }
+  //   if (add) {
+  //     interactions.push(t);
+  //   }
 
-    if (t.action == trace.ACTION_ENUM.INTERACTION_END) {
-      add = false;
-      groupedTraces.push(interactions);
-      interactions = [];
-    }
-  }
+  //   if (t.action == trace.ACTION_ENUM.INTERACTION_END) {
+  //     add = false;
+  //     groupedTraces.push(interactions);
+  //     interactions = [];
+  //   }
+  // }
 
   runQueries();
 }
@@ -73,37 +71,37 @@ function compareTimestamps(a, b) {
 }
 
 function runQueries() {
-  for (const traceGroup of groupedTraces) {
-    const browserTraces = traceGroup.filter((t) => t.pageFile);
-    if (browserTraces.length == 0) {
-      continue;
-    }
-
-    let importantTraces = findMagicValues(traceGroup);
-    if (importantTraces.length === 0) {
-      return [];
-    }
-
-    importantTraces = [
-      ...new Set(importantTraces.map((e) => JSON.stringify(e))),
-    ].map((e) => JSON.parse(e));
-
-    const sourceDir = perpareForCodeQLQueries(traceGroup);
-    const databaseDir = codeql.createDatabase(sourceDir, "db");
-
-    for (const t of importantTraces) {
-      codeql.prepareQueries(
-        t.location.file,
-        t.location.start.line,
-        t.expression
-      );
-      codeql.runQueries(databaseDir, codeql.allQueries);
-      codeql.resetQueries();
-    }
-
-    fs.rmSync(sourceDir, { recursive: true, force: true });
-    fs.rmSync(databaseDir, { recursive: true, force: true });
+  const browserTraces = allTraces.filter((t) => t.pageFile);
+  if (browserTraces.length == 0) {
+    return;
   }
+
+  let importantTraces = findMagicValues(allTraces);
+  console.log(importantTraces);
+  if (importantTraces.length === 0) {
+    return [];
+  }
+
+  // importantTraces = [
+  //   ...new Set(importantTraces.map((e) => JSON.stringify(e))),
+  // ].map((e) => JSON.parse(e));
+  // console.log(importantTraces);
+
+  // const sourceDir = perpareForCodeQLQueries(traceGroup);
+  // const databaseDir = codeql.createDatabase(sourceDir, "db");
+
+  // for (const t of importantTraces) {
+  //   codeql.prepareQueries(
+  //     t.location.file,
+  //     t.location.start.line,
+  //     t.expression
+  //   );
+  //   codeql.runQueries(databaseDir, codeql.allQueries);
+  //   codeql.resetQueries();
+  // }
+
+  // fs.rmSync(sourceDir, { recursive: true, force: true });
+  // fs.rmSync(databaseDir, { recursive: true, force: true });
 }
 
 function extractConstraintCandidates() {
@@ -142,7 +140,9 @@ function getExpressionByKey(t, element, key) {
 
 function findMagicValues(traceGroup) {
   const magicValues = traceGroup[0].args.values;
+  console.log(magicValues);
   const traces = traceGroup.filter((t) => t.pageFile);
+  console.log(traces);
   let tracesWithMagicValues = [];
   let found = true;
   for (const value of magicValues) {
@@ -158,6 +158,7 @@ function findMagicValues(traceGroup) {
       }
     }
 
+    console.log(value, tracesWithMagicValue);
     tracesWithMagicValues = tracesWithMagicValues.concat(tracesWithMagicValue);
     found = found && tracesWithMagicValue.length > 0;
   }

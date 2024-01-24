@@ -134,6 +134,7 @@ class TestAutomationDriver:
         if html_only:
             self.__exit()
 
+        self.__constraint_candidate_finder.fill_with_magic_values()
         for spec in html_specifications:
             new_constraints = self.__constraint_candidate_finder.find_initial_js_constraint_candidates(
                 spec

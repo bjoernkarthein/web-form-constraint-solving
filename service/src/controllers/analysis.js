@@ -1,6 +1,7 @@
 const path = require("path");
 
 const tracerService = require("../trace");
+const constraintService = require("../constraints");
 
 let record = (req, res) => {
   tracerService.addToTraceLog(req);
@@ -10,6 +11,7 @@ let record = (req, res) => {
 };
 
 let getConstraintCandidates = (req, res) => {
+  tracerService.cleanUp();
   res.json({
     candidates: [],
   });

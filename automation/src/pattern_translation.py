@@ -6,6 +6,8 @@ from typing_extensions import Self
 from typing import List, Dict, Set
 
 """
+Simplified CFG for a JavaScript pattern (https://tc39.es/ecma262/#prod-Pattern)
+
 pattern = disjunction
 disjunction = term | term '|' disjunction
 term = atom | atom quantifier | atom term
@@ -20,6 +22,23 @@ patterncharacter = printable without syntaxcharacter
 """
 
 Grammar = Dict[str, List[str]]
+
+
+class PatternConverter:
+    def __init__(self, javascript_pattern: str) -> None:
+        self.__javascript_pattern = javascript_pattern
+        self.__parser = PatternParser(self.__javascript_pattern)
+        self.__grammar_builder = GrammarBuilder()
+
+    def convert_pattern_to_grammar(self) -> str:
+        try:
+            pattern_ast = self.__parser.parse()
+        except ValueError as e:
+            print(f"Could not convert given pattern {self.__javascript_pattern}")
+            print(e)
+            return ""
+
+        return self.__grammar_builder.convert_pattern_to_cfg(pattern_ast)
 
 
 class RegEx(ABC):
@@ -357,10 +376,3 @@ class GrammarBuilder:
     # TODO: is this the best approach? Revisit grammar string building maybe
     def __perttify_grammar(self, grammar: str) -> str:
         return re.sub(r"(<[^>]+>) ::=", r"\1\n\1 ::=", grammar)
-
-
-patternconv = PatternParser("ab|cd+")
-tree = patternconv.parse()
-print(tree)
-grammarbuildr = GrammarBuilder()
-print(grammarbuildr.convert_pattern_to_cfg(tree))

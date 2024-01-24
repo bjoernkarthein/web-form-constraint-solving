@@ -3,7 +3,6 @@ const fs = require("fs");
 const { logger } = require("./log");
 
 const traceLogFile = "trace.log";
-let record = false;
 
 const ACTION_ENUM = {
   INTERACTION_START: "INTERACTION_START",
@@ -34,7 +33,8 @@ function addToTraceLog(req) {
 }
 
 function cleanUp() {
-  fs.rmSync(traceLogFile, { force: true });
+  fs.appendFileSync(traceLogFile, "\nnext\n\n");
+  // fs.writeFileSync(traceLogFile, "");
 }
 
 module.exports = {
