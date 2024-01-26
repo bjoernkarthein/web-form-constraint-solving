@@ -1,14 +1,15 @@
-from isla.solver import ISLaSolver
-from typing import List
+import re
 
 from enum import Enum
+from isla.solver import ISLaSolver
+from typing import Dict, List, Set
 
 from mutation import ValueMutator
 
 
-class ValidityEnum(Enum):
-    VALID = "valid"
-    INVALID = "invalid"
+class ValidityEnum(str, Enum):
+    VALID = "VALID"
+    INVALID = "INVALID"
 
 
 class GeneratedValue:
@@ -24,8 +25,11 @@ class GeneratedValue:
     def validity(self) -> ValidityEnum:
         return self.__validity
 
+    def get_as_dict(self) -> Dict[str, ValidityEnum | str]:
+        return {"validity": self.__validity, "value": self.__value}
+
     def __str__(self) -> str:
-        return f'("{self.value}",{self.validity.value})'
+        return f"(validity: {self.validity}, value: {self.value})"
 
 
 class InputGenerator:
@@ -78,6 +82,7 @@ class InputGenerator:
         self, grammar: str, amount: int = 1
     ) -> List[GeneratedValue]:
         values = []
+        grammar_terminals = self.__get_terminal_characters_from_grammar(grammar)
 
         for _ in range(amount):
             found_invalid_value = False
@@ -87,7 +92,7 @@ class InputGenerator:
                 solver = ISLaSolver(grammar)
                 str_value = str(solver.solve())
                 # TODO: What is a good number for mutations?
-                mutator = ValueMutator(str_value, 5)
+                mutator = ValueMutator(str_value, grammar_terminals)
                 last_value = mutator.mutate(last_value)
 
                 if not solver.check(last_value):
@@ -97,5 +102,19 @@ class InputGenerator:
                     break
 
             if not found_invalid_value:
-                # TODO: What if I don't find something invalid
+                # TODO: What if I don't find something invalid?
                 values.append(GeneratedValue("", ValidityEnum.INVALID))
+
+    # TODO: Can this be optimized?
+    def __get_terminal_characters_from_grammar(self, grammar: str) -> Set[str]:
+        result = []
+        quoted_terminals = re.findall(r'("[^"]*")', grammar)
+        terminals = list(map(lambda t: t[1:-1], quoted_terminals))
+        seperated_terminals = list(map(lambda t: [c for c in t], terminals))
+        for terminal in seperated_terminals:
+            if len(terminal) > 0:
+                result.extend(terminal)
+            else:
+                result.append("")
+
+        return set(result)

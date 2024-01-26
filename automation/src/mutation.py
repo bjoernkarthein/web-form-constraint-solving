@@ -1,9 +1,14 @@
 import random
 import string
 
+from typing import Set
+
 
 class ValueMutator:
-    def __init__(self, input: str, mutations: int = 1) -> None:
+    def __init__(
+        self, input: str, grammar_terminals: Set[str], mutations: int = 2
+    ) -> None:
+        self.__forbidden_character_set = set(string.printable) - grammar_terminals
         self.__input = input
         self.__mutations = mutations
         self.__mutators = [
@@ -31,7 +36,12 @@ class ValueMutator:
 
     def __insert_random_character(self) -> None:
         pos = random.randint(0, len(self.__input))
-        random_character = random.choice(string.printable)
+
+        random_character = ""
+        if len(self.__forbidden_character_set) > 0:
+            random_character = random.choice(list(self.__forbidden_character_set))
+        else:
+            random_character = random.choice(string.printable)
         self.__input = self.__input[:pos] + random_character + self.__input[pos:]
 
     def __flip_random_character(self) -> None:

@@ -189,30 +189,9 @@ def click_web_element(web_element: WebElement) -> None:
         pass
 
 
-def write_to_web_element(
-    web_element: WebElement, value: str, element_reference
-) -> None:
+def write_to_web_element(web_element: WebElement, value: str) -> None:
     try:
-        record_trace(
-            Action.VALUE_INPUT,
-            {"reference": element_reference.get_as_dict(), "value": value},
-        )
         web_element.send_keys(value)
-    except Exception:
-        pass
-
-
-def clear_value_of_web_element(driver: Chrome, web_element: WebElement) -> None:
-    set_value_of_web_element(driver, web_element, "")
-
-
-def set_value_of_web_element(
-    driver: Chrome, web_element: WebElement, value: str
-) -> None:
-    try:
-        driver.execute_script(
-            'arguments[0].setAttribute("value", arguments[1])', web_element, value
-        )
     except Exception:
         pass
 
@@ -249,123 +228,129 @@ def click_web_element_by_reference(driver: Chrome, html_element_reference) -> No
         click_web_element(web_element)
 
 
-def click_web_element_by_reference_with_clear(
-    driver: Chrome, html_element_reference
-) -> None:
-    web_element = get_web_element_by_reference(driver, html_element_reference)
-    if web_element is not None:
-        clear_web_element(web_element)
-        click_web_element(web_element)
-
-
-def write_to_web_element_by_reference(
-    driver: Chrome, html_element_reference, value: str
-) -> None:
-    web_element = get_web_element_by_reference(driver, html_element_reference)
-    if web_element is not None:
-        write_to_web_element(web_element, value)
-
-
-def write_to_web_element_by_reference_with_clear(
-    driver: Chrome, type: str, html_element_reference, value: str
-) -> None:
+def update_value_map(type: str, value: str, html_element_reference) -> None:
     if type == InputType.CHECKBOX.value:
         if value == "1":
             __current_value_map[html_element_reference] = "on"
     else:
         __current_value_map[html_element_reference] = value
 
+
+def write_to_web_element_by_reference_with_clear(
+    driver: Chrome, type: str, html_element_reference, value: str, record: bool = True
+) -> None:
+    update_value_map(type, value, html_element_reference)
     web_element = get_web_element_by_reference(driver, html_element_reference)
     if web_element is None:
         return
 
-    # TODO: move every input type to dedicated function
     match type:
         case InputType.CHECKBOX.value:
-            # deselect if already selected
-            if web_element.is_selected():
-                click_web_element(web_element)
-            if int(value):
-                click_web_element(web_element)
+            write_to_checkbox_with_clear(web_element, value)
         case InputType.DATE.value:
-            [year, month, day] = value.split("-")
-            web_element.clear()
-            web_element.send_keys(month)
-            web_element.send_keys(day)
-            web_element.send_keys(year)
+            write_to_date_picker_with_clear(web_element, value)
         case InputType.DATETIME_LOCAL.value:
-            split_char = "T" if "T" in value else " "
-            [date, time] = value.split(split_char)
-            [year, month, day] = date.split("-")
-            [hours, minutes] = time.split(":")
-            period_of_day = "AM"
-            if int(hours) == 0:
-                hours = int(hours) + 12
-            elif int(hours) == 12:
-                period_of_day = "PM"
-            elif int(hours) > 12:
-                hours = int(hours) - 12
-                period_of_day = "PM"
-            hours = f"{int(hours):02d}"
-            web_element.clear()
-            web_element.send_keys(month)
-            web_element.send_keys(day)
-            web_element.send_keys(year)
-            ActionChains(driver).key_down(Keys.TAB).key_up(Keys.TAB).perform()
-            web_element.send_keys(hours)
-            web_element.send_keys(minutes)
-            web_element.send_keys(period_of_day)
+            write_to_datetime_picker_with_clear(driver, web_element, value)
         case InputType.MONTH.value:
-            [year, month] = value.split("-")
-            web_element.clear()
-            web_element.send_keys(month)
-            ActionChains(driver).key_down(Keys.TAB).key_up(Keys.TAB).perform()
-            web_element.send_keys(year)
+            write_to_month_picker_with_clear(driver, web_element, value)
         case InputType.RADIO.value:
-            elements = get_web_elements_by_reference(driver, html_element_reference)
-            for elem in elements:
-                if elem.get_attribute("value") == value:
-                    elem.click()
+            write_to_radio_group(driver, html_element_reference, value)
         case InputType.TIME.value:
-            [hours, minutes] = value.split(":")
-            period_of_day = "AM"
-            if int(hours) == 0:
-                hours = int(hours) + 12
-            elif int(hours) == 12:
-                period_of_day = "PM"
-            elif int(hours) > 12:
-                hours = int(hours) - 12
-                period_of_day = "PM"
-            hours = f"{int(hours):02d}"
-            web_element.clear()
-            web_element.send_keys(hours)
-            web_element.send_keys(minutes)
-            web_element.send_keys(period_of_day)
+            write_to_time_picker_with_clear(web_element, value)
         case InputType.WEEK.value:
-            [year, week] = value.split("-W")
-            web_element.clear()
-            web_element.send_keys(week)
-            web_element.send_keys(year)
+            write_to_week_picker_with_clear(web_element, value)
         case _:
             clear_web_element(web_element)
-            write_to_web_element(web_element, value, html_element_reference)
+            write_to_web_element(web_element, value)
+
+    if record:
+        record_trace(
+            Action.VALUE_INPUT,
+            {"reference": html_element_reference.get_as_dict(), "value": value},
+        )
 
 
-def set_value_of_web_element_by_reference(
-    driver: Chrome, html_element_reference, value: str
+def write_to_checkbox_with_clear(checkbox: WebElement, value: str) -> None:
+    # deselect if already selected
+    if checkbox.is_selected():
+        click_web_element(checkbox)
+    if int(value):
+        click_web_element(checkbox)
+
+
+def write_to_date_picker_with_clear(date_picker: WebElement, value: str) -> None:
+    [year, month, day] = value.split("-")
+    date_picker.clear()
+    date_picker.send_keys(month)
+    date_picker.send_keys(day)
+    date_picker.send_keys(year)
+
+
+def write_to_datetime_picker_with_clear(
+    driver: Chrome, datetime_picker: WebElement, value: str
 ) -> None:
-    web_element = get_web_element_by_reference(driver, html_element_reference)
-    if web_element is not None:
-        set_value_of_web_element(driver, web_element, value)
+    split_char = "T" if "T" in value else " "
+    [date, time] = value.split(split_char)
+    [year, month, day] = date.split("-")
+    [hours, minutes] = time.split(":")
+    period_of_day = "AM"
+    if int(hours) == 0:
+        hours = int(hours) + 12
+    elif int(hours) == 12:
+        period_of_day = "PM"
+    elif int(hours) > 12:
+        hours = int(hours) - 12
+        period_of_day = "PM"
+    hours = f"{int(hours):02d}"
+    datetime_picker.clear()
+    datetime_picker.send_keys(month)
+    datetime_picker.send_keys(day)
+    datetime_picker.send_keys(year)
+    ActionChains(driver).key_down(Keys.TAB).key_up(Keys.TAB).perform()
+    datetime_picker.send_keys(hours)
+    datetime_picker.send_keys(minutes)
+    datetime_picker.send_keys(period_of_day)
 
 
-def set_value_of_web_element_by_reference_with_clear(
-    driver: Chrome, html_element_reference, value: str
+def write_to_month_picker_with_clear(
+    driver: Chrome, month_picker: WebElement, value: str
 ) -> None:
-    web_element = get_web_element_by_reference(driver, html_element_reference)
-    if web_element is not None:
-        clear_value_of_web_element(driver, web_element)
-        set_value_of_web_element(driver, web_element, value)
+    [year, month] = value.split("-")
+    month_picker.clear()
+    month_picker.send_keys(month)
+    ActionChains(driver).key_down(Keys.TAB).key_up(Keys.TAB).perform()
+    month_picker.send_keys(year)
+
+
+def write_to_radio_group(driver: Chrome, radio_reference, value: str) -> None:
+    elements = get_web_elements_by_reference(driver, radio_reference)
+    for elem in elements:
+        if elem.get_attribute("value") == value:
+            elem.click()
+
+
+def write_to_time_picker_with_clear(time_picker: WebElement, value: str) -> None:
+    [hours, minutes] = value.split(":")
+    period_of_day = "AM"
+    if int(hours) == 0:
+        hours = int(hours) + 12
+    elif int(hours) == 12:
+        period_of_day = "PM"
+    elif int(hours) > 12:
+        hours = int(hours) - 12
+        period_of_day = "PM"
+    hours = f"{int(hours):02d}"
+    time_picker.clear()
+    time_picker.send_keys(hours)
+    time_picker.send_keys(minutes)
+    time_picker.send_keys(period_of_day)
+
+
+def write_to_week_picker_with_clear(week_picker: WebElement, value: str) -> None:
+    [year, week] = value.split("-W")
+    week_picker.clear()
+    week_picker.send_keys(week)
+    week_picker.send_keys(year)
 
 
 def clamp_to_range(input: int, start: int, end: int | None) -> int:

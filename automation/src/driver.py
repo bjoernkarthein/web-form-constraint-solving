@@ -53,7 +53,7 @@ class TestAutomationDriver:
         chrome_options.add_experimental_option("excludeSwitches", ["enable-logging"])
         chrome_options.add_argument("--lang=en")
 
-        # Options for the selenium wire proxy
+        # Options for the seleniumwire proxy
         wire_options = {"disable_encoding": True}
 
         self.__driver = webdriver.Chrome(

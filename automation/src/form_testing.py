@@ -1,10 +1,10 @@
 import json
-import time
 
 from pathlib import Path
 from selenium.webdriver import Chrome
-from typing import Dict, List, Tuple
 from seleniumwire.request import Request, Response
+from tabulate import tabulate
+from typing import Dict, List, Tuple
 
 from html_analysis import (
     HTMLInputSpecification,
@@ -19,6 +19,7 @@ from utility import (
     load_file_content,
     load_page,
     write_to_web_element_by_reference_with_clear,
+    write_to_file,
     click_web_element_by_reference,
     clamp_to_range,
     clear_value_mapping,
@@ -172,10 +173,10 @@ class FormTester:
         )
 
     # TODO: handle invalid value generation here
-    # TODO: Annotate all values with valid or invalid for reporting later
     def __fill_form_with_values_and_submit(self, generator: InputGenerator) -> None:
         values: List[GeneratedValue] = []
         for template in self.__generation_templates:
+            # TODO: Error handling
             generated_value = generator.generate_inputs(
                 template.grammar, template.formula
             )[0]
@@ -186,6 +187,7 @@ class FormTester:
                 template.type,
                 template.input_spec.reference,
                 generated_value.value,
+                False,
             )
 
         self.__test_monitor.attempt_submit_and_save_response(values)
@@ -223,20 +225,43 @@ class TestMonitor:
         self.__saved_submissions.append((current_values, response))
 
     def process_saved_submissions(self) -> None:
+        result = {}
+        successful = 0
+        failed = 0
         for i in range(len(self.__saved_submissions)):
             values, response = self.__saved_submissions[i]
-            print(f"Test round {i + 1}")
-            print("---")
-            print("VALUES:")
-            for value in values:
-                print(value)
-
-            print("SERVER RESPONSE:")
+            response_str = ""
             if response is None:
-                print(
-                    "Submission did not cause any outgoing requests including the entered data."
-                )
+                response_str = "Submission did not cause any outgoing requests including the entered data."
+                failed += 1
             elif response.headers[submission_interception_header] is not None:
-                print("Form was submitted successfully but the request was blocked.")
+                response_str = (
+                    "Form was submitted successfully but the request was blocked."
+                )
+                successful += 1
             else:
-                print(response.status_code, response.reason)
+                response_str = f"{response.status_code} {response.reason}"
+                successful += 1
+
+            result[f"test_round_{i + 1}"] = {
+                "generated_values": list(map(lambda v: str(v), values)),
+                "server_response": response_str,
+            }
+
+        write_to_file("report/results.json", result)
+        self.__print_summary(successful, failed)
+
+    def __print_summary(self, successful: int, failed: int) -> None:
+        print("\nSummary:")
+        print("Total Form Instances generated:", len(self.__saved_submissions), "\n")
+        print(
+            tabulate(
+                [["Successful", successful], ["Failed", failed]],
+                headers=["Status", "Amount"],
+            ),
+            "\n",
+        )
+        print(
+            "For a more detailed report refer to 'automation/src/report/results.json'",
+            "\n",
+        )

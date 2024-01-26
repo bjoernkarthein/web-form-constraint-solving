@@ -54,7 +54,7 @@ class NetworkInterceptor:
             return
 
         if content_type.startswith("application/javascript"):
-            if request.url == f"{service_base_url}/static/script.js":
+            if request.url.startswith(f"{service_base_url}/static/"):
                 return
 
             response.body = self.__handle_js_file(request, response)
@@ -92,11 +92,11 @@ class NetworkInterceptor:
         if html_body == None:
             return
 
-        script_tag = etree.fromstring(
-            f'<script src="{service_base_url}/static/script.js"></script>'
+        record_script_tag = etree.fromstring(
+            f'<script src="{service_base_url}/static/record.js"></script>'
         )
 
-        html_body.append(script_tag)
+        html_body.append(record_script_tag)
         return html.tostring(html_ast, pretty_print=True)
 
     def __form_submission_interceptor(self, request: Request) -> None:
