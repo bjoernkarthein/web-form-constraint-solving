@@ -3,6 +3,7 @@ node_modules
 scripts/server_pid.txt
 
 automation/src/specification
+automation/src/report
 
 service/src/original
 service/src/instrumented
