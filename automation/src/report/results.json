@@ -1,0 +1,47 @@
+{
+    "test_round_1": {
+        "generated_values": [
+            "(validity: ValidityEnum.VALID, value: $)",
+            "(validity: ValidityEnum.VALID, value: X)",
+            "(validity: ValidityEnum.VALID, value: 9)",
+            "(validity: ValidityEnum.VALID, value: _)",
+            "(validity: ValidityEnum.VALID, value: =)",
+            "(validity: ValidityEnum.VALID, value: =)",
+            "(validity: ValidityEnum.VALID, value: q)",
+            "(validity: ValidityEnum.VALID, value: >)",
+            "(validity: ValidityEnum.VALID, value: p)",
+            "(validity: ValidityEnum.VALID, value: $)"
+        ],
+        "server_response": "200 OK"
+    },
+    "test_round_2": {
+        "generated_values": [
+            "(validity: ValidityEnum.VALID, value: n)",
+            "(validity: ValidityEnum.VALID, value: f)",
+            "(validity: ValidityEnum.VALID, value: S)",
+            "(validity: ValidityEnum.VALID, value: 0)",
+            "(validity: ValidityEnum.VALID, value: ?)",
+            "(validity: ValidityEnum.VALID, value: Q)",
+            "(validity: ValidityEnum.VALID, value: P)",
+            "(validity: ValidityEnum.VALID, value: j)",
+            "(validity: ValidityEnum.VALID, value: R)",
+            "(validity: ValidityEnum.VALID, value: ,)"
+        ],
+        "server_response": "200 OK"
+    },
+    "test_round_3": {
+        "generated_values": [
+            "(validity: ValidityEnum.VALID, value: t)",
+            "(validity: ValidityEnum.VALID, value: C)",
+            "(validity: ValidityEnum.VALID, value: l)",
+            "(validity: ValidityEnum.VALID, value: w)",
+            "(validity: ValidityEnum.VALID, value: B)",
+            "(validity: ValidityEnum.VALID, value: 1)",
+            "(validity: ValidityEnum.VALID, value: i)",
+            "(validity: ValidityEnum.VALID, value: L)",
+            "(validity: ValidityEnum.VALID, value: 8)",
+            "(validity: ValidityEnum.VALID, value: u)"
+        ],
+        "server_response": "Submission did not cause any outgoing requests including the entered data."
+    }
+}

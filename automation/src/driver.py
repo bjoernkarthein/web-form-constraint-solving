@@ -23,8 +23,8 @@ from utility import (
     write_to_file,
 )
 
-chrome_driver_path = "../chromedriver/windows/chromedriver.exe"
-# chrome_driver_path = '../chromedriver/linux/chromedriver'
+# chrome_driver_path = "../chromedriver/windows/chromedriver.exe"
+chrome_driver_path = '../chromedriver/linux/chromedriver'
 
 """
 Driver module
