@@ -79,10 +79,11 @@ function runQueries(pointsOfInterest) {
     return;
   }
 
+  // TODO: Only rebuild database if the file set changed since last build
+  const databaseDir = codeql.createDatabase(sourceDir, "db");
+
   const sourceDir = perpareForCodeQLQueries(allTraces);
   allTraces = [];
-
-  const databaseDir = codeql.createDatabase(sourceDir, "db");
 
   for (const point of pointsOfInterest) {
     codeql.prepareQueries(
@@ -100,8 +101,34 @@ function runQueries(pointsOfInterest) {
 
 function extractConstraintCandidates() {
   const results = codeql.readResults();
+  const codeLocations = results.map((res) => {
+    return {
+      type: res[0],
+      locations: buildLocationsFromString(res[3]),
+    };
+  });
+  console.log(JSON.stringify(codeLocations, null, 4));
   return { candidates: results };
   // fs.rmSync(codeql.resultDirectory, { recursive: true, force: true });
+}
+
+function buildLocationsFromString(value) {
+  result = [];
+  const locationRegExp = /\[\[([^\]]+)\|([^\]]+)\]\]/g;
+  const matches = [...value.matchAll(locationRegExp)];
+  for (const match of matches) {
+    let sourceLoc = match[2];
+    sourceLoc = sourceLoc.substring(1, sourceLoc.length - 1);
+    sourceLoc = sourceLoc.split("/");
+    sourceLoc = sourceLoc[sourceLoc.length - 1];
+    const [file, startLine, startCol, endLine, endCol] = sourceLoc.split(":");
+    result.push({
+      file,
+      startPos: { line: startLine, col: startCol },
+      endPos: { line: endLine, col: endCol },
+    });
+  }
+  return result;
 }
 
 function perpareForCodeQLQueries(traces) {
@@ -166,3 +193,5 @@ function findMagicValues(traceGroup) {
 }
 
 module.exports = { analyseTraces };
+
+// extractConstraintCandidates();

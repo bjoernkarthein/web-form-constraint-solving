@@ -85,10 +85,39 @@ class ConstraintCandidateFinder:
             )
 
     def find_initial_js_constraint_candidates(
-        self, specification: HTMLInputSpecification | HTMLRadioGroupSpecification
+        self, html_specification: HTMLInputSpecification | HTMLRadioGroupSpecification
     ) -> ConstraintCandidateResult:
         """Try to extract as many constraint candidates as possible from the JavaScript source code for a given input."""
-        return self.__find_constraint_candidates_for_input(specification)
+        magic_value_sequence = self.__magic_value_map.get(html_specification)
+        if magic_value_sequence is None:
+            ConstraintCandidateResult({"candidates": []})
+
+        start_trace_recording(
+            {"spec": html_specification.get_as_dict(), "values": magic_value_sequence}
+        )
+
+        for magic_value in magic_value_sequence:
+            type = (
+                html_specification.constraints.type
+                if isinstance(html_specification, HTMLInputSpecification)
+                else InputType.RADIO.value
+            )
+
+            write_to_web_element_by_reference_with_clear(
+                self.__driver, type, html_specification.reference, magic_value
+            )
+
+            self.__attempt_submit()
+
+        stop_trace_recording(
+            {"spec": html_specification.get_as_dict(), "values": magic_value_sequence}
+        )
+
+        # TODO: How to guarantee that all traces are at the server side? Google?
+
+        time.sleep(5)
+        return ConstraintCandidateResult(get_constraint_candidates())
+        # return ConstraintCandidateResult({"candidates": []})
 
     def find_additional_js_constraint_candidates(
         self, grammar: str, formula: str | None = None
@@ -122,40 +151,6 @@ class ConstraintCandidateFinder:
         values = list(map(lambda v: v.value, generated_values))
         self.__magic_value_map[html_specification] = values
         return values
-
-    def __find_constraint_candidates_for_input(
-        self, html_specification: HTMLInputSpecification | HTMLRadioGroupSpecification
-    ) -> ConstraintCandidateResult:
-        magic_value_sequence = self.__magic_value_map.get(html_specification)
-        if magic_value_sequence is None:
-            ConstraintCandidateResult({"candidates": []})
-
-        start_trace_recording(
-            {"spec": html_specification.get_as_dict(), "values": magic_value_sequence}
-        )
-
-        for magic_value in magic_value_sequence:
-            type = (
-                html_specification.constraints.type
-                if isinstance(html_specification, HTMLInputSpecification)
-                else InputType.RADIO.value
-            )
-
-            write_to_web_element_by_reference_with_clear(
-                self.__driver, type, html_specification.reference, magic_value
-            )
-
-            self.__attempt_submit()
-
-        stop_trace_recording(
-            {"spec": html_specification.get_as_dict(), "values": magic_value_sequence}
-        )
-
-        # TODO: How to guarantee that all traces are at the server side? Google?
-
-        time.sleep(5)
-        return ConstraintCandidateResult(get_constraint_candidates())
-        # return ConstraintCandidateResult({"candidates": []})
 
     def __attempt_submit(self) -> None:
         self.__interceptor.generated_values = get_current_values_from_form()
