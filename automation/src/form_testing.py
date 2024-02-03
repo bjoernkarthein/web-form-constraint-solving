@@ -257,7 +257,7 @@ class TestMonitor:
         print(
             tabulate(
                 [["Successful", successful], ["Failed", failed]],
-                headers=["Status", "Amount"],
+                headers=["Status (Submission)", "Amount"],
             ),
             "\n",
         )

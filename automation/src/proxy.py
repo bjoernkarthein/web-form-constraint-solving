@@ -37,6 +37,11 @@ class NetworkInterceptor:
         del self.__driver.response_interceptor
         self.__driver.response_interceptor = self.__file_interceptor
 
+    # For Evaluation only?
+    def block_all_outgoing_requests(self) -> None:
+        del self.__driver.request_interceptor
+        self.__driver.request_interceptor = self.__all_request_blocker
+
     def scan_for_form_submission(self) -> None:
         self.__request_scanner = RequestScanner()
         del self.__driver.request_interceptor
@@ -103,6 +108,10 @@ class NetworkInterceptor:
         if self.__request_scanner.all_values_in_form_request(
             request, self.generated_values
         ):
+            self.__stop_request(request)
+
+    def __all_request_blocker(self, request: Request) -> None:
+        if service_base_url not in request.url:
             self.__stop_request(request)
 
     def __stop_request(self, request):

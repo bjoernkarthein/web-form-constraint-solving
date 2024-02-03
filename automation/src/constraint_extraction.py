@@ -115,6 +115,7 @@ class ConstraintCandidateFinder:
 
         # TODO: How to guarantee that all traces are at the server side? Google?
 
+        # next = input()
         time.sleep(5)
         return ConstraintCandidateResult(get_constraint_candidates())
         # return ConstraintCandidateResult({"candidates": []})

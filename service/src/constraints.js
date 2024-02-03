@@ -17,6 +17,7 @@ const magicValueToReferenceMap = new Map();
 const expressionToFieldMap = new Map();
 
 // TODO: verify correctness
+// TODO: what if elem is a list?
 function hasValue(object, value) {
   for (const [key, elem] of Object.entries(object)) {
     if (typeof elem === "string") {
@@ -202,6 +203,9 @@ function getExpressionByKey(t, element, key) {
     case trace.ACTION_ENUM.CONDITIONAL_EXPRESSION:
     case trace.ACTION_ENUM.CONDITIONAL_STATEMENT:
       return element.name;
+    case trace.ACTION_ENUM.VARIABLE_ASSIGNMENT:
+    case trace.ACTION_ENUM.VARIABLE_DECLARATION:
+      return element.expression;
     default:
       // TODO
       return null;

@@ -70,6 +70,7 @@ class TestAutomationDriver:
             interceptor.instrument_files()
 
         load_page(self.__driver, self.__url)
+        self.__exit()
         interceptor.scan_for_form_submission()
 
         html_input_specifications = self.__analyse_html(self.__driver.page_source)
@@ -139,19 +140,17 @@ class TestAutomationDriver:
             new_constraints = self.__constraint_candidate_finder.find_initial_js_constraint_candidates(
                 spec
             )
-            print(new_constraints)
-            self.__exit()
 
-            for _ in range(analysis_rounds):
-                (
-                    grammar,
-                    formula,
-                ) = self.__specification_builder.add_constraints_to_current_specification(
-                    new_constraints
-                )
-                self.__constraint_candidate_finder.find_additional_js_constraint_candidates(
-                    grammar, formula
-                )
+            # for _ in range(analysis_rounds):
+            #     (
+            #         grammar,
+            #         formula,
+            #     ) = self.__specification_builder.add_constraints_to_current_specification(
+            #         new_constraints
+            #     )
+            #     self.__constraint_candidate_finder.find_additional_js_constraint_candidates(
+            #         grammar, formula
+            #     )
 
     # TODO: refactor to not be this complex
     def __generate_valid_html_magic_values(
