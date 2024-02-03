@@ -5,7 +5,18 @@ const codeql = require("./codeql");
 const trace = require("./trace");
 
 let allTraces = [];
+const magicValueToReferenceMap = new Map();
+// const magicValueToReferenceMap = new Map([
+//   ["l", 1],
+//   ["Yy", 2],
+//   ["71p", 3],
+//   ["aHH}", 4],
+//   ["6*`O?", 5],
+// ]);
 
+const expressionToFieldMap = new Map();
+
+// TODO: verify correctness
 function hasValue(object, value) {
   for (const [key, elem] of Object.entries(object)) {
     if (typeof elem === "string") {
@@ -13,7 +24,10 @@ function hasValue(object, value) {
         return [true, object, key];
       }
     } else if (typeof elem === "object") {
-      return hasValue(elem, value);
+      const [result, object, key] = hasValue(elem, value);
+      if (result) {
+        return [result, object, key];
+      }
     }
   }
 
@@ -36,8 +50,11 @@ async function analyseTraces() {
 
   await events.once(rl, "close");
   const pointsOfInterest = processTraces();
-  runQueries(pointsOfInterest);
-  return extractConstraintCandidates();
+  allTraces = []; // TODO remove
+  // console.log(pointsOfInterest);
+  return { candidates: [] };
+  // runQueries(pointsOfInterest);
+  // return extractConstraintCandidates();
 }
 
 function processTraces() {
@@ -48,19 +65,48 @@ function processTraces() {
   const end = allTraces.filter(
     (t) => t.action == trace.ACTION_ENUM.INTERACTION_END
   )[0].time;
-  const interaction_traces = allTraces.filter(
+  const interactionTraces = allTraces.filter(
     (t) => t.time >= start && t.time <= end
   );
-  interaction_traces.sort(compareTimestamps);
+  interactionTraces.sort(compareTimestamps);
+
+  const interactionStart = interactionTraces[0];
+  for (const value of interactionStart.args.values) {
+    addReferenceForMagicValue(value, interactionStart.args.spec.reference);
+  }
+
+  console.log(magicValueToReferenceMap);
 
   // If there are no functions called in the browser we can return
-  const browserTraces = interaction_traces.filter((t) => t.pageFile);
+  const browserTraces = interactionTraces.filter((t) => t.pageFile);
   if (browserTraces.length == 0) {
     return [];
   }
 
+  // TODO: does this alwasy work and finds the first value of any other form field in the current traces?
+  outer: for (const magicValue of magicValueToReferenceMap.keys()) {
+    for (const trace of browserTraces) {
+      const [included, object, key] = hasValue(trace, magicValue);
+      if (included) {
+        const expression = getExpressionByKey(trace, object, key);
+        expressionToFieldMap.set(
+          expression,
+          JSON.stringify({
+            references: Array.from(
+              magicValueToReferenceMap.get(magicValue)
+            ).map((ref) => JSON.parse(ref)),
+            generalLocation: trace.location,
+          })
+        );
+        break outer;
+      }
+    }
+  }
+
+  console.log(expressionToFieldMap);
+
   // If the magic values are not included in the traces we can also return
-  let importantTraces = findMagicValues(interaction_traces);
+  let importantTraces = findMagicValues(interactionTraces);
   if (importantTraces.length == 0) {
     return [];
   }
@@ -192,6 +238,14 @@ function findMagicValues(traceGroup) {
   }
 }
 
+function addReferenceForMagicValue(magicValue, reference) {
+  if (!magicValueToReferenceMap.get(magicValue)) {
+    magicValueToReferenceMap.set(magicValue, new Set());
+  }
+  magicValueToReferenceMap.get(magicValue).add(JSON.stringify(reference));
+}
+
 module.exports = { analyseTraces };
 
+// analyseTraces();
 // extractConstraintCandidates();
