@@ -71,6 +71,32 @@ function processTraces() {
   );
   interactionTraces.sort(compareTimestamps);
 
+  const browserTraces = interactionTraces.filter((t) => t.pageFile);
+  if (browserTraces.length > 0) {
+    // TODO: does this always work and finds the first value of any other form field in the current traces?
+    outer: for (const magicValue of magicValueToReferenceMap.keys()) {
+      for (const trace of browserTraces) {
+        const [included, object, key] = hasValue(trace, magicValue);
+        if (included) {
+          const expression = getExpressionByKey(trace, object, key);
+          console.log(trace, object, key, expression, magicValue);
+          expressionToFieldMap.set(
+            expression,
+            JSON.stringify({
+              references: Array.from(
+                magicValueToReferenceMap.get(magicValue)
+              ).map((ref) => JSON.parse(ref)),
+              generalLocation: trace.location,
+            })
+          );
+          // break outer;
+        }
+      }
+    }
+  }
+
+  console.log(expressionToFieldMap);
+
   const interactionStart = interactionTraces[0];
   for (const value of interactionStart.args.values) {
     addReferenceForMagicValue(value, interactionStart.args.spec.reference);
@@ -79,36 +105,13 @@ function processTraces() {
   console.log(magicValueToReferenceMap);
 
   // If there are no functions called in the browser we can return
-  const browserTraces = interactionTraces.filter((t) => t.pageFile);
-  if (browserTraces.length == 0) {
+  if (browserTraces.length === 0) {
     return [];
   }
 
-  // TODO: does this alwasy work and finds the first value of any other form field in the current traces?
-  outer: for (const magicValue of magicValueToReferenceMap.keys()) {
-    for (const trace of browserTraces) {
-      const [included, object, key] = hasValue(trace, magicValue);
-      if (included) {
-        const expression = getExpressionByKey(trace, object, key);
-        expressionToFieldMap.set(
-          expression,
-          JSON.stringify({
-            references: Array.from(
-              magicValueToReferenceMap.get(magicValue)
-            ).map((ref) => JSON.parse(ref)),
-            generalLocation: trace.location,
-          })
-        );
-        break outer;
-      }
-    }
-  }
-
-  console.log(expressionToFieldMap);
-
   // If the magic values are not included in the traces we can also return
   let importantTraces = findMagicValues(interactionTraces);
-  if (importantTraces.length == 0) {
+  if (importantTraces.length === 0) {
     return [];
   }
 
