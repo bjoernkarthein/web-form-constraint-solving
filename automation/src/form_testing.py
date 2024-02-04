@@ -61,9 +61,41 @@ class SpecificationParser:
         return specification, parent_dir
 
     def __check_specification_format(self, specification: Dict) -> bool:
-        # TODO
+        print("Checking provided spec file")
+        if "url" not in specification:
+            print("url missing")
+            return False
+        if "controls" not in specification:
+            print("no controls specified")
+            return False
+        if "submit" not in specification:
+            print("submit element not specified")
+            return False
+
+        # TODO check if it is a valid url?
+
+        submit_ref = specification["submit"]
+        if not self.__is_valid_reference(submit_ref):
+            return False
+
+        controls = specification["controls"]
+        for control in controls:
+            required_keys = set(["type", "reference", "grammar", "formula"])
+            contained_keys = set(control.keys())
+            if required_keys != contained_keys or self.__is_valid_reference(control["reference"]):
+                print("control is missing required fields")
+                return False
+
+            # TODO: Check if the provided value for formula and grammar is a file?
+
         return True
 
+    def __is_valid_reference(self, ref: Dict) -> bool:
+        if "access_method" not in ref or "access_value" not in ref:
+            print("element reference has wrong format")
+            return False
+        
+        return True
 
 class ValueGenerationSpecification:
     def __init__(

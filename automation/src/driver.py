@@ -70,7 +70,6 @@ class TestAutomationDriver:
             interceptor.instrument_files()
 
         load_page(self.__driver, self.__url)
-        self.__exit()
         interceptor.scan_for_form_submission()
 
         html_input_specifications = self.__analyse_html(self.__driver.page_source)
