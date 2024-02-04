@@ -7,10 +7,16 @@
 
 import lib.input_flow
 
-from ControlFlowNode node, Comparison comp
-where
-  hasLocation(node, "FILE", 12345) and // LOCATION
-  node.toString() = "NAME" and // EXPRESSION
-  node.getASuccessor*() = comp and
-  (comp.getLeftOperand() = node or comp.getRightOperand() = node)
-select comp, ""
+class ComparisonFlowConfiguration extends TaintTracking::Configuration {
+  ComparisonFlowConfiguration() { this = "ComparisonFlowConfiguration" }
+
+  override predicate isSource(DataFlow::Node source) {
+    hasLocation(source.asExpr(), "FILE", 12345) // LOCATION
+  }
+
+  override predicate isSink(DataFlow::Node sink) { isLiteralComparison(sink.asExpr()) }
+}
+
+from ComparisonFlowConfiguration cfg, DataFlow::Node source, DataFlow::Node sink
+where cfg.hasFlow(source, sink)
+select sink, sink.asExpr().getParentExpr().toString()
