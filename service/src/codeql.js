@@ -9,8 +9,16 @@ const codeqlPath = process.env.CODEQL_PATH;
 const codeqlDirectory = "codeql";
 const queryDirectory = `${codeqlDirectory}/queries`;
 const resultDirectory = `${codeqlDirectory}/results`;
-const allQueries = ["to_comparisson", "to_regex"];
-// const allQueries = ["data_flow"];
+const allQueries = ["to_comp", "to_length_comp", "to_regex", "get_regex_vars"];
+
+const queryPlan = {
+  1: "to_comp",
+  2: "to_length_comp",
+  3: {
+    1: "to_regex",
+    2: { run: "get_regex_vars", if_results_for: "to_regex" },
+  },
+};
 
 function createDatabase(source, database) {
   if (!fs.existsSync(resultDirectory)) {

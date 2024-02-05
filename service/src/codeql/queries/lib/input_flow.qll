@@ -42,9 +42,21 @@ predicate isLiteralComparison(Expr expr) {
   expr.getParent().(Comparison).getRightOperand() instanceof Literal
 }
 
+predicate isVarComparison(Expr expr) {
+  expr.getParent() instanceof Comparison and
+  not expr.getParent().(Comparison).getRightOperand() instanceof Literal
+}
+
 predicate isLiteralLengthComparison(Expr expr) {
   expr.getParent() instanceof Comparison and
   expr.getParent().(Comparison).getRightOperand() instanceof NumberLiteral and
+  expr.getParent().(Comparison).getLeftOperand() instanceof PropAccess and
+  expr.getParent().(Comparison).getLeftOperand().(PropAccess).getPropertyName() = "length"
+}
+
+predicate isVarLengthComparison(Expr expr) {
+  expr.getParent() instanceof Comparison and
+  not expr.getParent().(Comparison).getRightOperand() instanceof NumberLiteral and
   expr.getParent().(Comparison).getLeftOperand() instanceof PropAccess and
   expr.getParent().(Comparison).getLeftOperand().(PropAccess).getPropertyName() = "length"
 }

@@ -16,8 +16,6 @@ const magicValueToReferenceMap = new Map();
 
 const expressionToFieldMap = new Map();
 
-// TODO: verify correctness
-// TODO: what if elem is a list?
 function hasValue(object, value) {
   for (const [key, elem] of Object.entries(object)) {
     if (typeof elem === "string") {
@@ -252,7 +250,7 @@ function addReferenceForMagicValue(magicValue, reference) {
   magicValueToReferenceMap.get(magicValue).add(JSON.stringify(reference));
 }
 
-module.exports = { analyseTraces };
+module.exports = { analyseTraces, hasValue };
 
 // analyseTraces();
 // extractConstraintCandidates();

@@ -1,0 +1,8 @@
+{
+  "url": "test",
+  "controls": [],
+  "submit": {
+    "access_method": "id",
+    "access_value": "submit"
+  }
+}
