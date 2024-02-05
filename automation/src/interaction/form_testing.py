@@ -6,14 +6,18 @@ from seleniumwire.request import Request, Response
 from tabulate import tabulate
 from typing import Dict, List, Tuple
 
-from html_analysis import (
+from src.analysis.html_analysis import (
     HTMLInputSpecification,
     HTMLRadioGroupSpecification,
     HTMLElementReference,
 )
-from input_generation import InputGenerator, GeneratedValue, ValidityEnum
-from proxy import NetworkInterceptor, RequestScanner, submission_interception_header
-from utility import (
+from src.generation.input_generation import InputGenerator, GeneratedValue, ValidityEnum
+from src.proxy.interception import (
+    NetworkInterceptor,
+    RequestScanner,
+    submission_interception_header,
+)
+from src.utility.helpers import (
     ConfigKey,
     InputType,
     load_file_content,
@@ -82,7 +86,9 @@ class SpecificationParser:
         for control in controls:
             required_keys = set(["type", "reference", "grammar", "formula"])
             contained_keys = set(control.keys())
-            if required_keys != contained_keys or self.__is_valid_reference(control["reference"]):
+            if required_keys != contained_keys or self.__is_valid_reference(
+                control["reference"]
+            ):
                 print("control is missing required fields")
                 return False
 
@@ -94,8 +100,9 @@ class SpecificationParser:
         if "access_method" not in ref or "access_value" not in ref:
             print("element reference has wrong format")
             return False
-        
+
         return True
+
 
 class ValueGenerationSpecification:
     def __init__(
@@ -235,9 +242,9 @@ class TestMonitor:
         self.__driver = driver
         self.__interceptor = interceptor
         self.__request_scanner = RequestScanner()
-        self.__saved_submissions: List[
-            Tuple[List[GeneratedValue], Response | None]
-        ] = []
+        self.__saved_submissions: List[Tuple[List[GeneratedValue], Response | None]] = (
+            []
+        )
         self.__submit_element = submit_element
 
     def attempt_submit_and_save_response(

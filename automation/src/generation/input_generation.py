@@ -4,7 +4,7 @@ from enum import Enum
 from isla.solver import ISLaSolver
 from typing import Dict, List, Set
 
-from mutation import ValueMutator
+from src.generation.mutation import ValueMutator
 
 
 class ValidityEnum(str, Enum):

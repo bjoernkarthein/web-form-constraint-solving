@@ -109,6 +109,7 @@ def load_file_content(file_name: str) -> str:
         with open(file_name) as file:
             file_content = file.read()
     except FileNotFoundError:
+        print("file not found")
         return ""
 
     return file_content

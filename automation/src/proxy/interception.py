@@ -7,7 +7,7 @@ from selenium.webdriver import Chrome
 from seleniumwire.request import Request, Response
 from typing import List
 
-from utility import service_base_url, instrumentation_controller
+from src.utility.helpers import service_base_url, instrumentation_controller
 
 """
 Proxy module

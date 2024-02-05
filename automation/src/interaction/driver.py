@@ -1,21 +1,23 @@
 import sys
 import time
 
-from selenium.common.exceptions import InvalidArgumentException
 from selenium.webdriver.chrome.service import Service
 from seleniumwire import webdriver
 from typing import List
 
-from constraint_extraction import ConstraintCandidateFinder, SpecificationBuilder
+from src.analysis.constraint_extraction import (
+    ConstraintCandidateFinder,
+    SpecificationBuilder,
+)
 from form_testing import FormTester, SpecificationParser
-from html_analysis import (
+from src.analysis.html_analysis import (
     HTMLAnalyser,
     HTMLInputSpecification,
     FormObserver,
     HTMLRadioGroupSpecification,
 )
-from proxy import NetworkInterceptor
-from utility import (
+from src.proxy.interception import NetworkInterceptor
+from src.utility.helpers import (
     binary_input_types,
     ConfigKey,
     clamp_to_range,
@@ -23,8 +25,8 @@ from utility import (
     write_to_file,
 )
 
-# chrome_driver_path = "../chromedriver/windows/chromedriver.exe"
-chrome_driver_path = '../chromedriver/linux/chromedriver'
+chrome_driver_path = "../chromedriver/windows/chromedriver.exe"
+# chrome_driver_path = '../chromedriver/linux/chromedriver'
 
 """
 Driver module

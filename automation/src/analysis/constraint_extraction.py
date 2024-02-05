@@ -6,16 +6,16 @@ from lxml.html import Element
 from selenium.webdriver import Chrome
 from typing import List, Dict
 
-from html_analysis import (
+from src.analysis.html_analysis import (
     HTMLConstraints,
     HTMLElementReference,
     HTMLInputSpecification,
     HTMLRadioGroupSpecification,
 )
-from input_generation import InputGenerator, ValidityEnum
-from pattern_translation import PatternConverter
-from proxy import NetworkInterceptor
-from utility import *
+from src.generation.input_generation import InputGenerator, ValidityEnum
+from src.utility.pattern_translation import PatternConverter
+from src.proxy.interception import NetworkInterceptor
+from src.utility.helpers import *
 
 """
 Constraint Extraction module
@@ -115,7 +115,7 @@ class ConstraintCandidateFinder:
 
         # TODO: How to guarantee that all traces are at the server side? Google?
 
-        next = input()
+        # next = input()
         # time.sleep(2)
         return ConstraintCandidateResult(get_constraint_candidates())
         # return ConstraintCandidateResult({"candidates": []})

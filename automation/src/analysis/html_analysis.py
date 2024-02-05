@@ -3,7 +3,7 @@ import json
 from lxml import etree, html
 from typing import Dict, List, Tuple, Union
 
-from utility import InputType, non_writable_input_types
+from src.utility.helpers import InputType, non_writable_input_types
 
 
 class HTMLElementReference:
@@ -200,9 +200,9 @@ class HTMLInputSpecification:
     def get_as_dict(self) -> Dict[str, HTMLElementReference | HTMLConstraints]:
         return {
             "reference": self.reference.get_as_dict(),
-            "constraints": self.constraints.get_as_dict()
-            if self.constraints is not None
-            else None,
+            "constraints": (
+                self.constraints.get_as_dict() if self.constraints is not None else None
+            ),
         }
 
     def get_representation(

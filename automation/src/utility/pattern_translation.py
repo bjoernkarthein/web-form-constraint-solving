@@ -2,8 +2,7 @@ import re
 import string
 
 from abc import ABC, abstractmethod
-from typing_extensions import Self
-from typing import List, Dict, Set
+from typing import List, Dict
 
 """
 Simplified CFG for a JavaScript pattern (https://tc39.es/ecma262/#prod-Pattern)

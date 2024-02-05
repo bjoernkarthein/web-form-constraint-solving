@@ -2,7 +2,7 @@ import getopt
 import sys
 import yaml
 
-from driver import TestAutomationDriver
+from src.interaction.driver import TestAutomationDriver
 
 """
 Test module
