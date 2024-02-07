@@ -70,9 +70,6 @@ class TestAutomationDriver:
 
     def run_analysis(self) -> None:
         html_only = self.__config[ConfigKey.ANALYSIS.value][ConfigKey.HTML_ONLY.value]
-        block_all_requests = self.__config[ConfigKey.ANALYSIS.value][
-            ConfigKey.BLOCK_ALL_REQUESTS.value
-        ]
         interceptor = NetworkInterceptor(self.__driver)
 
         if not html_only:
@@ -136,7 +133,7 @@ class TestAutomationDriver:
         analysis_rounds = clamp_to_range(analysis_rounds, 1, None)
 
         self.__constraint_candidate_finder = ConstraintCandidateFinder(
-            self.__driver, self.__html_analyser.submit_element, interceptor
+            self.__driver, self.__html_analyser.submit_element, interceptor, self.__exit
         )
         self.__generate_valid_html_magic_values(html_specifications)
 
@@ -149,16 +146,21 @@ class TestAutomationDriver:
                 spec
             )
 
-            # for _ in range(analysis_rounds):
-            #     (
-            #         grammar,
-            #         formula,
-            #     ) = self.__specification_builder.add_constraints_to_current_specification(
-            #         new_constraints
-            #     )
-            #     self.__constraint_candidate_finder.find_additional_js_constraint_candidates(
-            #         grammar, formula
-            #     )
+            print(new_constraints)
+            if len(new_constraints.candidates) == 0:
+                continue
+
+            for _ in range(analysis_rounds):
+                # TODO: stop when fixed point is reached
+                (
+                    grammar,
+                    formula,
+                ) = self.__specification_builder.add_constraints_to_current_specification(
+                    new_constraints
+                )
+                self.__constraint_candidate_finder.find_additional_js_constraint_candidates(
+                    grammar, formula
+                )
 
     # TODO: refactor to not be this complex
     def __generate_valid_html_magic_values(

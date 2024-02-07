@@ -4,6 +4,7 @@ import time
 from enum import Enum
 from lxml.html import Element
 from selenium.webdriver import Chrome
+from seleniumwire.request import Request
 from typing import List, Dict
 
 from src.analysis.html_analysis import (
@@ -13,7 +14,7 @@ from src.analysis.html_analysis import (
     HTMLRadioGroupSpecification,
 )
 from src.generation.input_generation import InputGenerator, ValidityEnum
-from src.proxy.interception import NetworkInterceptor
+from src.proxy.interception import NetworkInterceptor, submission_interception_header
 from src.utility.pattern_translation import PatternConverter
 from src.utility.helpers import *
 
@@ -52,8 +53,10 @@ class ConstraintCandidateFinder:
         web_driver: Chrome,
         submit_element: Element,
         interceptor: NetworkInterceptor,
+        exit_method,
     ) -> None:
         self.__driver = web_driver
+        self.__exit_method = exit_method
         self.__generator = InputGenerator()
         self.__interceptor = interceptor
         self.__magic_value_map: Dict[
@@ -113,12 +116,7 @@ class ConstraintCandidateFinder:
             {"spec": html_specification.get_as_dict(), "values": magic_value_sequence}
         )
 
-        # TODO: How to guarantee that all traces are at the server side? Google?
-
-        # next = input()
-        # time.sleep(2)
         return ConstraintCandidateResult(get_constraint_candidates())
-        # return ConstraintCandidateResult({"candidates": []})
 
     def find_additional_js_constraint_candidates(
         self, grammar: str, formula: str | None = None
@@ -159,6 +157,12 @@ class ConstraintCandidateFinder:
 
         record_trace(Action.ATTEMPT_SUBMIT)
         click_web_element_by_reference(self.__driver, self.__submit_element)
+
+        # Check if the submission was successful and exit if it was
+        all_requests: List[Request] = self.__driver.requests
+        for request in all_requests:
+            if request.response.headers[submission_interception_header] is not None:
+                self.__exit_method()
 
 
 class LogicalOperator(Enum):

@@ -206,7 +206,7 @@ def get_web_element_by_reference(driver: Chrome, html_element_reference) -> WebE
             return driver.find_element(By.XPATH, html_element_reference.access_value)
         elif html_element_reference.access_method == "name":
             return driver.find_element(By.NAME, html_element_reference.access_value)
-    except NoSuchElementException:
+    except Exception:
         return None
 
 
@@ -220,7 +220,7 @@ def get_web_elements_by_reference(
             return driver.find_elements(By.XPATH, html_element_reference.access_value)
         elif html_element_reference.access_method == "name":
             return driver.find_elements(By.NAME, html_element_reference.access_value)
-    except NoSuchElementException:
+    except Exception:
         return None
 
 

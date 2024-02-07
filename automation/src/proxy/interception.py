@@ -26,9 +26,9 @@ class NetworkInterceptor:
     """
 
     def __init__(self, web_driver: Chrome) -> None:
+        self.generated_values: List[str] = []
         self.__allowed_urls = None
         self.__driver = web_driver
-        self.generated_values: List[str] = []
 
     def delete_request_interceptor(self) -> None:
         del self.__driver.request_interceptor
@@ -130,6 +130,9 @@ class NetworkInterceptor:
             self.__stop_request(request)
 
     def __stop_request(self, request):
+        if len(self.generated_values) == 0:
+            return
+
         request.create_response(
             status_code=202,
             headers={
