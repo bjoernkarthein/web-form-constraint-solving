@@ -14,7 +14,7 @@ class TestSpecificationParser(unittest.TestCase):
         Test that a valid specification is parsed correctly
         """
         json_str = load_file_content(
-            os.path.abspath(f"{test_data_path}/valid_spec.json")
+            os.path.abspath(f"{test_data_path}/basic_valid_spec.json")
         )
         parser = SpecificationParser("")
         valid_spec = json.loads(json_str)
@@ -26,7 +26,7 @@ class TestSpecificationParser(unittest.TestCase):
         Test that an invalid specification is handled with the correct errors during parsing
         """
         json_str = load_file_content(
-            os.path.abspath(f"{test_data_path}/invalid_spec.json")
+            os.path.abspath(f"{test_data_path}/basic_invalid_spec.json")
         )
         parser = SpecificationParser("")
         valid_spec = json.loads(json_str)

@@ -8,7 +8,7 @@ automation/src/report
 service/src/original
 service/src/instrumented
 service/src/trace.log
-service/static/server-log.log
+service/static/*.log
 
 service/src/codeql/db
 service/src/codeql/results
