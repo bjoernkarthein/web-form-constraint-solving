@@ -50,7 +50,6 @@ async function analyseTraces() {
   await events.once(rl, "close");
   const pointsOfInterest = processTraces();
   allTraces = []; // TODO remove
-  // console.log(pointsOfInterest);
   return { candidates: [] };
   // runQueries(pointsOfInterest);
   // return extractConstraintCandidates();
@@ -77,7 +76,6 @@ function processTraces() {
         const [included, object, key] = hasValue(trace, magicValue);
         if (included) {
           const expression = getExpressionByKey(trace, object, key);
-          console.log(trace, object, key, expression, magicValue);
           expressionToFieldMap.set(
             expression,
             JSON.stringify({
@@ -93,14 +91,10 @@ function processTraces() {
     }
   }
 
-  console.log(expressionToFieldMap);
-
   const interactionStart = interactionTraces[0];
   for (const value of interactionStart.args.values) {
     addReferenceForMagicValue(value, interactionStart.args.spec.reference);
   }
-
-  console.log(magicValueToReferenceMap);
 
   // If there are no functions called in the browser we can return
   if (browserTraces.length === 0) {
@@ -155,7 +149,6 @@ function extractConstraintCandidates() {
       locations: buildLocationsFromString(res[3]),
     };
   });
-  console.log(JSON.stringify(codeLocations, null, 4));
   return { candidates: results };
   // fs.rmSync(codeql.resultDirectory, { recursive: true, force: true });
 }
@@ -250,4 +243,9 @@ function addReferenceForMagicValue(magicValue, reference) {
   magicValueToReferenceMap.get(magicValue).add(JSON.stringify(reference));
 }
 
-module.exports = { analyseTraces, hasValue };
+function cleanUp() {
+  expressionToFieldMap.clear();
+  magicValueToReferenceMap.clear();
+}
+
+module.exports = { analyseTraces, cleanUp, hasValue };

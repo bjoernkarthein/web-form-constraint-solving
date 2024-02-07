@@ -4,7 +4,6 @@ const combinedLogFile = "../static/combined.log";
 const errorLogFile = "../static/error.log";
 
 const logger = winston.createLogger({
-  level: "info",
   format: winston.format.json(),
   defaultMeta: { service: "instrumentation-service" },
   transports: [
@@ -16,14 +15,16 @@ const logger = winston.createLogger({
       filename: combinedLogFile,
       level: "info",
     }),
-    new winston.transports.Console({
-      format: winston.format.combine(
-        winston.format.colorize(),
-        winston.format.simple()
-      ),
-      colorize: true,
-      level: "info",
-    }),
+    // For debugging the logs can be transported to the console
+    // This only works if the console is kept open
+    // new winston.transports.Console({
+    //   format: winston.format.combine(
+    //     winston.format.colorize(),
+    //     winston.format.simple()
+    //   ),
+    //   colorize: true,
+    //   level: "info",
+    // }),
   ],
 });
 
