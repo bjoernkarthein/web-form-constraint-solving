@@ -30,7 +30,7 @@ app.use("/instrumentation", instrumentationController);
 
 app.get("/", (req, res) => {
   res.send(
-    "Instrumentation server running. View the logs at /static/server-log.log"
+    "Instrumentation server running. View all logs at /static/combined.log\nIf you are interested in errors you can view /static/error.log"
   );
 });
 

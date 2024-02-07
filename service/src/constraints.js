@@ -251,6 +251,3 @@ function addReferenceForMagicValue(magicValue, reference) {
 }
 
 module.exports = { analyseTraces, hasValue };
-
-// analyseTraces();
-// extractConstraintCandidates();
