@@ -1,3 +1,4 @@
+import os
 import sys
 import time
 
@@ -9,13 +10,13 @@ from src.analysis.constraint_extraction import (
     ConstraintCandidateFinder,
     SpecificationBuilder,
 )
-from form_testing import FormTester, SpecificationParser
 from src.analysis.html_analysis import (
     HTMLAnalyser,
     HTMLInputSpecification,
     FormObserver,
     HTMLRadioGroupSpecification,
 )
+from src.interaction.form_testing import FormTester, SpecificationParser
 from src.proxy.interception import NetworkInterceptor
 from src.utility.helpers import (
     binary_input_types,
@@ -25,8 +26,11 @@ from src.utility.helpers import (
     write_to_file,
 )
 
-chrome_driver_path = "../chromedriver/windows/chromedriver.exe"
-# chrome_driver_path = '../chromedriver/linux/chromedriver'
+
+chrome_driver_path = "chromedriver/windows/chromedriver.exe"
+# chrome_driver_path = "chromedriver/linux/chromedriver"
+chrome_driver_abs_path = os.path.abspath(chrome_driver_path)
+
 
 """
 Driver module
@@ -59,13 +63,16 @@ class TestAutomationDriver:
         wire_options = {"disable_encoding": True}
 
         self.__driver = webdriver.Chrome(
-            service=Service(chrome_driver_path),
+            service=Service(chrome_driver_abs_path),
             options=chrome_options,
             seleniumwire_options=wire_options,
         )
 
     def run_analysis(self) -> None:
         html_only = self.__config[ConfigKey.ANALYSIS.value][ConfigKey.HTML_ONLY.value]
+        block_all_requests = self.__config[ConfigKey.ANALYSIS.value][
+            ConfigKey.BLOCK_ALL_REQUESTS.value
+        ]
         interceptor = NetworkInterceptor(self.__driver)
 
         if not html_only:

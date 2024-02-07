@@ -29,7 +29,7 @@ def main(argv):
         if opt in ("-s", "--specification-file"):
             specification_file = arg
 
-    config = yaml.safe_load(open("../config/test_config.yml"))
+    config = yaml.safe_load(open("config/test_config.yml"))
     test_automation_driver = TestAutomationDriver(config)
     test_automation_driver.run_test(specification_file)
 

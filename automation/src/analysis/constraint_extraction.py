@@ -13,8 +13,8 @@ from src.analysis.html_analysis import (
     HTMLRadioGroupSpecification,
 )
 from src.generation.input_generation import InputGenerator, ValidityEnum
-from src.utility.pattern_translation import PatternConverter
 from src.proxy.interception import NetworkInterceptor
+from src.utility.pattern_translation import PatternConverter
 from src.utility.helpers import *
 
 """

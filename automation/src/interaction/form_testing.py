@@ -130,6 +130,9 @@ class FormTester:
         specification_directory: str,
         config: Dict,
     ) -> None:
+        self.__block_all_requests = config[ConfigKey.TESTING.value][
+            ConfigKey.BLOCK_ALL_REQUESTS.value
+        ]
         self.__block_successful_submissions = config[ConfigKey.TESTING.value][
             ConfigKey.BLOCK_SUBMISSION.value
         ]

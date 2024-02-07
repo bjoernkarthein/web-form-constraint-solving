@@ -1,5 +1,6 @@
 import json
 import os
+import sys
 import unittest
 
 from src.interaction.form_testing import SpecificationParser

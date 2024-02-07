@@ -31,7 +31,7 @@ def main(argv):
             print_help()
             sys.exit()
         if opt in ("-u", "--url"):
-            config = yaml.safe_load(open("../config/analysis_config.yml"))
+            config = yaml.safe_load(open("config/analysis_config.yml"))
             test_automation_driver = TestAutomationDriver(config, arg)
             test_automation_driver.run_analysis()
 

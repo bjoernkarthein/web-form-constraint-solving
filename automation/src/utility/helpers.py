@@ -37,6 +37,7 @@ class ConfigKey(Enum):
     USE_DATALIST_OPTIONS = "use-datalist-options"
     VALID = "valid"
     BLOCK_SUBMISSION = "block-submission"
+    BLOCK_ALL_REQUESTS = "block-all-requests"
 
 
 class InputType(Enum):
@@ -65,7 +66,7 @@ class InputType(Enum):
     WEEK = "week"
 
 
-pre_built_specifications_path = "../pre-built-specifications"
+pre_built_specifications_path = "pre-built-specifications"
 
 service_base_url = "http://localhost:4000"
 admin_controller = f"{service_base_url}/admin"

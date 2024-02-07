@@ -26,8 +26,15 @@ class NetworkInterceptor:
     """
 
     def __init__(self, web_driver: Chrome) -> None:
+        self.__allowed_urls = None
         self.__driver = web_driver
         self.generated_values: List[str] = []
+
+    def delete_request_interceptor(self) -> None:
+        del self.__driver.request_interceptor
+
+    def delete_repsonse_interceptor(self) -> None:
+        del self.__driver.response_interceptor
 
     def instrument_files(self) -> None:
         """Start file instrumentation.
@@ -38,8 +45,12 @@ class NetworkInterceptor:
         self.__driver.response_interceptor = self.__file_interceptor
 
     # For Evaluation only?
-    def block_all_outgoing_requests(self) -> None:
+    def block_all_outgoing_requests(
+        self, allowed_urls: List[str] | None = None
+    ) -> None:
         del self.__driver.request_interceptor
+        if allowed_urls is not None:
+            self.__allowed_urls = allowed_urls
         self.__driver.request_interceptor = self.__all_request_blocker
 
     def scan_for_form_submission(self) -> None:
@@ -111,7 +122,11 @@ class NetworkInterceptor:
             self.__stop_request(request)
 
     def __all_request_blocker(self, request: Request) -> None:
-        if service_base_url not in request.url:
+        if (
+            service_base_url not in request.url
+            and self.__allowed_urls is not None
+            and request.url not in self.__allowed_urls
+        ):
             self.__stop_request(request)
 
     def __stop_request(self, request):
