@@ -1,5 +1,5 @@
 /**
- * @name To Literal Comparison
+ * @name To Variable Comparison
  * @kind problem
  * @problem.severity warning
  * @id javascript/to-literal-comp

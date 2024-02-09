@@ -7,14 +7,15 @@ const logger = winston.createLogger({
   format: winston.format.json(),
   defaultMeta: { service: "instrumentation-service" },
   transports: [
-    new winston.transports.File({
-      filename: errorLogFile,
-      level: "error",
-    }),
-    new winston.transports.File({
-      filename: combinedLogFile,
-      level: "info",
-    }),
+    // For production
+    // new winston.transports.File({
+    //   filename: errorLogFile,
+    //   level: "error",
+    // }),
+    // new winston.transports.File({
+    //   filename: combinedLogFile,
+    //   level: "info",
+    // }),
     // For debugging the logs can be transported to the console
     // This only works if the console is kept open
     new winston.transports.Console({
@@ -23,8 +24,13 @@ const logger = winston.createLogger({
         winston.format.simple()
       ),
       colorize: true,
-      level: "info",
+      level: "debug",
     }),
+    // new winston.transports.Http({
+    //   port: 4000,
+    //   path: "/admin/log",
+    //   level: "info",
+    // }),
   ],
 });
 

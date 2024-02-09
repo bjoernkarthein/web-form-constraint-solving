@@ -10,7 +10,7 @@ const analysisController = require("./routers/analysis");
 const instrumentationController = require("./routers/instrumentation");
 
 const app = express();
-const PORT = 4000;
+const API_PORT = 4000;
 
 app.use(
   cors({
@@ -34,8 +34,8 @@ app.get("/", (req, res) => {
   );
 });
 
-const server = app.listen(PORT, () => {
-  logger.info(`Instrumentation server started on port ${PORT}`);
+const server = app.listen(API_PORT, () => {
+  logger.info(`Instrumentation server started on port ${API_PORT}`);
 });
 
 process.on("SIGTERM", shutDown);

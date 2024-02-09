@@ -144,7 +144,6 @@ function runQueries(pointsOfInterest, sourceDir) {
 
 function extractConstraintCandidates() {
   const results = codeql.readResults();
-  console.log(results);
   // const codeLocations = results.map((res) => {
   //   return {
   //     type: res[0],

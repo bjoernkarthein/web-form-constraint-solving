@@ -60,11 +60,12 @@ function addDataToQuery(queryFile, sourceFile, startLine, expression) {
   fs.writeFileSync(`${queryDirectory}/${queryFile}.ql`, "");
   // This is needed because codeql for javascript automatically sanitizes strings
   // (https://github.com/github/codeql/blob/7361ad977a5dd5252d21f5fd23de47d75b763651/javascript/extractor/src/com/semmle/js/extractor/TextualExtractor.java#L121)
-  if (expression.length() > 20)
+  if (expression.length > 20) {
     expression =
       expression.substring(0, 7) +
       " ... " +
-      expression.substring(expression.length() - 7);
+      expression.substring(expression.length - 7);
+  }
 
   const lines = data.split(/\r?\n/);
 
