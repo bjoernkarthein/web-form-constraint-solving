@@ -1,6 +1,6 @@
 import os
 import sys
-import time
+import threading
 
 from selenium.webdriver.chrome.service import Service
 from seleniumwire import webdriver
@@ -23,6 +23,7 @@ from src.utility.helpers import (
     ConfigKey,
     clamp_to_range,
     load_page,
+    sub_to_service_messages,
     write_to_file,
 )
 
@@ -74,6 +75,9 @@ class TestAutomationDriver:
 
         if not html_only:
             interceptor.instrument_files()
+
+        # message_thread = threading.Thread(target=sub_to_service_messages, daemon=True)
+        # message_thread.start()
 
         load_page(self.__driver, self.__url)
         interceptor.scan_for_form_submission()

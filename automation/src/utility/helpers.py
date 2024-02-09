@@ -2,6 +2,7 @@ import math
 import requests
 import time
 import json
+import websocket
 
 from enum import Enum
 from requests import Response
@@ -70,6 +71,7 @@ class InputType(Enum):
 pre_built_specifications_path = "pre-built-specifications"
 
 service_base_url = "http://localhost:4000"
+websocket_server_url = "ws://localhost:1337"
 admin_controller = f"{service_base_url}/admin"
 analysis_controller = f"{service_base_url}/analysis"
 instrumentation_controller = f"{service_base_url}/instrumentation"
@@ -168,6 +170,15 @@ def get_constraint_candidates(traces: str) -> Response:
     trace_array = traces.split("\n")
     url = f"{analysis_controller}/candidates"
     return requests.post(url, json={"traces": trace_array})
+
+
+def sub_to_service_messages() -> None:
+    ws = websocket.WebSocketApp(websocket_server_url, on_message=__on_ws_message)
+    ws.run_forever()
+
+
+def __on_ws_message(_, message) -> None:
+    print(message)
 
 
 def load_page(driver: Chrome, url: str) -> None:
