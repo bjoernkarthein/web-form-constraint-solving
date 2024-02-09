@@ -11,7 +11,8 @@ class LiteralComparisonFlowConfiguration extends TaintTracking::Configuration {
   LiteralComparisonFlowConfiguration() { this = "LiteralComparisonFlowConfiguration" }
 
   override predicate isSource(DataFlow::Node source) {
-    hasLocation(source.asExpr(), "FILE", 12345) // LOCATION
+    hasLocation(source.asExpr(), "FILE", 12345) and // LOCATION
+    source.asExpr().toString() = "NAME" // EXPRESSION
   }
 
   override predicate isSink(DataFlow::Node sink) { isLiteralComparison(sink.asExpr()) }

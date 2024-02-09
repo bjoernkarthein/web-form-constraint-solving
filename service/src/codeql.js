@@ -7,41 +7,42 @@ const common = require("./common");
 
 const codeqlPath = process.env.CODEQL_PATH;
 const codeqlDirectory = "codeql";
+const databaseName = "db";
+const databaseDirectory = `${codeqlDirectory}/${databaseName}`;
 const queryDirectory = `${codeqlDirectory}/queries`;
 const resultDirectory = `${codeqlDirectory}/results`;
-const allQueries = ["to_comp", "to_length_comp", "to_regex", "get_regex_vars"];
+// const allQueries = ["to_comp", "to_length_comp", "to_regex", "get_regex_vars"];
+const allQueries = ["to_var_comp"];
 
-const queryPlan = {
-  1: "to_comp",
-  2: "to_length_comp",
-  3: {
-    1: "to_regex",
-    2: { run: "get_regex_vars", if_results_for: "to_regex" },
-  },
-};
+// const queryPlan = {
+//   1: "to_comp",
+//   2: "to_length_comp",
+//   3: {
+//     1: "to_regex",
+//     2: { run: "get_regex_vars", if_results_for: "to_regex" },
+//   },
+// };
 
-function createDatabase(source, database) {
+function createDatabase(source) {
   if (!fs.existsSync(resultDirectory)) {
     fs.mkdirSync(resultDirectory);
   }
 
-  const databaseDir = `${codeqlDirectory}/${database}`;
-  const command = `${codeqlPath} database create --language=javascript --source-root=${source} ${databaseDir}`;
+  const command = `${codeqlPath} database create --language=javascript --source-root=${source} ${databaseDirectory}`;
   common.runCommandSync(command);
-  return databaseDir;
 }
 
 let number = 0;
 
-function runQuery(databaseDir, queryFile) {
-  const command = `${codeqlPath} database analyze --format=csv --output=${codeqlDirectory}/results/${queryFile}-${number}-results.csv ${databaseDir} ${queryDirectory}/${queryFile}.ql`;
+function runQuery(queryFile) {
+  const command = `${codeqlPath} database analyze --format=csv --output=${codeqlDirectory}/results/${queryFile}-${number}-results.csv ${databaseDirectory} ${queryDirectory}/${queryFile}.ql`;
   number++;
   common.runCommandSync(command);
 }
 
-function runQueries(databaseDir, queryFiles) {
+function runQueries(queryFiles) {
   for (const query of queryFiles) {
-    runQuery(databaseDir, query);
+    runQuery(query);
   }
 }
 
@@ -57,6 +58,14 @@ function addDataToQuery(queryFile, sourceFile, startLine, expression) {
   });
 
   fs.writeFileSync(`${queryDirectory}/${queryFile}.ql`, "");
+  // This is needed because codeql for javascript automatically sanitizes strings
+  // (https://github.com/github/codeql/blob/7361ad977a5dd5252d21f5fd23de47d75b763651/javascript/extractor/src/com/semmle/js/extractor/TextualExtractor.java#L121)
+  if (expression.length() > 20)
+    expression =
+      expression.substring(0, 7) +
+      " ... " +
+      expression.substring(expression.length() - 7);
+
   const lines = data.split(/\r?\n/);
 
   for (let i = 0; i < lines.length; i++) {
@@ -150,8 +159,15 @@ const resetExpression = (match) => {
   return `${values[0].trim()} = "NAME"`;
 };
 
+function cleanUp() {
+  fs.rmSync(databaseDirectory, { recursive: true, force: true });
+  fs.rmSync(resultDirectory, { recursive: true, force: true });
+}
+
 module.exports = {
+  cleanUp,
   createDatabase,
+  databaseDirectory,
   readResults,
   runQuery,
   runQueries,

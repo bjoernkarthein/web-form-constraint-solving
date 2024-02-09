@@ -46,12 +46,13 @@ async function analyseTraces(traces) {
   }
 
   const pointsOfInterest = processTraces(allTraces);
+  console.log(pointsOfInterest);
   if (pointsOfInterest.length == 0) {
     return [];
   }
 
-  // const sourceDir = perpareForCodeQLQueries(allTraces);
-  // runQueries(pointsOfInterest, sourceDir);
+  const sourceDir = perpareForCodeQLQueries(allTraces);
+  runQueries(pointsOfInterest, sourceDir);
   return extractConstraintCandidates();
 }
 
@@ -125,7 +126,7 @@ function compareTimestamps(a, b) {
 
 function runQueries(pointsOfInterest, sourceDir) {
   // TODO: Only rebuild database if the file set changed since last build
-  const databaseDir = codeql.createDatabase(sourceDir, "db");
+  codeql.createDatabase(sourceDir, "db");
 
   for (const point of pointsOfInterest) {
     codeql.prepareQueries(
@@ -133,22 +134,23 @@ function runQueries(pointsOfInterest, sourceDir) {
       point.location.start.line,
       point.expression
     );
-    codeql.runQueries(databaseDir, codeql.allQueries);
+    codeql.runQueries(codeql.allQueries);
     codeql.resetQueries();
   }
 
   fs.rmSync(sourceDir, { recursive: true, force: true });
-  fs.rmSync(databaseDir, { recursive: true, force: true });
+  fs.rmSync(codeql.databaseDirectory, { recursive: true, force: true });
 }
 
 function extractConstraintCandidates() {
   const results = codeql.readResults();
-  const codeLocations = results.map((res) => {
-    return {
-      type: res[0],
-      locations: buildLocationsFromString(res[3]),
-    };
-  });
+  console.log(results);
+  // const codeLocations = results.map((res) => {
+  //   return {
+  //     type: res[0],
+  //     locations: buildLocationsFromString(res[3]),
+  //   };
+  // });
   return results;
   // fs.rmSync(codeql.resultDirectory, { recursive: true, force: true });
 }
