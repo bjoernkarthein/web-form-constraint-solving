@@ -116,6 +116,9 @@ class NetworkInterceptor:
         return html.tostring(html_ast, pretty_print=True)
 
     def __form_submission_interceptor(self, request: Request) -> None:
+        if service_base_url in request.url:
+            return
+
         if self.__request_scanner.all_values_in_form_request(
             request, self.generated_values
         ):

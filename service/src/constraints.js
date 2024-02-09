@@ -4,7 +4,6 @@ const readline = require("readline");
 const codeql = require("./codeql");
 const trace = require("./trace");
 
-let allTraces = [];
 const magicValueToReferenceMap = new Map();
 // const magicValueToReferenceMap = new Map([
 //   ["l", 1],
@@ -33,36 +32,44 @@ function hasValue(object, value) {
   return [false, {}, ""];
 }
 
-async function analyseTraces() {
-  const fileStream = fs.createReadStream(trace.traceLogFile);
-  const rl = readline.createInterface({
-    input: fileStream,
-    crlfDelay: Infinity,
-  });
-
-  rl.on("line", (line) => {
-    if (!line) {
-      return;
+async function analyseTraces(traces) {
+  const allTraces = [];
+  for (const t of traces) {
+    if (!!t) {
+      try {
+        allTraces.push(JSON.parse(t));
+      } catch (e) {
+        console.log("error parsing trace");
+        // TODO
+      }
     }
-    allTraces.push(JSON.parse(line));
-  });
+  }
 
-  await events.once(rl, "close");
-  const pointsOfInterest = processTraces();
-  allTraces = []; // TODO remove
-  return { candidates: [] };
-  // runQueries(pointsOfInterest);
-  // return extractConstraintCandidates();
+  const pointsOfInterest = processTraces(allTraces);
+  if (pointsOfInterest.length == 0) {
+    return [];
+  }
+
+  // const sourceDir = perpareForCodeQLQueries(allTraces);
+  // runQueries(pointsOfInterest, sourceDir);
+  return extractConstraintCandidates();
 }
 
-function processTraces() {
-  trace.cleanUp();
-  const start = allTraces.filter(
+function processTraces(allTraces) {
+  const startTraces = allTraces.filter(
     (t) => t.action == trace.ACTION_ENUM.INTERACTION_START
-  )[0].time;
-  const end = allTraces.filter(
+  );
+  const endTraces = allTraces.filter(
     (t) => t.action == trace.ACTION_ENUM.INTERACTION_END
-  )[0].time;
+  );
+
+  if (startTraces.length === 0 || endTraces.length === 0) {
+    return [];
+  }
+
+  const start = startTraces[0].time;
+  const end = endTraces[0].time;
+
   const interactionTraces = allTraces.filter(
     (t) => t.time >= start && t.time <= end
   );
@@ -116,16 +123,9 @@ function compareTimestamps(a, b) {
   return a.time - b.time;
 }
 
-function runQueries(pointsOfInterest) {
-  if (pointsOfInterest.length == 0) {
-    return;
-  }
-
+function runQueries(pointsOfInterest, sourceDir) {
   // TODO: Only rebuild database if the file set changed since last build
   const databaseDir = codeql.createDatabase(sourceDir, "db");
-
-  const sourceDir = perpareForCodeQLQueries(allTraces);
-  allTraces = [];
 
   for (const point of pointsOfInterest) {
     codeql.prepareQueries(
@@ -149,7 +149,7 @@ function extractConstraintCandidates() {
       locations: buildLocationsFromString(res[3]),
     };
   });
-  return { candidates: results };
+  return results;
   // fs.rmSync(codeql.resultDirectory, { recursive: true, force: true });
 }
 

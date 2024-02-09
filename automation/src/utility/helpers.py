@@ -4,6 +4,7 @@ import time
 import json
 
 from enum import Enum
+from requests import Response
 from selenium.common.exceptions import NoSuchElementException, InvalidArgumentException
 from selenium.webdriver import Chrome
 from selenium.webdriver.common.action_chains import ActionChains
@@ -94,7 +95,7 @@ __current_value_map: Dict = {}
 
 
 def clear_value_mapping() -> None:
-    __current_value_map = {}
+    __current_value_map.clear()
 
 
 def get_current_values_from_form() -> List[str]:
@@ -124,9 +125,9 @@ def write_to_file(file_name: str, data: str | Dict) -> None:
             json.dump(data, file, indent=4)
 
 
-def start_trace_recording(data) -> None:
+def start_trace_recording(data) -> Response:
     url = f"{analysis_controller}/record"
-    requests.post(
+    return requests.post(
         url,
         json={
             "action": Action.INTERACTION_START.value,
@@ -137,9 +138,9 @@ def start_trace_recording(data) -> None:
     )
 
 
-def stop_trace_recording(data) -> None:
+def stop_trace_recording(data) -> Response:
     url = f"{analysis_controller}/record"
-    requests.post(
+    return requests.post(
         url,
         json={
             "action": Action.INTERACTION_END.value,
@@ -150,9 +151,9 @@ def stop_trace_recording(data) -> None:
     )
 
 
-def record_trace(action: Action, args=None) -> None:
+def record_trace(action: Action, args=None) -> Response:
     url = f"{analysis_controller}/record"
-    requests.post(
+    return requests.post(
         url,
         json={
             "action": action.value,
@@ -163,9 +164,10 @@ def record_trace(action: Action, args=None) -> None:
     )
 
 
-def get_constraint_candidates() -> Dict:
+def get_constraint_candidates(traces: str) -> Response:
+    trace_array = traces.split("\n")
     url = f"{analysis_controller}/candidates"
-    return requests.get(url).json()
+    return requests.post(url, json={"traces": trace_array})
 
 
 def load_page(driver: Chrome, url: str) -> None:

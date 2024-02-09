@@ -17,14 +17,14 @@ const logger = winston.createLogger({
     }),
     // For debugging the logs can be transported to the console
     // This only works if the console is kept open
-    // new winston.transports.Console({
-    //   format: winston.format.combine(
-    //     winston.format.colorize(),
-    //     winston.format.simple()
-    //   ),
-    //   colorize: true,
-    //   level: "info",
-    // }),
+    new winston.transports.Console({
+      format: winston.format.combine(
+        winston.format.colorize(),
+        winston.format.simple()
+      ),
+      colorize: true,
+      level: "info",
+    }),
   ],
 });
 

@@ -10,9 +10,10 @@ let record = (req, res) => {
   });
 };
 
-let getConstraintCandidates = async (req, res) => {
-  const results = await constraintService.analyseTraces();
-  res.json(results);
+let getConstraintCandidatesForTraces = async (req, res) => {
+  tracerService.cleanUp();
+  const results = await constraintService.analyseTraces(req.body.traces);
+  res.json({ candidates: results });
 };
 
-module.exports = { getConstraintCandidates, record };
+module.exports = { getConstraintCandidatesForTraces, record };

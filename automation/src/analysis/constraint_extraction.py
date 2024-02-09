@@ -14,7 +14,11 @@ from src.analysis.html_analysis import (
     HTMLRadioGroupSpecification,
 )
 from src.generation.input_generation import InputGenerator, ValidityEnum
-from src.proxy.interception import NetworkInterceptor, submission_interception_header
+from src.proxy.interception import (
+    NetworkInterceptor,
+    decode_bytes,
+    submission_interception_header,
+)
 from src.utility.pattern_translation import PatternConverter
 from src.utility.helpers import *
 
@@ -93,7 +97,7 @@ class ConstraintCandidateFinder:
         """Try to extract as many constraint candidates as possible from the JavaScript source code for a given input."""
         magic_value_sequence = self.__magic_value_map.get(html_specification)
         if magic_value_sequence is None:
-            ConstraintCandidateResult({"candidates": []})
+            return ConstraintCandidateResult({"candidates": []})
 
         start_trace_recording(
             {"spec": html_specification.get_as_dict(), "values": magic_value_sequence}
@@ -112,11 +116,19 @@ class ConstraintCandidateFinder:
 
             self.__attempt_submit()
 
-        stop_trace_recording(
-            {"spec": html_specification.get_as_dict(), "values": magic_value_sequence}
+        all_traces = decode_bytes(
+            stop_trace_recording(
+                {
+                    "spec": html_specification.get_as_dict(),
+                    "values": magic_value_sequence,
+                }
+            ).content
         )
 
-        return ConstraintCandidateResult(get_constraint_candidates())
+        constraint_candidate_response = get_constraint_candidates(all_traces)
+        response_str = decode_bytes(constraint_candidate_response.content)
+
+        return ConstraintCandidateResult(json.loads(response_str))
 
     def find_additional_js_constraint_candidates(
         self, grammar: str, formula: str | None = None
@@ -161,7 +173,12 @@ class ConstraintCandidateFinder:
         # Check if the submission was successful and exit if it was
         all_requests: List[Request] = self.__driver.requests
         for request in all_requests:
-            if request.response.headers[submission_interception_header] is not None:
+            if (
+                request.response is not None
+                and request.response.headers[submission_interception_header] is not None
+            ):
+                print(request)
+                print(request.response)
                 self.__exit_method()
 
 
