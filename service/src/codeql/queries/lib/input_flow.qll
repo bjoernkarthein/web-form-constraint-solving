@@ -30,11 +30,33 @@ class RegExpConstructor extends InvokeExpr {
 }
 
 predicate isRegExpCheck(MethodCallExpr methodCall) {
+  methodCall.getReceiver() instanceof RegExpConstructor
+  or
   exists(VarUse use |
     use = methodCall.getReceiver() and
     use.getADef().getSource() instanceof RegExpConstructor and
     methodCall.getCalleeName() = "test"
   )
+}
+
+predicate isString(Expr expr) {
+  expr instanceof StringLiteral
+  or
+  exists(VarUse use | use = expr and use.getADef().getSource() instanceof StringLiteral)
+}
+
+predicate isRegexpLiteral(Expr expr) {
+  expr instanceof RegExpLiteral
+  or
+  exists(VarUse use | use = expr and use.getADef().getSource() instanceof RegExpLiteral)
+}
+
+predicate isStringMatch(MethodCallExpr methodCall) {
+  (
+    isString(methodCall.getArgument(0)) or
+    isRegexpLiteral(methodCall.getArgument(0))
+  ) and
+  methodCall.getCalleeName() = "match"
 }
 
 predicate isLiteralComparison(Expr expr) {

@@ -1,5 +1,5 @@
 /**
- * @name To Literal Comparison
+ * @name ToLitComp
  * @kind problem
  * @problem.severity warning
  * @id javascript/to-literal-comp
@@ -20,4 +20,4 @@ class LiteralComparisonFlowConfiguration extends TaintTracking::Configuration {
 
 from LiteralComparisonFlowConfiguration cfg, DataFlow::Node source, DataFlow::Node sink
 where cfg.hasFlow(source, sink)
-select sink, sink.asExpr().getParentExpr().toString()
+select sink.asExpr().getParentExpr(), sink.asExpr().getParentExpr().toString()

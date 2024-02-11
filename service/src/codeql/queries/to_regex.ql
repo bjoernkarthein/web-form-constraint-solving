@@ -1,5 +1,5 @@
 /**
- * @name To RegEx
+ * @name ToRegex
  * @kind problem
  * @problem.severity warning
  * @id javascript/to-regex

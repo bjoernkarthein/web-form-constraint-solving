@@ -1,5 +1,5 @@
 /**
- * @name To Variable Length Comparison
+ * @name ToVarLengthComp
  * @kind problem
  * @problem.severity warning
  * @id javascript/to-var-length-comp
@@ -20,4 +20,4 @@ class VarLengthCompFlowConfiguration extends TaintTracking::Configuration {
 
 from VarLengthCompFlowConfiguration cfg, DataFlow::Node source, DataFlow::Node sink
 where cfg.hasFlow(source, sink)
-select sink, sink.asExpr().getParentExpr().toString()
+select sink.asExpr().getParentExpr(), sink.asExpr().getParentExpr().toString()
