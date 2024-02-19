@@ -11,8 +11,12 @@ const databaseName = "db";
 const databaseDirectory = `${codeqlDirectory}/${databaseName}`;
 const queryDirectory = `${codeqlDirectory}/queries`;
 const resultDirectory = `${codeqlDirectory}/results`;
+
 // const allQueries = ["to_comp", "to_length_comp", "to_regex", "get_regex_vars"];
 const allQueries = ["to_var_comp"];
+const queryTypes = {
+  COMPARISON_TO_ANOTHER_VARIABLE: "ToVarComp",
+};
 
 // const queryPlan = {
 //   1: "to_comp",
@@ -90,7 +94,7 @@ function addDataToQuery(queryFile, sourceFile, startLine, expression) {
 }
 
 function readResults() {
-  results = [];
+  results = new Set();
 
   if (!fs.existsSync(resultDirectory)) {
     return [];
@@ -101,10 +105,14 @@ function readResults() {
     const csv_str = fs.readFileSync(`${resultDirectory}/${file}`, "utf-8");
     if (csv_str.trim()) {
       const csv = CSV.parse(csv_str);
-      results = results.concat(csv);
+      for (const line of csv) {
+        if (line.length > 0 && !!line[0]) {
+          results.add(JSON.stringify(line));
+        }
+      }
     }
   }
-  return results;
+  return [...results];
 }
 
 function resetQueries() {
@@ -168,7 +176,6 @@ function cleanUp() {
 module.exports = {
   cleanUp,
   createDatabase,
-  databaseDirectory,
   readResults,
   runQuery,
   runQueries,
@@ -176,5 +183,7 @@ module.exports = {
   resetQuery,
   resetQueries,
   allQueries,
+  databaseDirectory,
+  queryTypes,
   resultDirectory,
 };

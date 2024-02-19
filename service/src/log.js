@@ -26,11 +26,11 @@ const logger = winston.createLogger({
       colorize: true,
       level: "debug",
     }),
-    // new winston.transports.Http({
-    //   port: 4000,
-    //   path: "/admin/log",
-    //   level: "info",
-    // }),
+    new winston.transports.Http({
+      port: 4000,
+      path: "/admin/log",
+      level: "info",
+    }),
   ],
 });
 

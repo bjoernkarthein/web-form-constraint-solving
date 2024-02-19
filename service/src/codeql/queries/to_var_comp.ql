@@ -1,8 +1,8 @@
 /**
- * @name ToVarComp
+ * @name To Variable Comparison
  * @kind problem
  * @problem.severity warning
- * @id javascript/to-literal-comp
+ * @id javascript/to-variable-comp
  */
 
 import lib.input_flow
@@ -20,4 +20,4 @@ class VariableComparisonFlowConfiguration extends TaintTracking::Configuration {
 
 from VariableComparisonFlowConfiguration cfg, DataFlow::Node source, DataFlow::Node sink
 where cfg.hasFlow(source, sink)
-select sink.asExpr().getParentExpr(), sink.asExpr().getParentExpr().toString()
+select sink, sink.asExpr().getParentExpr().toString()

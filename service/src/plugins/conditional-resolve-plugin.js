@@ -1,5 +1,5 @@
 const { template } = require("@babel/core");
-const generator = require("@babel/generator");
+const generator = require("@babel/generator").default;
 
 const { getLocation, toFilePath } = require("./common");
 
@@ -19,15 +19,15 @@ module.exports = function conditionalResolvePlugin() {
         const args = `{
           type: "binary",
           left: {
-            name: ${JSON.stringify(generator.default(left).code)},
-            value: ${generator.default(left).code},
+            name: ${JSON.stringify(generator(left).code)},
+            value: ${generator(left).code},
           },
           operator: ${JSON.stringify(operator)},
           right: {
-            name: ${JSON.stringify(generator.default(right).code)},
-            value: ${generator.default(right).code},
+            name: ${JSON.stringify(generator(right).code)},
+            value: ${generator(right).code},
           },
-          test: ${generator.default(test).code},
+          test: ${generator(test).code},
         }`;
 
         const code = `
@@ -54,15 +54,15 @@ module.exports = function conditionalResolvePlugin() {
         const args = `{
           type: "binary",
           left: {
-            name: ${JSON.stringify(generator.default(left).code)},
-            value: ${generator.default(left).code},
+            name: ${JSON.stringify(generator(left).code)},
+            value: ${generator(left).code},
           },
           operator: ${JSON.stringify(operator)},
           right: {
-            name: ${JSON.stringify(generator.default(right).code)},
-            value: ${generator.default(right).code},
+            name: ${JSON.stringify(generator(right).code)},
+            value: ${generator(right).code},
           },
-          test: ${generator.default(test).code},
+          test: ${generator(test).code},
         }`;
 
         const code = `

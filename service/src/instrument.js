@@ -5,8 +5,8 @@ const { logger } = require("./log");
  * Helper functions for instrumentation
  */
 
-const originalDir = "./original/";
-const instrumentedDir = "./instrumented/";
+const originalDir = "./original";
+const instrumentedDir = "./instrumented";
 
 /**
  * Save a file to be instrumented
@@ -22,7 +22,7 @@ function saveFile(originalName, originalContent) {
     fs.mkdirSync(instrumentedDir);
   }
 
-  fs.writeFile(`${originalDir}${originalName}`, originalContent, (err) => {
+  fs.writeFile(`${originalDir}/${originalName}`, originalContent, (err) => {
     if (err) {
       logger.error(err);
     }
@@ -35,7 +35,7 @@ function saveFile(originalName, originalContent) {
  * @returns the command to instrument as a string
  */
 function getBabelCommand(originalName) {
-  return `npx babel ${originalDir}${originalName} --out-file ${instrumentedDir}${originalName}`;
+  return `npx babel ${originalDir}/${originalName} --out-file ${instrumentedDir}/${originalName}`;
 }
 
 function cleanUp() {
@@ -44,8 +44,8 @@ function cleanUp() {
 }
 
 module.exports = {
-  saveFile,
-  getBabelCommand,
   cleanUp,
-  instrumentedDir,
+  getBabelCommand,
+  saveFile,
+  originalDir,
 };

@@ -11,7 +11,7 @@ let record = (req, res) => {
 };
 
 let getConstraintCandidatesForTraces = async (req, res) => {
-  tracerService.cleanUp();
+  // tracerService.cleanUp();
   const results = await constraintService.analyseTraces(req.body.traces);
   res.json({ candidates: results });
 };

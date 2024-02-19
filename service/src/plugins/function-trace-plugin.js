@@ -1,5 +1,5 @@
 const { template } = require("@babel/core");
-const generator = require("@babel/generator");
+const generator = require("@babel/generator").default;
 
 const { getLocation, toFilePath } = require("./common");
 
@@ -62,7 +62,7 @@ function getExpressionStatement(path) {
 
     for (let i = 0; i < params.length; i++) {
       if (params[i].type !== "FunctionExpression") {
-        const generatedCode = generator.default(params[i]);
+        const generatedCode = generator(params[i]);
         paramList.push(generatedCode.code);
       }
     }

@@ -1,5 +1,5 @@
 const { template } = require("@babel/core");
-const generator = require("@babel/generator");
+const generator = require("@babel/generator").default;
 
 const { getLocation, toFilePath } = require("./common");
 
@@ -10,7 +10,10 @@ module.exports = function assignmentPlugin() {
         return;
       }
 
-      if (path.parent.type === "ForStatement") {
+      if (
+        path.parent.type === "ForStatement" ||
+        path.parent.type === "ForOfStatement"
+      ) {
         return;
       }
 
@@ -19,7 +22,7 @@ module.exports = function assignmentPlugin() {
         let name = declarations[i].id.name;
         let value = declarations[i].init;
 
-        const valueCode = generator.default(value);
+        const valueCode = generator(value);
 
         const code = `
         sendLog('VARIABLE_DECLARATION', { name: "${name}", expression: ${JSON.stringify(
@@ -44,7 +47,7 @@ module.exports = function assignmentPlugin() {
 
       let name = path.node.left.name;
       let value = path.node.right;
-      valueCode = generator.default(value);
+      valueCode = generator(value);
 
       const code = `sendLog('VARIABLE_ASSIGNMENT', { name: "${name}", expression: ${JSON.stringify(
         valueCode.code

@@ -12,7 +12,7 @@ const connections = [];
 
 wss.on("connection", function connection(ws) {
   connections.push(ws);
-  ws.send("Now listening for server messages...");
+  ws.send("Successfully subscribed to service notifications");
 });
 
 let clean = (req, res) => {
@@ -26,7 +26,7 @@ let clean = (req, res) => {
 
 let log = (req, res) => {
   for (const connection of connections) {
-    connection.send(req.body);
+    connection.send(JSON.stringify(req.body));
   }
 };
 

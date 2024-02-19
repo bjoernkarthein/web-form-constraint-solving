@@ -1,6 +1,6 @@
-const express = require("express");
-const cors = require("cors");
 const bodyParser = require("body-parser");
+const cors = require("cors");
+const express = require("express");
 const path = require("path");
 
 const { logger } = require("./log");
@@ -20,8 +20,8 @@ app.use(
 
 app.use("/static", express.static(path.join(__dirname, "../static")));
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false, limit: "50mb" }));
+app.use(bodyParser.json({ limit: "50mb" }));
 
 // routers
 app.use("/admin", administrationController);
