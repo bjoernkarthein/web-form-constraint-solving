@@ -1,6 +1,7 @@
 import os
 import sys
 import threading
+import time
 
 from selenium.webdriver.chrome.service import Service
 from seleniumwire import webdriver
@@ -76,8 +77,8 @@ class TestAutomationDriver:
         if not html_only:
             interceptor.instrument_files()
 
-        # message_thread = threading.Thread(target=sub_to_service_messages, daemon=True)
-        # message_thread.start()
+        message_thread = threading.Thread(target=sub_to_service_messages, daemon=True)
+        message_thread.start()
 
         load_page(self.__driver, self.__url)
         interceptor.scan_for_form_submission()
@@ -135,9 +136,16 @@ class TestAutomationDriver:
             ConfigKey.ANALYSIS_ROUNDS.value
         ]
         analysis_rounds = clamp_to_range(analysis_rounds, 1, None)
+        stop_on_first_success = self.__config[ConfigKey.ANALYSIS.value][
+            ConfigKey.STOP_ON_SUCCESS.value
+        ]
 
         self.__constraint_candidate_finder = ConstraintCandidateFinder(
-            self.__driver, self.__html_analyser.submit_element, interceptor, self.__exit
+            self.__driver,
+            self.__html_analyser.submit_element,
+            interceptor,
+            stop_on_first_success,
+            self.__exit,
         )
         self.__generate_valid_html_magic_values(html_specifications)
 

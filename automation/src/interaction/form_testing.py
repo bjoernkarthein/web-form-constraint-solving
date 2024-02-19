@@ -34,7 +34,7 @@ class SpecificationParser:
     def __init__(self, specification_file_path: str) -> None:
         self.__specification_file_path = specification_file_path
 
-    def parse(self) -> (Dict | None, str):
+    def parse(self) -> Tuple[Dict | None, str]:
         file_name = (
             "specification/specification.json"
             if self.__specification_file_path is None

@@ -100,19 +100,19 @@ class NetworkInterceptor:
         try:
             body_string = decode_bytes(response.body)
             html_ast = html.fromstring(body_string)
-            html_body = html_ast.find(".//body")
+            html_head = html_ast.find(".//head")
         except Exception:
             # TODO
             return response.body
 
-        if html_body == None:
+        if html_head == None:
             return
 
         record_script_tag = etree.fromstring(
             f'<script src="{service_base_url}/static/record.js"></script>'
         )
 
-        html_body.append(record_script_tag)
+        html_head.append(record_script_tag)
         return html.tostring(html_ast, pretty_print=True)
 
     def __form_submission_interceptor(self, request: Request) -> None:

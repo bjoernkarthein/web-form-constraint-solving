@@ -262,7 +262,7 @@ class HTMLAnalyser:
     def __init__(self, html_dom_snapshot: str) -> None:
         self.__html_tree_root = html.fromstring(html_dom_snapshot)
 
-    def select_form(self) -> (etree.Element, str):
+    def select_form(self) -> Tuple[etree.Element, str]:
         all_forms = self.__html_tree_root.xpath("//form")
         if len(all_forms) == 0:
             print(

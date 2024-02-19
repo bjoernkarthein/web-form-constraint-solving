@@ -5,7 +5,7 @@ from enum import Enum
 from lxml.html import Element
 from selenium.webdriver import Chrome
 from seleniumwire.request import Request
-from typing import List, Dict
+from typing import List, Dict, Tuple
 
 from src.analysis.html_analysis import (
     HTMLConstraints,
@@ -57,6 +57,7 @@ class ConstraintCandidateFinder:
         web_driver: Chrome,
         submit_element: Element,
         interceptor: NetworkInterceptor,
+        stop_on_first_success: bool,
         exit_method,
     ) -> None:
         self.__driver = web_driver
@@ -66,6 +67,7 @@ class ConstraintCandidateFinder:
         self.__magic_value_map: Dict[
             HTMLInputSpecification | HTMLRadioGroupSpecification, List[str]
         ] = {}
+        self.__stop_on_first_success = stop_on_first_success
         self.__submit_element = submit_element
 
     def set_magic_value_sequence(
@@ -125,6 +127,8 @@ class ConstraintCandidateFinder:
             ).content
         )
 
+        # return ConstraintCandidateResult({"candidates": []})
+
         constraint_candidate_response = get_constraint_candidates(all_traces)
         response_str = decode_bytes(constraint_candidate_response.content)
 
@@ -170,6 +174,9 @@ class ConstraintCandidateFinder:
         record_trace(Action.ATTEMPT_SUBMIT)
         click_web_element_by_reference(self.__driver, self.__submit_element)
 
+        if not self.__stop_on_first_success:
+            return None
+
         # Check if the submission was successful and exit if it was
         all_requests: List[Request] = self.__driver.requests
         for request in all_requests:
@@ -177,8 +184,6 @@ class ConstraintCandidateFinder:
                 request.response is not None
                 and request.response.headers[submission_interception_header] is not None
             ):
-                print(request)
-                print(request.response)
                 self.__exit_method()
 
 
@@ -193,7 +198,7 @@ class LogicalOperator(Enum):
 class SpecificationBuilder:
     def create_specification_for_html_radio_group(
         self, html_radio_group_specification: HTMLRadioGroupSpecification
-    ) -> (str, str | None):
+    ) -> Tuple[str, str | None]:
         grammar = load_file_content(
             f"{pre_built_specifications_path}/radio-group/radio-group.bnf"
         )
@@ -209,7 +214,7 @@ class SpecificationBuilder:
         self,
         html_input_specification: HTMLInputSpecification,
         use_datalist_options=False,
-    ) -> (str, str | None):
+    ) -> Tuple[str, str | None]:
         match html_input_specification.constraints.type:
             case t if t in one_line_text_input_types + [None]:
                 return self.__add_constraints_for_one_line_text(
@@ -262,7 +267,7 @@ class SpecificationBuilder:
 
     def write_specification_to_file(
         self, name: str, grammar: str, formula: str = None
-    ) -> (str, str):
+    ) -> Tuple[str, str]:
         # TODO: create directory and handle permission denied error
         # Path('/specification').mkdir(exist_ok=True)
         grammar_file_name = f"{name}.bnf"
@@ -277,14 +282,14 @@ class SpecificationBuilder:
 
     def add_constraints_to_current_specification(
         self, new_constraints: ConstraintCandidateResult
-    ) -> (str, str):
+    ) -> Tuple[str, str]:
         for candidate in new_constraints.candidates:
             # TODO: Add. Should I have a mapping to easily get the current grammars somehow? Getting them from the file seems icky
             pass
 
         return "", ""
 
-    def __add_constraints_for_binary(self, required: str) -> (str, str | None):
+    def __add_constraints_for_binary(self, required: str) -> Tuple[str, str | None]:
         grammar = load_file_content(
             f"{pre_built_specifications_path}/binary/binary.bnf"
             if required is None
@@ -295,7 +300,7 @@ class SpecificationBuilder:
 
     def __add_constraints_for_date(
         self, html_constraints: HTMLConstraints, use_datalist_options=False
-    ) -> (str, str | None):
+    ) -> Tuple[str, str | None]:
         grammar = load_file_content(f"{pre_built_specifications_path}/date/date.bnf")
         formula = load_file_content(f"{pre_built_specifications_path}/date/date.isla")
 
@@ -333,7 +338,7 @@ class SpecificationBuilder:
 
     def __add_constraints_for_datetime(
         self, html_constraints: HTMLConstraints, use_datalist_options=False
-    ) -> (str, str | None):
+    ) -> Tuple[str, str | None]:
         grammar = load_file_content(
             f"{pre_built_specifications_path}/datetime/datetime.bnf"
         )
@@ -370,7 +375,7 @@ class SpecificationBuilder:
 
     def __add_constraints_for_email(
         self, html_constraints: HTMLConstraints, use_datalist_options=False
-    ) -> (str, str | None):
+    ) -> Tuple[str, str | None]:
         grammar = load_file_content(f"{pre_built_specifications_path}/email/email.bnf")
         formula = load_file_content(f"{pre_built_specifications_path}/email/email.isla")
 
@@ -405,7 +410,7 @@ class SpecificationBuilder:
 
     def __add_constraints_for_month(
         self, html_constraints: HTMLConstraints, use_datalist_options=False
-    ) -> (str, str | None):
+    ) -> Tuple[str, str | None]:
         grammar = load_file_content(f"{pre_built_specifications_path}/month/month.bnf")
         formula = load_file_content(f"{pre_built_specifications_path}/month/month.isla")
 
@@ -444,7 +449,7 @@ class SpecificationBuilder:
 
     def __add_constraints_for_number(
         self, html_constraints: HTMLConstraints, use_datalist_options=False
-    ) -> (str, str | None):
+    ) -> Tuple[str, str | None]:
         grammar = load_file_content(f"{pre_built_specifications_path}/number/whole.bnf")
         formula = None
 
@@ -483,7 +488,7 @@ class SpecificationBuilder:
 
     def __add_constraints_for_multi_line_text(
         self, html_constraints: HTMLConstraints, use_datalist_options: bool
-    ) -> (str, str | None):
+    ) -> Tuple[str, str | None]:
         grammar = load_file_content(
             f"{pre_built_specifications_path}/text/multi-line-text.bnf"
         )
@@ -510,7 +515,7 @@ class SpecificationBuilder:
 
     def __add_constraints_for_one_line_text(
         self, html_constraints: HTMLConstraints, use_datalist_options: bool
-    ) -> (str, str | None):
+    ) -> Tuple[str, str | None]:
         grammar = load_file_content(
             f"{pre_built_specifications_path}/text/one-line-text.bnf"
         )
@@ -544,7 +549,7 @@ class SpecificationBuilder:
 
     def __add_constraints_for_time(
         self, html_constraints: HTMLConstraints, use_datalist_options=False
-    ) -> (str, str | None):
+    ) -> Tuple[str, str | None]:
         grammar = load_file_content(f"{pre_built_specifications_path}/time/time.bnf")
         formula = load_file_content(f"{pre_built_specifications_path}/time/time.isla")
 
@@ -583,7 +588,7 @@ class SpecificationBuilder:
 
     def __add_constraints_for_url(
         self, html_constraints: HTMLConstraints, use_datalist_options=False
-    ) -> (str, str | None):
+    ) -> Tuple[str, str | None]:
         # TODO: grammar not always accepted by chrome
         grammar = load_file_content(f"{pre_built_specifications_path}/url/url.bnf")
         # TODO: formula not working
@@ -619,7 +624,7 @@ class SpecificationBuilder:
 
     def __add_constraints_for_week(
         self, html_constraints: HTMLConstraints, use_datalist_options=False
-    ) -> (str, str | None):
+    ) -> Tuple[str, str | None]:
         grammar = load_file_content(f"{pre_built_specifications_path}/week/week.bnf")
         formula = load_file_content(f"{pre_built_specifications_path}/week/week.isla")
 

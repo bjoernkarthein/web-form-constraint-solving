@@ -30,16 +30,17 @@ class Action(Enum):
 
 class ConfigKey(Enum):
     ANALYSIS = "analysis"
+    ANALYSIS_ROUNDS = "analysis-rounds"
+    BLOCK_ALL_REQUESTS = "block-all-requests"
+    BLOCK_SUBMISSION = "block-submission"
+    GENERATION = "generation"
     HTML_ONLY = "html-only"
     MAGIC_VALUE_AMOUNT = "magic-value-amount"
-    ANALYSIS_ROUNDS = "analysis-rounds"
-    GENERATION = "generation"
     REPETITIONS = "repetitions"
+    STOP_ON_SUCCESS = "stop-on-first-successful-submission"
     TESTING = "testing"
     USE_DATALIST_OPTIONS = "use-datalist-options"
     VALID = "valid"
-    BLOCK_SUBMISSION = "block-submission"
-    BLOCK_ALL_REQUESTS = "block-all-requests"
 
 
 class InputType(Enum):
