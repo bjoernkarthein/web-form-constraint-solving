@@ -36,7 +36,7 @@ class InputGenerator:
     def generate_inputs(
         self,
         grammar: str,
-        formula: str,
+        formula: str | None = None,
         validity: ValidityEnum = ValidityEnum.VALID,
         amount: int = 1,
     ) -> List[GeneratedValue]:

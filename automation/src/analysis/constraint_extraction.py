@@ -30,17 +30,87 @@ build a specification for these inputs.
 """
 
 
+class ConstraintCandidateType(str, Enum):
+    VARIABLE_COMPARISON = "VarComp"
+    LITERAL_COMPARISON = "LiteralComp"
+    VARIABLE_LENGTH_COMPARISON = "VarLengthComp"
+    LITERAL_LENGTH_COMPARISON = "LiteralLengthComp"
+    REGEX_TEST = "RegExTest"
+    STRING_MATCH = "StringMatch"
+
+
+class ConstraintOtherValueType(str, Enum):
+    UNKOWN = "unokwn variable"
+    REFERENCE = "reference"
+
+
 class ConstraintCandidate:
-    def __init__(self, json: Dict) -> None:
-        self.reference: HTMLElementReference = HTMLElementReference("test", "test")
-        self.bla: List = []
+    def __init__(self, constraint_type: ConstraintCandidateType) -> None:
+        self.type = constraint_type
+
+    @classmethod
+    def from_dict(cls, json: Dict):
+        constraint_type = json.get("type")
+
+        match constraint_type:
+            case ConstraintCandidateType.LITERAL_COMPARISON.value:
+                return LiteralCompCandidate(json, ConstraintCandidateType.LITERAL_COMPARISON)
+            case ConstraintCandidateType.LITERAL_LENGTH_COMPARISON.value:
+                return LiteralCompCandidate(json, ConstraintCandidateType.LITERAL_LENGTH_COMPARISON)
+            case ConstraintCandidateType.VARIABLE_COMPARISON.value:
+                return VarCompCandidate(json, ConstraintCandidateType.VARIABLE_COMPARISON)
+            case ConstraintCandidateType.VARIABLE_LENGTH_COMPARISON.value:
+                return VarCompCandidate(json, ConstraintCandidateType.VARIABLE_LENGTH_COMPARISON)
+            case ConstraintCandidateType.REGEX_TEST.value:
+                return PatternMatchCandidate(json, ConstraintCandidateType.REGEX_TEST)
+            case ConstraintCandidateType.STRING_MATCH.value:
+                return PatternMatchCandidate(json, ConstraintCandidateType.STRING_MATCH)
+            case _: raise ValueError(f"type {constraint_type} not recognized")
+
+    def convert_operator(self, operator: str) -> str:
+        if operator == "==" or operator == "===":
+            return ISLa.EQ.value
+        elif operator == "!=" or operator == "!==":
+            return f"{ISLa.NOT.value} (VALUE {ISLa.EQ.value} OTHER)"
+        else:
+            return operator
+
+
+class LiteralCompCandidate(ConstraintCandidate):
+    def __init__(self, json: Dict, candidate_type: ConstraintCandidateType) -> None:
+         super().__init__(candidate_type)
+         self.operator = self.convert_operator(json.get("operator"))
+         self.other_value = json.get("otherValue")
+
+
+class VarCompCandidate(ConstraintCandidate):
+    def __init__(self, json: Dict, candidate_type: ConstraintCandidateType) -> None:
+         super().__init__(candidate_type)
+         self.operator = self.convert_operator(json.get("operator"))
+         self.other_value_type = json.get("otherValue").get("type")
+         self.other_value = json.get("otherValue").get("value")
+
+
+class PatternMatchCandidate(ConstraintCandidate):
+    def __init__(self, json: Dict, candidate_type: ConstraintCandidateType) -> None:
+         super().__init__(candidate_type)
+         self.is_regex = False
+
+         pattern = json.get("pattern")
+         if pattern[0] == "/":
+            index = pattern.rfind("/")
+            if index > 0:
+                pattern = pattern[1:index]
+                self.is_regex = True
+
+         self.pattern = pattern
 
 
 class ConstraintCandidateResult:
     def __init__(self, request_response: Dict) -> None:
-        self.candidates: List = []
+        self.candidates: List[ConstraintCandidate] = []
         for elem in request_response["candidates"]:
-            self.candidates.append(elem)
+            self.candidates.append(ConstraintCandidate.from_dict(elem))
 
     def __str__(self) -> str:
         return f"candidates: {self.candidates}"
@@ -187,15 +257,23 @@ class ConstraintCandidateFinder:
                 self.__exit_method()
 
 
-class LogicalOperator(Enum):
+class ISLa(Enum):
     AND = "and"
     OR = "or"
     NOT = "not"
     XOR = "xor"
     IMPLIES = "implies"
+    EQ = "="
+    LT = "<"
+    GT = ">"
+    LTE = "<="
+    GTE = ">="
 
 
 class SpecificationBuilder:
+    def __init__(self) -> None:
+        self.refrence_to_spec_map: Dict[str, Tuple[str, str | None]] = {}
+
     def create_specification_for_html_radio_group(
         self, html_radio_group_specification: HTMLRadioGroupSpecification
     ) -> Tuple[str, str | None]:
@@ -208,6 +286,7 @@ class SpecificationBuilder:
             list(map(lambda o: f'"{o[1]}"', html_radio_group_specification.options)),
         )
 
+        self.refrence_to_spec_map[str(html_radio_group_specification.reference)] = (grammar, None)
         return grammar, None
 
     def create_specification_for_html_input(
@@ -217,53 +296,56 @@ class SpecificationBuilder:
     ) -> Tuple[str, str | None]:
         match html_input_specification.constraints.type:
             case t if t in one_line_text_input_types + [None]:
-                return self.__add_constraints_for_one_line_text(
+                grammar, formula = self.__add_constraints_for_one_line_text(
                     html_input_specification.constraints, use_datalist_options
                 )
             case t if t in binary_input_types:
-                return self.__add_constraints_for_binary(
+                grammar, formula = self.__add_constraints_for_binary(
                     html_input_specification.constraints.required
                 )
             case InputType.DATE.value:
-                return self.__add_constraints_for_date(
+                grammar, formula = self.__add_constraints_for_date(
                     html_input_specification.constraints, use_datalist_options
                 )
             case InputType.DATETIME_LOCAL.value:
-                return self.__add_constraints_for_datetime(
+                grammar, formula = self.__add_constraints_for_datetime(
                     html_input_specification.constraints, use_datalist_options
                 )
             case InputType.EMAIL.value:
-                return self.__add_constraints_for_email(
+                grammar, formula = self.__add_constraints_for_email(
                     html_input_specification.constraints, use_datalist_options
                 )
             case InputType.MONTH.value:
-                return self.__add_constraints_for_month(
+                grammar, formula = self.__add_constraints_for_month(
                     html_input_specification.constraints, use_datalist_options
                 )
             case InputType.NUMBER.value:
-                return self.__add_constraints_for_number(
+                grammar, formula = self.__add_constraints_for_number(
                     html_input_specification.constraints, use_datalist_options
                 )
             case InputType.TEXTAREA.value:
-                return self.__add_constraints_for_multi_line_text(
+                grammar, formula = self.__add_constraints_for_multi_line_text(
                     html_input_specification.constraints, use_datalist_options
                 )
             case InputType.TIME.value:
-                return self.__add_constraints_for_time(
+                grammar, formula = self.__add_constraints_for_time(
                     html_input_specification.constraints, use_datalist_options
                 )
             case InputType.URL.value:
-                return self.__add_constraints_for_url(
+                grammar, formula = self.__add_constraints_for_url(
                     html_input_specification.constraints, use_datalist_options
                 )
             case InputType.WEEK.value:
-                return self.__add_constraints_for_week(
+                grammar, formula = self.__add_constraints_for_week(
                     html_input_specification.constraints, use_datalist_options
                 )
             case _:
                 raise ValueError(
                     "The provided type does not match any known html input type"
                 )
+
+        self.refrence_to_spec_map[str(html_input_specification.reference)] = (grammar, formula)
+        return grammar, formula
 
     def write_specification_to_file(
         self, name: str, grammar: str, formula: str = None
@@ -281,13 +363,77 @@ class SpecificationBuilder:
         return grammar_file_name, formula_file_name
 
     def add_constraints_to_current_specification(
-        self, new_constraints: ConstraintCandidateResult
+        self, reference: HTMLElementReference, input_type: str, new_constraints: ConstraintCandidateResult
     ) -> Tuple[str, str]:
-        for candidate in new_constraints.candidates:
-            # TODO: Add. Should I have a mapping to easily get the current grammars somehow? Getting them from the file seems icky
-            pass
+        existing_spec = self.refrence_to_spec_map.get(str(reference))
+        if existing_spec is None:
+            grammar = ""
+            formula = None
+        else:
+            grammar, formula = existing_spec
 
-        return "", ""
+        for candidate in new_constraints.candidates:
+            constraint_type = candidate.type
+            match constraint_type:
+                case ConstraintCandidateType.LITERAL_COMPARISON.value:
+                    grammar, formula = self.__handle_literal_comparison_candidate(input_type, grammar, formula, candidate)
+                case ConstraintCandidateType.LITERAL_LENGTH_COMPARISON.value:
+                    grammar, formula = self.__handle_literal_length_comparison_candidate(input_type, grammar, formula, candidate)
+                case ConstraintCandidateType.VARIABLE_COMPARISON.value:
+                    grammar, formula = self.__handle_var_comparison_candidate(input_type, grammar, formula, candidate)
+                case ConstraintCandidateType.VARIABLE_LENGTH_COMPARISON.value:
+                    grammar, formula = self.__handle_var_length_comparison_candidate(input_type, grammar, formula, candidate)
+                case ConstraintCandidateType.REGEX_TEST.value | ConstraintCandidateType.STRING_MATCH.value:
+                    grammar, formula = self.__handle_pattern_candidate(input_type, grammar, formula, candidate)
+                case _:
+                    raise TypeError(f"type {constraint_type} not recognized")
+
+        self.refrence_to_spec_map[reference] = grammar, formula
+        return grammar, formula
+
+    def __handle_literal_comparison_candidate(self, input_type: str, grammar: str, formula: str, candidate: LiteralCompCandidate) -> Tuple[str, str | None]:
+        formula = self.__add_to_formula(f'<{input_type}> {candidate.operator} "{candidate.other_value}"', formula, ISLa.OR)
+        return grammar, formula
+
+    def __handle_literal_length_comparison_candidate(self, input_type: str, grammar: str, formula: str, candidate: LiteralCompCandidate) -> Tuple[str, str | None]:
+        formula = self.__add_to_formula(f'str.len(<{input_type}>) {candidate.operator} "{candidate.other_value}"', formula, ISLa.OR)
+        return grammar, formula
+
+    def __handle_var_comparison_candidate(self, input_type: str, grammar: str, formula: str, candidate: VarCompCandidate) -> Tuple[str, str | None]:
+        if candidate.other_value_type == ConstraintOtherValueType.UNKOWN.value:
+            pass
+        elif candidate.other_value_type == ConstraintOtherValueType.REFERENCE.value:
+            other_spec = self.refrence_to_spec_map.get(candidate.other_value)
+            if other_spec is None:
+                # TODO
+                pass
+            else:
+                other_grammar, other_formula = other_spec
+                other_grammar_dict = self.__grammar_string_to_dict(other_grammar)
+                grammar_dict = self.__grammar_string_to_dict(grammar)
+                new_grammar_dict, new_formula = self.__combine_grammars_and_formulas(grammar_dict, other_grammar_dict, formula, other_formula, candidate.operator)
+                new_grammar = self.__grammar_dict_to_string(new_grammar_dict)
+
+        return grammar, formula
+
+    def __handle_var_length_comparison_candidate(self, input_type: str, grammar: str, formula: str, candidate: VarCompCandidate) -> Tuple[str, str | None]:
+        # TODO: This is hard, what if the length of the current field is compared to a numerical value in another field, what if it is
+        # compared to the length of another field? Would probaby need other codeql queries to do something reasonable here.
+        return grammar, formula
+
+    def __handle_pattern_candidate(self, input_type: str, grammar: str, formula: str, candidate: PatternMatchCandidate) -> Tuple[str, str | None]:
+        if not candidate.is_regex:
+            formula = self.__add_to_formula(f'str.contains(<{input_type}>, "{candidate.pattern}")', formula, ISLa.OR)
+        else:
+            pattern_converter = PatternConverter(candidate.pattern)
+            pattern_grammar = pattern_converter.convert_pattern_to_grammar()
+            start_symbol = "<start> ::= "
+            if pattern_grammar.startswith(start_symbol):
+                pattern_grammar = pattern_grammar[len(start_symbol):]
+
+            grammar = self.__replace_by_any_string(grammar, input_type, pattern_grammar)
+
+        return grammar, formula
 
     def __add_constraints_for_binary(self, required: str) -> Tuple[str, str | None]:
         grammar = load_file_content(
@@ -310,7 +456,7 @@ class SpecificationBuilder:
             )
         if html_constraints.required is not None:
             formula = self.__add_to_formula(
-                "str.len(<start>) > 0", formula, LogicalOperator.AND
+                "str.len(<start>) > 0", formula, ISLa.AND
             )
         if html_constraints.min is not None:
             [year_str, month_str, day_str] = html_constraints.min.split("-")
@@ -320,7 +466,7 @@ class SpecificationBuilder:
             formula = self.__add_to_formula(
                 f"str.to.int(<year>) >= {year} and str.to.int(<year>) + str.to.int(<month>) >= {year + month} and str.to.int(<year>) + str.to.int(<month>) + str.to.int(<day>) >= {year + month + day}",
                 formula,
-                LogicalOperator.AND,
+                ISLa.AND,
             )
         if html_constraints.max is not None:
             [year_str, month_str, day_str] = html_constraints.max.split("-")
@@ -330,7 +476,7 @@ class SpecificationBuilder:
             formula = self.__add_to_formula(
                 f"str.to.int(<year>) <= {year} and str.to.int(<year>) + str.to.int(<month>) <= {year + month} and str.to.int(<year>) + str.to.int(<month>) + str.to.int(<day>) <= {year + month + day}",
                 formula,
-                LogicalOperator.AND,
+                ISLa.AND,
             )
         # TODO: step
 
@@ -352,7 +498,7 @@ class SpecificationBuilder:
             )
         if html_constraints.required is not None:
             formula = self.__add_to_formula(
-                "str.len(<start>) > 0", formula, LogicalOperator.AND
+                "str.len(<start>) > 0", formula, ISLa.AND
             )
         if html_constraints.min is not None:
             split_char = "T" if "T" in html_constraints.min else " "
@@ -369,7 +515,7 @@ class SpecificationBuilder:
         # TODO: step
         # if html_constraints.step is not None:
         #     formula = self.__add_to_formula(f'(str.to.int(<year>) + str.to.int(<month>)) mod {html_constraints.step} = 0',
-        #                                     formula, LogicalOperator.AND)
+        #                                     formula, ISLa.AND)
 
         return grammar, formula
 
@@ -385,19 +531,19 @@ class SpecificationBuilder:
             )
         if html_constraints.required is not None:
             formula = self.__add_to_formula(
-                f"str.len(<start>) >= 3", formula, LogicalOperator.AND
+                f"str.len(<start>) >= 3", formula, ISLa.AND
             )
         if html_constraints.minlength is not None:
             formula = self.__add_to_formula(
                 f"str.len(<email>) >= {html_constraints.minlength}",
                 formula,
-                LogicalOperator.AND,
+                ISLa.AND,
             )
         if html_constraints.maxlength is not None:
             formula = self.__add_to_formula(
                 f"str.len(<email>) <= {html_constraints.maxlength}",
                 formula,
-                LogicalOperator.AND,
+                ISLa.AND,
             )
         if html_constraints.multiple is not None:
             # TODO
@@ -420,7 +566,7 @@ class SpecificationBuilder:
             )
         if html_constraints.required is not None:
             formula = self.__add_to_formula(
-                "str.len(<start>) > 0", formula, LogicalOperator.AND
+                "str.len(<start>) > 0", formula, ISLa.AND
             )
         if html_constraints.min is not None:
             [year_str, month_str] = html_constraints.min.split("-")
@@ -429,7 +575,7 @@ class SpecificationBuilder:
             formula = self.__add_to_formula(
                 f"str.to.int(<year>) >= {year} and str.to.int(<year>) + str.to.int(<month>) >= {year + month}",
                 formula,
-                LogicalOperator.AND,
+                ISLa.AND,
             )
         if html_constraints.max is not None:
             [year_str, month_str] = html_constraints.max.split("-")
@@ -438,12 +584,12 @@ class SpecificationBuilder:
             formula = self.__add_to_formula(
                 f"str.to.int(<year>) <= {year} and str.to.int(<year>) + str.to.int(<month>) <= {year + month}",
                 formula,
-                LogicalOperator.AND,
+                ISLa.AND,
             )
         # TODO: step not working because can not set calculation in parantheses
         # if html_constraints.step is not None:
         #     formula = self.__add_to_formula(f'(str.to.int(<year>) + str.to.int(<month>)) mod {html_constraints.step} = 0',
-        #                                     formula, LogicalOperator.AND)
+        #                                     formula, ISLa.AND)
 
         return grammar, formula
 
@@ -460,28 +606,28 @@ class SpecificationBuilder:
 
         if html_constraints.required is not None:
             formula = self.__add_to_formula(
-                f"str.to.int(<start>) > 0", formula, LogicalOperator.AND
+                f"str.to.int(<start>) > 0", formula, ISLa.AND
             )
 
         if html_constraints.min is not None:
             formula = self.__add_to_formula(
                 f"str.to.int(<start>) >= {html_constraints.min}",
                 formula,
-                LogicalOperator.AND,
+                ISLa.AND,
             )
 
         if html_constraints.max is not None:
             formula = self.__add_to_formula(
                 f"str.to.int(<start>) <= {html_constraints.max}",
                 formula,
-                LogicalOperator.AND,
+                ISLa.AND,
             )
 
         if html_constraints.step is not None:
             formula = self.__add_to_formula(
                 f"str.to.int(<start>) mod {html_constraints.step} = 0",
                 formula,
-                LogicalOperator.AND,
+                ISLa.AND,
             )
 
         return grammar, formula
@@ -496,19 +642,19 @@ class SpecificationBuilder:
 
         if html_constraints.required is not None and html_constraints.minlength is None:
             formula = self.__add_to_formula(
-                "str.len(<start>) > 0", formula, LogicalOperator.AND
+                "str.len(<start>) > 0", formula, ISLa.AND
             )
         elif html_constraints.minlength is not None:
             formula = self.__add_to_formula(
                 f"str.len(<start>) >= {html_constraints.minlength}",
                 formula,
-                LogicalOperator.AND,
+                ISLa.AND,
             )
         if html_constraints.maxlength is not None:
             formula = self.__add_to_formula(
                 f"str.len(<start>) <= {html_constraints.maxlength}",
                 formula,
-                LogicalOperator.AND,
+                ISLa.AND,
             )
 
         return grammar, formula
@@ -527,19 +673,19 @@ class SpecificationBuilder:
             )
         if html_constraints.required is not None and html_constraints.minlength is None:
             formula = self.__add_to_formula(
-                "str.len(<start>) > 0", formula, LogicalOperator.AND
+                "str.len(<start>) > 0", formula, ISLa.AND
             )
         elif html_constraints.minlength is not None:
             formula = self.__add_to_formula(
                 f"str.len(<start>) >= {html_constraints.minlength}",
                 formula,
-                LogicalOperator.AND,
+                ISLa.AND,
             )
         if html_constraints.maxlength is not None:
             formula = self.__add_to_formula(
                 f"str.len(<start>) <= {html_constraints.maxlength}",
                 formula,
-                LogicalOperator.AND,
+                ISLa.AND,
             )
         if html_constraints.pattern is not None:
             # TODO
@@ -559,7 +705,7 @@ class SpecificationBuilder:
             )
         if html_constraints.required is not None:
             formula = self.__add_to_formula(
-                "str.len(<start>) > 0", formula, LogicalOperator.AND
+                "str.len(<start>) > 0", formula, ISLa.AND
             )
         if html_constraints.min is not None:
             [hour_str, minute_str] = html_constraints.min.split(":")
@@ -568,7 +714,7 @@ class SpecificationBuilder:
             formula = self.__add_to_formula(
                 f"str.to.int(<hour>) >= {hours} and str.to.int(<hour>) + str.to.int(<minute>) >= {hours + minutes}",
                 formula,
-                LogicalOperator.AND,
+                ISLa.AND,
             )
         if html_constraints.max is not None:
             [hour_str, minute_str] = html_constraints.min.split(":")
@@ -577,12 +723,12 @@ class SpecificationBuilder:
             formula = self.__add_to_formula(
                 f"str.to.int(<hour>) <= {hours} and str.to.int(<hour>) + str.to.int(<minute>) <= {hours + minutes}",
                 formula,
-                LogicalOperator.AND,
+                ISLa.AND,
             )
         # TODO: step
         # if html_constraints.step is not None:
         #     formula = self.__add_to_formula(f'(str.to.int(<year>) + str.to.int(<month>)) mod {html_constraints.step} = 0',
-        #                                     formula, LogicalOperator.AND)
+        #                                     formula, ISLa.AND)
 
         return grammar, formula
 
@@ -602,19 +748,19 @@ class SpecificationBuilder:
             )
         if html_constraints.required is not None and html_constraints.minlength is None:
             formula = self.__add_to_formula(
-                "str.len(<start>) >= 8", formula, LogicalOperator.AND
+                "str.len(<start>) >= 8", formula, ISLa.AND
             )
         else:
             formula = self.__add_to_formula(
                 f"str.len(<start>) >= {html_constraints.minlength}",
                 formula,
-                LogicalOperator.AND,
+                ISLa.AND,
             )
         if html_constraints.maxlength is not None:
             formula = self.__add_to_formula(
                 f"str.len(<start>) <= {html_constraints.maxlength}",
                 formula,
-                LogicalOperator.AND,
+                ISLa.AND,
             )
         if html_constraints.pattern is not None:
             # TODO
@@ -634,7 +780,7 @@ class SpecificationBuilder:
             )
         if html_constraints.required is not None:
             formula = self.__add_to_formula(
-                "str.len(<start>) > 0", formula, LogicalOperator.AND
+                "str.len(<start>) > 0", formula, ISLa.AND
             )
         if html_constraints.min is not None:
             [year_str, week_str] = html_constraints.min.split("-W")
@@ -643,7 +789,7 @@ class SpecificationBuilder:
             formula = self.__add_to_formula(
                 f"str.to.int(<year>) >= {year} and str.to.int(<year>) + str.to.int(<week>) >= {year + week}",
                 formula,
-                LogicalOperator.AND,
+                ISLa.AND,
             )
         if html_constraints.max is not None:
             [year_str, week_str] = html_constraints.max.split("-W")
@@ -652,17 +798,17 @@ class SpecificationBuilder:
             formula = self.__add_to_formula(
                 f"str.to.int(<year>) <= {year} and str.to.int(<year>) + str.to.int(<week>) <= {year + week}",
                 formula,
-                LogicalOperator.AND,
+                ISLa.AND,
             )
         # TODO: step not working because can not set modulo calculation in parantheses
         # if html_constraints.step is not None:
         #     formula = self.__add_to_formula(f'(str.to.int(<year>) + str.to.int(<month>)) mod {html_constraints.step} = 0',
-        #                                     formula, LogicalOperator.AND)
+        #                                     formula, ISLa.AND)
 
         return grammar, formula
 
     def __add_to_formula(
-        self, additional_part: str, formula: str, operator: LogicalOperator
+        self, additional_part: str, formula: str, operator: ISLa
     ) -> str:
         if formula is None or len(formula) == 0:
             return additional_part
@@ -677,6 +823,69 @@ class SpecificationBuilder:
         head, sep, _ = grammar.partition(f"<{option_identifier}> ::= ")
         options = " | ".join(list_options)
         return f"{head}{sep}{options}"
+
+    def __replace_by_any_string(self, grammar: str, option_identifier: str, replacement: str) -> str:
+        head, sep, _ = grammar.partition(f"<{option_identifier}> ::= ")
+        return f"{head}{sep}{replacement}"
+
+    def __grammar_string_to_dict(self, grammar: str) -> Dict[str, List[str]]:
+        result: Dict[str, List[str]] = {}
+        lines = grammar.split("\n")
+        for line in lines:
+            if line.startswith("<start> ::="):
+                continue
+            head, sep, tail = line.partition(" ::= ")
+            result[head] = tail.split(" | ")
+
+        return result
+
+    def __grammar_dict_to_string(self, grammar_dict: Dict[str, List[str]]) -> str:
+        result: List[str] = []
+        for key, values in grammar_dict.items():
+            line = f'{key} ::= {(" | ").join(values)}'
+            result.append(line)
+
+        return ("\n").join(result)
+
+    def __combine_grammars_and_formulas(self, grammar: Dict[str, List[str]], other_grammar: Dict[str, List[str]], formula: str | None, other_formula: str | None, compOperator: str) -> Tuple[Dict[str, List[str]], str]:
+        start_number = 1
+        grammar, formula, next_nt_number = self.__convert_non_terminals(grammar, formula, start_number)
+        other_grammar, other_formula, _ = self.__convert_non_terminals(other_grammar, other_formula, next_nt_number)
+
+        nt1 = f'<nt{start_number}>'
+        nt2 = f'<nt{next_nt_number}>'
+
+        start = {'<start>': [f'{nt1} {nt2}']}
+        if "VALUE" in compOperator and "OTHER" in compOperator:
+            compOperator = compOperator.replace("VALUE", nt1)
+            compFormula = compOperator.replace("OTHER", nt2)
+        else:
+            compFormula = f'{nt1} {compOperator} {nt2}'
+
+        return (start | grammar | other_grammar), (f" {ISLa.AND.value} ").join(filter(None, (f'({formula})', f'({other_formula})', f'({compFormula})')))
+
+    def __convert_non_terminals(self, grammar_dict: Dict[str, List[str]], formula: str | None, start_number) -> Tuple[Dict[str, List[str]], str, int]:
+        new_grammar = {}
+        current_nt_number = start_number
+
+        if formula is not None:
+            formula = formula.replace("<start>", f"<nt{start_number}>")
+
+        for key in grammar_dict.keys():
+            new_key = f'<nt{current_nt_number}>'
+
+            for values in grammar_dict.values():
+                for idx, v in enumerate(values):
+                    new_v = v.replace(key, new_key)
+                    values[idx] = new_v
+
+            new_grammar[new_key] = grammar_dict[key]
+            if formula is not None:
+                formula = formula.replace(key, new_key)
+
+            current_nt_number += 1
+        
+        return new_grammar, formula, current_nt_number
 
     # def __replace_by_list_options(self, grammar: str, option_identifier: str, list_options: List[str]) -> str:
     #     lines = grammar.split('\n')

@@ -82,8 +82,8 @@ class Sequence(RegEx):
 
 class Quantifier:
     def __init__(self, min_repeat: int, max_repeat: int = None) -> None:
-        self.__min_repeat = min_repeat
-        self.__max_repeat = max_repeat
+        self.__min_repeat = int(min_repeat)
+        self.__max_repeat = int(max_repeat) if max_repeat is not None else None
 
     def __str__(self) -> str:
         if self.__min_repeat == self.__max_repeat:
@@ -316,13 +316,13 @@ class PatternParser:
             min = min + self.next()
 
         if self.peek() == "}":
-            return Quantifier(int(min), int(min))
+            return Quantifier(min, min)
 
         if self.peek() == ",":
             self.eat(",")
-            max = self.next()
+            max = None
             while self.more() and self.peek() not in ["}"]:
-                max = max + self.next()
+                max = self.next() if max is None else max + self.next()
 
             return Quantifier(min, max)
 
@@ -361,11 +361,16 @@ class GrammarBuilder:
 
             result = f"{non_terminal} ::= "
             if quantifier.min_repeat == 0:
-                result += '"" | '
-            if quantifier.max_repeat is None:
-                result += f"{expression} {non_terminal}"
+                result += '""'
             else:
-                result += expression * quantifier.max_repeat
+                result += f'{(" ").join([expression] * quantifier.min_repeat)}'
+
+            if quantifier.max_repeat is None:
+                result += " | "
+                result += f"{expression} {non_terminal}"
+            elif quantifier.max_repeat is not None and quantifier.max_repeat > quantifier.min_repeat:
+                result += " | "
+                result += (" | ").join([(" ").join([expression] * i) for i in range(quantifier.min_repeat + 1, quantifier.max_repeat + 1)])
 
             return result
 

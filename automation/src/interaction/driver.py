@@ -29,8 +29,8 @@ from src.utility.helpers import (
 )
 
 
-chrome_driver_path = "chromedriver/windows/chromedriver.exe"
-# chrome_driver_path = "chromedriver/linux/chromedriver"
+# chrome_driver_path = "chromedriver/windows/chromedriver.exe"
+chrome_driver_path = "chromedriver/linux/chromedriver"
 chrome_driver_abs_path = os.path.abspath(chrome_driver_path)
 
 
@@ -162,17 +162,19 @@ class TestAutomationDriver:
             if len(new_constraints.candidates) == 0:
                 continue
 
-            # for _ in range(analysis_rounds):
-            #     # TODO: stop when fixed point is reached
-            #     (
-            #         grammar,
-            #         formula,
-            #     ) = self.__specification_builder.add_constraints_to_current_specification(
-            #         new_constraints
-            #     )
-            #     self.__constraint_candidate_finder.find_additional_js_constraint_candidates(
-            #         grammar, formula
-            #     )
+            for _ in range(analysis_rounds):
+                # TODO: stop when fixed point is reached?
+                (
+                    grammar,
+                    formula,
+                ) = self.__specification_builder.add_constraints_to_current_specification(
+                    spec.reference,
+                    spec.constraints.type,
+                    new_constraints
+                )
+                self.__constraint_candidate_finder.find_additional_js_constraint_candidates(
+                    grammar, formula
+                )
 
     # TODO: refactor to not be this complex
     def __generate_valid_html_magic_values(
