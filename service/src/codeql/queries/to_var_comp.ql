@@ -15,9 +15,9 @@ class VariableComparisonFlowConfiguration extends TaintTracking::Configuration {
     source.asExpr().toString() = "NAME" // EXPRESSION
   }
 
-  override predicate isSink(DataFlow::Node sink) { isVarComparison(sink.asExpr()) }
+  override predicate isSink(DataFlow::Node sink) { isInVarComparison(sink.asExpr()) }
 }
 
-from VariableComparisonFlowConfiguration cfg, DataFlow::Node source, DataFlow::Node sink
-where cfg.hasFlow(source, sink)
-select sink, sink.asExpr().getParentExpr().toString()
+from VariableComparisonFlowConfiguration cfg, DataFlow::Node source, DataFlow::Node sink, Expr parent
+where cfg.hasFlow(source, sink) and hasVarComparisonParent(sink.asExpr(), parent)
+select parent, parent.toString()

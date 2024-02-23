@@ -15,9 +15,9 @@ class RegExFlowConfiguration extends TaintTracking::Configuration {
     source.asExpr().toString() = "NAME" // EXPRESSION
   }
 
-  override predicate isSink(DataFlow::Node sink) { isRegExpCheck(sink.asExpr().getParentExpr()) }
+  override predicate isSink(DataFlow::Node sink) { isInRegExpCheck(sink.asExpr()) }
 }
 
-from RegExFlowConfiguration cfg, DataFlow::Node source, DataFlow::Node sink
-where cfg.hasFlow(source, sink)
-select sink, sink.asExpr().getParentExpr().toString()
+from RegExFlowConfiguration cfg, DataFlow::Node source, DataFlow::Node sink, Expr parent, RegExpConstructor regex
+where cfg.hasFlow(source, sink) and hasRegExpCheckParent(sink.asExpr(), parent, regex)
+select parent, parent.toString()

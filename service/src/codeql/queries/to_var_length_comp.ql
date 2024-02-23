@@ -15,9 +15,9 @@ class VarLengthCompFlowConfiguration extends TaintTracking::Configuration {
     source.asExpr().toString() = "NAME" // EXPRESSION
   }
 
-  override predicate isSink(DataFlow::Node sink) { isVarLengthComparison(sink.asExpr()) }
+  override predicate isSink(DataFlow::Node sink) { isInVarLengthComparison(sink.asExpr()) }
 }
 
-from VarLengthCompFlowConfiguration cfg, DataFlow::Node source, DataFlow::Node sink
-where cfg.hasFlow(source, sink)
-select sink.asExpr().getParentExpr(), sink.asExpr().getParentExpr().toString()
+from VarLengthCompFlowConfiguration cfg, DataFlow::Node source, DataFlow::Node sink, Expr parent
+where cfg.hasFlow(source, sink) and hasVarLengthComparisonParent(sink.asExpr(), parent)
+select parent, parent.toString()

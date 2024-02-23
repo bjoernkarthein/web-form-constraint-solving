@@ -29,13 +29,20 @@ class RegExpConstructor extends InvokeExpr {
   RegExpConstructor() { this instanceof NewExpr and this.getCallee().toString() = "RegExp" }
 }
 
-predicate isRegExpCheck(MethodCallExpr methodCall) {
-  methodCall.getReceiver() instanceof RegExpConstructor
-  or
+predicate hasRegExpCheckParent(Expr expr, Expr parent, RegExpConstructor regex) {
+  parent = expr.getParent*() and
+  parent instanceof MethodCallExpr and
+  (regex = parent.(MethodCallExpr).getReceiver() or
   exists(VarUse use |
-    use = methodCall.getReceiver() and
-    use.getADef().getSource() instanceof RegExpConstructor and
-    methodCall.getCalleeName() = "test"
+    use = parent.(MethodCallExpr).getReceiver() and
+    regex = use.getADef().getSource() and
+    parent.(MethodCallExpr).getCalleeName() = "test"
+  ))
+}
+
+predicate isInRegExpCheck(Expr expr) {
+  exists (Expr parent, RegExpConstructor regex |
+    hasRegExpCheckParent(expr, parent, regex)
   )
 }
 
@@ -51,34 +58,68 @@ predicate isRegexpLiteral(Expr expr) {
   exists(VarUse use | use = expr and use.getADef().getSource() instanceof RegExpLiteral)
 }
 
-predicate isStringMatch(MethodCallExpr methodCall) {
-  (
-    isString(methodCall.getArgument(0)) or
-    isRegexpLiteral(methodCall.getArgument(0))
-  ) and
-  methodCall.getCalleeName() = "match"
+predicate hasStringMatchParent(Expr expr, Expr parent, Expr matcher) {
+  parent = expr.getParent*() and
+  parent instanceof MethodCallExpr and
+  matcher = parent.(MethodCallExpr).getArgument(0) and
+  (isString(matcher) or isRegexpLiteral(matcher)) and
+  parent.(MethodCallExpr).getCalleeName() = "match"
 }
 
-predicate isLiteralComparison(Expr expr) {
-  expr.getParent() instanceof Comparison and
-  expr.getParent().(Comparison).getRightOperand() instanceof Literal
+predicate isInStringMatch(Expr expr) {
+  exists (Expr parent, Expr matcher |
+    hasStringMatchParent(expr, parent, matcher)
+  )
 }
 
-predicate isVarComparison(Expr expr) {
-  expr.getParent() instanceof Comparison and
-  not expr.getParent().(Comparison).getRightOperand() instanceof Literal
+predicate hasLiteralComparisonParent(Expr expr, Expr parent) {
+  parent = expr.getParent*() and
+  parent instanceof Comparison and
+  parent.(Comparison).getRightOperand() instanceof Literal
 }
 
-predicate isLiteralLengthComparison(Expr expr) {
-  expr.getParent() instanceof Comparison and
-  expr.getParent().(Comparison).getRightOperand() instanceof NumberLiteral and
-  expr.getParent().(Comparison).getLeftOperand() instanceof PropAccess and
-  expr.getParent().(Comparison).getLeftOperand().(PropAccess).getPropertyName() = "length"
+predicate isInLiteralComparison(Expr expr) {
+  exists (Expr parent |
+    hasLiteralComparisonParent(expr, parent)
+  )
 }
 
-predicate isVarLengthComparison(Expr expr) {
-  expr.getParent() instanceof Comparison and
-  not expr.getParent().(Comparison).getRightOperand() instanceof NumberLiteral and
-  expr.getParent().(Comparison).getLeftOperand() instanceof PropAccess and
-  expr.getParent().(Comparison).getLeftOperand().(PropAccess).getPropertyName() = "length"
+predicate hasVarComparisonParent(Expr expr, Expr parent) {
+  parent = expr.getParent*() and
+  parent instanceof Comparison and
+  not parent.(Comparison).getRightOperand() instanceof Literal
+}
+
+predicate isInVarComparison(Expr expr) {
+  exists (Expr parent |
+    hasVarComparisonParent(expr, parent)
+  )
+}
+
+predicate hasLiteralLengthComparisonParent(Expr expr, Expr parent) {
+  parent = expr.getParent*() and
+  parent instanceof Comparison and
+  parent.(Comparison).getRightOperand() instanceof NumberLiteral and
+  parent.(Comparison).getLeftOperand() instanceof PropAccess and
+  parent.(Comparison).getLeftOperand().(PropAccess).getPropertyName() = "length"
+}
+
+predicate isInLiteralLengthComparison(Expr expr) {
+  exists (Expr parent |
+    hasLiteralLengthComparisonParent(expr, parent)
+  )
+}
+
+predicate hasVarLengthComparisonParent(Expr expr, Expr parent) {
+  parent = expr.getParent*() and
+  parent instanceof Comparison and
+  not parent.(Comparison).getRightOperand() instanceof NumberLiteral and
+  parent.(Comparison).getLeftOperand() instanceof PropAccess and
+  parent.(Comparison).getLeftOperand().(PropAccess).getPropertyName() = "length"
+}
+
+predicate isInVarLengthComparison(Expr expr) {
+  exists(Expr parent |
+    hasVarLengthComparisonParent(expr, parent)
+  )
 }

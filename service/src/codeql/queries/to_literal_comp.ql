@@ -15,9 +15,9 @@ class LiteralComparisonFlowConfiguration extends TaintTracking::Configuration {
     source.asExpr().toString() = "NAME" // EXPRESSION
   }
 
-  override predicate isSink(DataFlow::Node sink) { isLiteralComparison(sink.asExpr()) }
+  override predicate isSink(DataFlow::Node sink) { isInLiteralComparison(sink.asExpr()) }
 }
 
-from LiteralComparisonFlowConfiguration cfg, DataFlow::Node source, DataFlow::Node sink
-where cfg.hasFlow(source, sink)
-select sink.asExpr().getParentExpr(), sink.asExpr().getParentExpr().toString()
+from LiteralComparisonFlowConfiguration cfg, DataFlow::Node source, DataFlow::Node sink, Expr parent
+where cfg.hasFlow(source, sink) and hasLiteralComparisonParent(sink.asExpr(), parent)
+select parent, parent.toString()
