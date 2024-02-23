@@ -372,6 +372,6 @@ function cleanUp() {
 
 module.exports = { analyseTraces, cleanUp, hasValue };
 
-const data = fs.readFileSync("./trace.log", "utf-8");
-const traces = data.split("\n");
-analyseTraces(traces);
+// const data = fs.readFileSync("./trace.log", "utf-8");
+// const traces = data.split("\n");
+// analyseTraces(traces);

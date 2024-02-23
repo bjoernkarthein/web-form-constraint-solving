@@ -39,7 +39,7 @@ function createDatabase(source) {
 let number = 0;
 
 function runQuery(queryFile) {
-  const command = `${codeqlPath} database analyze --format=csv --output=${codeqlDirectory}/results/${queryFile}-${number}-results.csv ${databaseDirectory} ${queryDirectory}/${queryFile}.ql`;
+  const command = `${codeqlPath} database analyze --format=csv --output=${codeqlDirectory}/results/${queryFile}-${number}-results.csv ${databaseDirectory} ${queryDirectory}/${queryFile}.ql --rerun`;
   number++;
   common.runCommandSync(command);
 }
