@@ -9,11 +9,9 @@ const app = express();
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use("/", router);
 
-let name = "decl.js";
-// const testFileContent = fs.readFileSync(`test_data/${name}`, "utf-8");
-
 describe("Instrument files correctly", () => {
     test("instrument simple file", async() => {
+        const name = "decl.js";
         const testFile = fs.readFileSync(path.join(__dirname, "test_data", name), "utf-8");
         const data = {name: name, source: testFile};
         await request(app)
@@ -26,5 +24,21 @@ describe("Instrument files correctly", () => {
 
         expect(fileContent).toContain("sendLog('VARIABLE_DECLARATION'");
         expect(fileContent).toContain("sendLog('VARIABLE_ASSIGNMENT'");
+    });
+
+    test("instrument simple file", async() => {
+        const name = "for.js";
+        const testFile = fs.readFileSync(path.join(__dirname, "test_data", name), "utf-8");
+        const data = {name: name, source: testFile};
+        await request(app)
+                .post("/instrument")
+                .send(data)
+                .set('Accept', 'application/json');
+        
+        const filePath = path.join(__dirname, "..", "instrumented", name);
+        const fileContent = fs.readFileSync(filePath, "utf-8");
+
+        // expect(fileContent).toContain("sendLog('VARIABLE_DECLARATION'");
+        // expect(fileContent).toContain("sendLog('VARIABLE_ASSIGNMENT'");
     });
 });

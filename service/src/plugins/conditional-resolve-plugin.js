@@ -10,13 +10,15 @@ module.exports = function conditionalResolvePlugin() {
         return;
       }
 
+      let args = {};
+      const test = path.node.test; 
+      let operator, argument, left, right;
       if (path.node.test.type === "BinaryExpression") {
-        test = path.node.test;
         left = test.left;
         right = test.right;
         operator = test.operator;
 
-        const args = `{
+        args = `{
           type: "binary",
           left: {
             name: ${JSON.stringify(generator(left).code)},
@@ -29,15 +31,36 @@ module.exports = function conditionalResolvePlugin() {
           },
           test: ${generator(test).code},
         }`;
+      } else if (path.node.test.type === "UnaryExpression") {
+        argument = test.argument;
+        operator = test.operator;
 
-        const code = `
+        args = `{
+          type: "unary",
+          operator: ${JSON.stringify(operator)},
+          argument: {
+            name: ${JSON.stringify(generator(argument).code)},
+            value: ${generator(argument).code},
+          },
+          test: ${generator(test).code},
+        }`;
+      } else {
+        args = `{
+          type: "expression",
+          argument: {
+            name: ${JSON.stringify(generator(test).code)},
+            value: ${generator(test).code},
+          }
+        }`;
+      }
+
+      const code = `
         sendLog('CONDITIONAL_STATEMENT', ${args}, '${toFilePath(
           state.filename
         )}', ${getLocation(path, toFilePath(state.filename))}, 1);`;
 
         const ast = template.ast(code);
         path.insertBefore(ast);
-      }
     },
 
     ConditionalExpression(path, state) {
@@ -46,10 +69,10 @@ module.exports = function conditionalResolvePlugin() {
       }
 
       if (path.node.test.type === "BinaryExpression") {
-        test = path.node.test;
-        left = test.left;
-        right = test.right;
-        operator = test.operator;
+        const test = path.node.test;
+        const left = test.left;
+        const right = test.right;
+        const operator = test.operator;
 
         const args = `{
           type: "binary",

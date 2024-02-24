@@ -10,10 +10,7 @@ module.exports = function assignmentPlugin() {
         return;
       }
 
-      if (
-        path.parent.type === "ForStatement" ||
-        path.parent.type === "ForOfStatement"
-      ) {
+      if (path.parent.type === "ForStatement") {
         return;
       }
 
@@ -22,7 +19,10 @@ module.exports = function assignmentPlugin() {
         let name = declarations[i].id.name;
         let value = declarations[i].init;
 
-        const valueCode = generator(value);
+        let valueCode = { code: name };
+        if (!!value) {
+          valueCode = generator(value);
+        }
 
         const code = `
         sendLog('VARIABLE_DECLARATION', { name: "${name}", expression: ${JSON.stringify(
@@ -32,7 +32,12 @@ module.exports = function assignmentPlugin() {
         )}', ${getLocation(path, toFilePath(state.filename))}, 1);`;
 
         const ast = template.ast(code);
-        path.insertAfter(ast);
+
+        if (path.parent.type === "ForOfStatement") {
+          path.parentPath.get("body").unshiftContainer("body", ast);
+        } else {
+          path.insertAfter(ast);
+        }
       }
     },
 
@@ -56,7 +61,11 @@ module.exports = function assignmentPlugin() {
       )}', ${getLocation(path, toFilePath(state.filename))}, 1);`;
 
       const ast = template.ast(code);
-      path.insertAfter(ast);
+      if (path.parent.type === "ForOfStatement") {
+        path.parent.get("body").unshiftContainer("body", ast);
+      } else {
+        path.insertAfter(ast);
+      }
     },
   };
   return { visitor: AssignmentVisitor };
