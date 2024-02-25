@@ -27,49 +27,49 @@ predicate hasLocation(ControlFlowNode node, string file, int startLine) {
 
 class RegExpConstructor extends InvokeExpr {
   RegExpConstructor() { this instanceof NewExpr and this.getCallee().toString() = "RegExp" }
+
+  Literal getPattern() { result = this.getArgument(0) }
 }
 
-predicate hasRegExpCheckParent(Expr expr, Expr parent, RegExpConstructor regex) {
+predicate hasRegExpCheckParent(Expr expr, Expr parent, Expr regex) {
   parent = expr.getParent*() and
   parent instanceof MethodCallExpr and
-  (regex = parent.(MethodCallExpr).getReceiver() or
-  exists(VarUse use |
-    use = parent.(MethodCallExpr).getReceiver() and
-    regex = use.getADef().getSource() and
-    parent.(MethodCallExpr).getCalleeName() = "test"
-  ))
-}
-
-predicate isInRegExpCheck(Expr expr) {
-  exists (Expr parent, RegExpConstructor regex |
-    hasRegExpCheckParent(expr, parent, regex)
+  (
+    (regex instanceof RegExpConstructor or regex instanceof RegExpLiteral) and
+    (
+      regex = parent.(MethodCallExpr).getReceiver()
+      or
+      exists(VarUse use |
+        use = parent.(MethodCallExpr).getReceiver() and
+        regex = use.getADef().getSource() and
+        parent.(MethodCallExpr).getCalleeName() = "test"
+      )
+    )
   )
 }
 
-predicate isString(Expr expr) {
-  expr instanceof StringLiteral
-  or
-  exists(VarUse use | use = expr and use.getADef().getSource() instanceof StringLiteral)
-}
-
-predicate isRegexpLiteral(Expr expr) {
-  expr instanceof RegExpLiteral
-  or
-  exists(VarUse use | use = expr and use.getADef().getSource() instanceof RegExpLiteral)
+predicate isInRegExpCheck(Expr expr) {
+  exists(Expr parent, Expr regex | hasRegExpCheckParent(expr, parent, regex))
 }
 
 predicate hasStringMatchParent(Expr expr, Expr parent, Expr matcher) {
   parent = expr.getParent*() and
   parent instanceof MethodCallExpr and
-  matcher = parent.(MethodCallExpr).getArgument(0) and
-  (isString(matcher) or isRegexpLiteral(matcher)) and
-  parent.(MethodCallExpr).getCalleeName() = "match"
+  parent.(MethodCallExpr).getCalleeName() = "match" and
+  (
+    matcher = parent.(MethodCallExpr).getArgument(0) and
+    (matcher instanceof RegExpLiteral or matcher instanceof StringLiteral)
+    or
+    exists(VarUse use |
+      use = parent.(MethodCallExpr).getArgument(0) and
+      matcher = use.getADef().getSource() and
+      (matcher instanceof RegExpLiteral or matcher instanceof StringLiteral)
+    )
+  )
 }
 
 predicate isInStringMatch(Expr expr) {
-  exists (Expr parent, Expr matcher |
-    hasStringMatchParent(expr, parent, matcher)
-  )
+  exists(Expr parent, Expr matcher | hasStringMatchParent(expr, parent, matcher))
 }
 
 predicate hasLiteralComparisonParent(Expr expr, Expr parent) {
@@ -79,9 +79,7 @@ predicate hasLiteralComparisonParent(Expr expr, Expr parent) {
 }
 
 predicate isInLiteralComparison(Expr expr) {
-  exists (Expr parent |
-    hasLiteralComparisonParent(expr, parent)
-  )
+  exists(Expr parent | hasLiteralComparisonParent(expr, parent))
 }
 
 predicate hasVarComparisonParent(Expr expr, Expr parent) {
@@ -91,9 +89,7 @@ predicate hasVarComparisonParent(Expr expr, Expr parent) {
 }
 
 predicate isInVarComparison(Expr expr) {
-  exists (Expr parent |
-    hasVarComparisonParent(expr, parent)
-  )
+  exists(Expr parent | hasVarComparisonParent(expr, parent))
 }
 
 predicate hasLiteralLengthComparisonParent(Expr expr, Expr parent) {
@@ -105,9 +101,7 @@ predicate hasLiteralLengthComparisonParent(Expr expr, Expr parent) {
 }
 
 predicate isInLiteralLengthComparison(Expr expr) {
-  exists (Expr parent |
-    hasLiteralLengthComparisonParent(expr, parent)
-  )
+  exists(Expr parent | hasLiteralLengthComparisonParent(expr, parent))
 }
 
 predicate hasVarLengthComparisonParent(Expr expr, Expr parent) {
@@ -119,7 +113,5 @@ predicate hasVarLengthComparisonParent(Expr expr, Expr parent) {
 }
 
 predicate isInVarLengthComparison(Expr expr) {
-  exists(Expr parent |
-    hasVarLengthComparisonParent(expr, parent)
-  )
+  exists(Expr parent | hasVarLengthComparisonParent(expr, parent))
 }

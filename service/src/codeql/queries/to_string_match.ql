@@ -18,6 +18,8 @@ class ToStringMatchFlowConfiguration extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { isInStringMatch(sink.asExpr()) }
 }
 
-from ToStringMatchFlowConfiguration cfg, DataFlow::Node source, DataFlow::Node sink, Expr parent, Expr matcher
+from
+  ToStringMatchFlowConfiguration cfg, DataFlow::Node source, DataFlow::Node sink, Expr parent,
+  Expr matcher
 where cfg.hasFlow(source, sink) and hasStringMatchParent(sink.asExpr(), parent, matcher)
-select parent, parent.toString()
+select parent, "Whole Test: $@, Pattern: $@", parent, parent.toString(), matcher, matcher.toString()

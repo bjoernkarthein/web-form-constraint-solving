@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --config ./tests/jest.config.js && del-cli --force ../static original instrumented codeql"
+    "test": "jest --config ./tests/jest.config.js %npm_config_tests% && npm run clean",
+    "test-single": "jest --config ./tests/jest.config.js -i %npm_config_file% -t %npm_config_test% && npm run clean",
+    "clean": "del-cli --force ../static original instrumented codeql"
   },
   "keywords": [],
   "author": "",

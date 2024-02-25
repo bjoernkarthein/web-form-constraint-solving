@@ -44,9 +44,11 @@ function createDatabase(source) {
 let number = 0;
 
 function runQuery(queryFile, queryDir = queryDirectory) {
-  const command = `${codeqlPath} database analyze --format=csv --output=${codeqlDirectory}/results/${queryFile}-${number}-results.csv ${databaseDirectory} ${queryDir}/${queryFile}.ql --rerun`;
+  const outFile = `${codeqlDirectory}/results/${queryFile}-${number}-results.csv`;
+  const command = `${codeqlPath} database analyze --format=csv --output=${outFile} ${databaseDirectory} ${queryDir}/${queryFile}.ql --rerun`;
   number++;
   common.runCommandSync(command);
+  return outFile;
 }
 
 function runQueries(queryFiles, queryDir = queryDirectory) {
@@ -61,7 +63,13 @@ function prepareQueries(sourceFile, startLine, expression) {
   }
 }
 
-function addDataToQuery(queryFile, sourceFile, startLine, expression, queryDir = queryDirectory) {
+function addDataToQuery(
+  queryFile,
+  sourceFile,
+  startLine,
+  expression,
+  queryDir = queryDirectory
+) {
   const data = fs.readFileSync(`${queryDir}/${queryFile}.ql`, {
     encoding: "utf8",
   });
