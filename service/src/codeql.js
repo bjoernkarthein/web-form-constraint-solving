@@ -28,25 +28,30 @@ const queryTypes = {
 // };
 
 function createDatabase(source) {
+  if (!fs.existsSync(codeqlDirectory)) {
+    fs.mkdirSync(codeqlDirectory);
+  }
+
   if (!fs.existsSync(resultDirectory)) {
     fs.mkdirSync(resultDirectory);
   }
 
+  fs.rmSync(databaseDirectory, { recursive: true, force: true });
   const command = `${codeqlPath} database create --language=javascript --source-root=${source} ${databaseDirectory}`;
   common.runCommandSync(command);
 }
 
 let number = 0;
 
-function runQuery(queryFile) {
-  const command = `${codeqlPath} database analyze --format=csv --output=${codeqlDirectory}/results/${queryFile}-${number}-results.csv ${databaseDirectory} ${queryDirectory}/${queryFile}.ql --rerun`;
+function runQuery(queryFile, queryDir = queryDirectory) {
+  const command = `${codeqlPath} database analyze --format=csv --output=${codeqlDirectory}/results/${queryFile}-${number}-results.csv ${databaseDirectory} ${queryDir}/${queryFile}.ql --rerun`;
   number++;
   common.runCommandSync(command);
 }
 
-function runQueries(queryFiles) {
+function runQueries(queryFiles, queryDir = queryDirectory) {
   for (const query of queryFiles) {
-    runQuery(query);
+    runQuery(query, queryDir);
   }
 }
 
@@ -56,12 +61,12 @@ function prepareQueries(sourceFile, startLine, expression) {
   }
 }
 
-function addDataToQuery(queryFile, sourceFile, startLine, expression) {
-  const data = fs.readFileSync(`${queryDirectory}/${queryFile}.ql`, {
+function addDataToQuery(queryFile, sourceFile, startLine, expression, queryDir = queryDirectory) {
+  const data = fs.readFileSync(`${queryDir}/${queryFile}.ql`, {
     encoding: "utf8",
   });
 
-  fs.writeFileSync(`${queryDirectory}/${queryFile}.ql`, "");
+  fs.writeFileSync(`${queryDir}/${queryFile}.ql`, "");
   // This is needed because codeql for javascript automatically sanitizes strings
   // (https://github.com/github/codeql/blob/7361ad977a5dd5252d21f5fd23de47d75b763651/javascript/extractor/src/com/semmle/js/extractor/TextualExtractor.java#L121)
   if (expression.length > 20) {
@@ -84,7 +89,7 @@ function addDataToQuery(queryFile, sourceFile, startLine, expression) {
     }
 
     fs.appendFileSync(
-      `${queryDirectory}/${queryFile}.ql`,
+      `${queryDir}/${queryFile}.ql`,
       `${lines[i]}${i < lines.length - 1 ? "\n" : ""}`,
       {
         encoding: "utf8",
@@ -121,12 +126,12 @@ function resetQueries() {
   }
 }
 
-function resetQuery(queryFile) {
-  const data = fs.readFileSync(`${queryDirectory}/${queryFile}.ql`, {
+function resetQuery(queryFile, queryDir = queryDirectory) {
+  const data = fs.readFileSync(`${queryDir}/${queryFile}.ql`, {
     encoding: "utf8",
   });
 
-  fs.writeFileSync(`${queryDirectory}/${queryFile}.ql`, "");
+  fs.writeFileSync(`${queryDir}/${queryFile}.ql`, "");
   const lines = data.split(/\r?\n/);
 
   for (let i = 0; i < lines.length; i++) {
@@ -139,7 +144,7 @@ function resetQuery(queryFile) {
     }
 
     fs.appendFileSync(
-      `${queryDirectory}/${queryFile}.ql`,
+      `${queryDir}/${queryFile}.ql`,
       `${lines[i]}${i < lines.length - 1 ? "\n" : ""}`,
       {
         encoding: "utf8",
@@ -174,6 +179,7 @@ function cleanUp() {
 }
 
 module.exports = {
+  addDataToQuery,
   cleanUp,
   createDatabase,
   readResults,

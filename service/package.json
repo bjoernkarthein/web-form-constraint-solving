@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --config ./tests/jest.config.js && del-cli --force ../static original instrumented"
+    "test": "jest --config ./tests/jest.config.js && del-cli --force ../static original instrumented codeql"
   },
   "keywords": [],
   "author": "",
