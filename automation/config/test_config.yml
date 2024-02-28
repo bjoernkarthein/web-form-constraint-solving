@@ -1,6 +1,6 @@
 generation:
   valid: true
 testing:
-  block-submission: false
+  block-submission: true
   block-all-requests: false
   repetitions: 3

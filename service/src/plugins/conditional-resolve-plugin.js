@@ -1,7 +1,7 @@
 const { template } = require("@babel/core");
 const generator = require("@babel/generator").default;
 
-const { getLocation, toFilePath } = require("./common");
+const { getLocation, toExpressionString, toFilePath } = require("./common");
 
 module.exports = function conditionalResolvePlugin() {
   const ConditionaltVisitor = {
@@ -11,7 +11,7 @@ module.exports = function conditionalResolvePlugin() {
       }
 
       let args = {};
-      const test = path.node.test; 
+      const test = path.node.test;
       let operator, argument, left, right;
       if (path.node.test.type === "BinaryExpression") {
         left = test.left;
@@ -21,12 +21,12 @@ module.exports = function conditionalResolvePlugin() {
         args = `{
           type: "binary",
           left: {
-            name: ${JSON.stringify(generator(left).code)},
+            expression: ${toExpressionString(generator(left).code)},
             value: ${generator(left).code},
           },
           operator: ${JSON.stringify(operator)},
           right: {
-            name: ${JSON.stringify(generator(right).code)},
+            expression: ${toExpressionString(generator(right).code)},
             value: ${generator(right).code},
           },
           test: ${generator(test).code},
@@ -39,7 +39,7 @@ module.exports = function conditionalResolvePlugin() {
           type: "unary",
           operator: ${JSON.stringify(operator)},
           argument: {
-            name: ${JSON.stringify(generator(argument).code)},
+            expression: ${toExpressionString(generator(argument).code)},
             value: ${generator(argument).code},
           },
           test: ${generator(test).code},
@@ -48,7 +48,7 @@ module.exports = function conditionalResolvePlugin() {
         args = `{
           type: "expression",
           argument: {
-            name: ${JSON.stringify(generator(test).code)},
+            expression: ${toExpressionString(generator(test).code)},
             value: ${generator(test).code},
           }
         }`;
@@ -56,11 +56,11 @@ module.exports = function conditionalResolvePlugin() {
 
       const code = `
         sendLog('CONDITIONAL_STATEMENT', ${args}, '${toFilePath(
-          state.filename
-        )}', ${getLocation(path, toFilePath(state.filename))}, 1);`;
+        state.filename
+      )}', ${getLocation(path, toFilePath(state.filename))}, 1);`;
 
-        const ast = template.ast(code);
-        path.insertBefore(ast);
+      const ast = template.ast(code);
+      path.insertBefore(ast);
     },
 
     ConditionalExpression(path, state) {
@@ -77,12 +77,12 @@ module.exports = function conditionalResolvePlugin() {
         const args = `{
           type: "binary",
           left: {
-            name: ${JSON.stringify(generator(left).code)},
+            expression: ${toExpressionString(generator(left).code)},
             value: ${generator(left).code},
           },
           operator: ${JSON.stringify(operator)},
           right: {
-            name: ${JSON.stringify(generator(right).code)},
+            expression: ${toExpressionString(generator(right).code)},
             value: ${generator(right).code},
           },
           test: ${generator(test).code},

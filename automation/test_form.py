@@ -11,6 +11,11 @@ Serves as the entry point for testing a web form with a given specification.
 """
 
 
+def setup() -> None:
+    # Do anything here to get to the form, login or click buttons, etc.
+    pass
+
+
 def main(argv):
     """Handle command line arguments and start the test automation."""
 
@@ -31,6 +36,7 @@ def main(argv):
 
     config = yaml.safe_load(open("config/test_config.yml"))
     test_automation_driver = TestAutomationDriver(config)
+    setup()
     test_automation_driver.run_test(specification_file)
 
 

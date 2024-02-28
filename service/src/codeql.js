@@ -15,7 +15,7 @@ const resultDirectory = `${codeqlDirectory}/results`;
 // const allQueries = ["to_comp", "to_length_comp", "to_regex", "get_regex_vars"];
 const allQueries = ["to_var_comp"];
 const queryTypes = {
-  COMPARISON_TO_ANOTHER_VARIABLE: "ToVarComp",
+  COMPARISON_TO_ANOTHER_VARIABLE: "To Variable Comparison",
 };
 
 // const queryPlan = {

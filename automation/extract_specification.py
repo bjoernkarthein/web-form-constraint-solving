@@ -12,6 +12,11 @@ client side validation constraints.
 """
 
 
+def setup() -> None:
+    # Do anything here to get to the form, login or click buttons, etc.
+    pass
+
+
 def main(argv):
     """Handle command line arguments and start the analysis."""
 
@@ -33,6 +38,7 @@ def main(argv):
         if opt in ("-u", "--url"):
             config = yaml.safe_load(open("config/analysis_config.yml"))
             test_automation_driver = TestAutomationDriver(config, arg)
+            setup()
             test_automation_driver.run_analysis()
 
 

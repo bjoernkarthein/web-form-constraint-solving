@@ -1,7 +1,7 @@
 const { template } = require("@babel/core");
 const generator = require("@babel/generator").default;
 
-const { getLocation, toFilePath } = require("./common");
+const { getLocation, toFilePath, toExpressionString } = require("./common");
 
 module.exports = function assignmentPlugin() {
   const AssignmentVisitor = {
@@ -24,10 +24,11 @@ module.exports = function assignmentPlugin() {
           valueCode = generator(value);
         }
 
+        const expression = valueCode.code;
         const code = `
-        sendLog('VARIABLE_DECLARATION', { name: "${name}", expression: ${JSON.stringify(
-          valueCode.code
-        )}, value: ${valueCode.code} }, '${toFilePath(
+        sendLog('VARIABLE_DECLARATION', { name: "${name}", expression: ${toExpressionString(
+          expression
+        )}, value: ${expression} }, '${toFilePath(
           state.filename
         )}', ${getLocation(path, toFilePath(state.filename))}, 1);`;
 
@@ -52,11 +53,12 @@ module.exports = function assignmentPlugin() {
 
       let name = path.node.left.name;
       let value = path.node.right;
-      valueCode = generator(value);
+      const valueCode = generator(value);
 
-      const code = `sendLog('VARIABLE_ASSIGNMENT', { name: "${name}", expression: ${JSON.stringify(
-        valueCode.code
-      )}, value: ${valueCode.code} }, '${toFilePath(
+      const expression = valueCode.code;
+      const code = `sendLog('VARIABLE_ASSIGNMENT', { name: "${name}", expression: ${toExpressionString(
+        expression
+      )}, value: ${expression} }, '${toFilePath(
         state.filename
       )}', ${getLocation(path, toFilePath(state.filename))}, 1);`;
 

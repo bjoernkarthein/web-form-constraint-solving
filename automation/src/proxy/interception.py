@@ -88,6 +88,8 @@ class NetworkInterceptor:
         """Send JavaScript file to the instrumentation service and return instrumented content."""
 
         name = request.url.split("/")[-1]
+        if "?" in name:
+            name = name.split("?")[0]
         body_string = decode_bytes(response.body)
 
         data = {"name": name, "source": body_string}
@@ -182,7 +184,8 @@ class RequestScanner:
         elements = decoder.MultipartDecoder(request.body, content_type).parts
         values = list(map(lambda e: e.text, elements))
 
-        return set(values) == set(self.generated_values)
+        # Check for subset here because ther can always be hidden fields with additional, non generated values
+        return set(self.generated_values).issubset(set(values))
 
     def __scan_for_values_in_plain_text(self, request: Request) -> bool:
         body = decode_bytes(request.body)
@@ -190,7 +193,7 @@ class RequestScanner:
         values = list(map(lambda e: e.split("=", 1)[1] if "=" in e else None, elements))
         values = [v for v in values if v is not None]
 
-        return set(values) == set(self.generated_values)
+        return set(self.generated_values).issubset(set(values))
 
     def __scan_for_values(self, request: Request) -> bool:
         body = decode_bytes(request.body)
@@ -201,10 +204,10 @@ class RequestScanner:
             return False
 
         vars = query_string.split("&")
-        values = list(map(lambda v: v.split("=", 1)[1], vars))
+        values = list(map(lambda v: v.split("=", 1)[1] if "=" in v else v, vars))
         plain_values = list(map(lambda v: urllib.parse.unquote_plus(v), values))
 
-        return set(plain_values) == set(self.generated_values)
+        return set(self.generated_values).issubset(set(plain_values))
 
 
 def decode_bytes(body: bytes) -> str:

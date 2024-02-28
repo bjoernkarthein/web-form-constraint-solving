@@ -1,11 +1,15 @@
 import os
-import sys
 import threading
-import time
+import sys
+
+import cProfile
+import io
+import pandas as pd
+import pstats
 
 from selenium.webdriver.chrome.service import Service
 from seleniumwire import webdriver
-from typing import List
+from typing import List, Tuple
 
 from src.analysis.constraint_extraction import (
     ConstraintCandidateFinder,
@@ -23,14 +27,15 @@ from src.utility.helpers import (
     binary_input_types,
     ConfigKey,
     clamp_to_range,
+    free_service_resources,
     load_page,
     sub_to_service_messages,
     write_to_file,
 )
 
 
-# chrome_driver_path = "chromedriver/windows/chromedriver.exe"
-chrome_driver_path = "chromedriver/linux/chromedriver"
+chrome_driver_path = "chromedriver/windows/chromedriver.exe"
+# chrome_driver_path = "chromedriver/linux/chromedriver"
 chrome_driver_abs_path = os.path.abspath(chrome_driver_path)
 
 
@@ -47,7 +52,13 @@ class TestAutomationDriver:
     ...
     """
 
-    def __init__(self, config: dict, url: str = None) -> None:
+    def __init__(self, config: dict, url: str = None, profiler=None, file=None) -> None:
+        self.__pr = None
+        if profiler is not None:
+            self.__pr = profiler
+            self.__file = file
+            self.__pr.enable()
+
         """Initialize the Test Automation
 
         Set options for selenium chrome driver and selenium wire proxy
@@ -70,15 +81,19 @@ class TestAutomationDriver:
             seleniumwire_options=wire_options,
         )
 
+        self.web_driver = self.__driver
+
     def run_analysis(self) -> None:
         html_only = self.__config[ConfigKey.ANALYSIS.value][ConfigKey.HTML_ONLY.value]
         interceptor = NetworkInterceptor(self.__driver)
 
         if not html_only:
             interceptor.instrument_files()
-
-        message_thread = threading.Thread(target=sub_to_service_messages, daemon=True)
-        message_thread.start()
+            # subscribe to server messages
+            # message_thread = threading.Thread(
+            #     target=sub_to_service_messages, daemon=True
+            # )
+            # message_thread.start()
 
         load_page(self.__driver, self.__url)
         interceptor.scan_for_form_submission()
@@ -125,12 +140,15 @@ class TestAutomationDriver:
 
         return html_constraints
 
+    # TODO refactor to not be that complex - is this the right class?
     def __start_constraint_extraction(
         self,
         html_specifications: List[HTMLInputSpecification | HTMLRadioGroupSpecification],
         interceptor: NetworkInterceptor,
     ) -> None:
         """Start the extraction of client-side validation constraints for a set of specified HTML inputs."""
+        print("Start constraint extraction")
+
         html_only = self.__config[ConfigKey.ANALYSIS.value][ConfigKey.HTML_ONLY.value]
         analysis_rounds = self.__config[ConfigKey.ANALYSIS.value][
             ConfigKey.ANALYSIS_ROUNDS.value
@@ -147,40 +165,58 @@ class TestAutomationDriver:
             stop_on_first_success,
             self.__exit,
         )
-        self.__generate_valid_html_magic_values(html_specifications)
 
+        specifications = self.__build_html_specification(html_specifications)
         if html_only:
             self.__exit()
 
-        self.__constraint_candidate_finder.fill_with_magic_values()
-        for spec in html_specifications:
-            new_constraints = self.__constraint_candidate_finder.find_initial_js_constraint_candidates(
-                spec
+        for elem in specifications:
+            spec, grammar, formula = elem
+            self.__constraint_candidate_finder.set_valid_value_sequence(
+                spec, grammar, formula
             )
 
-            print(new_constraints)
-            if len(new_constraints.candidates) == 0:
-                continue
+        self.__constraint_candidate_finder.fill_with_valid_values()
+
+        for elem in specifications:
+            spec, grammar, formula = elem
+            previous_constraints = {"candidates": []}
 
             for _ in range(analysis_rounds):
-                # TODO: stop when fixed point is reached?
+                constraint_candidates = (
+                    self.__constraint_candidate_finder.find_js_constraint_candidates(
+                        spec, grammar, formula, self.__magic_value_amount
+                    )
+                )
+
+                # TODO: When to stop? How do I not apply the same candidates twice?
+
+                # print(str(constraint_candidates))
+
+                if len(constraint_candidates.candidates) == 0:
+                    break
+
+                if constraint_candidates == previous_constraints:
+                    break
+
                 (
                     grammar,
                     formula,
                 ) = self.__specification_builder.add_constraints_to_current_specification(
-                    spec.reference,
-                    spec.constraints.type,
-                    new_constraints
-                )
-                self.__constraint_candidate_finder.find_additional_js_constraint_candidates(
-                    grammar, formula
+                    spec.reference, spec.constraints.type, constraint_candidates
                 )
 
-    # TODO: refactor to not be this complex
-    def __generate_valid_html_magic_values(
+                previous_constraints = constraint_candidates
+
+            print(grammar, formula)
+
+    # TODO: refactor to not be this complex - is this the right class?
+    def __build_html_specification(
         self,
         html_specifications: List[HTMLInputSpecification | HTMLRadioGroupSpecification],
-    ) -> None:
+    ) -> List[Tuple[HTMLInputSpecification | HTMLInputSpecification, str, str | None]]:
+        result = []
+
         self.__specification_builder = SpecificationBuilder()
         use_datalist_options = self.__config[ConfigKey.GENERATION.value][
             ConfigKey.USE_DATALIST_OPTIONS.value
@@ -188,7 +224,7 @@ class TestAutomationDriver:
         magic_value_amount = self.__config[ConfigKey.ANALYSIS.value][
             ConfigKey.MAGIC_VALUE_AMOUNT.value
         ]
-        magic_value_amount = clamp_to_range(magic_value_amount, 1, 10)
+        self.__magic_value_amount = clamp_to_range(magic_value_amount, 1, 10)
 
         next_file_index = 1
         form_specification = {
@@ -227,16 +263,56 @@ class TestAutomationDriver:
                 specification.get_representation(grammar_file, formula_file)
             )
             next_file_index += 1
-
-            self.__constraint_candidate_finder.set_magic_value_sequence(
-                specification, grammar, formula, magic_value_amount
-            )
+            result.append((specification, grammar, formula))
 
         write_to_file("specification/specification.json", form_specification)
+        return result
 
-    def __exit(self, exit_code=None) -> None:
+    def __exit(self, exit_code: int = None) -> None:
         """Free all resources and exit"""
-
-        # clean_instrumentation_resources()
+        # free_service_resources()
         self.__driver.quit()
+
+        # write performance to file
+        if self.__pr is not None:
+            self.__pr.disable()
+            csv = self.prof_to_csv(self.__pr)
+            with open(
+                f"evaluation/{self.__file}_stats.csv", "w+", encoding="utf-8"
+            ) as f:
+                f.write(csv)
+
+            self.clean_csv(f"evaluation/{self.__file}_stats")
+            self.get_isla_csv(f"evaluation/{self.__file}_stats")
+
         sys.exit(exit_code)
+
+    def prof_to_csv(self, pr: cProfile.Profile) -> None:
+        out_stream = io.StringIO()
+        stats = pstats.Stats(pr, stream=out_stream)
+        stats.sort_stats(pstats.SortKey.CUMULATIVE)
+        stats.print_stats()
+        result = out_stream.getvalue()
+
+        result = "ncalls" + result.split("ncalls")[-1]
+        lines = [",".join(line.rstrip().split(None, 5)) for line in result.split("\n")]
+        lines = list(filter(lambda l: l != "", lines))
+        return "\n".join(lines)
+
+    def clean_csv(self, file: str) -> None:
+        df = pd.read_csv(f"{file}.csv", encoding="utf-8")
+        my_functions = df["filename:lineno(function)"].str.contains(
+            "invariant-based-web-form-testing"
+        )
+        df = df[my_functions]
+        df.reset_index(drop=True, inplace=True)
+
+        df.to_csv(f"{file}_clean.csv", index=False)
+
+    def get_isla_csv(self, file: str) -> None:
+        df = pd.read_csv(f"{file}.csv", encoding="utf-8")
+        my_functions = df["filename:lineno(function)"].str.contains("isla")
+        df = df[my_functions]
+        df.reset_index(drop=True, inplace=True)
+
+        df.to_csv(f"{file}_isla.csv", index=False)

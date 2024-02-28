@@ -1,7 +1,7 @@
 const { template } = require("@babel/core");
 const generator = require("@babel/generator").default;
 
-const { getLocation, toFilePath } = require("./common");
+const { getLocation, toExpressionString, toFilePath } = require("./common");
 
 module.exports = function functionTracePlugin() {
   const FunctionVisitor = {
@@ -47,10 +47,10 @@ function getCallStatement(path) {
 
   for (let i = 0; i < params.length; i++) {
     let paramName = params[i].name;
-    paramList.push(`"${paramName}": ${paramName}`);
+    paramList.push(`{ expression: "${paramName}", value: ${paramName} }`);
   }
 
-  return `{ name: "${functionName}", args: { ${paramList.join(", ")} } }`;
+  return `{ name: "${functionName}", args: [ ${paramList.join(", ")} ] }`;
 }
 
 function getExpressionStatement(path) {
@@ -63,11 +63,15 @@ function getExpressionStatement(path) {
     for (let i = 0; i < params.length; i++) {
       if (params[i].type !== "FunctionExpression") {
         const generatedCode = generator(params[i]);
-        paramList.push(generatedCode.code);
+        paramList.push(
+          `{ expression: ${toExpressionString(generatedCode.code)}, value: ${
+            generatedCode.code
+          } }`
+        );
       }
     }
 
-    return `{ property: "${property.name}", args: [${[...paramList]}]}`;
+    return `{ property: "${property.name}", args: [ ${paramList.join(", ")} ]}`;
   }
 
   // TODO: what in any other case?

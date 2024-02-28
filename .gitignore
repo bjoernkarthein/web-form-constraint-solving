@@ -2,6 +2,7 @@ __pycache__
 node_modules
 scripts/server_pid.txt
 
+automation/evaluation
 automation/report
 automation/specification
 

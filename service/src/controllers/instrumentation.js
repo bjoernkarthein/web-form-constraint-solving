@@ -10,10 +10,15 @@ let instrument = (req, res) => {
   const content = req.body.source;
 
   instrumentationService.saveFile(name, content);
-  common.runCommand(instrumentationService.getBabelCommand(name)).then(() => {
-    logger.info(`instrumented file ${name}`);
-    res.sendFile(name, { root: path.join(__dirname, "..", "instrumented") });
-  });
+  common.runCommand(instrumentationService.getBabelCommand(name)).then(
+    (result) => {
+      logger.info(`instrumented file ${name}`);
+      res.sendFile(name, { root: path.join(__dirname, "..", "instrumented") });
+    },
+    (error) => {
+      res.sendFile(name, { root: path.join(__dirname, "..", "original") });
+    }
+  );
 };
 
 module.exports = { instrument };

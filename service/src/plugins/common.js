@@ -28,4 +28,11 @@ function getLocation(path, filePath) {
 const toFilePath = (filePath) =>
   filePath.split(op_path.sep).join(op_path.posix.sep);
 
-module.exports = { getLocation, toFilePath };
+const toExpressionString = (expression) =>
+  expression.length > 0 &&
+  ((expression[0] == "'" && expression[expression.length - 1] == "'") ||
+    (expression[0] == '"' && expression[expression.length - 1] == '"'))
+    ? expression
+    : JSON.stringify(expression);
+
+module.exports = { getLocation, toExpressionString, toFilePath };

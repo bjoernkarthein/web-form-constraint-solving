@@ -40,6 +40,10 @@ class InputGenerator:
         validity: ValidityEnum = ValidityEnum.VALID,
         amount: int = 1,
     ) -> List[GeneratedValue]:
+        print(f"generating {amount} {validity.value} inputs")
+        print(grammar)
+        print(formula)
+
         if validity == ValidityEnum.VALID:
             return self.__generate_valid_inputs(grammar, formula, amount)
         else:
@@ -57,6 +61,7 @@ class InputGenerator:
         try:
             for _ in range(amount):
                 str_value = str(solver.solve())
+                print(f"generated '{str_value}'")
                 value = GeneratedValue(str_value, ValidityEnum.VALID)
                 values.append(value)
             return values
@@ -96,6 +101,7 @@ class InputGenerator:
                 last_value = mutator.mutate(last_value)
 
                 if not solver.check(last_value):
+                    print(f"generated '{last_value}'")
                     value = GeneratedValue(last_value, ValidityEnum.INVALID)
                     values.append(value)
                     found_invalid_value = True

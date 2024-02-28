@@ -20,20 +20,20 @@ const magicValueToReferenceMap = new Map();
 const expressionToFieldMap = new Map();
 
 function hasValue(object, value) {
-  for (const [key, elem] of Object.entries(object)) {
+  for (const elem of Object.values(object)) {
     if (typeof elem === "string") {
       if (elem === value) {
-        return [true, object, key];
+        return [true, object];
       }
     } else if (typeof elem === "object") {
-      const [result, object, key] = hasValue(elem, value);
+      const [result, object] = hasValue(elem, value);
       if (result) {
-        return [result, object, key];
+        return [result, object];
       }
     }
   }
 
-  return [false, {}, ""];
+  return [false, {}];
 }
 
 async function analyseTraces(traces) {
@@ -45,7 +45,6 @@ async function analyseTraces(traces) {
       } catch (e) {
         logger.error("error parsing trace");
         logger.error(e.message);
-        // TODO
       }
     }
   }
@@ -87,9 +86,9 @@ function processTraces(allTraces) {
     // TODO: does this always work and finds the first value of any other form field in the current traces?
     outer: for (const magicValue of magicValueToReferenceMap.keys()) {
       for (const trace of browserTraces) {
-        const [included, object, key] = hasValue(trace, magicValue);
+        const [included, object] = hasValue(trace, magicValue);
         if (included) {
-          const expression = getExpressionByKey(trace, object, key);
+          const expression = object.expression;
           expressionToFieldMap.set(
             expression,
             JSON.stringify({
@@ -99,6 +98,7 @@ function processTraces(allTraces) {
               generalLocation: trace.location,
             })
           );
+          // TODO: Is it a good idea to keep going and have possibly multiple results? Can I somehow check if all magic values of another input are there?
           // break outer;
         }
       }
@@ -139,16 +139,10 @@ function findMagicValues(traceGroup) {
     const tracesWithMagicValue = [];
     // Find first occurence of variable that contains the magic values in every execution
     for (const t of traces) {
-      const [hasMagicValue, element, key] = hasValue(t, value);
+      const [hasMagicValue, element] = hasValue(t, value);
       if (hasMagicValue) {
-        // console.log("here");
-        // console.log(t);
-        // console.log(element);
-        // console.log(key);
-        // console.log(getExpressionByKey(t, element, key));
         tracesWithMagicValue.push({
-          // TODO: Would be nicer if this was not needed somehow
-          expression: getExpressionByKey(t, element, key),
+          expression: element.expression,
           location: t.location,
         });
       }
@@ -170,24 +164,6 @@ function addReferenceForMagicValue(magicValue, reference) {
     magicValueToReferenceMap.set(magicValue, new Set());
   }
   magicValueToReferenceMap.get(magicValue).add(JSON.stringify(reference));
-}
-
-// TODO: Would be nicer if there was a universal way to get the right data for all types to only leave codeql queries and babel plugins as extension
-function getExpressionByKey(t, element, key) {
-  switch (t.action) {
-    case trace.ACTION_ENUM.NAMED_FUNCTION_CALL:
-      return key;
-    case trace.ACTION_ENUM.CONDITIONAL_EXPRESSION:
-    case trace.ACTION_ENUM.CONDITIONAL_STATEMENT:
-      return element.name;
-    case trace.ACTION_ENUM.VARIABLE_ASSIGNMENT:
-    case trace.ACTION_ENUM.VARIABLE_DECLARATION:
-      // return element.expression;
-      return t.args.expression;
-    default:
-      // TODO
-      return null;
-  }
 }
 
 function runQueries(pointsOfInterest, sourceDir) {
@@ -321,19 +297,12 @@ function handleVariableComparison(ast, magicValueExpressions) {
         magicValueExpressions.includes(right)
       ) {
         comparedValue = left;
-      } else if (
-        !magicValueExpressions.includes(left) &&
-        !magicValueExpressions.includes(right)
-      ) {
-        // TODO
-      } else {
-        // TODO
       }
 
       const possibleReferenceField = expressionToFieldMap.get(comparedValue);
       if (!!possibleReferenceField) {
         otherValue.type = "reference";
-        otherValue.value = JSON.parse(possibleReferenceField);
+        otherValue.value = JSON.parse(possibleReferenceField).references[0];
       } else {
         otherValue.type = "unknown variable";
         otherValue.value = comparedValue;
@@ -375,3 +344,5 @@ module.exports = { analyseTraces, cleanUp, hasValue };
 // const data = fs.readFileSync("./trace.log", "utf-8");
 // const traces = data.split("\n");
 // analyseTraces(traces);
+
+// console.log(extractConstraintCandidates(["input.value"]));

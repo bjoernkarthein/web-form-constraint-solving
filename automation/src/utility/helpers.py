@@ -35,10 +35,12 @@ class ConfigKey(Enum):
     BLOCK_SUBMISSION = "block-submission"
     GENERATION = "generation"
     HTML_ONLY = "html-only"
+    INVALID = "invalid"
     MAGIC_VALUE_AMOUNT = "magic-value-amount"
     REPETITIONS = "repetitions"
     STOP_ON_SUCCESS = "stop-on-first-successful-submission"
     TESTING = "testing"
+    TOTAL = "total"
     USE_DATALIST_OPTIONS = "use-datalist-options"
     VALID = "valid"
 
@@ -126,6 +128,11 @@ def write_to_file(file_name: str, data: str | Dict) -> None:
             file.write(data)
         else:
             json.dump(data, file, indent=4)
+
+
+def free_service_resources() -> Response:
+    url = f"{admin_controller}/clean"
+    return requests.get(url)
 
 
 def start_trace_recording(data) -> Response:

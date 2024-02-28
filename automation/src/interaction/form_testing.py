@@ -1,4 +1,5 @@
 import json
+import random
 
 from pathlib import Path
 from selenium.webdriver import Chrome
@@ -137,8 +138,28 @@ class FormTester:
             ConfigKey.BLOCK_SUBMISSION.value
         ]
         self.__driver = driver
-        repetitions = config[ConfigKey.TESTING.value][ConfigKey.REPETITIONS.value]
-        self.__repetitions = clamp_to_range(repetitions, 1, None)
+
+        self.__valid = None
+        self.__invalid = None
+        repetition = config[ConfigKey.TESTING.value][ConfigKey.REPETITIONS.value]
+        if isinstance(repetition, int):
+            total = clamp_to_range(repetition, 1, None)
+        elif isinstance(repetition, Dict):
+            total = repetition[ConfigKey.TOTAL.value]
+            valid = total = repetition[ConfigKey.VALID.value]
+            valid = clamp_to_range(valid, 1, None)
+            invalid = repetition[ConfigKey.INVALID.value]
+            invalid = clamp_to_range(invalid, 1, None)
+
+            if valid + invalid != total:
+                raise ValueError(
+                    f"The specified amount for valid and invalid form instances has to add up to the total.\nGot valid: {valid}, invalid: {invalid}, total: {total}"
+                )
+
+            self.__valid = valid
+            self.__invalid = invalid
+
+        self.__repetitions = total
         self.__specification = specification
         self.__specification_directory = specification_directory
         self.__url = url
@@ -164,10 +185,21 @@ class FormTester:
         )
 
         # TODO generate all values in advance for better diversity and just fill in afterwards?
-        for _ in range(self.__repetitions):
-            clear_value_mapping()
-            load_page(self.__driver, self.__url)
-            self.__fill_form_with_values_and_submit(generator)
+        if self.__valid is None or self.__invalid is None:
+            for _ in range(self.__repetitions):
+                clear_value_mapping()
+                load_page(self.__driver, self.__url)
+                self.__fill_form_with_values_and_submit(generator)
+        else:
+            for _ in range(self.__valid):
+                clear_value_mapping()
+                load_page(self.__driver, self.__url)
+                self.__fill_form_with_values_and_submit(generator)
+
+            for _ in range(self.__invalid):
+                clear_value_mapping()
+                load_page(self.__driver, self.__url)
+                self.__fill_form_with_values_and_submit(generator, ValidityEnum.INVALID)
 
         self.__test_monitor.process_saved_submissions()
 
@@ -214,13 +246,24 @@ class FormTester:
             element_spec, type, grammar, formula if formula != "" else None
         )
 
-    # TODO: handle invalid value generation here
-    def __fill_form_with_values_and_submit(self, generator: InputGenerator) -> None:
+    def __fill_form_with_values_and_submit(
+        self, generator: InputGenerator, validity: ValidityEnum = ValidityEnum.VALID
+    ) -> None:
         values: List[GeneratedValue] = []
-        for template in self.__generation_templates:
+        validities = [ValidityEnum.VALID] * len(self.__generation_templates)
+
+        # If we want to also generate invalid values we choose between 1 and n elements
+        # to be invalid for a for with n input fields
+        if validity == ValidityEnum.INVALID:
+            num_changes = random.randint(1, len(validities))
+            indices_to_change = random.sample(range(len(validities)), num_changes)
+            for idx in indices_to_change:
+                validities[idx] = ValidityEnum.INVALID
+
+        for idx, template in enumerate(self.__generation_templates):
             # TODO: Error handling
             generated_value = generator.generate_inputs(
-                template.grammar, template.formula
+                template.grammar, template.formula, validities[idx]
             )[0]
             values.append(generated_value)
 
@@ -304,6 +347,6 @@ class TestMonitor:
             "\n",
         )
         print(
-            "For a more detailed report refer to 'automation/src/report/results.json'",
+            "For a more detailed report refer to 'automation/report/results.json'",
             "\n",
         )

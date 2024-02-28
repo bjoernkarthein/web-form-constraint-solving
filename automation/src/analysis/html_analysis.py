@@ -1,4 +1,5 @@
 import json
+import sys
 
 from lxml import etree, html
 from typing import Dict, List, Tuple, Union
@@ -16,6 +17,18 @@ class HTMLElementReference:
 
     def __str__(self) -> str:
         return json.dumps(self.get_as_dict())
+
+    def __hash__(self):
+        return hash((self.access_method, self.access_value))
+
+    def __eq__(self, other):
+        return (self.access_method, self.access_value) == (
+            other.access_method,
+            other.access_value,
+        )
+
+    def __ne__(self, other):
+        return not (self == other)
 
 
 class HTMLConstraints:
@@ -270,7 +283,7 @@ class HTMLAnalyser:
             )
             return (None, None)
         elif len(all_forms) == 1:
-            self.__form_access_xpath = "//form[1]"
+            self.__form_access_xpath = "(//form)[1]"
             return (all_forms[0], self.__form_access_xpath)
         else:
             forms: Dict[int, str] = dict()
@@ -287,7 +300,7 @@ class HTMLAnalyser:
                 print("The entered position does not match any form.")
                 return (None, None)
 
-            self.__form_access_xpath = f"//form[{position}]"
+            self.__form_access_xpath = f"(//form)[{position}]"
             return (all_forms[position - 1], self.__form_access_xpath)
 
     def extract_static_constraints(
@@ -301,21 +314,40 @@ class HTMLAnalyser:
         all_buttons = form.xpath(f"{self.__form_access_xpath}/descendant::button")
 
         # Find the submit element
-        self.__submit_element = None
+        submit_elements = []
         for elem in all_inputs + all_buttons:
             if elem.get("type") == "submit":
-                self.__submit_element = self.__get_element_reference(elem)
-                break
+                submit_elements.append(elem)
 
-        if self.__submit_element is None:
+        # If no element with type submit was found check all buttons in the form without a type as the default is submit
+        if len(submit_elements) == 0:
             for button in all_buttons:
                 if button.get("type") is None:
-                    self.__submit_element = self.__get_element_reference(elem)
+                    submit_elements.append(button)
                     break
 
-        if self.__submit_element is None:
+        if len(submit_elements) == 0:
             print("The form does not contain an element to submit")
             return None
+        elif len(submit_elements) == 1:
+            self.__submit_element = self.__get_element_reference(submit_elements[0])
+        else:
+            submits: Dict[int, str] = dict()
+            for i in range(len(submit_elements)):
+                submits[i + 1] = etree.tostring(submit_elements[i]).decode("utf-8")
+            print(
+                "The form has multiple elements with type submit. Please select the correct element to submit the form"
+            )
+            print("Elements:")
+            print(json.dumps(submits, indent=4))
+            position = int(input("Position of the submit element (starting with 1): "))
+            if position < 1 or position > len(submit_elements):
+                print("The entered position does not match any submit element.")
+                return None
+
+            self.__submit_element = self.__get_element_reference(
+                submit_elements[position - 1]
+            )
 
         # Remove inputs that have type submit
         all_inputs = [input for input in all_inputs if input.get("type") != "submit"]
