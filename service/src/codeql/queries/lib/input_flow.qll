@@ -31,6 +31,18 @@ class RegExpConstructor extends InvokeExpr {
   Literal getPattern() { result = this.getArgument(0) }
 }
 
+class RegExpConstructorOrLiteral extends Expr {
+  RegExpConstructorOrLiteral() {
+    this instanceof RegExpConstructor or this instanceof RegExpLiteral
+  }
+
+  Literal getPattern() {
+    this instanceof RegExpConstructor and result = this.(RegExpConstructor).getPattern()
+    or
+    result = this
+  }
+}
+
 predicate hasRegExpCheckParent(Expr expr, Expr parent, Expr regex) {
   parent = expr.getParent*() and
   parent instanceof MethodCallExpr and
@@ -72,24 +84,29 @@ predicate isInStringMatch(Expr expr) {
   exists(Expr parent, Expr matcher | hasStringMatchParent(expr, parent, matcher))
 }
 
-predicate hasLiteralComparisonParent(Expr expr, Expr parent) {
+predicate hasLiteralComparisonParent(Expr expr, Expr parent, Literal lit) {
   parent = expr.getParent*() and
   parent instanceof Comparison and
-  parent.(Comparison).getRightOperand() instanceof Literal
+  (lit = parent.(Comparison).getRightOperand() or lit = parent.(Comparison).getLeftOperand())
 }
 
 predicate isInLiteralComparison(Expr expr) {
-  exists(Expr parent | hasLiteralComparisonParent(expr, parent))
+  exists(Expr parent, Literal literal | hasLiteralComparisonParent(expr, parent, literal))
 }
 
-predicate hasVarComparisonParent(Expr expr, Expr parent) {
+predicate hasVarComparisonParent(Expr expr, Expr parent, Expr varValue) {
   parent = expr.getParent*() and
   parent instanceof Comparison and
-  not parent.(Comparison).getRightOperand() instanceof Literal
+  (
+    varValue = parent.(Comparison).getRightOperand() or
+    varValue = parent.(Comparison).getLeftOperand()
+  ) and
+  not varValue instanceof Literal and
+  not varValue = expr
 }
 
 predicate isInVarComparison(Expr expr) {
-  exists(Expr parent | hasVarComparisonParent(expr, parent))
+  exists(Expr parent, Expr e | hasVarComparisonParent(expr, parent, e))
 }
 
 predicate hasLiteralLengthComparisonParent(Expr expr, Expr parent) {

@@ -1,6 +1,7 @@
 const generate = require("@babel/generator").default;
 const parser = require("@babel/parser");
 const traverse = require("@babel/traverse").default;
+const t = require("@babel/types");
 
 const codeql = require("./codeql");
 const fs = require("fs");
@@ -201,29 +202,33 @@ function perpareForCodeQLQueries(traces) {
   return "source";
 }
 
-function extractConstraintCandidates(magicValueExpressions) {
+function extractConstraintCandidates(
+  originalDir = instrumentation.originalDir
+) {
   const results = codeql.readResults();
   const codeLocations = results.map((res) => {
     csv = JSON.parse(res);
     return {
       type: csv[0],
-      location: buildLocationFromResult(csv.slice(4, csv.length)),
+      location: buildLocationFromResult(csv.slice(3, csv.length)),
     };
   });
 
   let allCandidates = [];
-  for (const codeLoc of codeLocations) {
-    slice = getCodeSliceFromFileByLocation(
-      codeLoc.location.file,
-      codeLoc.location.startPos,
-      codeLoc.location.endPos
-    );
 
-    const candidates = buildConstraintCandidates(
-      codeLoc.type,
-      slice,
-      magicValueExpressions
-    );
+  for (const codeLoc of codeLocations) {
+    const slices = [];
+    for (const loc of codeLoc.location) {
+      const slice = getCodeSliceFromFileByLocation(
+        loc.file,
+        loc.startPos,
+        loc.endPos,
+        originalDir
+      );
+      slices.push(slice);
+    }
+
+    const candidates = buildConstraintCandidates(codeLoc.type, slices);
     allCandidates = allCandidates.concat(candidates);
   }
 
@@ -232,17 +237,43 @@ function extractConstraintCandidates(magicValueExpressions) {
 }
 
 function buildLocationFromResult(locationData) {
-  return {
-    file: locationData[0],
-    startPos: { line: Number(locationData[1]), col: Number(locationData[2]) },
-    endPos: { line: Number(locationData[3]), col: Number(locationData[4]) },
-  };
+  if (/\[\[([^\]]+)\|([^\]]+)\]\]/g.test(locationData[0])) {
+    return buildLocationsFromString(locationData[0]);
+  } else {
+    return {
+      file: locationData[1],
+      startPos: { line: Number(locationData[2]), col: Number(locationData[3]) },
+      endPos: { line: Number(locationData[4]), col: Number(locationData[5]) },
+    };
+  }
 }
 
-function getCodeSliceFromFileByLocation(file, startPos, endPos) {
-  let lines = fs
-    .readFileSync(`${instrumentation.originalDir}/${file}`, "utf-8")
-    .split("\r\n");
+function buildLocationsFromString(value) {
+  result = [];
+  const locationRegExp = /\[\[([^\]]+)\|([^\]]+)\]\]/g;
+  const matches = [...value.matchAll(locationRegExp)];
+  for (const match of matches) {
+    let sourceLoc = match[2];
+    sourceLoc = sourceLoc.substring(1, sourceLoc.length - 1);
+    sourceLoc = sourceLoc.split("//");
+    sourceLoc = sourceLoc[sourceLoc.length - 1];
+    const [file, startLine, startCol, endLine, endCol] = sourceLoc.split(":");
+    result.push({
+      file,
+      startPos: { line: startLine, col: startCol },
+      endPos: { line: endLine, col: endCol },
+    });
+  }
+  return result;
+}
+
+function getCodeSliceFromFileByLocation(
+  file,
+  startPos,
+  endPos,
+  dir = instrumentation.originalDir
+) {
+  let lines = fs.readFileSync(`${dir}${file}`, "utf-8").split("\r\n");
   lines = lines.slice(startPos.line - 1, endPos.line);
   lines[0] = lines[0].substring(startPos.col - 1);
   lines[lines.length - 1] = lines[lines.length - 1].substring(
@@ -255,24 +286,64 @@ function getCodeSliceFromFileByLocation(file, startPos, endPos) {
   return lines;
 }
 
-function buildConstraintCandidates(type, slice, magicValueExpressions) {
-  try {
-    ast = parser.parse(slice);
-  } catch (e) {
-    logger.error("error while converting slice '" + slice + "' to tree");
-    logger.error(e.message);
+function buildConstraintCandidates(type, slices) {
+  if (slices.length < 2) {
     return [];
   }
 
   switch (type) {
+    case codeql.queryTypes.COMPARISON_TO_A_LITERAL:
+      return handleLiteralComparison(slices[0], slices[1]);
     case codeql.queryTypes.COMPARISON_TO_ANOTHER_VARIABLE:
-      return handleVariableComparison(ast, magicValueExpressions);
+      return handleVariableComparison(slices[0], slices[1]);
+    case codeql.queryTypes.REGEX_TEST:
+      return handleRegexTest(slices[1]);
     default:
       return [];
   }
 }
 
-function handleVariableComparison(ast, magicValueExpressions) {
+function parseSliceToAst(slice) {
+  let ast = undefined;
+  try {
+    ast = parser.parse(slice);
+  } catch (e) {
+    logger.error("error while converting slice '" + slice + "' to tree");
+    logger.error(e.message);
+  }
+
+  return ast;
+}
+
+function handleRegexTest(pattern) {
+  return [{ type: "PatternTest", pattern: pattern }];
+}
+
+function handleLiteralComparison(compSlice, literal) {
+  const ast = parseSliceToAst(compSlice);
+  if (!ast) {
+    return [];
+  }
+
+  const candidates = [];
+  let result = { type: "LitComp", operator: "", otherValue: literal };
+
+  traverse(ast, {
+    BinaryExpression: function (path) {
+      result.operator = path.node.operator;
+      candidates.push(result);
+    },
+  });
+
+  return candidates;
+}
+
+function handleVariableComparison(compSlice, comparedValue) {
+  const ast = parseSliceToAst(compSlice);
+  if (!ast) {
+    return [];
+  }
+
   const candidates = [];
 
   let otherValue = { type: "", value: "" };
@@ -280,24 +351,7 @@ function handleVariableComparison(ast, magicValueExpressions) {
 
   traverse(ast, {
     BinaryExpression: function (path) {
-      const left = generate(path.node.left).code;
-      const op = path.node.operator;
-      const right = generate(path.node.right).code;
-
-      result.operator = op;
-      let comparedValue = "";
-
-      if (
-        magicValueExpressions.includes(left) &&
-        !magicValueExpressions.includes(right)
-      ) {
-        comparedValue = right;
-      } else if (
-        !magicValueExpressions.includes(left) &&
-        magicValueExpressions.includes(right)
-      ) {
-        comparedValue = left;
-      }
+      result.operator = path.node.operator;
 
       const possibleReferenceField = expressionToFieldMap.get(comparedValue);
       if (!!possibleReferenceField) {
@@ -315,34 +369,14 @@ function handleVariableComparison(ast, magicValueExpressions) {
   return candidates;
 }
 
-// function buildLocationsFromString(value) {
-//   result = [];
-//   const locationRegExp = /\[\[([^\]]+)\|([^\]]+)\]\]/g;
-//   const matches = [...value.matchAll(locationRegExp)];
-//   for (const match of matches) {
-//     let sourceLoc = match[2];
-//     sourceLoc = sourceLoc.substring(1, sourceLoc.length - 1);
-//     sourceLoc = sourceLoc.split("/");
-//     sourceLoc = sourceLoc[sourceLoc.length - 1];
-//     const [file, startLine, startCol, endLine, endCol] = sourceLoc.split(":");
-//     result.push({
-//       file,
-//       startPos: { line: startLine, col: startCol },
-//       endPos: { line: endLine, col: endCol },
-//     });
-//   }
-//   return result;
-// }
-
 function cleanUp() {
   expressionToFieldMap.clear();
   magicValueToReferenceMap.clear();
 }
 
-module.exports = { analyseTraces, cleanUp, hasValue };
-
-// const data = fs.readFileSync("./trace.log", "utf-8");
-// const traces = data.split("\n");
-// analyseTraces(traces);
-
-// console.log(extractConstraintCandidates(["input.value"]));
+module.exports = {
+  analyseTraces,
+  cleanUp,
+  hasValue,
+  extractConstraintCandidates,
+};

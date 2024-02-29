@@ -1,5 +1,5 @@
 /**
- * @name ToRegex
+ * @name To Regex Test
  * @kind problem
  * @problem.severity warning
  * @id javascript/to-regex
@@ -18,6 +18,9 @@ class RegExFlowConfiguration extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { isInRegExpCheck(sink.asExpr()) }
 }
 
-from RegExFlowConfiguration cfg, DataFlow::Node source, DataFlow::Node sink, Expr parent, Expr regex
+from
+  RegExFlowConfiguration cfg, DataFlow::Node source, DataFlow::Node sink, Expr parent,
+  RegExpConstructorOrLiteral regex
 where cfg.hasFlow(source, sink) and hasRegExpCheckParent(sink.asExpr(), parent, regex)
-select parent, "Whole Test: $@, Pattern: $@", parent, parent.toString(), regex, regex.toString()
+select parent, "Whole Test: $@, Pattern: $@", parent, parent.toString(), regex.getPattern(),
+  regex.getPattern().toString()
