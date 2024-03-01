@@ -12,22 +12,17 @@ const databaseDirectory = `${codeqlDirectory}/${databaseName}`;
 const queryDirectory = `${codeqlDirectory}/queries`;
 const resultDirectory = `${codeqlDirectory}/results`;
 
-// const allQueries = ["to_comp", "to_length_comp", "to_regex", "get_regex_vars"];
-const allQueries = ["to_var_comp"];
+const allQueries = [
+  "to_literal_comp",
+  "to_var_comp",
+  "to_regex",
+  "to_string_match",
+];
 const queryTypes = {
   COMPARISON_TO_A_LITERAL: "To Literal Comparison",
   COMPARISON_TO_ANOTHER_VARIABLE: "To Variable Comparison",
   REGEX_TEST: "To Regex Test",
 };
-
-// const queryPlan = {
-//   1: "to_comp",
-//   2: "to_length_comp",
-//   3: {
-//     1: "to_regex",
-//     2: { run: "get_regex_vars", if_results_for: "to_regex" },
-//   },
-// };
 
 function createDatabase(source) {
   if (!fs.existsSync(codeqlDirectory)) {

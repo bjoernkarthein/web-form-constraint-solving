@@ -58,8 +58,7 @@ async function analyseTraces(traces) {
 
   const sourceDir = perpareForCodeQLQueries(allTraces);
   runQueries(pointsOfInterest, sourceDir);
-  const magicValueExpressions = pointsOfInterest.map((p) => p.expression);
-  return extractConstraintCandidates(magicValueExpressions);
+  return extractConstraintCandidates();
 }
 
 function processTraces(allTraces) {

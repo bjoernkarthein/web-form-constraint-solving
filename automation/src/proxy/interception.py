@@ -65,11 +65,14 @@ class NetworkInterceptor:
 
         For each HTML file a script tag is added to enable access of common methods for dynamic analysis.
         """
+
         content_type = response.headers["Content-Type"]
         if content_type == None:
             return
 
-        if content_type.startswith("application/javascript"):
+        if content_type.startswith("application/javascript") or content_type.startswith(
+            "text/javascript"
+        ):
             if request.url.startswith(f"{service_base_url}/static/"):
                 return
 

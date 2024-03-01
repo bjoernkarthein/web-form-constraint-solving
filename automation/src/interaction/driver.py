@@ -98,6 +98,8 @@ class TestAutomationDriver:
         load_page(self.__driver, self.__url)
         interceptor.scan_for_form_submission()
 
+        # self.__exit()
+
         html_input_specifications = self.__analyse_html(self.__driver.page_source)
         self.__start_constraint_extraction(html_input_specifications, interceptor)
 

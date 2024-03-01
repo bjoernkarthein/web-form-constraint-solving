@@ -32,8 +32,7 @@ class ConstraintCandidateType(str, Enum):
     LITERAL_COMPARISON = "LiteralComp"
     VARIABLE_LENGTH_COMPARISON = "VarLengthComp"
     LITERAL_LENGTH_COMPARISON = "LiteralLengthComp"
-    REGEX_TEST = "RegExTest"
-    STRING_MATCH = "StringMatch"
+    PATTERN_TEST = "PatternTest"
 
 
 class ConstraintOtherValueType(str, Enum):
@@ -66,10 +65,8 @@ class ConstraintCandidate:
                 return VarCompCandidate(
                     json, ConstraintCandidateType.VARIABLE_LENGTH_COMPARISON
                 )
-            case ConstraintCandidateType.REGEX_TEST.value:
-                return PatternMatchCandidate(json, ConstraintCandidateType.REGEX_TEST)
-            case ConstraintCandidateType.STRING_MATCH.value:
-                return PatternMatchCandidate(json, ConstraintCandidateType.STRING_MATCH)
+            case ConstraintCandidateType.PATTERN_TEST.value:
+                return PatternMatchCandidate(json, ConstraintCandidateType.PATTERN_TEST)
             case _:
                 raise ValueError(f"type {constraint_type} not recognized")
 
@@ -439,24 +436,21 @@ class SpecificationBuilder:
                     grammar, formula = self.__handle_literal_comparison_candidate(
                         input_type, grammar, formula, candidate
                     )
-                case ConstraintCandidateType.LITERAL_LENGTH_COMPARISON.value:
-                    grammar, formula = (
-                        self.__handle_literal_length_comparison_candidate(
-                            input_type, grammar, formula, candidate
-                        )
-                    )
+                # case ConstraintCandidateType.LITERAL_LENGTH_COMPARISON.value:
+                #     grammar, formula = (
+                #         self.__handle_literal_length_comparison_candidate(
+                #             input_type, grammar, formula, candidate
+                #         )
+                #     )
                 case ConstraintCandidateType.VARIABLE_COMPARISON.value:
                     grammar, formula = self.__handle_var_comparison_candidate(
                         grammar, formula, candidate
                     )
-                case ConstraintCandidateType.VARIABLE_LENGTH_COMPARISON.value:
-                    grammar, formula = self.__handle_var_length_comparison_candidate(
-                        grammar, formula, candidate
-                    )
-                case (
-                    ConstraintCandidateType.REGEX_TEST.value
-                    | ConstraintCandidateType.STRING_MATCH.value
-                ):
+                # case ConstraintCandidateType.VARIABLE_LENGTH_COMPARISON.value:
+                #     grammar, formula = self.__handle_var_length_comparison_candidate(
+                #         grammar, formula, candidate
+                #     )
+                case ConstraintCandidateType.PATTERN_TEST.value:
                     grammar, formula = self.__handle_pattern_candidate(
                         input_type, grammar, formula, candidate
                     )
@@ -497,29 +491,22 @@ class SpecificationBuilder:
     def __handle_var_comparison_candidate(
         self, grammar: str, formula: str, candidate: VarCompCandidate
     ) -> Tuple[str, str | None]:
-        if candidate.other_value_type == ConstraintOtherValueType.UNKOWN.value:
-            pass
-        elif candidate.other_value_type == ConstraintOtherValueType.REFERENCE.value:
-            print(self.refrence_to_spec_map.keys())
-            print(candidate.other_value)
+        if candidate.other_value_type == ConstraintOtherValueType.REFERENCE.value:
             other_spec = self.refrence_to_spec_map.get(candidate.other_value)
-            if other_spec is None:
-                # TODO
-                pass
-            else:
+            if other_spec is not None:
                 other_grammar, other_formula = other_spec
                 other_grammar_dict = self.__grammar_string_to_dict(other_grammar)
                 grammar_dict = self.__grammar_string_to_dict(grammar)
-                new_grammar_dict, new_formula = self.__combine_grammars_and_formulas(
+                new_grammar_dict, formula = self.__combine_grammars_and_formulas(
                     grammar_dict,
                     other_grammar_dict,
                     formula,
                     other_formula,
                     candidate.operator,
                 )
-                new_grammar = self.__grammar_dict_to_string(new_grammar_dict)
+                grammar = self.__grammar_dict_to_string(new_grammar_dict)
 
-        return new_grammar, new_formula
+        return formula, grammar
 
     def __handle_var_length_comparison_candidate(
         self, grammar: str, formula: str, candidate: VarCompCandidate
