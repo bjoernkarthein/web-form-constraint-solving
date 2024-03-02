@@ -164,7 +164,7 @@ class FormTester:
         self.__specification_directory = specification_directory
         self.__url = url
 
-    def start_generation(self) -> None:
+    def start_generation(self, setup_function=None) -> None:
         self.__interceptor = NetworkInterceptor(self.__driver)
         if self.__block_successful_submissions:
             self.__interceptor.scan_for_form_submission()
@@ -187,21 +187,24 @@ class FormTester:
         # TODO generate all values in advance for better diversity and just fill in afterwards?
         if self.__valid is None or self.__invalid is None:
             for _ in range(self.__repetitions):
-                clear_value_mapping()
-                load_page(self.__driver, self.__url)
+                self.__prepare_next_form_filling(setup_function)
                 self.__fill_form_with_values_and_submit(generator)
         else:
             for _ in range(self.__valid):
-                clear_value_mapping()
-                load_page(self.__driver, self.__url)
+                self.__prepare_next_form_filling(setup_function)
                 self.__fill_form_with_values_and_submit(generator)
 
             for _ in range(self.__invalid):
-                clear_value_mapping()
-                load_page(self.__driver, self.__url)
+                self.__prepare_next_form_filling(setup_function)
                 self.__fill_form_with_values_and_submit(generator, ValidityEnum.INVALID)
 
         self.__test_monitor.process_saved_submissions()
+
+    def __prepare_next_form_filling(self, setup_function=None) -> None:
+        clear_value_mapping()
+        load_page(self.__driver, self.__url)
+        if setup_function is not None:
+            setup_function()
 
     def __get_submit_element_from_json(self, spec: Dict) -> HTMLElementReference:
         return HTMLElementReference(

@@ -52,7 +52,14 @@ class TestAutomationDriver:
     ...
     """
 
-    def __init__(self, config: dict, url: str = None, profiler=None, file=None) -> None:
+    def __init__(
+        self,
+        config: dict,
+        url: str = None,
+        setup_function=None,
+        profiler=None,
+        file=None,
+    ) -> None:
         self.__pr = None
         if profiler is not None:
             self.__pr = profiler
@@ -66,6 +73,7 @@ class TestAutomationDriver:
         """
         self.__config = config
         self.__url = url
+        self.__setup_function = setup_function
 
         # Options for the chrome webdriver
         chrome_options = webdriver.ChromeOptions()
@@ -97,6 +105,9 @@ class TestAutomationDriver:
 
         load_page(self.__driver, self.__url)
         interceptor.scan_for_form_submission()
+
+        if self.__setup_function is not None:
+            self.__setup_function(self)
 
         # self.__exit()
 
