@@ -3,6 +3,10 @@ const op_path = require("path");
 function getLocation(path, filePath) {
   const location = path.node.loc;
 
+  if (!location) {
+    return {};
+  }
+
   const start = {
     line: location.start.line,
     column: location.start.column,
@@ -29,6 +33,7 @@ const toFilePath = (filePath) =>
   filePath.split(op_path.sep).join(op_path.posix.sep);
 
 const toExpressionString = (expression) =>
+  expression &&
   expression.length > 0 &&
   ((expression[0] == "'" && expression[expression.length - 1] == "'") ||
     (expression[0] == '"' && expression[expression.length - 1] == '"'))

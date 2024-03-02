@@ -9,21 +9,22 @@ module.exports = function functionTracePlugin() {
       if (!path.node.loc) {
         return;
       }
-
       const code = `
       sendLog('NAMED_FUNCTION_CALL', ${getCallStatement(path)}, '${toFilePath(
         state.filename
       )}', ${getLocation(path, toFilePath(state.filename))}, 1);`;
 
-      const ast = template.ast(code);
-      path.get("body").unshiftContainer("body", ast);
+      try {
+        const ast = template.ast(code);
+        path.get("body").unshiftContainer("body", ast);
+      } catch (e) {
+        // Do nothing
+      }
     },
-
     FunctionExpression(path, state) {
       if (!path.node.loc) {
         return;
       }
-
       const code = `
       sendLog('UNNAMED_FUNCTION_CALL', ${getExpressionStatement(
         path
@@ -32,8 +33,12 @@ module.exports = function functionTracePlugin() {
         toFilePath(state.filename)
       )}, 1);`;
 
-      const ast = template.ast(code);
-      path.get("body").unshiftContainer("body", ast);
+      try {
+        const ast = template.ast(code);
+        path.get("body").unshiftContainer("body", ast);
+      } catch (e) {
+        // Do nothing
+      }
     },
   };
   return { visitor: FunctionVisitor };
@@ -55,7 +60,7 @@ function getCallStatement(path) {
 
 function getExpressionStatement(path) {
   if (path.parent.type === "CallExpression") {
-    const property = path.parent.callee.property;
+    const property = path.parent.callee.property || { name: "unkown" };
     const params = path.parent.arguments;
 
     let paramList = [];
@@ -74,6 +79,5 @@ function getExpressionStatement(path) {
     return `{ property: "${property.name}", args: [ ${paramList.join(", ")} ]}`;
   }
 
-  // TODO: what in any other case?
-  return "";
+  return "{}";
 }

@@ -9,7 +9,6 @@ module.exports = function conditionalResolvePlugin() {
       if (!path.node.loc) {
         return;
       }
-
       let args = {};
       const test = path.node.test;
       let operator, argument, left, right;
@@ -17,7 +16,6 @@ module.exports = function conditionalResolvePlugin() {
         left = test.left;
         right = test.right;
         operator = test.operator;
-
         args = `{
           type: "binary",
           left: {
@@ -34,7 +32,6 @@ module.exports = function conditionalResolvePlugin() {
       } else if (path.node.test.type === "UnaryExpression") {
         argument = test.argument;
         operator = test.operator;
-
         args = `{
           type: "unary",
           operator: ${JSON.stringify(operator)},
@@ -53,27 +50,27 @@ module.exports = function conditionalResolvePlugin() {
           }
         }`;
       }
-
       const code = `
         sendLog('CONDITIONAL_STATEMENT', ${args}, '${toFilePath(
         state.filename
       )}', ${getLocation(path, toFilePath(state.filename))}, 1);`;
 
-      const ast = template.ast(code);
-      path.insertBefore(ast);
+      try {
+        const ast = template.ast(code);
+        path.getStatementParent().insertBefore(ast);
+      } catch (e) {
+        // Do Nothing instead
+      }
     },
-
     ConditionalExpression(path, state) {
       if (!path.node.loc) {
         return;
       }
-
       if (path.node.test.type === "BinaryExpression") {
         const test = path.node.test;
         const left = test.left;
         const right = test.right;
         const operator = test.operator;
-
         const args = `{
           type: "binary",
           left: {
@@ -87,14 +84,17 @@ module.exports = function conditionalResolvePlugin() {
           },
           test: ${generator(test).code},
         }`;
-
         const code = `
         sendLog('CONDITIONAL_EXPRESSION', ${args}, '${toFilePath(
           state.filename
         )}', ${getLocation(path, toFilePath(state.filename))}, 1);`;
 
-        const ast = template.ast(code);
-        path.getStatementParent().insertBefore(ast);
+        try {
+          const ast = template.ast(code);
+          path.getStatementParent().insertBefore(ast);
+        } catch (e) {
+          // Do Nothing instead
+        }
       }
     },
   };

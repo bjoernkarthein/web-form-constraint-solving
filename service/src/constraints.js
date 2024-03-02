@@ -21,15 +21,17 @@ const magicValueToReferenceMap = new Map();
 const expressionToFieldMap = new Map();
 
 function hasValue(object, value) {
-  for (const elem of Object.values(object)) {
-    if (typeof elem === "string") {
-      if (elem === value) {
-        return [true, object];
-      }
-    } else if (typeof elem === "object") {
-      const [result, object] = hasValue(elem, value);
-      if (result) {
-        return [result, object];
+  if (!!object) {
+    for (const elem of Object.values(object)) {
+      if (typeof elem === "string") {
+        if (elem === value) {
+          return [true, object];
+        }
+      } else if (typeof elem === "object") {
+        const [result, object] = hasValue(elem, value);
+        if (result) {
+          return [result, object];
+        }
       }
     }
   }
