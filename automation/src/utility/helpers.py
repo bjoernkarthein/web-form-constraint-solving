@@ -85,7 +85,11 @@ one_line_text_input_types = [
     InputType.TEL.value,
     InputType.TEXT.value,
 ]
-binary_input_types = [InputType.CHECKBOX.value, InputType.RADIO.value]
+binary_input_types = [
+    InputType.CHECKBOX.value,
+    InputType.RADIO.value,
+    InputType.BUTTON.value,
+]
 non_writable_input_types = [
     InputType.SUBMIT.value,
     InputType.HIDDEN.value,
@@ -194,7 +198,7 @@ def load_page(driver: Chrome, url: str) -> None:
         driver.get(url)
     except InvalidArgumentException:
         print(
-            "The provided url can not be loaded by selenium web driver. Please provide a url of the format http(s)://(www).example.com"
+            f"The provided url '{url}' can not be loaded by selenium web driver. Please provide a url of the format http(s)://(www).example.com"
         )
 
 
@@ -268,6 +272,8 @@ def write_to_web_element_by_reference_with_clear(
         return
 
     match type:
+        case InputType.BUTTON.value:
+            select_button(web_element, value)
         case InputType.CHECKBOX.value:
             write_to_checkbox_with_clear(web_element, value)
         case InputType.DATE.value:
@@ -291,6 +297,11 @@ def write_to_web_element_by_reference_with_clear(
             Action.VALUE_INPUT,
             {"reference": html_element_reference.get_as_dict(), "value": value},
         )
+
+
+def select_button(button: WebElement, value: str) -> None:
+    if int(value):
+        click_web_element(button)
 
 
 def write_to_checkbox_with_clear(checkbox: WebElement, value: str) -> None:

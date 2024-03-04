@@ -392,7 +392,7 @@ class SpecificationBuilder:
                 )
             case _:
                 raise ValueError(
-                    "The provided type does not match any known html input type"
+                    f"The provided type '{html_input_specification.constraints.type}' does not match any known html input type"
                 )
 
         self.refrence_to_spec_map[html_input_specification.reference] = (
@@ -630,7 +630,9 @@ class SpecificationBuilder:
                 grammar, "email", html_constraints.list
             )
         if html_constraints.required is not None:
-            formula = self.__add_to_formula(f"str.len(<start>) >= 3", formula, ISLa.AND)
+            formula = self.__add_to_formula(
+                f"str.len(<start>) >= 3 and str.len(<email>) >= 3", formula, ISLa.AND
+            )
         if html_constraints.minlength is not None:
             formula = self.__add_to_formula(
                 f"str.len(<email>) >= {html_constraints.minlength}",

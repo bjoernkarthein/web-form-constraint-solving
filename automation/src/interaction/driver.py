@@ -104,7 +104,7 @@ class TestAutomationDriver:
             # message_thread.start()
 
         load_page(self.__driver, self.__url)
-        interceptor.scan_for_form_submission()
+        # interceptor.scan_for_form_submission()
 
         if self.__setup_function is not None:
             self.__setup_function(self)

@@ -95,6 +95,8 @@ class NetworkInterceptor:
             name = name.split("?")[0]
         body_string = decode_bytes(response.body)
 
+        print(name)
+
         data = {"name": name, "source": body_string}
         res = requests.post(f"{instrumentation_controller}/instrument", data)
         return res.content
