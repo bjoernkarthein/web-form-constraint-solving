@@ -37,6 +37,8 @@ from src.utility.helpers import (
 chrome_driver_path = "chromedriver/windows/chromedriver.exe"
 # chrome_driver_path = "chromedriver/linux/chromedriver"
 chrome_driver_abs_path = os.path.abspath(chrome_driver_path)
+disable_csp_extension_path = "chromedriver/chrome-csp-disable.crx"
+disable_csp_extension_path = os.path.abspath(disable_csp_extension_path)
 
 
 """
@@ -77,6 +79,7 @@ class TestAutomationDriver:
 
         # Options for the chrome webdriver
         chrome_options = webdriver.ChromeOptions()
+        # chrome_options.add_extension(disable_csp_extension_path)
         chrome_options.add_experimental_option("excludeSwitches", ["enable-logging"])
         chrome_options.add_argument("--lang=en")
 
