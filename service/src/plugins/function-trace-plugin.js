@@ -10,9 +10,12 @@ module.exports = function functionTracePlugin() {
         return;
       }
       const code = `
-      sendLog('NAMED_FUNCTION_CALL', ${getCallStatement(path)}, '${toFilePath(
-        state.filename
-      )}', ${getLocation(path, toFilePath(state.filename))}, 1);`;
+      b0aed879_987c_461b_af34_c9c06fe3ed46('NAMED_FUNCTION_CALL', ${getCallStatement(
+        path
+      )}, '${toFilePath(state.filename)}', ${getLocation(
+        path,
+        toFilePath(state.filename)
+      )}, 1);`;
 
       try {
         const ast = template.ast(code);
@@ -26,7 +29,7 @@ module.exports = function functionTracePlugin() {
         return;
       }
       const code = `
-      sendLog('UNNAMED_FUNCTION_CALL', ${getExpressionStatement(
+      b0aed879_987c_461b_af34_c9c06fe3ed46('UNNAMED_FUNCTION_CALL', ${getExpressionStatement(
         path
       )}, '${toFilePath(state.filename)}', ${getLocation(
         path,

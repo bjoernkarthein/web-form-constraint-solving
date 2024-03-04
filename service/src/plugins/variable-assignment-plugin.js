@@ -22,7 +22,7 @@ module.exports = function assignmentPlugin() {
         }
         const expression = valueCode.code;
         const code = `
-        sendLog('VARIABLE_DECLARATION', { name: "${name}", expression: ${toExpressionString(
+        b0aed879_987c_461b_af34_c9c06fe3ed46('VARIABLE_DECLARATION', { name: "${name}", expression: ${toExpressionString(
           expression
         )}, value: ${expression} }, '${toFilePath(
           state.filename
@@ -51,7 +51,7 @@ module.exports = function assignmentPlugin() {
     //   let value = path.node.right;
     //   const valueCode = generator(value);
     //   const expression = valueCode.code;
-    //   const code = `sendLog('VARIABLE_ASSIGNMENT', { name: "${name}", expression: ${toExpressionString(
+    //   const code = `b0aed879_987c_461b_af34_c9c06fe3ed46('VARIABLE_ASSIGNMENT', { name: "${name}", expression: ${toExpressionString(
     //     expression
     //   )}, value: ${expression} }, '${toFilePath(
     //     state.filename

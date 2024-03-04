@@ -26,8 +26,12 @@ describe("Instrument files correctly", () => {
     let fileContent = fs.readFileSync(filePath, "utf-8");
     fileContent = fileContent.replace(/(\r\n|\n|\r)/gm, "");
 
-    expect(fileContent).toContain("sendLog('VARIABLE_DECLARATION'");
-    expect(fileContent).toContain("sendLog('VARIABLE_ASSIGNMENT'");
+    expect(fileContent).toContain(
+      "b0aed879_987c_461b_af34_c9c06fe3ed46('VARIABLE_DECLARATION'"
+    );
+    expect(fileContent).toContain(
+      "b0aed879_987c_461b_af34_c9c06fe3ed46('VARIABLE_ASSIGNMENT'"
+    );
   });
 
   test("instrument simple file", async () => {
@@ -45,6 +49,8 @@ describe("Instrument files correctly", () => {
     const filePath = path.join(__dirname, "..", "instrumented", name);
     const fileContent = fs.readFileSync(filePath, "utf-8");
 
-    expect(fileContent).toContain("sendLog('VARIABLE_DECLARATION'");
+    expect(fileContent).toContain(
+      "b0aed879_987c_461b_af34_c9c06fe3ed46('VARIABLE_DECLARATION'"
+    );
   });
 });

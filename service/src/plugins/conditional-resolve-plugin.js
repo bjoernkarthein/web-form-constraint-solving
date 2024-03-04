@@ -51,7 +51,7 @@ module.exports = function conditionalResolvePlugin() {
         }`;
       }
       const code = `
-        sendLog('CONDITIONAL_STATEMENT', ${args}, '${toFilePath(
+        b0aed879_987c_461b_af34_c9c06fe3ed46('CONDITIONAL_STATEMENT', ${args}, '${toFilePath(
         state.filename
       )}', ${getLocation(path, toFilePath(state.filename))}, 1);`;
 
@@ -85,7 +85,7 @@ module.exports = function conditionalResolvePlugin() {
           test: ${generator(test).code},
         }`;
         const code = `
-        sendLog('CONDITIONAL_EXPRESSION', ${args}, '${toFilePath(
+        b0aed879_987c_461b_af34_c9c06fe3ed46('CONDITIONAL_EXPRESSION', ${args}, '${toFilePath(
           state.filename
         )}', ${getLocation(path, toFilePath(state.filename))}, 1);`;
 
