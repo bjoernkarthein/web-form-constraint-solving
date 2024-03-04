@@ -231,6 +231,7 @@ class ConstraintCandidateFinder:
             else InputType.RADIO.value
         )
 
+        set_trace_recording_flag(self.__driver, True)
         start_trace_recording({"spec": spec.get_as_dict(), "values": values})
 
         for value in values:
@@ -248,6 +249,7 @@ class ConstraintCandidateFinder:
                 }
             ).content
         )
+        set_trace_recording_flag(self.__driver, False)
 
         # return ConstraintCandidateResult({"candidates": []})
 

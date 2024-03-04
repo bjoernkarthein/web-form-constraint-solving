@@ -202,6 +202,13 @@ def load_page(driver: Chrome, url: str) -> None:
         )
 
 
+def set_trace_recording_flag(driver: Chrome, value: bool) -> None:
+    boolean = "false"
+    if value:
+        boolean = "true"
+    driver.execute_script(f"c989a310_3606_4512_bee4_2bc00a61e8ac = {boolean}")
+
+
 def clear_web_element(web_element: WebElement) -> None:
     try:
         web_element.clear()
