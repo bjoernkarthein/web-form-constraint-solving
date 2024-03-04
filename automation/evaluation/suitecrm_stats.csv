@@ -1,0 +1,913 @@
+ncalls,tottime,percall,cumtime,percall,filename:lineno(function)
+1,0.000,0.000,23.692,23.692,C:\Users\Björn\Documents\git\invariant-based-web-form-testing\automation\src\interaction\driver.py:94(run_analysis)
+1,0.000,0.000,23.052,23.052,C:\Users\Björn\Documents\git\invariant-based-web-form-testing\automation\src\interaction\driver.py:134(__analyse_html)
+1,0.000,0.000,20.749,20.749,C:\Users\Björn\Documents\git\invariant-based-web-form-testing\automation\src\analysis\html_analysis.py:278(select_form)
+1,20.732,20.732,20.732,20.732,{built-in method builtins.input}
+1,0.000,0.000,6.974,6.974,C:\Users\Björn\Documents\git\invariant-based-web-form-testing\automation\evaluation\suitecrm.py:17(setup)
+4,6.511,1.628,6.511,1.628,{built-in method time.sleep}
+3,0.000,0.000,2.537,0.846,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\socket.py:808(create_connection)
+2,0.000,0.000,2.536,1.268,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\common\service.py:112(is_connectable)
+2,0.000,0.000,2.536,1.268,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\common\utils.py:94(is_connectable)
+6,2.535,0.422,2.535,0.422,{method 'connect' of '_socket.socket' objects}
+1,0.000,0.000,2.298,2.298,C:\Users\Björn\Documents\git\invariant-based-web-form-testing\automation\src\interaction\driver.py:284(__exit)
+1,0.000,0.000,2.298,2.298,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\webdriver.py:65(quit)
+1,0.000,0.000,2.203,2.203,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\chromium\webdriver.py:185(quit)
+1,0.000,0.000,2.131,2.131,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\common\service.py:130(stop)
+1,0.000,0.000,2.131,2.131,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\common\service.py:117(send_remote_shutdown_command)
+18,0.000,0.000,2.075,0.115,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\http\client.py:1330(getresponse)
+18,0.000,0.000,2.075,0.115,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\http\client.py:311(begin)
+18,0.000,0.000,2.071,0.115,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\http\client.py:278(_read_status)
+90,0.000,0.000,2.071,0.023,{method 'readline' of '_io.BufferedReader' objects}
+20,0.000,0.000,2.070,0.104,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\socket.py:691(readinto)
+20,2.070,0.104,2.070,0.104,{method 'recv_into' of '_socket.socket' objects}
+17,0.000,0.000,2.000,0.118,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\webdriver.py:326(execute)
+17,0.000,0.000,1.999,0.118,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\remote_connection.py:272(execute)
+17,0.000,0.000,1.998,0.118,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\remote_connection.py:292(_request)
+17,0.000,0.000,1.996,0.117,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\request.py:58(request)
+17,0.000,0.000,1.995,0.117,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\poolmanager.py:353(urlopen)
+17,0.000,0.000,1.992,0.117,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\connectionpool.py:522(urlopen)
+17,0.000,0.000,1.987,0.117,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\connectionpool.py:361(_make_request)
+15,0.000,0.000,1.918,0.128,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\request.py:98(request_encode_body)
+2,0.000,0.000,1.669,0.834,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\support\wait.py:71(until)
+1,0.000,0.000,1.361,1.361,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\webdriver.py:185(__init__)
+1,0.000,0.000,1.346,1.346,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\chrome\webdriver.py:29(__init__)
+1,0.000,0.000,1.345,1.345,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\chromium\webdriver.py:28(__init__)
+1,0.000,0.000,0.827,0.827,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\webdriver.py:162(__init__)
+1,0.000,0.000,0.827,0.827,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\webdriver.py:282(start_session)
+2,0.000,0.000,0.785,0.393,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\webdriver.py:353(get)
+1,0.000,0.000,0.616,0.616,C:\Users\Björn\Documents\git\invariant-based-web-form-testing\automation\evaluation\suitecrm.py:38(wait_for_form)
+1,0.000,0.000,0.518,0.518,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\common\service.py:86(start)
+5,0.000,0.000,0.160,0.032,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\support\expected_conditions.py:150(_predicate)
+7,0.000,0.000,0.158,0.023,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\webdriver.py:714(find_element)
+3,0.000,0.000,0.127,0.042,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\webelement.py:382(_execute)
+1,0.000,0.000,0.105,0.105,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\request.py:139(urlopen)
+1,0.000,0.000,0.104,0.104,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\request.py:500(open)
+1,0.000,0.000,0.104,0.104,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\request.py:529(_open)
+2,0.000,0.000,0.104,0.052,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\request.py:489(_call_chain)
+1,0.000,0.000,0.104,0.104,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\request.py:1376(http_open)
+1,0.000,0.000,0.104,0.104,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\request.py:1307(do_open)
+2,0.000,0.000,0.099,0.050,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\webelement.py:194(send_keys)
+1,0.000,0.000,0.096,0.096,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\server.py:77(shutdown)
+1,0.000,0.000,0.095,0.095,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\storage.py:316(cleanup)
+1,0.000,0.000,0.095,0.095,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\storage.py:279(clear_requests)
+114,0.001,0.000,0.094,0.001,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\shutil.py:687(rmtree)
+114,0.005,0.000,0.082,0.001,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\shutil.py:595(_rmtree_unsafe)
+2,0.000,0.000,0.078,0.039,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\request.py:82(request_encode_url)
+1,0.000,0.000,0.071,0.071,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\webdriver.py:459(quit)
+226,0.052,0.000,0.052,0.000,{built-in method nt.unlink}
+1,0.000,0.000,0.028,0.028,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\webelement.py:92(click)
+2,0.000,0.000,0.024,0.012,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\support\expected_conditions.py:174(_element_if_visible)
+2,0.000,0.000,0.024,0.012,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\webelement.py:247(is_displayed)
+2,0.000,0.000,0.024,0.012,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\webdriver.py:385(execute_script)
+115,0.019,0.000,0.019,0.000,{built-in method nt.rmdir}
+4,0.017,0.004,0.017,0.004,{built-in method builtins.print}
+1,0.000,0.000,0.015,0.015,C:\Users\Björn\Documents\git\invariant-based-web-form-testing\automation\src\utility\helpers.py:196(load_page)
+1,0.000,0.000,0.015,0.015,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\webdriver.py:37(_setup_backend)
+1,0.000,0.000,0.015,0.015,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\backend.py:9(create)
+1,0.000,0.000,0.015,0.015,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\server.py:23(__init__)
+18,0.000,0.000,0.014,0.001,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\http\client.py:1279(request)
+18,0.000,0.000,0.014,0.001,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\http\client.py:1284(_send_request)
+17,0.000,0.000,0.012,0.001,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\connection.py:231(request)
+114,0.000,0.000,0.011,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\shutil.py:576(_rmtree_islink)
+114,0.011,0.000,0.011,0.000,{built-in method nt.lstat}
+18,0.000,0.000,0.011,0.001,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\http\client.py:1266(endheaders)
+18,0.000,0.000,0.011,0.001,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\http\client.py:1028(_send_output)
+33,0.000,0.000,0.011,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\http\client.py:967(send)
+33,0.009,0.000,0.009,0.000,{method 'sendall' of '_socket.socket' objects}
+1,0.000,0.000,0.008,0.008,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\webdriver.py:438(page_source)
+1,0.000,0.000,0.007,0.007,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\common\service.py:185(_start_process)
+1,0.000,0.000,0.007,0.007,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\subprocess.py:758(__init__)
+1,0.000,0.000,0.007,0.007,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\subprocess.py:1354(_execute_child)
+1,0.007,0.007,0.007,0.007,{built-in method _winapi.CreateProcess}
+114,0.006,0.000,0.006,0.000,{built-in method nt.scandir}
+1,0.000,0.000,0.004,0.004,C:\Users\Björn\Documents\git\invariant-based-web-form-testing\automation\src\analysis\html_analysis.py:275(__init__)
+1,0.000,0.000,0.004,0.004,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\lxml\html\__init__.py:858(fromstring)
+1,0.004,0.004,0.004,0.004,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\lxml\html\__init__.py:756(document_fromstring)
+18,0.000,0.000,0.003,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\http\client.py:224(parse_headers)
+4,0.003,0.001,0.003,0.001,{method 'bind' of '_socket.socket' objects}
+1,0.000,0.000,0.003,0.003,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\server\server.py:35(__init__)
+1,0.000,0.000,0.003,0.003,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\net\tcp.py:578(__init__)
+1,0.000,0.000,0.003,0.003,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\storage.py:22(create)
+1,0.000,0.000,0.003,0.003,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\storage.py:58(__init__)
+34,0.000,0.000,0.003,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\util\url.py:333(parse_url)
+18,0.000,0.000,0.003,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\email\parser.py:59(parsestr)
+4,0.000,0.000,0.003,0.001,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\socket.py:938(getaddrinfo)
+4,0.003,0.001,0.003,0.001,{built-in method _socket.getaddrinfo}
+18,0.000,0.000,0.003,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\email\parser.py:41(parse)
+1,0.000,0.000,0.003,0.003,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\server\config.py:33(__init__)
+1,0.000,0.000,0.003,0.003,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\server\config.py:43(configure)
+1,0.000,0.000,0.003,0.003,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\certs.py:198(from_store)
+68,0.002,0.000,0.002,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\util\url.py:210(_encode_invalid_chars)
+17,0.000,0.000,0.002,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\response.py:632(from_httplib)
+3,0.000,0.000,0.002,0.001,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\addonmanager.py:164(add)
+5,0.000,0.000,0.002,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\addonmanager.py:138(register)
+25,0.002,0.000,0.002,0.000,{built-in method nt.stat}
+117,0.001,0.000,0.002,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\connection.py:221(putheader)
+17,0.000,0.000,0.002,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\connection.py:208(putrequest)
+18,0.000,0.000,0.002,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\email\feedparser.py:173(feed)
+18,0.000,0.000,0.002,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\http\client.py:1082(putrequest)
+2,0.000,0.000,0.002,0.001,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\os.py:200(makedirs)
+36,0.000,0.000,0.002,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\email\feedparser.py:178(_call_parse)
+36,0.000,0.000,0.002,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\email\feedparser.py:218(_parsegen)
+5,0.000,0.000,0.002,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\command.py:148(collect_commands)
+2,0.001,0.001,0.001,0.001,{built-in method nt.mkdir}
+1,0.000,0.000,0.001,0.001,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\storage.py:331(_cleanup_old_dirs)
+17,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\response.py:200(__init__)
+16,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\command.py:166(add)
+16,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\command.py:61(__init__)
+113,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\storage.py:313(_get_request_dir)
+296/43,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\copy.py:128(deepcopy)
+7,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\optmanager.py:222(update)
+7,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\optmanager.py:199(update_known)
+58,0.000,0.000,0.001,0.000,{built-in method builtins.next}
+4/2,0.000,0.000,0.001,0.001,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\copy.py:227(_deepcopy_dict)
+76,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\optmanager.py:24(__init__)
+134,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\ntpath.py:103(join)
+29,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\contextlib.py:130(__enter__)
+1,0.000,0.000,0.001,0.001,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\certs.py:178(load_dhparam)
+2,0.000,0.000,0.001,0.001,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\optmanager.py:110(rollback)
+15,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\genericpath.py:53(getmtime)
+38,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\optmanager.py:99(add_option)
+1,0.001,0.001,0.001,0.001,{built-in method _openssl.PEM_read_bio_DHparams}
+1,0.000,0.000,0.001,0.001,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\asyncio\events.py:780(new_event_loop)
+1,0.000,0.000,0.001,0.001,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\OpenSSL\crypto.py:2010(load_certificate)
+17,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\response.py:534(read)
+1,0.000,0.000,0.001,0.001,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\asyncio\events.py:667(new_event_loop)
+1,0.000,0.000,0.001,0.001,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py:312(__init__)
+38,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\optmanager.py:70(__deepcopy__)
+1,0.001,0.001,0.001,0.001,{built-in method _openssl.PEM_read_bio_X509}
+17,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\inspect.py:3248(signature)
+17,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\inspect.py:2994(from_callable)
+1,0.000,0.000,0.001,0.001,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\connection.py:204(connect)
+1,0.000,0.000,0.001,0.001,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\connection.py:161(_new_conn)
+34/17,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\inspect.py:2374(_signature_from_callable)
+1,0.000,0.000,0.001,0.001,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\util\connection.py:37(create_connection)
+17,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\connectionpool.py:244(_get_conn)
+1,0.000,0.000,0.001,0.001,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\asyncio\proactor_events.py:624(__init__)
+17,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\util\url.py:323(_encode_target)
+17,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\poolmanager.py:225(connection_from_host)
+1,0.000,0.000,0.001,0.001,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\http\client.py:938(connect)
+2411,0.000,0.000,0.001,0.000,{built-in method builtins.isinstance}
+226,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\shutil.py:567(_rmtree_isdir)
+18,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\json\__init__.py:183(dumps)
+1,0.000,0.000,0.001,0.001,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\options.py:17(__init__)
+121,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\http\client.py:1238(putheader)
+6,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\genericpath.py:16(exists)
+17,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\poolmanager.py:248(connection_from_context)
+9,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\socket.py:498(close)
+1,0.000,0.000,0.001,0.001,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\asyncio\proactor_events.py:761(_make_self_pipe)
+1,0.000,0.000,0.001,0.001,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\socket.py:615(socketpair)
+1,0.000,0.000,0.001,0.001,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\threading.py:916(start)
+276,0.001,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\ntpath.py:150(splitdrive)
+8,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\socket.py:494(_real_close)
+122/82,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\utils\typecheck.py:28(check_option_type)
+8,0.001,0.000,0.001,0.000,{function socket.close at 0x00000272B1680040}
+18,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\json\encoder.py:182(encode)
+72,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\email\message.py:564(get_content_type)
+1,0.000,0.000,0.001,0.001,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\request.py:319(__init__)
+1,0.000,0.000,0.001,0.001,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\request.py:569(build_opener)
+1,0.000,0.000,0.001,0.001,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\threading.py:589(wait)
+1,0.000,0.000,0.001,0.001,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\threading.py:288(wait)
+42,0.001,0.000,0.001,0.000,{method 'acquire' of '_thread.lock' objects}
+17,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\json\__init__.py:299(loads)
+17,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\utils.py:23(dump_json)
+18,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\parse.py:372(urlparse)
+1,0.000,0.000,0.001,0.001,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\request.py:343(full_url)
+14,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\utils.py:27(load_json)
+1,0.000,0.000,0.001,0.001,C:\Users\Björn\Documents\git\invariant-based-web-form-testing\automation\src\analysis\html_analysis.py:306(extract_static_constraints)
+1,0.000,0.000,0.001,0.001,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\request.py:374(_parse)
+22,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\re.py:288(_compile)
+1,0.000,0.000,0.001,0.001,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\webelement.py:44(_load_js)
+2,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\re.py:249(compile)
+2,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\pkgutil.py:599(get_data)
+17,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\json\decoder.py:332(decode)
+16,0.000,0.000,0.001,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\util\connection.py:11(is_connection_dropped)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\common\driver_finder.py:38(get_path)
+16/10,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\addonmanager.py:227(invoke_addon)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\sre_compile.py:783(compile)
+15,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\textwrap.py:376(wrap)
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\_collections.py:141(__init__)
+143,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\email\message.py:462(get)
+2,0.000,0.000,0.000,0.000,<frozen importlib._bootstrap_external>:1070(get_data)
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\inspect.py:2279(_signature_from_function)
+15,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\textwrap.py:350(wrap)
+6,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\addonmanager.py:61(add_option)
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\response.py:486(_fp_read)
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\http\client.py:248(__init__)
+10,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\request.py:438(add_handler)
+16,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\util\wait.py:141(wait_for_read)
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\email\feedparser.py:139(__init__)
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\json\decoder.py:343(raw_decode)
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\email\feedparser.py:471(_parse_headers)
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\json\encoder.py:204(iterencode)
+76,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\textwrap.py:422(dedent)
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\email\feedparser.py:184(close)
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\http\client.py:450(read)
+54,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\email\message.py:588(get_content_maintype)
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\parse.py:437(urlsplit)
+21,0.000,0.000,0.000,0.000,{method 'settimeout' of '_socket.socket' objects}
+16,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\util\wait.py:70(select_wait_for_socket)
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\http\client.py:412(_close_conn)
+39,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\blinker\base.py:272(send)
+18,0.000,0.000,0.000,0.000,{method 'close' of '_io.BufferedReader' objects}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\shutil.py:1431(which)
+121,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\_collections_abc.py:816(get)
+2879,0.000,0.000,0.000,0.000,{method 'decode' of 'bytes' objects}
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\socket.py:302(makefile)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\shutil.py:1426(_access_check)
+226,0.000,0.000,0.000,0.000,{method 'stat' of 'nt.DirEntry' objects}
+35,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\util\url.py:274(_normalize_host)
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\_collections.py:231(extend)
+16,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\util\wait.py:42(_retry_on_intr)
+238,0.000,0.000,0.000,0.000,{method 'format' of 'str' objects}
+75/17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\webdriver.py:295(_wrap_value)
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\_collections.py:279(__repr__)
+114,0.000,0.000,0.000,0.000,{method 'sub' of 're.Pattern' objects}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\utils.py:132(extract_cert_and_key)
+123,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\abc.py:117(__instancecheck__)
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\poolmanager.py:79(_default_key_normalizer)
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\socket.py:768(close)
+11,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\socket.py:220(__init__)
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\poolmanager.py:263(connection_from_pool_key)
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\http\client.py:417(close)
+231,0.000,0.000,0.000,0.000,{method 'match' of 're.Pattern' objects}
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\connectionpool.py:283(_put_conn)
+133,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\optmanager.py:43(default)
+142,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\email\_policybase.py:311(header_fetch_parse)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\sre_parse.py:944(parse)
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\email\feedparser.py:101(push)
+60,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\optmanager.py:47(current)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\parse.py:1033(_splittype)
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\queue.py:122(put)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\parse.py:1054(_splithost)
+38,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\optmanager.py:61(has_changed)
+6/2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\sre_parse.py:436(_parse_sub)
+123,0.000,0.000,0.000,0.000,{built-in method _abc._abc_instancecheck}
+1413,0.000,0.000,0.000,0.000,{method 'startswith' of 'str' objects}
+15,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\textwrap.py:241(_wrap_chunks)
+6/2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\sre_parse.py:494(_parse)
+2972,0.000,0.000,0.000,0.000,{built-in method builtins.ord}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\chrome\service.py:35(__init__)
+2,0.000,0.000,0.000,0.000,{built-in method io.open_code}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\chromium\service.py:35(__init__)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\common\service.py:50(__init__)
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\util\response.py:40(assert_header_parsing)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\common\utils.py:32(free_port)
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\socket.py:488(_decref_socketios)
+142,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\email\_policybase.py:281(_sanitize_header)
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\http\client.py:206(_read_headers)
+72,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\logging\__init__.py:1455(debug)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\master.py:110(shutdown)
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\remote_connection.py:90(get_remote_connection_headers)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\remote_connection.py:349(close)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\poolmanager.py:216(clear)
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\string.py:104(substitute)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\_collections.py:92(clear)
+34,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\inspect.py:2916(__init__)
+34,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\connectionpool.py:324(_get_timeout)
+19,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\queue.py:154(get)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\OpenSSL\crypto.py:3005(load_privatekey)
+15,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\textwrap.py:344(_split_chunks)
+34,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\util\url.py:244(_remove_path_dot_segments)
+108,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\email\feedparser.py:128(__next__)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\poolmanager.py:174(<lambda>)
+20,0.000,0.000,0.000,0.000,{method 'read' of '_io.BufferedReader' objects}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\common\service.py:147(_terminate_process)
+7,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\addonmanager.py:118(_configure_all)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\connectionpool.py:483(close)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\sre_compile.py:622(_code)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\asyncio\tasks.py:873(run_coroutine_threadsafe)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\chromium\remote_connection.py:23(__init__)
+1,0.000,0.000,0.000,0.000,{built-in method _openssl.PEM_read_bio_PrivateKey}
+7,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\addonmanager.py:249(trigger)
+74,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\logging\__init__.py:1724(isEnabledFor)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\addons\upstream_auth.py:20(load)
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\errorhandler.py:101(check_response)
+1231/1221,0.000,0.000,0.000,0.000,{built-in method builtins.len}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\Documents\git\invariant-based-web-form-testing\automation\src\proxy\interception.py:39(instrument_files)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\addons\streambodies.py:12(load)
+149,0.000,0.000,0.000,0.000,{built-in method builtins.any}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\remote_connection.py:155(__init__)
+3,0.000,0.000,0.000,0.000,{method '__exit__' of '_io._IOBase' objects}
+54,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\email\_policybase.py:293(header_source_parse)
+34,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\util\timeout.py:181(clone)
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\util\url.py:300(<listcomp>)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\inspect.py:310(response_interceptor)
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\response.py:322(_init_length)
+68,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\_collections.py:302(itermerged)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\http\client.py:953(close)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\pathlib.py:1092(stat)
+1103,0.000,0.000,0.000,0.000,{method 'lower' of 'str' objects}
+381,0.000,0.000,0.000,0.000,{built-in method builtins.getattr}
+527/526,0.000,0.000,0.000,0.000,{method 'encode' of 'str' objects}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py:796(call_soon_threadsafe)
+15,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\textwrap.py:160(_split)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\request.py:795(__init__)
+1,0.000,0.000,0.000,0.000,{built-in method nt.listdir}
+36,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\optmanager.py:166(__getattr__)
+73,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\os.py:675(__getitem__)
+29,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\contextlib.py:279(helper)
+528,0.000,0.000,0.000,0.000,{built-in method builtins.hasattr}
+210,0.000,0.000,0.000,0.000,{method 'search' of 're.Pattern' objects}
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\util\url.py:305(_idna_encode)
+24,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\json\encoder.py:413(_iterencode)
+868,0.000,0.000,0.000,0.000,{method 'get' of 'dict' objects}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\request.py:2710(getproxies)
+37/9,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\abc.py:121(__subclasscheck__)
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\inspect.py:1967(_signature_bound_method)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\utils.py:24(get_upstream_proxy)
+37/9,0.000,0.000,0.000,0.000,{built-in method _abc._abc_subclasscheck}
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\email\message.py:451(items)
+72,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\email\message.py:29(_splitparam)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\asyncio\proactor_events.py:796(_write_to_self)
+65,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\_collections_abc.py:923(__iter__)
+1134,0.000,0.000,0.000,0.000,{method 'append' of 'list' objects}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\master.py:44(__init__)
+1,0.000,0.000,0.000,0.000,{method 'send' of '_socket.socket' objects}
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\genericpath.py:39(isdir)
+10/2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\sre_compile.py:87(_compile)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\subprocess.py:1567(terminate)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\blinker\base.py:106(connect)
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\email\feedparser.py:53(__init__)
+34,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\util\url.py:91(__new__)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\addons\core.py:17(load)
+15,0.000,0.000,0.000,0.000,{built-in method builtins.dir}
+24,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\json\encoder.py:333(_iterencode_dict)
+76,0.000,0.000,0.000,0.000,{method 'findall' of 're.Pattern' objects}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\collections\__init__.py:328(namedtuple)
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\email\message.py:213(get_payload)
+235,0.000,0.000,0.000,0.000,{method 'split' of 'str' objects}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\poolmanager.py:189(_new_pool)
+38,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\threading.py:359(notify)
+108,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\email\feedparser.py:78(readline)
+96,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\_collections.py:156(__getitem__)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\webdriver.py:74(_create_caps)
+1,0.000,0.000,0.000,0.000,{built-in method _winapi.TerminateProcess}
+159,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\email\utils.py:51(_has_surrogates)
+40,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\inspect.py:2633(__init__)
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\email\message.py:459(<listcomp>)
+29,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\contextlib.py:139(__exit__)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\blinker\_utilities.py:75(reference)
+15,0.000,0.000,0.000,0.000,{method 'split' of 're.Pattern' objects}
+36,0.000,0.000,0.000,0.000,{method 'readlines' of '_io._IOBase' objects}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\connectionpool.py:169(__init__)
+35,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\util\timeout.py:102(__init__)
+119,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\packages\six.py:1014(ensure_text)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\blinker\_utilities.py:88(callable_reference)
+451,0.000,0.000,0.000,0.000,{method 'find' of 'str' objects}
+204,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\util\url.py:416(ensure_type)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\addonmanager.py:112(__init__)
+10,0.000,0.000,0.000,0.000,{built-in method _json.encode_basestring_ascii}
+29,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\contextlib.py:102(__init__)
+51,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\_collections.py:215(add)
+465,0.000,0.000,0.000,0.000,{method 'replace' of 'str' objects}
+8,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\ntpath.py:206(split)
+62,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\enum.py:359(__call__)
+40,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\typing.py:1250(__repr__)
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\http\client.py:623(_safe_read)
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\_collections.py:54(__getitem__)
+36,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\email\message.py:120(__init__)
+44/14,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\webdriver.py:313(_unwrap_value)
+234,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\connection.py:223(<genexpr>)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\request.py:2487(getproxies_environment)
+121,0.000,0.000,0.000,0.000,{method 'fullmatch' of 're.Pattern' objects}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\pathlib.py:1285(exists)
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\util\retry.py:468(is_retry)
+73,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\os.py:747(encodekey)
+139,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\http\client.py:1007(_output)
+20,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\re.py:202(sub)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\pathlib.py:957(__new__)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\pathlib.py:1316(is_file)
+6,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\ntpath.py:247(dirname)
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\inspect.py:612(unwrap)
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\util\url.py:306(<listcomp>)
+40,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\threading.py:264(__enter__)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\blinker\_saferef.py:113(__new__)
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\inspect.py:3010(replace)
+68,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\connection.py:237(<genexpr>)
+46,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\blinker\base.py:375(receivers_for)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\pathlib.py:589(_from_parts)
+1,0.000,0.000,0.000,0.000,{built-in method nt.access}
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\email\feedparser.py:70(close)
+36,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\email\feedparser.py:122(pushlines)
+75,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\copy.py:243(_keep_alive)
+2,0.000,0.000,0.000,0.000,{built-in method io.open}
+5,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\addons\core.py:33(configure)
+1,0.000,0.000,0.000,0.000,{built-in method _thread.start_new_thread}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\subprocess.py:1227(_close_pipe_fds)
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\socket.py:679(__init__)
+34,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\response.py:430(_error_catcher)
+130,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\_collections_abc.py:880(__iter__)
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\http\client.py:805(_get_content_length)
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\socket.py:99(_intenum_converter)
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\response.py:374(_init_decoder)
+36,0.000,0.000,0.000,0.000,{function SocketIO.close at 0x00000272B1680A60}
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\pathlib.py:569(_parse_args)
+4,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\blinker\_saferef.py:135(__init__)
+86,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\packages\six.py:991(ensure_str)
+36,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\parse.py:114(_coerce_args)
+1,0.000,0.000,0.000,0.000,{built-in method builtins.eval}
+321,0.000,0.000,0.000,0.000,{method 'strip' of 'str' objects}
+13,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\parse.py:411(_splitnetloc)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py:391(__init__)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\http\client.py:837(__init__)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\subprocess.py:1260(_get_handles)
+68,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\_collections.py:187(__iter__)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\socket.py:286(accept)
+34,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\response.py:686(closed)
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\util\retry.py:448(_is_method_retryable)
+425,0.000,0.000,0.000,0.000,{built-in method nt.fspath}
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\platform.py:901(system)
+499,0.000,0.000,0.000,0.000,{built-in method builtins.id}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\connectionpool.py:223(_new_conn)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\subprocess.py:531(list2cmdline)
+282,0.000,0.000,0.000,0.000,{method 'join' of 'str' objects}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\remote_connection.py:137(_get_connection_manager)
+7,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\blinker\_utilities.py:112(is_coroutine_function)
+60,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\typing.py:185(_type_repr)
+20,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\typing.py:1088(__repr__)
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\parse.py:151(username)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\request.py:2661(getproxies_registry)
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\email\feedparser.py:197(_new_message)
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\response.py:676(close)
+25,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\webdriver.py:306(<genexpr>)
+39,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\threading.py:279(_is_owned)
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\inspect.py:66(get_annotations)
+15,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\typing.py:306(inner)
+40,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\threading.py:267(__exit__)
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\http\client.py:383(_check_close)
+19,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\string.py:110(convert)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\pathlib.py:56(parse_parts)
+1,0.000,0.000,0.000,0.000,{built-in method _openssl.BIO_new_file}
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\sre_compile.py:560(_compile_info)
+51,0.000,0.000,0.000,0.000,{method 'subn' of 're.Pattern' objects}
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\response.py:668(getheader)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\OpenSSL\crypto.py:120(_new_mem_buf)
+195,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\os.py:698(__iter__)
+228,0.000,0.000,0.000,0.000,{built-in method _stat.S_ISDIR}
+7,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\asyncio\coroutines.py:164(iscoroutinefunction)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\request.py:301(request_host)
+89,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\http\client.py:1286(<genexpr>)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\addonmanager.py:191(__str__)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\encodings\__init__.py:71(search_function)
+7,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\threading.py:236(__init__)
+91,0.000,0.000,0.000,0.000,{built-in method __new__ of type object at 0x00007FF905153920}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\typing.py:1138(__getitem__)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\sre_compile.py:292(_optimize_charset)
+175,0.000,0.000,0.000,0.000,{method 'join' of 'bytes' objects}
+15,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\textwrap.py:146(_munge_whitespace)
+9,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\blinker\_utilities.py:54(hashable_identity)
+3,0.000,0.000,0.000,0.000,{method 'listen' of '_socket.socket' objects}
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\poolmanager.py:303(_merge_pool_kwargs)
+54,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\email\message.py:479(set_raw)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\poolmanager.py:171(__init__)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\connection.py:115(__init__)
+17,0.000,0.000,0.000,0.000,{method 'pop' of 'collections.OrderedDict' objects}
+114,0.000,0.000,0.000,0.000,{method '__exit__' of 'nt.ScandirIterator' objects}
+233,0.000,0.000,0.000,0.000,{method 'pop' of 'list' objects}
+73,0.000,0.000,0.000,0.000,{method 'copy' of 'dict' objects}
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\pprint.py:57(pformat)
+30,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\lxml\html\__init__.py:733(lookup)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py:413(__init__)
+62,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\enum.py:678(__new__)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\queue.py:34(__init__)
+37,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\util\queue.py:15(_qsize)
+105,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\util\timeout.py:119(_validate_timeout)
+73,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\os.py:741(check_str)
+114,0.000,0.000,0.000,0.000,{built-in method _stat.S_ISLNK}
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\parse.py:189(_userinfo)
+7,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\inspect.py:308(iscoroutinefunction)
+51,0.000,0.000,0.000,0.000,{method 'setdefault' of 'collections.OrderedDict' objects}
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\response.py:397(_decode)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\threading.py:568(set)
+33,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\copy.py:201(_deepcopy_list)
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\http\client.py:429(flush)
+51,0.000,0.000,0.000,0.000,{method 'count' of 'bytes' objects}
+23,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\types.py:415(get)
+34,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\email\message.py:181(is_multipart)
+14/6,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\sre_parse.py:175(getwidth)
+150,0.000,0.000,0.000,0.000,{built-in method sys.audit}
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\http\client.py:1213(_validate_method)
+1,0.000,0.000,0.000,0.000,{built-in method winreg.OpenKey}
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\email\feedparser.py:210(_pop_message)
+57,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\inspect.py:2965(<genexpr>)
+47,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\sre_parse.py:165(__getitem__)
+7,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\inspect.py:290(_has_code_flag)
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\http\client.py:1222(_validate_path)
+3,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\threading.py:545(__init__)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\typing.py:1147(copy_with)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\util\wait.py:126(wait_for_socket)
+20,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\typing.py:1093(<listcomp>)
+4,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\common\utils.py:128(keys_to_typing)
+221,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\copy.py:182(_deepcopy_atomic)
+5,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\encodings\idna.py:147(encode)
+1,0.000,0.000,0.000,0.000,{method '_accept' of '_socket.socket' objects}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\contextlib.py:533(__exit__)
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\util\request.py:101(set_file_position)
+33,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\inspect.py:632(_is_wrapper)
+68,0.000,0.000,0.000,0.000,{method 'update' of 'dict' objects}
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\util\timeout.py:195(start_connect)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\typing.py:1016(__init__)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\threading.py:827(__init__)
+17,0.000,0.000,0.000,0.000,<string>:1(<lambda>)
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\command.py:81(return_type)
+67,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\http\client.py:440(isclosed)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\asyncio\events.py:736(get_event_loop_policy)
+7,0.000,0.000,0.000,0.000,{method 'setsockopt' of '_socket.socket' objects}
+4,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\sre_parse.py:97(closegroup)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\pprint.py:155(pformat)
+6,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\optmanager.py:54(set)
+124,0.000,0.000,0.000,0.000,{method 'pop' of 'dict' objects}
+40,0.000,0.000,0.000,0.000,{method '__enter__' of '_thread.lock' objects}
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\logging\__init__.py:1467(info)
+38,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\socket.py:730(readable)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\asyncio\events.py:728(_init_event_loop_policy)
+80,0.000,0.000,0.000,0.000,{method 'rstrip' of 'str' objects}
+70,0.000,0.000,0.000,0.000,{method 'groups' of 're.Match' objects}
+72,0.000,0.000,0.000,0.000,{method 'count' of 'str' objects}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\connectionpool.py:75(__init__)
+36,0.000,0.000,0.000,0.000,{method 'extend' of 'collections.deque' objects}
+20,0.000,0.000,0.000,0.000,{method 'write' of '_io.StringIO' objects}
+14,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\remote_connection.py:328(<listcomp>)
+110,0.000,0.000,0.000,0.000,{method 'upper' of 'str' objects}
+39,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\blinker\base.py:336(_extract_sender)
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\connection.py:132(host)
+62,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\addonmanager.py:101(traverse)
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\util\queue.py:18(_put)
+15,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\textwrap.py:179(<listcomp>)
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\email\message.py:303(set_payload)
+22,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\sre_parse.py:255(get)
+1,0.000,0.000,0.000,0.000,{method 'close' of '_io.BufferedWriter' objects}
+15,0.000,0.000,0.000,0.000,{method 'translate' of 'str' objects}
+9,0.000,0.000,0.000,0.000,{built-in method _thread.allocate_lock}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\chromium\options.py:170(to_capabilities)
+72,0.000,0.000,0.000,0.000,{method 'partition' of 'str' objects}
+36,0.000,0.000,0.000,0.000,{method 'read' of '_io.StringIO' objects}
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\util\retry.py:340(from_int)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\uuid.py:713(uuid4)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\asyncio\coroutines.py:18(_is_debug_mode)
+51,0.000,0.000,0.000,0.000,{method 'decode' of 'bytearray' objects}
+30,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\sre_parse.py:234(__next)
+56,0.000,0.000,0.000,0.000,{method 'endswith' of 'str' objects}
+3,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\common\exceptions.py:76(__init__)
+34,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\response.py:256(<genexpr>)
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\util\queue.py:21(_get)
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\platform.py:812(uname)
+2,0.000,0.000,0.000,0.000,{method 'new' of '_cffi_backend.FFI' objects}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\chromium\options.py:32(__init__)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\connectionpool.py:1095(_normalize_host)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\pprint.py:167(_format)
+90,0.000,0.000,0.000,0.000,{method 'items' of 'dict' objects}
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\enum.py:986(__and__)
+4,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\webdriver.py:309(create_web_element)
+25,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\sre_parse.py:250(match)
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\email\parser.py:17(__init__)
+1,0.000,0.000,0.000,0.000,{built-in method _winapi.CreatePipe}
+5,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\optmanager.py:313(process_deferred)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\optmanager.py:91(__init__)
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\http\client.py:1209(_encode_request)
+41,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\inspect.py:277(isfunction)
+3,0.000,0.000,0.000,0.000,{method 'getsockname' of '_socket.socket' objects}
+9,0.000,0.000,0.000,0.000,{built-in method _bisect.insort_right}
+15,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\http\client.py:161(_encode)
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\util\url.py:114(request_uri)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\remote_connection.py:118(_get_proxy_url)
+19,0.000,0.000,0.000,0.000,{method 'group' of 're.Match' objects}
+4/2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\sre_compile.py:485(_get_literal_prefix)
+4,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\contextlib.py:496(callback)
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\string.py:87(__init__)
+8,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\typing.py:986(__setattr__)
+20,0.000,0.000,0.000,0.000,{method '_checkReadable' of '_io._IOBase' objects}
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\response.py:348(<listcomp>)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\request.py:1269(do_request_)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\_collections.py:47(__init__)
+23,0.000,0.000,0.000,0.000,{built-in method time.monotonic}
+7,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\logging\__init__.py:219(_acquireLock)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\webdriver.py:948(file_detector)
+36,0.000,0.000,0.000,0.000,{method 'truncate' of '_io.StringIO' objects}
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\subprocess.py:1080(_get_devnull)
+13,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\parse.py:419(_checknetloc)
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\response.py:267(get_redirect_location)
+56,0.000,0.000,0.000,0.000,{method 'lstrip' of 'str' objects}
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\poolmanager.py:336(_validate_proxy_scheme_url_selection)
+15,0.000,0.000,0.000,0.000,{built-in method now}
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\pathlib.py:631(__fspath__)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\_base.py:330(__init__)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\common\options.py:230(__init__)
+15,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\textwrap.py:115(__init__)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\sre_compile.py:435(_mk_bitmap)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\common\service.py:68(service_url)
+35,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\util\timeout.py:220(connect_timeout)
+7,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\logging\__init__.py:1710(getEffectiveLevel)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py:772(_call_soon)
+35,0.000,0.000,0.000,0.000,{built-in method builtins.min}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\parse.py:88(clear_cache)
+72,0.000,0.000,0.000,0.000,{method 'seek' of '_io.StringIO' objects}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\encodings\__init__.py:43(normalize_encoding)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\typing.py:947(__init__)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\http\client.py:883(_get_hostport)
+10,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\addonmanager.py:14(_get_name)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\threading.py:389(notify_all)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\pprint.py:453(_repr)
+4,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\contextlib.py:448(_exit_wrapper)
+4,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\types.py:176(__get__)
+4,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\sre_parse.py:85(opengroup)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\weakref.py:165(__setitem__)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\threading.py:90(RLock)
+42,0.000,0.000,0.000,0.000,{method '__exit__' of '_thread.lock' objects}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\common\options.py:28(__init__)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\pathlib.py:621(__str__)
+1,0.000,0.000,0.000,0.000,{built-in method nt.open}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\switch_to.py:29(__init__)
+2,0.000,0.000,0.000,0.000,{built-in method _openssl.BIO_new_mem_buf}
+3,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\pathlib.py:147(splitroot)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\support\wait.py:30(__init__)
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\util\timeout.py:238(read_timeout)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\encodings\idna.py:300(getregentry)
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\response.py:280(release_conn)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\request.py:382(get_method)
+4,0.000,0.000,0.000,0.000,{method 'setblocking' of '_socket.socket' objects}
+36,0.000,0.000,0.000,0.000,{method 'rpartition' of 'str' objects}
+1,0.000,0.000,0.000,0.000,{built-in method winreg.QueryValueEx}
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\command.py:37(_empty_as_none)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\OpenSSL\crypto.py:1164(_from_raw_x509_ptr)
+11,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\typing.py:1037(__hash__)
+16,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\request.py:615(__lt__)
+20,0.000,0.000,0.000,0.000,{method '_checkClosed' of '_io._IOBase' objects}
+3,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\subprocess.py:1332(_make_inheritable)
+4,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\sre_compile.py:447(_simple)
+3,0.000,0.000,0.000,0.000,{method 'clear' of 'dict' objects}
+3,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\_weakrefset.py:37(__init__)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\uuid.py:138(__init__)
+16,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\sre_parse.py:287(tell)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\util\timeout.py:165(from_float)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\pprint.py:462(format)
+72,0.000,0.000,0.000,0.000,{method 'popleft' of 'collections.deque' objects}
+1,0.000,0.000,0.000,0.000,{built-in method _signal.set_wakeup_fd}
+21,0.000,0.000,0.000,0.000,{built-in method sys.intern}
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\sre_parse.py:225(__init__)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py:1920(set_debug)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\asyncio\events.py:31(__init__)
+8,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\subprocess.py:196(Close)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\subprocess.py:1204(wait)
+63,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\inspect.py:2683(name)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\socket.py:514(family)
+3,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\common\exceptions.py:30(__init__)
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\poolmanager.py:323(_proxy_requires_url_absolute_form)
+36,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\parse.py:103(_noop)
+36,0.000,0.000,0.000,0.000,{method '__exit__' of '_thread.RLock' objects}
+15,0.000,0.000,0.000,0.000,{method 'timestamp' of 'datetime.datetime' objects}
+18,0.000,0.000,0.000,0.000,{method 'values' of 'collections.OrderedDict' objects}
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\response.py:419(_flush_decoder)
+45,0.000,0.000,0.000,0.000,{method 'isidentifier' of 'str' objects}
+7,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\logging\__init__.py:228(_releaseLock)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\_collections.py:61(__setitem__)
+1,0.000,0.000,0.000,0.000,{built-in method nt.urandom}
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\sre_parse.py:161(__len__)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\chrome\options.py:25(default_capabilities)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\util\connection.py:100(_set_socket_options)
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\response.py:298(data)
+57,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\inspect.py:2695(kind)
+32,0.000,0.000,0.000,0.000,{method 'keys' of 'dict' objects}
+1,0.000,0.000,0.000,0.000,{built-in method _overlapped.CreateIoCompletionPort}
+11,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\sre_parse.py:173(append)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\sre_parse.py:433(_uniq)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\http\client.py:1230(_validate_host)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\pprint.py:550(_safe_repr)
+4,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\cryptography\utils.py:70(__getattr__)
+4,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\webelement.py:75(__init__)
+64,0.000,0.000,0.000,0.000,{built-in method builtins.callable}
+8,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\ntpath.py:35(_get_bothseps)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\_collections_abc.py:823(__contains__)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\common\utils.py:79(join_host_port)
+33,0.000,0.000,0.000,0.000,{method 'extend' of 'list' objects}
+1,0.000,0.000,0.000,0.000,{built-in method builtins.__import__}
+36,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\email\feedparser.py:125(__iter__)
+34,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\inspect.py:3002(parameters)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\_collections_abc.py:831(keys)
+6,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\blinker\_saferef.py:183(calculate_key)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\addons\__init__.py:6(default_addons)
+1,0.000,0.000,0.000,0.000,{built-in method time.get_clock_info}
+30,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\_collections_abc.py:409(__subclasshook__)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\OpenSSL\crypto.py:137(free)
+4,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\optmanager.py:172(__setattr__)
+1,0.000,0.000,0.000,0.000,<frozen importlib._bootstrap>:404(parent)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\common\service.py:106(assert_process_still_running)
+16,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\inspect.py:2409(<lambda>)
+12,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\sre_parse.py:82(groups)
+10,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\sre_parse.py:112(__init__)
+8,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\typing.py:935(_is_dunder)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\tempfile.py:297(gettempdir)
+14,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\inspect.py:199(ismethod)
+24,0.000,0.000,0.000,0.000,{method 'append' of 'collections.deque' objects}
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\typing.py:1143(<genexpr>)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\asyncio\events.py:642(__init__)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\request.py:427(__init__)
+7,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\blinker\_saferef.py:215(__call__)
+22,0.000,0.000,0.000,0.000,{method 'pop' of 'collections.deque' objects}
+34,0.000,0.000,0.000,0.000,{method 'end' of 're.Match' objects}
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\sre_compile.py:265(_compile_charset)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\importlib\util.py:73(find_spec)
+17,0.000,0.000,0.000,0.000,{method 'values' of 'mappingproxy' objects}
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\pprint.py:107(__init__)
+3,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\os.py:817(fsdecode)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\sre_compile.py:437(<listcomp>)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\request.py:405(add_unredirected_header)
+42,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\inspect.py:2691(annotation)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\typing.py:146(_type_check)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\optmanager.py:182(keys)
+46,0.000,0.000,0.000,0.000,{built-in method builtins.issubclass}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\subprocess.py:1178(poll)
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\util\proxy.py:4(connection_requires_http_tunnel)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\inspect.py:316(response_interceptor)
+5,0.000,0.000,0.000,0.000,{method 'split' of 'bytes' objects}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\util\wait.py:113(_have_working_poll)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\modifier.py:16(__init__)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\codecs.py:94(__new__)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\pathlib.py:608(_format_parsed_parts)
+5,0.000,0.000,0.000,0.000,{built-in method _winapi.CloseHandle}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\request.py:1334(<dictcomp>)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\blinker\base.py:86(__init__)
+7,0.000,0.000,0.000,0.000,{method 'acquire' of '_thread.RLock' objects}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\chromium\options.py:74(extensions)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\packages\six.py:642(itervalues)
+10,0.000,0.000,0.000,0.000,{method 'find' of 'bytearray' objects}
+7,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\sre_compile.py:81(_combine_flags)
+4,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\sre_compile.py:619(isstring)
+7,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\logging\__init__.py:1307(disable)
+9,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\request.py:608(add_parent)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\Documents\git\invariant-based-web-form-testing\automation\src\proxy\interception.py:28(__init__)
+4,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\contextlib.py:514(_push_exit_callback)
+17,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\connectionpool.py:314(_validate_conn)
+20,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\utils\typecheck.py:18(union_types)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\net\tcp.py:558(__init__)
+22,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\addonmanager.py:38(safecall)
+2,0.000,0.000,0.000,0.000,{built-in method _openssl.BIO_free}
+15,0.000,0.000,0.000,0.000,{method 'expandtabs' of 'str' objects}
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\weakref.py:195(get)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\json\encoder.py:104(__init__)
+17,0.000,0.000,0.000,0.000,{method 'setdefault' of 'dict' objects}
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\threading.py:1430(current_thread)
+23,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\inspect.py:2687(default)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\server\config.py:13(__init__)
+6,0.000,0.000,0.000,0.000,{method 'gc' of '_cffi_backend.FFI' objects}
+7,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\functools.py:421(_unwrap_partial)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\subprocess.py:1465(_internal_poll)
+2,0.000,0.000,0.000,0.000,{built-in method _sre.compile}
+16,0.000,0.000,0.000,0.000,{method 'items' of 'mappingproxy' objects}
+17,0.000,0.000,0.000,0.000,{method 'isascii' of 'str' objects}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\json\encoder.py:259(_make_iterencode)
+17,0.000,0.000,0.000,0.000,{method 'pop' of 'set' objects}
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\sre_parse.py:76(__init__)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\weakref.py:348(__new__)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\socket.py:520(type)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\request.py:387(get_full_url)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\os.py:1080(__subclasshook__)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\contextlib.py:452(__init__)
+18,0.000,0.000,0.000,0.000,{function HTTPResponse.flush at 0x00000272B182CA60}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\sre_compile.py:516(_get_charset_prefix)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\sre_parse.py:928(fix_flags)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\remote_connection.py:49(get_timeout)
+3,0.000,0.000,0.000,0.000,{built-in method _winapi.DuplicateHandle}
+1,0.000,0.000,0.000,0.000,{method 'Close' of 'PyHKEY' objects}
+3,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\_collections_abc.py:857(__init__)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\connection.py:196(_prepare_conn)
+1,0.000,0.000,0.000,0.000,{built-in method nt.close}
+17,0.000,0.000,0.000,0.000,{method 'reverse' of 'list' objects}
+4,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\enum.py:801(value)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\util\queue.py:12(_init)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\uuid.py:279(__str__)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\support\expected_conditions.py:141(visibility_of_element_located)
+10,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\utils\typecheck.py:8(sequence_type)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\sre_compile.py:456(_generate_overlap_table)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\parse.py:1012(unwrap)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\server.py:71(address)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\certs.py:159(__init__)
+1,0.000,0.000,0.000,0.000,<frozen importlib._bootstrap>:1053(_handle_fromlist)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\_weakrefset.py:86(add)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\request.py:628(http_response)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\Documents\git\invariant-based-web-form-testing\automation\src\analysis\html_analysis.py:448(__init__)
+17,0.000,0.000,0.000,0.000,{built-in method sys.getrecursionlimit}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\mobile.py:43(__init__)
+18,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\inspect.py:3006(return_annotation)
+3,0.000,0.000,0.000,0.000,{method 'capitalize' of 'str' objects}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\ntpath.py:315(expanduser)
+4,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\typing.py:1031(__eq__)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\weakref.py:353(__init__)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\parse.py:644(unquote)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\util\connection.py:108(allowed_gai_family)
+3,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\common\options.py:39(set_capability)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\threading.py:276(_acquire_restore)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\threading.py:1301(_make_invoke_excepthook)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\asyncio\coroutines.py:177(iscoroutine)
+7,0.000,0.000,0.000,0.000,{method 'release' of '_thread.RLock' objects}
+1,0.000,0.000,0.000,0.000,{built-in method _winapi.GetExitCodeProcess}
+2,0.000,0.000,0.000,0.000,{built-in method fromkeys}
+11,0.000,0.000,0.000,0.000,{built-in method builtins.hash}
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\common\options.py:242(add_argument)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\request.py:1385(__init__)
+6,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\optmanager.py:188(__contains__)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\master.py:67(server)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\threading.py:273(_release_save)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\subprocess.py:1482(_wait)
+4,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\request.py:337(full_url)
+2,0.000,0.000,0.000,0.000,{built-in method _weakref.proxy}
+7,0.000,0.000,0.000,0.000,{method 'copy' of 'set' objects}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\_collections_abc.py:78(_check_methods)
+4,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\contextlib.py:446(_create_cb_wrapper)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\typing.py:206(_collect_type_vars)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\request.py:40(__init__)
+3,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\request.py:409(has_header)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\chromium\service.py:57(command_line_args)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\subprocess.py:171(__init__)
+4,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\webelement.py:357(parent)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\server.py:82(_get_storage_args)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\OpenSSL\crypto.py:2894(__init__)
+5,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\addonmanager.py:58(__init__)
+1,0.000,0.000,0.000,0.000,{built-in method from_bytes}
+5,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\sre_compile.py:477(_get_iscased)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\threading.py:1198(daemon)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\parse.py:1164(_splittag)
+5,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\request.py:356(data)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\_collections_abc.py:839(values)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\controller.py:12(__init__)
+5,0.000,0.000,0.000,0.000,{method '__contains__' of 'frozenset' objects}
+3,0.000,0.000,0.000,0.000,{method 'title' of 'str' objects}
+5,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\collections\__init__.py:402(<genexpr>)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\OpenSSL\crypto.py:241(__init__)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\utils.py:74(build_proxy_args)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\command.py:144(__init__)
+4,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\sre_parse.py:169(__setitem__)
+3,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\threading.py:553(is_set)
+6,0.000,0.000,0.000,0.000,{built-in method _winapi.GetCurrentProcess}
+9,0.000,0.000,0.000,0.000,{method 'add' of 'set' objects}
+4,0.000,0.000,0.000,0.000,{method 'isalnum' of 'str' objects}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\connection.py:192(_is_using_tunnel)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py:692(is_running)
+1,0.000,0.000,0.000,0.000,{built-in method _winapi.WaitForSingleObject}
+1,0.000,0.000,0.000,0.000,{method 'clear' of 'list' objects}
+4,0.000,0.000,0.000,0.000,{method 'insert' of 'list' objects}
+2,0.000,0.000,0.000,0.000,{method 'rfind' of 'str' objects}
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\request.py:1258(__init__)
+1,0.000,0.000,0.000,0.000,{method 'translate' of 'bytearray' objects}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\typing.py:137(_type_convert)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\typing.py:223(_check_generic)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\subprocess.py:201(Detach)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\request.py:398(has_proxy)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\server.py:58(<dictcomp>)
+1,0.000,0.000,0.000,0.000,{method 'disable' of '_lsprof.Profiler' objects}
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\webelement.py:363(id)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\utils.py:170(urlsafe_address)
+1,0.000,0.000,0.000,0.000,{built-in method _contextvars.copy_context}
+1,0.000,0.000,0.000,0.000,{built-in method msvcrt.open_osfhandle}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\chromium\options.py:40(binary_location)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\chromium\options.py:56(debugger_address)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\typing.py:1022(<genexpr>)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\chromium\options.py:121(experimental_options)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\threading.py:1183(daemon)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\tempfile.py:285(_gettempdir)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\http\client.py:903(set_debuglevel)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\addons\streambodies.py:9(__init__)
+3,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\addons\streambodies.py:29(configure)
+1,0.000,0.000,0.000,0.000,{method 'clear' of 'collections.OrderedDict' objects}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\threading.py:1574(main_thread)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\urllib3\connection.py:151(host)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\request.py:360(data)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py:513(_check_closed)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\handler.py:20(__init__)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\server\server.py:53(set_channel)
+1,0.000,0.000,0.000,0.000,{built-in method builtins.iter}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\common\service.py:82(path)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\log.py:22(__init__)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\addonmanager.py:192(<listcomp>)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\server\config.py:16(<listcomp>)
+2,0.000,0.000,0.000,0.000,{built-in method _thread.get_ident}
+2,0.000,0.000,0.000,0.000,{built-in method msvcrt.get_osfhandle}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\chromium\options.py:128(add_experimental_option)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\webdriver.py:274(stop_client)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\remote\webdriver.py:267(start_client)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py:434(set_loop)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\OpenSSL\_util.py:66(openssl_assert)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\OpenSSL\crypto.py:2921(callback_args)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\OpenSSL\crypto.py:2932(raise_if_problem)
+2,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\master.py:63(server)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\seleniumwire\thirdparty\mitmproxy\addons\upstream_auth.py:17(__init__)
+2,0.000,0.000,0.000,0.000,{method 'getvalue' of '_io.StringIO' objects}
+1,0.000,0.000,0.000,0.000,{built-in method sys.exc_info}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\http\client.py:747(info)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\selenium\webdriver\common\service.py:78(path)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\urllib\request.py:1321(<dictcomp>)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\site-packages\OpenSSL\crypto.py:2910(callback)
+1,0.000,0.000,0.000,0.000,<string>:1(<module>)
+1,0.000,0.000,0.000,0.000,{method 'release' of '_thread.lock' objects}
+1,0.000,0.000,0.000,0.000,{method 'flush' of '_io.BufferedReader' objects}
+1,0.000,0.000,0.000,0.000,{method 'count' of 'list' objects}
+1,0.000,0.000,0.000,0.000,{built-in method sys.getfilesystemencoding}
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\contextlib.py:530(__enter__)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\subprocess.py:237(_cleanup)
+1,0.000,0.000,0.000,0.000,C:\Users\Björn\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py:1917(get_debug)
+1,0.000,0.000,0.000,0.000,{built-in method _stat.S_ISREG}
+1,0.000,0.000,0.000,0.000,{built-in method sys._getframe}
+1,0.000,0.000,0.000,0.000,{built-in method _socket.getdefaulttimeout}
+1,0.000,0.000,0.000,0.000,{method 'fileno' of '_socket.socket' objects}
+1,0.000,0.000,0.000,0.000,{method 'gettimeout' of '_socket.socket' objects}
