@@ -29,13 +29,13 @@ class PatternConverter:
         self.__parser = PatternParser(self.__javascript_pattern)
         self.__grammar_builder = GrammarBuilder()
 
-    def convert_pattern_to_grammar(self) -> str:
+    def convert_pattern_to_grammar(self) -> str | None:
         try:
             pattern_ast = self.__parser.parse()
         except ValueError as e:
             print(f"Could not convert given pattern {self.__javascript_pattern}")
             print(e)
-            return ""
+            return None
 
         return self.__grammar_builder.convert_pattern_to_cfg(pattern_ast)
 

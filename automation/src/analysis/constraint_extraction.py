@@ -1,3 +1,5 @@
+import os
+
 from enum import Enum
 from lxml.html import Element
 from selenium.webdriver import Chrome
@@ -378,7 +380,7 @@ class SpecificationBuilder:
                 )
             case InputType.TEXTAREA.value:
                 grammar, formula = self.__add_constraints_for_multi_line_text(
-                    html_input_specification.constraints, use_datalist_options
+                    html_input_specification.constraints
                 )
             case InputType.TIME.value:
                 grammar, formula = self.__add_constraints_for_time(
@@ -406,8 +408,7 @@ class SpecificationBuilder:
     def write_specification_to_file(
         self, name: str, grammar: str, formula: str = None
     ) -> Tuple[str, str]:
-        # TODO: create directory and handle permission denied error
-        # Path('/specification').mkdir(exist_ok=True)
+        os.makedirs("specification", exist_ok=True)
         grammar_file_name = f"{name}.bnf"
         formula_file_name = f"{name}.isla"
 
@@ -438,20 +439,10 @@ class SpecificationBuilder:
                     grammar, formula = self.__handle_literal_comparison_candidate(
                         input_type, grammar, formula, candidate
                     )
-                # case ConstraintCandidateType.LITERAL_LENGTH_COMPARISON.value:
-                #     grammar, formula = (
-                #         self.__handle_literal_length_comparison_candidate(
-                #             input_type, grammar, formula, candidate
-                #         )
-                #     )
                 case ConstraintCandidateType.VARIABLE_COMPARISON.value:
                     grammar, formula = self.__handle_var_comparison_candidate(
                         grammar, formula, candidate
                     )
-                # case ConstraintCandidateType.VARIABLE_LENGTH_COMPARISON.value:
-                #     grammar, formula = self.__handle_var_length_comparison_candidate(
-                #         grammar, formula, candidate
-                #     )
                 case ConstraintCandidateType.PATTERN_TEST.value:
                     grammar, formula = self.__handle_pattern_candidate(
                         input_type, grammar, formula, candidate
@@ -476,20 +467,6 @@ class SpecificationBuilder:
         )
         return grammar, formula
 
-    def __handle_literal_length_comparison_candidate(
-        self,
-        input_type: str,
-        grammar: str,
-        formula: str,
-        candidate: LiteralCompCandidate,
-    ) -> Tuple[str, str | None]:
-        formula = self.__add_to_formula(
-            f'str.len(<{input_type}>) {candidate.operator} "{candidate.other_value}"',
-            formula,
-            ISLa.OR,
-        )
-        return grammar, formula
-
     def __handle_var_comparison_candidate(
         self, grammar: str, formula: str, candidate: VarCompCandidate
     ) -> Tuple[str, str | None]:
@@ -509,13 +486,6 @@ class SpecificationBuilder:
                 grammar = self.__grammar_dict_to_string(new_grammar_dict)
 
         return formula, grammar
-
-    def __handle_var_length_comparison_candidate(
-        self, grammar: str, formula: str, candidate: VarCompCandidate
-    ) -> Tuple[str, str | None]:
-        # TODO: This is hard, what if the length of the current field is compared to a numerical value in another field, what if it is
-        # compared to the length of another field? Would probaby need other codeql queries to do something reasonable here.
-        return grammar, formula
 
     def __handle_pattern_candidate(
         self,
@@ -566,7 +536,7 @@ class SpecificationBuilder:
             month = int(month_str)
             day = int(day_str)
             formula = self.__add_to_formula(
-                f"str.to.int(<year>) >= {year} and str.to.int(<year>) + str.to.int(<month>) >= {year + month} and str.to.int(<year>) + str.to.int(<month>) + str.to.int(<day>) >= {year + month + day}",
+                self.__get_compare_date_string(year, month, day, ISLa.GTE.value),
                 formula,
                 ISLa.AND,
             )
@@ -576,11 +546,10 @@ class SpecificationBuilder:
             month = int(month_str)
             day = int(day_str)
             formula = self.__add_to_formula(
-                f"str.to.int(<year>) <= {year} and str.to.int(<year>) + str.to.int(<month>) <= {year + month} and str.to.int(<year>) + str.to.int(<month>) + str.to.int(<day>) <= {year + month + day}",
+                self.__get_compare_date_string(year, month, day, ISLa.LTE.value),
                 formula,
                 ISLa.AND,
             )
-        # TODO: step
 
         return grammar, formula
 
@@ -605,17 +574,30 @@ class SpecificationBuilder:
             [date_str, time_str] = html_constraints.min.split(split_char)
             [year_str, month_str, day_str] = date_str.split("-")
             [hour_str, minute_str] = time_str.split(":")
-            # TODO
+            year = int(year_str)
+            month = int(month_str)
+            day = int(day_str)
+            hour = int(hour_str)
+            minute = int(minute_str)
+            formula = self.__add_to_formula(
+                self.__get_compare_datetime_string(
+                    year, month, day, hour, minute, ISLa.GTE.value
+                ),
+                formula,
+                ISLa.AND,
+            )
         if html_constraints.max is not None:
             split_char = "T" if "T" in html_constraints.max else " "
             [date_str, time_str] = html_constraints.max.split(split_char)
             [year_str, month_str, day_str] = date_str.split("-")
             [hour_str, minute_str] = time_str.split(":")
-            # TODO
-        # TODO: step
-        # if html_constraints.step is not None:
-        #     formula = self.__add_to_formula(f'(str.to.int(<year>) + str.to.int(<month>)) mod {html_constraints.step} = 0',
-        #                                     formula, ISLa.AND)
+            formula = self.__add_to_formula(
+                self.__get_compare_datetime_string(
+                    year, month, day, hour, minute, ISLa.LTE.value
+                ),
+                formula,
+                ISLa.AND,
+            )
 
         return grammar, formula
 
@@ -623,9 +605,7 @@ class SpecificationBuilder:
         self, html_constraints: HTMLConstraints, use_datalist_options=False
     ) -> Tuple[str, str | None]:
         grammar = load_file_content(f"{pre_built_specifications_path}/email/email.bnf")
-        # TODO: change email grammar (and formula) to not generate only stupid values and take forever
-        # formula = load_file_content(f"{pre_built_specifications_path}/email/email.isla")
-        formula = None
+        formula = load_file_content(f"{pre_built_specifications_path}/email/email.isla")
 
         if use_datalist_options and html_constraints.list is not None:
             grammar = self.__replace_by_list_options(
@@ -647,12 +627,11 @@ class SpecificationBuilder:
                 formula,
                 ISLa.AND,
             )
-        if html_constraints.multiple is not None:
-            # TODO
-            pass
         if html_constraints.pattern is not None:
-            # TODO
-            pass
+            pattern_converter = PatternConverter(html_constraints.pattern)
+            grammar = (
+                pattern_converter.convert_pattern_to_grammar() or grammar
+            )  # As the intersection of two CFGs is non-trivial to compute, we just replace the old type grammar with the pattern grammar
 
         return grammar, formula
 
@@ -673,7 +652,7 @@ class SpecificationBuilder:
             year = int(year_str)
             month = int(month_str)
             formula = self.__add_to_formula(
-                f"str.to.int(<year>) >= {year} and str.to.int(<year>) + str.to.int(<month>) >= {year + month}",
+                self.__get_compare_month_string(year, month, ISLa.GTE.value),
                 formula,
                 ISLa.AND,
             )
@@ -682,14 +661,35 @@ class SpecificationBuilder:
             year = int(year_str)
             month = int(month_str)
             formula = self.__add_to_formula(
-                f"str.to.int(<year>) <= {year} and str.to.int(<year>) + str.to.int(<month>) <= {year + month}",
+                self.__get_compare_month_string(year, month, ISLa.LTE.value),
                 formula,
                 ISLa.AND,
             )
-        # TODO: step not working because can not set calculation in parantheses
-        # if html_constraints.step is not None:
-        #     formula = self.__add_to_formula(f'(str.to.int(<year>) + str.to.int(<month>)) mod {html_constraints.step} = 0',
-        #                                     formula, ISLa.AND)
+
+        return grammar, formula
+
+    def __add_constraints_for_multi_line_text(
+        self, html_constraints: HTMLConstraints
+    ) -> Tuple[str, str | None]:
+        grammar = load_file_content(
+            f"{pre_built_specifications_path}/text/multi-line-text.bnf"
+        )
+        formula = None
+
+        if html_constraints.required is not None and html_constraints.minlength is None:
+            formula = self.__add_to_formula("str.len(<start>) > 0", formula, ISLa.AND)
+        elif html_constraints.minlength is not None:
+            formula = self.__add_to_formula(
+                f"str.len(<start>) >= {html_constraints.minlength}",
+                formula,
+                ISLa.AND,
+            )
+        if html_constraints.maxlength is not None:
+            formula = self.__add_to_formula(
+                f"str.len(<start>) <= {html_constraints.maxlength}",
+                formula,
+                ISLa.AND,
+            )
 
         return grammar, formula
 
@@ -732,31 +732,6 @@ class SpecificationBuilder:
 
         return grammar, formula
 
-    def __add_constraints_for_multi_line_text(
-        self, html_constraints: HTMLConstraints, use_datalist_options: bool
-    ) -> Tuple[str, str | None]:
-        grammar = load_file_content(
-            f"{pre_built_specifications_path}/text/multi-line-text.bnf"
-        )
-        formula = None
-
-        if html_constraints.required is not None and html_constraints.minlength is None:
-            formula = self.__add_to_formula("str.len(<start>) > 0", formula, ISLa.AND)
-        elif html_constraints.minlength is not None:
-            formula = self.__add_to_formula(
-                f"str.len(<start>) >= {html_constraints.minlength}",
-                formula,
-                ISLa.AND,
-            )
-        if html_constraints.maxlength is not None:
-            formula = self.__add_to_formula(
-                f"str.len(<start>) <= {html_constraints.maxlength}",
-                formula,
-                ISLa.AND,
-            )
-
-        return grammar, formula
-
     def __add_constraints_for_one_line_text(
         self, html_constraints: HTMLConstraints, use_datalist_options: bool
     ) -> Tuple[str, str | None]:
@@ -784,8 +759,10 @@ class SpecificationBuilder:
                 ISLa.AND,
             )
         if html_constraints.pattern is not None:
-            # TODO
-            pass
+            pattern_converter = PatternConverter(html_constraints.pattern)
+            grammar = (
+                pattern_converter.convert_pattern_to_grammar() or grammar
+            )  # As the intersection of two CFGs is non-trivial to compute, we just replace the old type grammar with the pattern grammar
 
         return grammar, formula
 
@@ -803,26 +780,22 @@ class SpecificationBuilder:
             formula = self.__add_to_formula("str.len(<start>) > 0", formula, ISLa.AND)
         if html_constraints.min is not None:
             [hour_str, minute_str] = html_constraints.min.split(":")
-            hours = int(hour_str)
-            minutes = int(minute_str)
+            hour = int(hour_str)
+            minute = int(minute_str)
             formula = self.__add_to_formula(
-                f"str.to.int(<hour>) >= {hours} and str.to.int(<hour>) + str.to.int(<minute>) >= {hours + minutes}",
+                self.__get_compare_time_string(hour, minute, ISLa.GTE.value),
                 formula,
                 ISLa.AND,
             )
         if html_constraints.max is not None:
             [hour_str, minute_str] = html_constraints.min.split(":")
-            hours = int(hour_str)
-            minutes = int(minute_str)
+            hour = int(hour_str)
+            minute = int(minute_str)
             formula = self.__add_to_formula(
-                f"str.to.int(<hour>) <= {hours} and str.to.int(<hour>) + str.to.int(<minute>) <= {hours + minutes}",
+                self.__get_compare_time_string(hour, minute, ISLa.LTE.value),
                 formula,
                 ISLa.AND,
             )
-        # TODO: step
-        # if html_constraints.step is not None:
-        #     formula = self.__add_to_formula(f'(str.to.int(<year>) + str.to.int(<month>)) mod {html_constraints.step} = 0',
-        #                                     formula, ISLa.AND)
 
         return grammar, formula
 
@@ -855,8 +828,10 @@ class SpecificationBuilder:
                 ISLa.AND,
             )
         if html_constraints.pattern is not None:
-            # TODO
-            pass
+            pattern_converter = PatternConverter(html_constraints.pattern)
+            grammar = (
+                pattern_converter.convert_pattern_to_grammar() or grammar
+            )  # As the intersection of two CFGs is non-trivial to compute, we just replace the old type grammar with the pattern grammar
 
         return grammar, formula
 
@@ -877,7 +852,7 @@ class SpecificationBuilder:
             year = int(year_str)
             week = int(week_str)
             formula = self.__add_to_formula(
-                f"str.to.int(<year>) >= {year} and str.to.int(<year>) + str.to.int(<week>) >= {year + week}",
+                self.__get_compare_month_string(year, week, ISLa.GTE.value),
                 formula,
                 ISLa.AND,
             )
@@ -886,14 +861,10 @@ class SpecificationBuilder:
             year = int(year_str)
             week = int(week_str)
             formula = self.__add_to_formula(
-                f"str.to.int(<year>) <= {year} and str.to.int(<year>) + str.to.int(<week>) <= {year + week}",
+                self.__get_compare_month_string(year, week, ISLa.LTE.value),
                 formula,
                 ISLa.AND,
             )
-        # TODO: step not working because can not set modulo calculation in parantheses
-        # if html_constraints.step is not None:
-        #     formula = self.__add_to_formula(f'(str.to.int(<year>) + str.to.int(<month>)) mod {html_constraints.step} = 0',
-        #                                     formula, ISLa.AND)
 
         return grammar, formula
 
@@ -903,10 +874,22 @@ class SpecificationBuilder:
         if formula is None or len(formula) == 0:
             return additional_part
         else:
-            return f"{formula} {operator.value} {additional_part}"
+            return f"({formula}) {operator.value} ({additional_part})"
 
-    # TODO: decide which one to use. Should structure grammars in a way that disgarding the parts
-    # after the list options does not matter. Otherwise we might get tokens that are unreachable and errors
+    def __get_compare_month_string(self, year, month, operator) -> str:
+        return f"str.to.int(<year>) {operator} {year} {ISLa.OR.value} (str.to.int(<year>) {ISLa.EQ.value} {year} {ISLa.AND.value} str.to.int(<month>) {operator} {month})"
+
+    def __get_compare_time_string(self, hour, minute, operator) -> str:
+        return f"str.to.int(<hour>) {operator} {hour} {ISLa.OR.value} (str.to.int(<hour>) {ISLa.EQ.value} {hour} {ISLa.AND.value} str.to.int(<minute>) {operator} {minute})"
+
+    def __get_compare_date_string(self, year, month, day, operator) -> str:
+        return f"str.to.int(<year>) {operator} {year} {ISLa.OR.value} (str.to.int(<year>) {ISLa.EQ.value} {year} {ISLa.AND.value} str.to.int(<month>) {operator} {month} {ISLa.OR.value} (str.to.int(<month>) {ISLa.EQ.value} {month} {ISLa.AND.value} str.to.int(<day>) {operator} {day}))"
+
+    def __get_compare_datetime_string(
+        self, year, month, day, hour, minute, operator
+    ) -> str:
+        return f"str.to.int(<year>) {operator} {year} {ISLa.OR.value} (str.to.int(<year>) {ISLa.EQ.value} {year} {ISLa.AND.value} str.to.int(<month>) {operator} {month} {ISLa.OR.value} (str.to.int(<month>) {ISLa.EQ.value} {month} {ISLa.AND.value} str.to.int(<day>) {operator} {day} {ISLa.OR.value} (str.to.int(<day>) {ISLa.EQ.value} {day} {ISLa.AND.value} str.to.int(<hour>) {operator} {hour} {ISLa.OR.value} (str.to.int(<hour>) {ISLa.EQ.value} {hour} {ISLa.AND.value} str.to.int(<minute>) {operator} {minute}))))"
+
     def __replace_by_list_options(
         self, grammar: str, option_identifier: str, list_options: List[str]
     ) -> str:
@@ -993,16 +976,3 @@ class SpecificationBuilder:
             current_nt_number += 1
 
         return new_grammar, formula, current_nt_number
-
-    # def __replace_by_list_options(self, grammar: str, option_identifier: str, list_options: List[str]) -> str:
-    #     lines = grammar.split('\n')
-    #     for i in range(len(lines)):
-    #         if f'<{option_identifier}> ::=' in lines[i]:
-    #             new_line = lines[i]
-    #             head, sep, _ = new_line.partition(
-    #                 f'<{option_identifier}> ::= ')
-    #             options = ' | '.join(list_options)
-    #             new_line = f'{head}{sep}{options}'
-    #             lines[i] = new_line
-
-    #     return '\n'.join(lines)

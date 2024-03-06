@@ -1,4 +1,5 @@
 import json
+import os
 import random
 
 from pathlib import Path
@@ -336,6 +337,7 @@ class TestMonitor:
                 "server_response": response_str,
             }
 
+        os.makedirs("report", exist_ok=True)
         write_to_file("report/results.json", result)
         self.__print_summary(successful, failed)
 
