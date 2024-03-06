@@ -74,8 +74,8 @@ class TestAutomationDriver:
         Initilaize web driver.
         """
         self.__config = config
-        self.__url = url
         self.__setup_function = setup_function
+        self.__url = url
 
         # Options for the chrome webdriver
         chrome_options = webdriver.ChromeOptions()
@@ -91,20 +91,28 @@ class TestAutomationDriver:
             options=chrome_options,
             seleniumwire_options=wire_options,
         )
+        self.__interceptor = NetworkInterceptor(self.__driver)
 
         self.web_driver = self.__driver
 
-    def run_analysis(self) -> None:
-        html_only = self.__config[ConfigKey.ANALYSIS.value][ConfigKey.HTML_ONLY.value]
-        interceptor = NetworkInterceptor(self.__driver)
+        html_only = True
+        if (
+            ConfigKey.ANALYSIS.value in self.__config
+            and ConfigKey.HTML_ONLY.value in self.__config[ConfigKey.ANALYSIS.value]
+        ):
+            html_only = self.__config[ConfigKey.ANALYSIS.value][
+                ConfigKey.HTML_ONLY.value
+            ]
 
         if not html_only:
-            interceptor.instrument_files()
-            # subscribe to server messages
-            # message_thread = threading.Thread(
-            #     target=sub_to_service_messages, daemon=True
-            # )
-            # message_thread.start()
+            self.__interceptor.instrument_files()
+
+    def run_analysis(self) -> None:
+        # subscribe to server messages
+        # message_thread = threading.Thread(
+        #     target=sub_to_service_messages, daemon=True
+        # )
+        # message_thread.start()
 
         load_page(self.__driver, self.__url)
         # interceptor.scan_for_form_submission()
@@ -112,10 +120,8 @@ class TestAutomationDriver:
         if self.__setup_function is not None:
             self.__setup_function(self)
 
-        # self.__exit()
-
         html_input_specifications = self.__analyse_html(self.__driver.page_source)
-        self.__start_constraint_extraction(html_input_specifications, interceptor)
+        self.__start_constraint_extraction(html_input_specifications)
 
         self.__exit()
 
@@ -160,7 +166,6 @@ class TestAutomationDriver:
     def __start_constraint_extraction(
         self,
         html_specifications: List[HTMLInputSpecification | HTMLRadioGroupSpecification],
-        interceptor: NetworkInterceptor,
     ) -> None:
         """Start the extraction of client-side validation constraints for a set of specified HTML inputs."""
         print("Start constraint extraction")
@@ -177,7 +182,7 @@ class TestAutomationDriver:
         self.__constraint_candidate_finder = ConstraintCandidateFinder(
             self.__driver,
             self.__html_analyser.submit_element,
-            interceptor,
+            self.__interceptor,
             stop_on_first_success,
             self.__exit,
         )

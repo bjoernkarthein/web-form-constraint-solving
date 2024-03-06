@@ -1,5 +1,3 @@
-generation:
-  valid: true
 testing:
   block-submission: true
   block-all-requests: false

@@ -66,6 +66,7 @@ class NetworkInterceptor:
         For each HTML file a script tag is added to enable access of common methods for dynamic analysis.
         """
 
+        # print(request.url, request.headers["Content-Type"])
         content_type = response.headers["Content-Type"]
         if content_type == None:
             return
@@ -94,8 +95,6 @@ class NetworkInterceptor:
         if "?" in name:
             name = name.split("?")[0]
         body_string = decode_bytes(response.body)
-
-        print(name)
 
         data = {"name": name, "source": body_string}
         res = requests.post(f"{instrumentation_controller}/instrument", data)

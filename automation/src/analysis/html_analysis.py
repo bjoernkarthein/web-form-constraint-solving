@@ -54,7 +54,7 @@ class HTMLConstraints:
         self.__pattern = pattern
         self.__required = required
         self.__step = step
-        self.__type = type
+        self.__type = type or InputType.TEXT.value  # default for type is text
 
         self.__html_constraint_dict: dict = {
             "list": list,

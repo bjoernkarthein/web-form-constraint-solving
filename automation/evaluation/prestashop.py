@@ -14,21 +14,38 @@ from src.interaction.driver import TestAutomationDriver
 
 
 def fill_cart(driver: TestAutomationDriver) -> None:
-    driver.web_driver.get("http://localhost/")
-    thumb = WebDriverWait(driver.web_driver, 5).until(
+    driver.web_driver.get(
+        "http://localhost/women/2-9-brown-bear-printed-sweater.html#/1-size-s"
+    )
+    add_to_cart = WebDriverWait(driver.web_driver, 10).until(
         EC.element_to_be_clickable(
             (
                 By.XPATH,
-                "/html/body/main/section/div/div/div/section/section/section[1]/div/div[2]/article/div/div[1]/a/picture/img",
+                "/html/body/main/section/div/div/div/section/div[1]/div[2]/div[2]/div[2]/form/div[2]/div/div[2]/button",
             )
         )
     )
-    thumb.click()
-    driver.web_driver.find_element(
-        By.XPATH,
-        "/html/body/main/section/div/div/div/section/div[1]/div[2]/div[2]/div[2]/form/div[2]/div/div[2]/button",
-    ).click()
-    time.sleep(2)
+    add_to_cart.click()
+
+    WebDriverWait(driver.web_driver, 10).until(
+        EC.visibility_of_element_located(
+            (
+                By.XPATH,
+                "/html/body/div[1]/div/div/div[2]/div/div[2]/div/div/a",
+            )
+        )
+    )
+
+
+def wait_for_form(driver: TestAutomationDriver) -> None:
+    WebDriverWait(driver.web_driver, 10).until(
+        EC.visibility_of_element_located(
+            (
+                By.ID,
+                "checkout-personal-information-step",
+            )
+        )
+    )
 
 
 if __name__ == "__main__":
@@ -43,6 +60,7 @@ if __name__ == "__main__":
         "http://localhost/order",
         profiler=pr,
         file=file,
+        # setup_function=wait_for_form,
     )
 
     fill_cart(driver)

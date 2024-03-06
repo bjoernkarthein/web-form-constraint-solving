@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   c989a310_3606_4512_bee4_2bc00a61e8ac = false;
-  console.log("set trace recording flag");
+  console.debug("set trace recording flag");
 });
 
 function b0aed879_987c_461b_af34_c9c06fe3ed46(
