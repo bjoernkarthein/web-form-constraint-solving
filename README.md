@@ -51,13 +51,25 @@ exit
 
 ### Unit Tests
 
-automation: from automation directory
+#### Automation
+
+From automation directory
 
 ```sh
 python -m unittest discover -s tests/unit -b
 ```
 
-service: from service directory
+to run all tests without logs, or
+
+```sh
+python -m unittest tests.unit.<file-name>.<class-name>.<test-name>
+```
+
+to run any specific test alone.
+
+#### Service
+
+From service directory
 
 ```sh
 npm test
