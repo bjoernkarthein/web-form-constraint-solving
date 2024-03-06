@@ -367,7 +367,7 @@ def write_to_radio_group(driver: Chrome, radio_reference, value: str) -> None:
     elements = get_web_elements_by_reference(driver, radio_reference)
     for elem in elements:
         if elem.get_attribute("value") == value:
-            elem.click()
+            click_web_element(elem)
 
 
 def write_to_time_picker_with_clear(time_picker: WebElement, value: str) -> None:
