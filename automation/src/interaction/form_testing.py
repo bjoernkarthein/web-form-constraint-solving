@@ -265,7 +265,6 @@ class FormTester:
                 validities[idx] = ValidityEnum.INVALID
 
         for idx, template in enumerate(self.__generation_templates):
-            # TODO: Error handling
             generated_value = generator.generate_inputs(
                 template.grammar, template.formula, validities[idx]
             )[0]

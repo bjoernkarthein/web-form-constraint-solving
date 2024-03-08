@@ -1,4 +1,4 @@
 testing:
-  block-submission: true
+  block-submission: false
   block-all-requests: false
   repetitions: 3

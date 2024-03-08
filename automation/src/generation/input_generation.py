@@ -1,4 +1,5 @@
 import re
+import time
 
 from enum import Enum
 from isla.solver import ISLaSolver
@@ -39,79 +40,129 @@ class InputGenerator:
         formula: str | None = None,
         validity: ValidityEnum = ValidityEnum.VALID,
         amount: int = 1,
+        timeout_seconds: int = 60,
     ) -> List[GeneratedValue]:
         print(f"generating {amount} {validity.value} inputs")
+
+        if validity == ValidityEnum.VALID:
+            return self.__generate_valid_inputs(
+                grammar, formula, amount, timeout_seconds
+            )
+        else:
+            return self.__generate_invalid_inputs(
+                grammar, formula, amount, timeout_seconds
+            )
+
+    def __generate_valid_inputs(
+        self,
+        grammar: str,
+        formula: str | None,
+        amount: int = 1,
+        timeout_seconds: int = 60,
+    ) -> List[GeneratedValue]:
         print(grammar)
         print(formula)
 
-        if validity == ValidityEnum.VALID:
-            return self.__generate_valid_inputs(grammar, formula, amount)
-        else:
-            return self.__generate_invalid_inputs(grammar, formula, amount)
-
-    def __generate_valid_inputs(
-        self, grammar: str, formula: str | None, amount: int = 1
-    ) -> List[GeneratedValue]:
         values: List[GeneratedValue] = []
         if amount < 1:
             return []
 
-        solver = ISLaSolver(grammar, formula)
+        solver = ISLaSolver(
+            grammar,
+            formula,
+            max_number_free_instantiations=1,
+            max_number_smt_instantiations=2,
+            timeout_seconds=timeout_seconds,
+        )
 
-        try:
-            for _ in range(amount):
-                str_value = str(solver.solve())
+        values = []
+        for _ in range(amount):
+            try:
+                str_value = self.__get_value(solver)
                 print(f"generated '{str_value}'")
-                value = GeneratedValue(str_value, ValidityEnum.VALID)
-                values.append(value)
-            return values
-        except Exception as e:
-            # TODO
-            print(e)
-            return []
+                values.append(GeneratedValue(str_value, ValidityEnum.VALID))
+            except TimeoutError as te:
+                print(f"value generation timed out after {te} seconds")
+                values.append(value=GeneratedValue("", ValidityEnum.VALID))
+            except Exception as e:
+                print(e)
+                print(f"generated ''")
+                values.append(GeneratedValue("", ValidityEnum.VALID))
 
-    # TODO: Needs to be tested a lot to see if it works reliably
+        return values
+
+    def __get_value(self, solver: ISLaSolver) -> str:
+        return str(solver.solve())
+
     def __generate_invalid_inputs(
-        self, grammar: str, formula: str | None, amount: int = 1
+        self,
+        grammar: str,
+        formula: str | None,
+        amount: int = 1,
+        timeout_seconds: int = 60,
     ) -> List[GeneratedValue]:
+        print(grammar)
+        print(formula)
+
         if formula is not None:
             negated_formula = f"not ({formula})"
-            values = self.__generate_valid_inputs(grammar, negated_formula, amount)
+            values = self.__generate_valid_inputs(
+                grammar, negated_formula, amount, timeout_seconds
+            )
             return list(
                 map(lambda v: GeneratedValue(v.value, ValidityEnum.INVALID), values)
             )
 
-        return self.__generate_invalid_values_for_non_existent_formula(grammar, amount)
+        return self.__generate_invalid_values_for_non_existent_formula(
+            grammar, amount, timeout_seconds
+        )
 
     def __generate_invalid_values_for_non_existent_formula(
-        self, grammar: str, amount: int = 1
+        self, grammar: str, amount: int = 1, timeout_seconds: int = 60
     ) -> List[GeneratedValue]:
-        values = []
+        values: List[GeneratedValue] = []
         grammar_terminals = self.__get_terminal_characters_from_grammar(grammar)
 
         for _ in range(amount):
-            found_invalid_value = False
-
-            last_value = None
-            for _ in range(100):  # TODO: think of a good number here
-                solver = ISLaSolver(grammar)
-                str_value = str(solver.solve())
-                # TODO: What is a good number for mutations?
-                mutator = ValueMutator(str_value, grammar_terminals)
-                last_value = mutator.mutate(last_value)
-
-                if not solver.check(last_value):
-                    print(f"generated '{last_value}'")
-                    value = GeneratedValue(last_value, ValidityEnum.INVALID)
-                    values.append(value)
-                    found_invalid_value = True
-                    break
-
-            if not found_invalid_value:
-                # TODO: What if I don't find something invalid?
+            try:
+                invalid_value = self.__look_for_value_not_in_grammar(
+                    grammar, grammar_terminals, timeout_seconds
+                )
+                values.append(invalid_value)
+            except TimeoutError as te:
+                print(f"value generation timed out after {te} seconds")
+                values.append(GeneratedValue("", ValidityEnum.VALID))
+            except Exception as e:
+                print(e)
                 values.append(GeneratedValue("", ValidityEnum.INVALID))
 
-    # TODO: Can this be optimized?
+        return values
+
+    def __look_for_value_not_in_grammar(
+        self, grammar: str, grammar_terminals: Set[str], timeout_seconds: int = 60
+    ) -> None:
+        start_time = int(time.time())
+        last_value = None
+
+        while int(time.time()) - start_time < timeout_seconds:
+            solver = ISLaSolver(
+                grammar,
+                max_number_free_instantiations=1,
+                max_number_smt_instantiations=2,
+                timeout_seconds=timeout_seconds,
+            )
+            str_value = str(solver.solve())
+            mutator = ValueMutator(str_value, grammar_terminals)
+            last_value = mutator.mutate(last_value)
+
+            if not solver.check(last_value):
+                print(f"generated '{last_value}'")
+                value = GeneratedValue(last_value, ValidityEnum.INVALID)
+                return value
+
+        print(f"value generation timed out after {timeout_seconds} seconds")
+        return GeneratedValue("", ValidityEnum.INVALID)
+
     def __get_terminal_characters_from_grammar(self, grammar: str) -> Set[str]:
         result = []
         quoted_terminals = re.findall(r'("[^"]*")', grammar)

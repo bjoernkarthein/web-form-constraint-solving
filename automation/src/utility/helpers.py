@@ -1,7 +1,7 @@
+import json
 import math
 import requests
 import time
-import json
 import websocket
 
 from enum import Enum
@@ -139,6 +139,13 @@ def free_service_resources() -> Response:
     return requests.get(url)
 
 
+def set_trace_recording_flag(driver: Chrome, value: bool) -> None:
+    boolean = "false"
+    if value:
+        boolean = "true"
+    driver.execute_script(f"c989a310_3606_4512_bee4_2bc00a61e8ac = {boolean};")
+
+
 def start_trace_recording(data) -> Response:
     url = f"{analysis_controller}/record"
     return requests.post(
@@ -200,13 +207,6 @@ def load_page(driver: Chrome, url: str) -> None:
         print(
             f"The provided url '{url}' can not be loaded by selenium web driver. Please provide a url of the format http(s)://(www).example.com"
         )
-
-
-def set_trace_recording_flag(driver: Chrome, value: bool) -> None:
-    boolean = "false"
-    if value:
-        boolean = "true"
-    driver.execute_script(f"c989a310_3606_4512_bee4_2bc00a61e8ac = {boolean}")
 
 
 def clear_web_element(web_element: WebElement) -> None:
