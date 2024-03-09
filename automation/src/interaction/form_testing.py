@@ -183,17 +183,14 @@ class FormTester:
             self.__invalid,
         )
 
-        # # TODO generate all values in advance for better diversity and just fill in afterwards. Not that easy with current setup
-        # if self.__valid is None or self.__invalid is None:
-        #     for _ in range(self.__repetitions):
-        #         self.__prepare_next_form_filling(setup_function)
-        #         self.__fill_form_with_values_and_submit(generator)
-        # else:
-        for _ in range(self.__valid):
+        # TODO generate all values in advance for better diversity and just fill in afterwards. Not that easy with current setup
+        for i in range(self.__valid):
+            print(f"Round {i + 1}: Generating a valid instance...")
             self.__prepare_next_form_filling(setup_function)
             self.__fill_form_with_values_and_submit(generator)
 
-        for _ in range(self.__invalid):
+        for i in range(self.__invalid):
+            print(f"Round {self.__valid + i + 1}: Generating an invalid instance...")
             self.__prepare_next_form_filling(setup_function)
             self.__fill_form_with_values_and_submit(generator, ValidityEnum.INVALID)
 
@@ -279,7 +276,7 @@ class FormTester:
             )
 
         self.__test_monitor.attempt_submit_and_save_response(
-            get_current_values_from_form()
+            get_current_values_from_form(), values
         )
 
 
@@ -302,9 +299,15 @@ class TestMonitor:
         self.__valid = valid
         self.__invalid = invalid
 
-    # TODO: Calculate tp, fp, tn, fn here
-    # TODO: value detection is falsely true sometimes for instances with empty strings
-    def attempt_submit_and_save_response(self, current_values: Dict[str, str]) -> None:
+        # stats
+        self.__tp = 0
+        self.__fp = 0
+        self.__tn = 0
+        self.__fn = 0
+
+    def attempt_submit_and_save_response(
+        self, current_values: Dict[str, str], generated_values: List[GeneratedValue]
+    ) -> None:
         self.__interceptor.generated_values = current_values
         click_web_element_by_reference(self.__driver, self.__submit_element)
 
@@ -317,7 +320,20 @@ class TestMonitor:
             ):
                 response = request.response
 
-        self.__saved_submissions.append((current_values, response))
+        self.__saved_submissions.append((generated_values, response))
+
+        # Calculate stats
+        validities = set(map(lambda v: v.validity, generated_values))
+        if ValidityEnum.INVALID in validities:
+            if response is None:
+                self.__tn += 1
+            else:
+                self.__fp += 1
+        else:
+            if response is None:
+                self.__fn += 1
+            else:
+                self.__tp += 1
 
     def process_saved_submissions(self) -> None:
         result = {}
@@ -357,6 +373,18 @@ class TestMonitor:
             tabulate(
                 [["Successful", successful], ["Failed", failed]],
                 headers=["Status (Submission)", "Amount"],
+                tablefmt="pretty",
+            ),
+            "\n",
+        )
+        print(
+            tabulate(
+                [
+                    ["Actual Positive", self.__tp, self.__fn],
+                    ["Actual Negative", self.__fp, self.__tn],
+                ],
+                headers=["", "Predicted Positive", "Predicted Negative"],
+                tablefmt="pretty",
             ),
             "\n",
         )

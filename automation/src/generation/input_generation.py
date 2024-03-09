@@ -42,8 +42,6 @@ class InputGenerator:
         amount: int = 1,
         timeout_seconds: int = 60,
     ) -> List[GeneratedValue]:
-        print(f"generating {amount} {validity.value} inputs")
-
         if validity == ValidityEnum.VALID:
             return self.__generate_valid_inputs(
                 grammar, formula, amount, timeout_seconds
@@ -60,9 +58,6 @@ class InputGenerator:
         amount: int = 1,
         timeout_seconds: int = 60,
     ) -> List[GeneratedValue]:
-        print(grammar)
-        print(formula)
-
         values: List[GeneratedValue] = []
         if amount < 1:
             return []
@@ -79,14 +74,12 @@ class InputGenerator:
         for _ in range(amount):
             try:
                 str_value = self.__get_value(solver)
-                print(f"generated '{str_value}'")
                 values.append(GeneratedValue(str_value, ValidityEnum.VALID))
             except TimeoutError as te:
                 print(f"value generation timed out after {te} seconds")
                 values.append(value=GeneratedValue("", ValidityEnum.VALID))
             except Exception as e:
                 print(e)
-                print(f"generated ''")
                 values.append(GeneratedValue("", ValidityEnum.VALID))
 
         return values
@@ -101,9 +94,6 @@ class InputGenerator:
         amount: int = 1,
         timeout_seconds: int = 60,
     ) -> List[GeneratedValue]:
-        print(grammar)
-        print(formula)
-
         if formula is not None:
             negated_formula = f"not ({formula})"
             values = self.__generate_valid_inputs(
@@ -156,7 +146,6 @@ class InputGenerator:
             last_value = mutator.mutate(last_value)
 
             if not solver.check(last_value):
-                print(f"generated '{last_value}'")
                 value = GeneratedValue(last_value, ValidityEnum.INVALID)
                 return value
 
