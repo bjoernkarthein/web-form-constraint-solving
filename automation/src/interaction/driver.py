@@ -115,7 +115,7 @@ class TestAutomationDriver:
         # message_thread.start()
 
         load_page(self.__driver, self.__url)
-        # interceptor.scan_for_form_submission()
+        self.__interceptor.block_form_submission()
 
         if self.__setup_function is not None:
             self.__setup_function(self)
@@ -168,13 +168,12 @@ class TestAutomationDriver:
         html_specifications: List[HTMLInputSpecification | HTMLRadioGroupSpecification],
     ) -> None:
         """Start the extraction of client-side validation constraints for a set of specified HTML inputs."""
-        print("Start constraint extraction")
 
         html_only = self.__config[ConfigKey.ANALYSIS.value][ConfigKey.HTML_ONLY.value]
         analysis_rounds = self.__config[ConfigKey.ANALYSIS.value][
             ConfigKey.ANALYSIS_ROUNDS.value
         ]
-        analysis_rounds = clamp_to_range(analysis_rounds, 1, None)
+        analysis_rounds = clamp_to_range(analysis_rounds, 1)
         stop_on_first_success = self.__config[ConfigKey.ANALYSIS.value][
             ConfigKey.STOP_ON_SUCCESS.value
         ]
@@ -212,8 +211,6 @@ class TestAutomationDriver:
 
                 # TODO: When to stop? How do I not apply the same candidates twice?
 
-                # print(str(constraint_candidates))
-
                 if len(constraint_candidates.candidates) == 0:
                     break
 
@@ -229,8 +226,6 @@ class TestAutomationDriver:
 
                 previous_constraints = constraint_candidates
 
-            print(grammar, formula)
-
     # TODO: refactor to not be this complex - is this the right class?
     def __build_html_specification(
         self,
@@ -245,7 +240,7 @@ class TestAutomationDriver:
         magic_value_amount = self.__config[ConfigKey.ANALYSIS.value][
             ConfigKey.MAGIC_VALUE_AMOUNT.value
         ]
-        self.__magic_value_amount = clamp_to_range(magic_value_amount, 1, 10)
+        self.__magic_value_amount = clamp_to_range(magic_value_amount, 1)
 
         next_file_index = 1
         form_specification = {

@@ -5,7 +5,7 @@ from lxml import etree, html
 from requests_toolbelt.multipart import decoder
 from selenium.webdriver import Chrome
 from seleniumwire.request import Request, Response
-from typing import List
+from typing import Dict, List
 
 from src.utility.helpers import service_base_url, instrumentation_controller
 
@@ -26,7 +26,7 @@ class NetworkInterceptor:
     """
 
     def __init__(self, web_driver: Chrome) -> None:
-        self.generated_values: List[str] = []
+        self.generated_values: Dict[str, str] = {}
         self.__allowed_urls = None
         self.__driver = web_driver
 
@@ -44,19 +44,15 @@ class NetworkInterceptor:
         del self.__driver.response_interceptor
         self.__driver.response_interceptor = self.__file_interceptor
 
-    # For Evaluation only?
-    def block_all_outgoing_requests(
-        self, allowed_urls: List[str] | None = None
-    ) -> None:
-        del self.__driver.request_interceptor
-        if allowed_urls is not None:
-            self.__allowed_urls = allowed_urls
-        self.__driver.request_interceptor = self.__all_request_blocker
-
     def scan_for_form_submission(self) -> None:
         self.__request_scanner = RequestScanner()
         del self.__driver.request_interceptor
         self.__driver.request_interceptor = self.__form_submission_interceptor
+
+    def block_form_submission(self) -> None:
+        self.__request_scanner = RequestScanner()
+        del self.__driver.request_interceptor
+        self.__driver.request_interceptor = self.__form_submission_blocker
 
     def __file_interceptor(self, request: Request, response: Response) -> None:
         """Intercept network responses and alter response contents to allow for dynamic analysis.
@@ -66,7 +62,6 @@ class NetworkInterceptor:
         For each HTML file a script tag is added to enable access of common methods for dynamic analysis.
         """
 
-        # print(request.url, request.headers["Content-Type"])
         content_type = response.headers["Content-Type"]
         if content_type == None:
             return
@@ -108,7 +103,6 @@ class NetworkInterceptor:
             html_ast = html.fromstring(body_string)
             html_head = html_ast.find(".//head")
         except Exception:
-            # TODO
             return response.body
 
         if html_head == None:
@@ -125,23 +119,25 @@ class NetworkInterceptor:
         if service_base_url in request.url:
             return
 
-        if self.__request_scanner.all_values_in_form_request(
+        if len(
+            self.generated_values
+        ) > 0 and self.__request_scanner.all_values_in_form_request(
             request, self.generated_values
         ):
-            self.__stop_request(request)
+            self.__fake_response(request)
 
-    def __all_request_blocker(self, request: Request) -> None:
-        if (
-            service_base_url not in request.url
-            and self.__allowed_urls is not None
-            and request.url not in self.__allowed_urls
-        ):
-            self.__stop_request(request)
-
-    def __stop_request(self, request):
-        if len(self.generated_values) == 0:
+    def __form_submission_blocker(self, request: Request) -> None:
+        if service_base_url in request.url:
             return
 
+        if len(
+            self.generated_values
+        ) > 0 and self.__request_scanner.all_values_in_form_request(
+            request, self.generated_values
+        ):
+            request.abort()
+
+    def __fake_response(self, request):
         request.create_response(
             status_code=202,
             headers={
@@ -154,7 +150,7 @@ class NetworkInterceptor:
 
 class RequestScanner:
     def all_values_in_form_request(
-        self, request: Request, generated_values: List[str]
+        self, request: Request, generated_values: Dict[str, str]
     ) -> bool:
         self.generated_values = generated_values
 
@@ -185,33 +181,53 @@ class RequestScanner:
     def __scan_for_values_in_multipart_form_data(
         self, request: Request, content_type: str
     ) -> bool:
+        var_dict = {}
         elements = decoder.MultipartDecoder(request.body, content_type).parts
-        values = list(map(lambda e: e.text, elements))
+        for element in elements:
+            name = decode_bytes(element.headers[b"Content-Disposition"]).split("=", 1)[
+                1
+            ]
+            name = name.replace('"', "")
+            value = element.text
+            var_dict[name] = value
 
-        # Check for subset here because ther can always be hidden fields with additional, non generated values
-        return set(self.generated_values).issubset(set(values))
+        # Check for subset here because there can always be hidden fields with additional, non generated values
+        return self.generated_values.items() <= var_dict.items()
 
     def __scan_for_values_in_plain_text(self, request: Request) -> bool:
+        var_dict = {}
+
         body = decode_bytes(request.body)
         elements = body.split("\r\n")
-        values = list(map(lambda e: e.split("=", 1)[1] if "=" in e else None, elements))
-        values = [v for v in values if v is not None]
 
-        return set(self.generated_values).issubset(set(values))
+        for name_var in elements:
+            if "=" in name_var:
+                name, value = name_var.split("=")
+                var_dict[name] = value
+
+        # Check for subset here because there can always be hidden fields with additional, non generated values
+        return self.generated_values.items() <= var_dict.items()
 
     def __scan_for_values(self, request: Request) -> bool:
         body = decode_bytes(request.body)
-        return all(s in body for s in self.generated_values)
+        return all(
+            s in body
+            for s in [item for pair in self.generated_values.items() for item in pair]
+        )
 
     def __all_values_in_query_string(self, query_string: str) -> bool:
         if "&" not in query_string:
             return False
 
-        vars = query_string.split("&")
-        values = list(map(lambda v: v.split("=", 1)[1] if "=" in v else v, vars))
-        plain_values = list(map(lambda v: urllib.parse.unquote_plus(v), values))
+        var_dict = {}
+        name_vars = query_string.split("&")
+        for name_var in name_vars:
+            if "=" in name_var:
+                name, value = name_var.split("=")
+                var_dict[name] = urllib.parse.unquote_plus(value)
 
-        return set(self.generated_values).issubset(set(plain_values))
+        # Check for subset here because there can always be hidden fields with additional, non generated values
+        return self.generated_values.items() <= var_dict.items()
 
 
 def decode_bytes(body: bytes) -> str:

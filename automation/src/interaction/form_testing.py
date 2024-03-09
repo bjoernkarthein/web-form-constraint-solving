@@ -29,6 +29,7 @@ from src.utility.helpers import (
     click_web_element_by_reference,
     clamp_to_range,
     clear_value_mapping,
+    get_current_values_from_form,
 )
 
 
@@ -86,7 +87,7 @@ class SpecificationParser:
 
         controls = specification["controls"]
         for control in controls:
-            required_keys = set(["type", "reference", "grammar", "formula"])
+            required_keys = set(["name", "type", "reference", "grammar", "formula"])
             contained_keys = set(control.keys())
             if required_keys != contained_keys or self.__is_valid_reference(
                 control["reference"]
@@ -140,27 +141,20 @@ class FormTester:
         ]
         self.__driver = driver
 
-        self.__valid = None
-        self.__invalid = None
+        self.__valid = 0
+        self.__invalid = 0
         repetition = config[ConfigKey.TESTING.value][ConfigKey.REPETITIONS.value]
         if isinstance(repetition, int):
-            total = clamp_to_range(repetition, 1, None)
+            total = clamp_to_range(repetition, 1)
+            self.__valid = total
         elif isinstance(repetition, Dict):
-            total = repetition[ConfigKey.TOTAL.value]
-            valid = total = repetition[ConfigKey.VALID.value]
-            valid = clamp_to_range(valid, 1, None)
+            valid = repetition[ConfigKey.VALID.value]
             invalid = repetition[ConfigKey.INVALID.value]
-            invalid = clamp_to_range(invalid, 1, None)
-
-            if valid + invalid != total:
-                raise ValueError(
-                    f"The specified amount for valid and invalid form instances has to add up to the total.\nGot valid: {valid}, invalid: {invalid}, total: {total}"
-                )
+            total = clamp_to_range(valid + invalid, 1)
 
             self.__valid = valid
             self.__invalid = invalid
 
-        self.__repetitions = total
         self.__specification = specification
         self.__specification_directory = specification_directory
         self.__url = url
@@ -182,22 +176,26 @@ class FormTester:
 
         generator = InputGenerator()
         self.__test_monitor = TestMonitor(
-            self.__driver, self.__submit_element_reference, self.__interceptor
+            self.__driver,
+            self.__submit_element_reference,
+            self.__interceptor,
+            self.__valid,
+            self.__invalid,
         )
 
-        # TODO generate all values in advance for better diversity and just fill in afterwards?
-        if self.__valid is None or self.__invalid is None:
-            for _ in range(self.__repetitions):
-                self.__prepare_next_form_filling(setup_function)
-                self.__fill_form_with_values_and_submit(generator)
-        else:
-            for _ in range(self.__valid):
-                self.__prepare_next_form_filling(setup_function)
-                self.__fill_form_with_values_and_submit(generator)
+        # # TODO generate all values in advance for better diversity and just fill in afterwards. Not that easy with current setup
+        # if self.__valid is None or self.__invalid is None:
+        #     for _ in range(self.__repetitions):
+        #         self.__prepare_next_form_filling(setup_function)
+        #         self.__fill_form_with_values_and_submit(generator)
+        # else:
+        for _ in range(self.__valid):
+            self.__prepare_next_form_filling(setup_function)
+            self.__fill_form_with_values_and_submit(generator)
 
-            for _ in range(self.__invalid):
-                self.__prepare_next_form_filling(setup_function)
-                self.__fill_form_with_values_and_submit(generator, ValidityEnum.INVALID)
+        for _ in range(self.__invalid):
+            self.__prepare_next_form_filling(setup_function)
+            self.__fill_form_with_values_and_submit(generator, ValidityEnum.INVALID)
 
         self.__test_monitor.process_saved_submissions()
 
@@ -221,10 +219,11 @@ class FormTester:
         formula = load_file_content(
             f'{self.__specification_directory}/{control["formula"]}'
         )
+
+        name = control["name"]
         type = control["type"]
 
         if control["type"] == InputType.RADIO.value:
-            name = control["reference"]["access_value"]
             options = control["options"]
             options = list(
                 map(
@@ -244,7 +243,7 @@ class FormTester:
                 control["reference"]["access_method"],
                 control["reference"]["access_value"],
             )
-            element_spec = HTMLInputSpecification(element_reference)
+            element_spec = HTMLInputSpecification(element_reference, name=name)
 
         return ValueGenerationSpecification(
             element_spec, type, grammar, formula if formula != "" else None
@@ -274,11 +273,14 @@ class FormTester:
                 self.__driver,
                 template.type,
                 template.input_spec.reference,
+                template.input_spec.name,
                 generated_value.value,
                 False,
             )
 
-        self.__test_monitor.attempt_submit_and_save_response(values)
+        self.__test_monitor.attempt_submit_and_save_response(
+            get_current_values_from_form()
+        )
 
 
 class TestMonitor:
@@ -287,6 +289,8 @@ class TestMonitor:
         driver: Chrome,
         submit_element: HTMLElementReference,
         interceptor: NetworkInterceptor,
+        valid: int,
+        invalid: int,
     ) -> None:
         self.__driver = driver
         self.__interceptor = interceptor
@@ -295,19 +299,22 @@ class TestMonitor:
             []
         )
         self.__submit_element = submit_element
+        self.__valid = valid
+        self.__invalid = invalid
 
-    def attempt_submit_and_save_response(
-        self, current_values: List[GeneratedValue]
-    ) -> None:
-        str_values = list(map(lambda v: v.value, current_values))
-        self.__interceptor.generated_values = str_values
+    # TODO: Calculate tp, fp, tn, fn here
+    # TODO: value detection is falsely true sometimes for instances with empty strings
+    def attempt_submit_and_save_response(self, current_values: Dict[str, str]) -> None:
+        self.__interceptor.generated_values = current_values
         click_web_element_by_reference(self.__driver, self.__submit_element)
 
         response = None
         all_requests: List[Request] = self.__driver.requests
         # TODO: Only look at the interesting subset of requests
         for request in all_requests:
-            if self.__request_scanner.all_values_in_form_request(request, str_values):
+            if self.__request_scanner.all_values_in_form_request(
+                request, current_values
+            ):
                 response = request.response
 
         self.__saved_submissions.append((current_values, response))
@@ -342,7 +349,10 @@ class TestMonitor:
 
     def __print_summary(self, successful: int, failed: int) -> None:
         print("\nSummary:")
-        print("Total Form Instances generated:", len(self.__saved_submissions), "\n")
+        print("Total Form Instances generated:", len(self.__saved_submissions))
+        print(f"To be valid: {self.__valid}")
+        print(f"To be invalid: {self.__invalid}")
+        print("")
         print(
             tabulate(
                 [["Successful", successful], ["Failed", failed]],

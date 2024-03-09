@@ -40,7 +40,6 @@ class ConfigKey(Enum):
     REPETITIONS = "repetitions"
     STOP_ON_SUCCESS = "stop-on-first-successful-submission"
     TESTING = "testing"
-    TOTAL = "total"
     USE_DATALIST_OPTIONS = "use-datalist-options"
     VALID = "valid"
 
@@ -107,8 +106,13 @@ def clear_value_mapping() -> None:
     __current_value_map.clear()
 
 
-def get_current_values_from_form() -> List[str]:
-    return list(__current_value_map.values())
+def get_current_values_from_form() -> Dict[str, str]:
+    result = {}
+    for value in __current_value_map.values():
+        for k, v in value.items():
+            result[k] = v
+
+    return result
 
 
 def get_current_value_mapping() -> Dict:
@@ -262,18 +266,23 @@ def click_web_element_by_reference(driver: Chrome, html_element_reference) -> No
         click_web_element(web_element)
 
 
-def update_value_map(type: str, value: str, html_element_reference) -> None:
+def update_value_map(type: str, name: str, value: str, html_element_reference) -> None:
     if type == InputType.CHECKBOX.value:
         if value == "1":
-            __current_value_map[html_element_reference] = "on"
+            __current_value_map[html_element_reference] = {name: "on"}
     else:
-        __current_value_map[html_element_reference] = value
+        __current_value_map[html_element_reference] = {name: value}
 
 
 def write_to_web_element_by_reference_with_clear(
-    driver: Chrome, type: str, html_element_reference, value: str, record: bool = True
+    driver: Chrome,
+    type: str,
+    html_element_reference,
+    name: str,
+    value: str,
+    record: bool = True,
 ) -> None:
-    update_value_map(type, value, html_element_reference)
+    update_value_map(type, name, value, html_element_reference)
     web_element = get_web_element_by_reference(driver, html_element_reference)
     if web_element is None:
         return
@@ -394,7 +403,7 @@ def write_to_week_picker_with_clear(week_picker: WebElement, value: str) -> None
     week_picker.send_keys(year)
 
 
-def clamp_to_range(input: int, start: int, end: int | None) -> int:
+def clamp_to_range(input: int, start: int, end: int | None = None) -> int:
     if end is None:
         return max(start, input)
     else:

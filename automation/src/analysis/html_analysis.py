@@ -40,6 +40,7 @@ class HTMLConstraints:
         min: str = None,
         minlength: str = None,
         multiple: str = None,
+        name: str = None,
         pattern: str = None,
         required: str = None,
         step: str = None,
@@ -51,6 +52,7 @@ class HTMLConstraints:
         self.__min = min
         self.__minlength = minlength
         self.__multiple = multiple
+        self.__name = name
         self.__pattern = pattern
         self.__required = required
         self.__step = step
@@ -63,6 +65,7 @@ class HTMLConstraints:
             "min": min,
             "minlength": minlength,
             "multiple": multiple,
+            "name": name,
             "pattern": pattern,
             "required": required,
             "step": step,
@@ -136,6 +139,17 @@ class HTMLConstraints:
         self.__html_constraint_dict["multiple"] = value
 
     @property
+    def name(self) -> str:
+        """Getter for name"""
+        return self.__name
+
+    @name.setter
+    def name(self, value: str) -> None:
+        """Setter for name"""
+        self.__name = value
+        self.__html_constraint_dict["name"] = value
+
+    @property
     def pattern(self) -> str:
         """Getter for pattern"""
         return self.__pattern
@@ -205,10 +219,12 @@ class HTMLInputSpecification:
         self,
         reference: HTMLElementReference,
         constraints: HTMLConstraints | None = None,
+        name: str | None = None,
     ) -> None:
         self.reference = reference
         self.constraints = constraints
         self.type = self.constraints.type if self.constraints is not None else None
+        self.name = name or self.constraints.name
 
     def get_as_dict(self) -> Dict[str, HTMLElementReference | HTMLConstraints]:
         return {
@@ -222,6 +238,7 @@ class HTMLInputSpecification:
         self, grammar_file: str, formula_file: str
     ) -> Dict[str, str | Dict[str, str]]:
         return {
+            "name": self.name,
             "type": self.constraints.type,
             "reference": self.reference.get_as_dict(),
             "grammar": grammar_file,
@@ -258,6 +275,7 @@ class HTMLRadioGroupSpecification:
         self, grammar_file: str, formula_file: str
     ) -> Dict[str, str | Dict[str, str]]:
         return {
+            "name": self.name,
             "type": InputType.RADIO.value,
             "reference": self.reference.get_as_dict(),
             "options": [

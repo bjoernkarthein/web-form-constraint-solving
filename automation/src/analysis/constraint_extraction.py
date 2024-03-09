@@ -182,7 +182,6 @@ class ConstraintCandidateFinder:
         formula: str | None,
         amount=1,
     ) -> List[str]:
-        print(f"generating values for {str(html_specification.reference)}")
         if isinstance(html_specification, HTMLInputSpecification):
             return self.__set_magic_value_sequence_for_input(
                 html_specification, grammar, formula, amount
@@ -195,7 +194,7 @@ class ConstraintCandidateFinder:
     def fill_with_valid_values(self):
         for spec, values in self.__magic_value_map.items():
             write_to_web_element_by_reference_with_clear(
-                self.__driver, spec.type, spec.reference, values[0]
+                self.__driver, spec.type, spec.reference, spec.name, values[0]
             )
 
     # def find_initial_js_constraint_candidates(
@@ -238,7 +237,7 @@ class ConstraintCandidateFinder:
 
         for value in values:
             write_to_web_element_by_reference_with_clear(
-                self.__driver, type, spec.reference, value
+                self.__driver, type, spec.reference, spec.name, value
             )
 
             self.__attempt_submit()
