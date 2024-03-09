@@ -88,7 +88,8 @@ class InputGenerator:
                 print(e)
                 values.append(GeneratedValue("", ValidityEnum.VALID))
 
-        print(values)
+        for v in values:
+            print(str(v))
         return values
 
     def __get_value(self, solver: ISLaSolver) -> str:
@@ -139,7 +140,8 @@ class InputGenerator:
                 print(e)
                 values.append(GeneratedValue("", ValidityEnum.INVALID))
 
-        print(values)
+        for v in values:
+            print(str(v))
         return values
 
     def __look_for_value_not_in_grammar(
