@@ -58,6 +58,12 @@ class InputGenerator:
         amount: int = 1,
         timeout_seconds: int = 60,
     ) -> List[GeneratedValue]:
+        print(f"Generating {amount} valid values for")
+        print("Grammar:")
+        print(grammar)
+        print("Formula")
+        print(formula)
+
         values: List[GeneratedValue] = []
         if amount < 1:
             return []
@@ -82,6 +88,7 @@ class InputGenerator:
                 print(e)
                 values.append(GeneratedValue("", ValidityEnum.VALID))
 
+        print(values)
         return values
 
     def __get_value(self, solver: ISLaSolver) -> str:
@@ -94,6 +101,12 @@ class InputGenerator:
         amount: int = 1,
         timeout_seconds: int = 60,
     ) -> List[GeneratedValue]:
+        print(f"Generating {amount} invalid values for")
+        print("Grammar:")
+        print(grammar)
+        print("Formula")
+        print(formula)
+
         if formula is not None:
             negated_formula = f"not ({formula})"
             values = self.__generate_valid_inputs(
@@ -126,6 +139,7 @@ class InputGenerator:
                 print(e)
                 values.append(GeneratedValue("", ValidityEnum.INVALID))
 
+        print(values)
         return values
 
     def __look_for_value_not_in_grammar(

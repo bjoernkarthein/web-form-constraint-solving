@@ -339,6 +339,7 @@ class TestMonitor:
         result = {}
         successful = 0
         failed = 0
+
         for i in range(len(self.__saved_submissions)):
             values, response = self.__saved_submissions[i]
             response_str = ""
@@ -358,6 +359,16 @@ class TestMonitor:
                 "generated_values": list(map(lambda v: str(v), values)),
                 "server_response": response_str,
             }
+
+        result["stats"] = {
+            "total": self.__valid + self.__invalid,
+            "valid": self.__valid,
+            "invalid": self.__invalid,
+            "tp": self.__tp,
+            "fp": self.__fp,
+            "tn": self.__tn,
+            "fn": self.__fn,
+        }
 
         os.makedirs("report", exist_ok=True)
         write_to_file("report/results.json", result)
