@@ -77,7 +77,7 @@ class InputGenerator:
                 values.append(GeneratedValue(str_value, ValidityEnum.VALID))
             except TimeoutError as te:
                 print(f"value generation timed out after {te} seconds")
-                values.append(value=GeneratedValue("", ValidityEnum.VALID))
+                values.append(GeneratedValue("", ValidityEnum.VALID))
             except Exception as e:
                 print(e)
                 values.append(GeneratedValue("", ValidityEnum.VALID))
