@@ -310,6 +310,7 @@ class TestMonitor:
     ) -> None:
         self.__interceptor.generated_values = current_values
         click_web_element_by_reference(self.__driver, self.__submit_element)
+        # self.__driver.wait_for_request("hshshs", timeout=10)
 
         response = None
         all_requests: List[Request] = self.__driver.requests
