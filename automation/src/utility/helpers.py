@@ -135,7 +135,7 @@ def write_to_file(file_name: str, data: str | Dict) -> None:
         if isinstance(data, str):
             file.write(data)
         else:
-            json.dump(data, file, indent=4)
+            json.dump(data, file, indent=2)
 
 
 def free_service_resources() -> Response:
@@ -315,7 +315,7 @@ def write_to_web_element_by_reference_with_clear(
         )
 
 
-def select_button(button: WebElement, value: str) -> None:    
+def select_button(button: WebElement, value: str) -> None:
     if bool(value):
         click_web_element(button)
 

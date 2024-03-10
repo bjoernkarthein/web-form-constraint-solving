@@ -92,7 +92,11 @@ class SpecificationParser:
                 return False
 
             control_type = control["type"]
-            required_keys = set(['type', 'reference', 'grammar', 'options', 'formula', 'name']) if control_type == "radio" else set(["name", "type", "reference", "grammar", "formula"])
+            required_keys = (
+                set(["type", "reference", "grammar", "options", "formula", "name"])
+                if control_type == "radio"
+                else set(["name", "type", "reference", "grammar", "formula"])
+            )
             contained_keys = set(control.keys())
 
             print(required_keys)
@@ -140,7 +144,7 @@ class FormTester:
         specification: Dict,
         specification_directory: str,
         config: Dict,
-        report_path: str | None = None
+        report_path: str | None = None,
     ) -> None:
         self.__block_all_requests = config[ConfigKey.TESTING.value][
             ConfigKey.BLOCK_ALL_REQUESTS.value
@@ -191,7 +195,7 @@ class FormTester:
             self.__interceptor,
             self.__valid,
             self.__invalid,
-            self.__report_path
+            self.__report_path,
         )
 
         # TODO generate all values in advance for better diversity and just fill in afterwards. Not that easy with current setup
@@ -299,7 +303,7 @@ class TestMonitor:
         interceptor: NetworkInterceptor,
         valid: int,
         invalid: int,
-        report_path: str | None = None
+        report_path: str | None = None,
     ) -> None:
         self.__driver = driver
         self.__interceptor = interceptor
@@ -323,7 +327,14 @@ class TestMonitor:
     ) -> None:
         self.__interceptor.generated_values = current_values
         click_web_element_by_reference(self.__driver, self.__submit_element)
-        # self.__driver.wait_for_request("hshshs", timeout=10)
+
+        # Wait 10 seconds before checking all requests for payload
+        try:
+            self.__driver.wait_for_request(
+                "this-will-most-likely-never-be-part-of-a-request", timeout=10
+            )
+        except TimeoutError:
+            pass
 
         response = None
         all_requests: List[Request] = self.__driver.requests
