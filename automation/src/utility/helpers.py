@@ -315,8 +315,8 @@ def write_to_web_element_by_reference_with_clear(
         )
 
 
-def select_button(button: WebElement, value: str) -> None:
-    if int(value):
+def select_button(button: WebElement, value: str) -> None:    
+    if bool(value):
         click_web_element(button)
 
 
@@ -324,7 +324,7 @@ def write_to_checkbox_with_clear(checkbox: WebElement, value: str) -> None:
     # deselect if already selected
     if checkbox.is_selected():
         click_web_element(checkbox)
-    if int(value):
+    if bool(value):
         click_web_element(checkbox)
 
 

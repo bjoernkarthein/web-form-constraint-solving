@@ -604,25 +604,28 @@ class SpecificationBuilder:
         self, html_constraints: HTMLConstraints, use_datalist_options=False
     ) -> Tuple[str, str | None]:
         grammar = load_file_content(f"{pre_built_specifications_path}/email/email.bnf")
-        formula = load_file_content(f"{pre_built_specifications_path}/email/email.isla")
+        # formula = load_file_content(f"{pre_built_specifications_path}/email/email.isla")
+        formula = None
 
         if use_datalist_options and html_constraints.list is not None:
             grammar = self.__replace_by_list_options(
                 grammar, "email", html_constraints.list
             )
-        if html_constraints.required is not None:
+        if html_constraints.required is not None and html_constraints.minlength is None:
             formula = self.__add_to_formula(
-                f"str.len(<start>) >= 3 and str.len(<email>) >= 3", formula, ISLa.AND
+                f"str.len(<start>) >= 3", formula, ISLa.AND
             )
         if html_constraints.minlength is not None:
+            minlength = clamp_to_range(int(html_constraints.minlength), 3)
             formula = self.__add_to_formula(
-                f"str.len(<email>) >= {html_constraints.minlength}",
+                f"str.len(<start>) >= {minlength}",
                 formula,
                 ISLa.AND,
             )
+        
         if html_constraints.maxlength is not None:
             formula = self.__add_to_formula(
-                f"str.len(<email>) <= {html_constraints.maxlength}",
+                f"str.len(<start>) <= {html_constraints.maxlength}",
                 formula,
                 ISLa.AND,
             )

@@ -71,29 +71,25 @@ class InputGenerator:
         solver = ISLaSolver(
             grammar,
             formula,
-            max_number_free_instantiations=1,
-            max_number_smt_instantiations=2,
             timeout_seconds=timeout_seconds,
         )
 
         values = []
         for _ in range(amount):
             try:
-                str_value = self.__get_value(solver)
+                str_value = str(solver.solve())
                 values.append(GeneratedValue(str_value, ValidityEnum.VALID))
             except TimeoutError as te:
                 print(f"value generation timed out after {te} seconds")
                 values.append(GeneratedValue("", ValidityEnum.VALID))
             except Exception as e:
+                print("exception")
                 print(e)
                 values.append(GeneratedValue("", ValidityEnum.VALID))
 
         for v in values:
             print(str(v))
         return values
-
-    def __get_value(self, solver: ISLaSolver) -> str:
-        return str(solver.solve())
 
     def __generate_invalid_inputs(
         self,
@@ -153,8 +149,6 @@ class InputGenerator:
         while int(time.time()) - start_time < timeout_seconds:
             solver = ISLaSolver(
                 grammar,
-                max_number_free_instantiations=1,
-                max_number_smt_instantiations=2,
                 timeout_seconds=timeout_seconds,
             )
             str_value = str(solver.solve())
