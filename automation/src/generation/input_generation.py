@@ -83,7 +83,6 @@ class InputGenerator:
                 print(f"value generation timed out after {te} seconds")
                 values.append(GeneratedValue("", ValidityEnum.VALID))
             except Exception as e:
-                print("exception")
                 print(e)
                 values.append(GeneratedValue("", ValidityEnum.VALID))
 

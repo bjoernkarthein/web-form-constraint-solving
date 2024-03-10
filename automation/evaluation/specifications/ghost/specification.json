@@ -1,0 +1,19 @@
+{
+  "url": "http://localhost/",
+  "controls": [
+    {
+      "name": "email",
+      "type": "email",
+      "reference": {
+        "access_method": "id",
+        "access_value": "header-email"
+      },
+      "grammar": "1.bnf",
+      "formula": "1.isla"
+    }
+  ],
+  "submit": {
+    "access_method": "xpath",
+    "access_value": "/html/body/div/section[1]/div/form/button"
+  }
+}

@@ -1,3 +1,4 @@
+import json
 import requests
 import urllib.parse
 
@@ -168,6 +169,8 @@ class RequestScanner:
             return self.__scan_for_values_in_multipart_form_data(request, content_type)
         elif content_type.startswith("text/plain"):
             return self.__scan_for_values_in_plain_text(request)
+        elif content_type.startswith("application/json"):
+            return self.__scan_for_values_in_json(request)
         else:
             return self.__scan_for_values(request)
 
@@ -207,6 +210,12 @@ class RequestScanner:
 
         # Check for subset here because there can always be hidden fields with additional, non generated values
         return self.generated_values.items() <= var_dict.items()
+
+    def __scan_for_values_in_json(self, request: Request) -> bool:
+        body_str = decode_bytes(request.body)
+        body: Dict = json.loads(body_str)
+
+        return self.generated_values.items() <= body.items()
 
     def __scan_for_values(self, request: Request) -> bool:
         body = decode_bytes(request.body)

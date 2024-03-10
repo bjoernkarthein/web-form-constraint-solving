@@ -2,7 +2,9 @@ import json
 import os
 import random
 
+from datetime import datetime
 from pathlib import Path
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver import Chrome
 from seleniumwire.request import Request, Response
 from tabulate import tabulate
@@ -98,9 +100,6 @@ class SpecificationParser:
                 else set(["name", "type", "reference", "grammar", "formula"])
             )
             contained_keys = set(control.keys())
-
-            print(required_keys)
-            print(contained_keys)
             if required_keys != contained_keys or not self.__is_valid_reference(
                 control["reference"]
             ):
@@ -326,26 +325,33 @@ class TestMonitor:
         self, current_values: Dict[str, str], generated_values: List[GeneratedValue]
     ) -> None:
         self.__interceptor.generated_values = current_values
+
+        start_time = datetime.now()
         click_web_element_by_reference(self.__driver, self.__submit_element)
 
-        # Wait 10 seconds before checking all requests for payload
+        # Wait 5 seconds before checking all requests for form values
         try:
             self.__driver.wait_for_request(
-                "this-will-most-likely-never-be-part-of-a-request", timeout=10
+                "this-will-most-likely-never-be-part-of-a-request", timeout=5
             )
-        except TimeoutError:
-            pass
+        except TimeoutException:
+            end_time = datetime.now()
+            response = None
 
-        response = None
-        all_requests: List[Request] = self.__driver.requests
-        # TODO: Only look at the interesting subset of requests
-        for request in all_requests:
-            if self.__request_scanner.all_values_in_form_request(
-                request, current_values
-            ):
-                response = request.response
+            all_requests: List[Request] = self.__driver.requests
+            interesting_requests = list(
+                filter(
+                    lambda r: r.date >= start_time and r.date <= end_time, all_requests
+                )
+            )
 
-        self.__saved_submissions.append((generated_values, response))
+            for request in interesting_requests:
+                if self.__request_scanner.all_values_in_form_request(
+                    request, current_values
+                ):
+                    response = request.response
+
+            self.__saved_submissions.append((generated_values, response))
 
         # Calculate stats
         validities = set(map(lambda v: v.validity, generated_values))
