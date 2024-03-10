@@ -87,9 +87,17 @@ class SpecificationParser:
 
         controls = specification["controls"]
         for control in controls:
-            required_keys = set(["name", "type", "reference", "grammar", "formula"])
+            if control["type"] is None:
+                print("control is missing required fields")
+                return False
+
+            control_type = control["type"]
+            required_keys = set(['type', 'reference', 'grammar', 'options', 'formula', 'name']) if control_type == "radio" else set(["name", "type", "reference", "grammar", "formula"])
             contained_keys = set(control.keys())
-            if required_keys != contained_keys or self.__is_valid_reference(
+
+            print(required_keys)
+            print(contained_keys)
+            if required_keys != contained_keys or not self.__is_valid_reference(
                 control["reference"]
             ):
                 print("control is missing required fields")
@@ -132,6 +140,7 @@ class FormTester:
         specification: Dict,
         specification_directory: str,
         config: Dict,
+        report_path: str | None = None
     ) -> None:
         self.__block_all_requests = config[ConfigKey.TESTING.value][
             ConfigKey.BLOCK_ALL_REQUESTS.value
@@ -158,6 +167,7 @@ class FormTester:
         self.__specification = specification
         self.__specification_directory = specification_directory
         self.__url = url
+        self.__report_path = report_path
 
     def start_generation(self, setup_function=None) -> None:
         self.__interceptor = NetworkInterceptor(self.__driver)
@@ -181,6 +191,7 @@ class FormTester:
             self.__interceptor,
             self.__valid,
             self.__invalid,
+            self.__report_path
         )
 
         # TODO generate all values in advance for better diversity and just fill in afterwards. Not that easy with current setup
@@ -288,6 +299,7 @@ class TestMonitor:
         interceptor: NetworkInterceptor,
         valid: int,
         invalid: int,
+        report_path: str | None = None
     ) -> None:
         self.__driver = driver
         self.__interceptor = interceptor
@@ -298,6 +310,7 @@ class TestMonitor:
         self.__submit_element = submit_element
         self.__valid = valid
         self.__invalid = invalid
+        self.__report_path = report_path
 
         # stats
         self.__tp = 0
@@ -371,8 +384,11 @@ class TestMonitor:
             "fn": self.__fn,
         }
 
-        os.makedirs("report", exist_ok=True)
-        write_to_file("report/results.json", result)
+        if self.__report_path is None:
+            os.makedirs("report", exist_ok=True)
+            write_to_file("report/results.json", result)
+        else:
+            write_to_file(self.__report_path, result)
         self.__print_summary(successful, failed)
 
     def __print_summary(self, successful: int, failed: int) -> None:

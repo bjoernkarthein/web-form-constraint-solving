@@ -1,0 +1,41 @@
+{
+    "test_round_1": {
+        "generated_values": [
+            "(validity: ValidityEnum.VALID, value: 1)",
+            "(validity: ValidityEnum.VALID, value: .@t-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------X)",
+            "(validity: ValidityEnum.VALID, value: ZD#Tg-q`G_HMD>:wh#1W{B|{OnmO v'}/h0-xh+w*6'7Wf@BR C-E)",
+            "(validity: ValidityEnum.VALID, value: :)",
+            "(validity: ValidityEnum.VALID, value: {)",
+            "(validity: ValidityEnum.VALID, value: 0)",
+            "(validity: ValidityEnum.VALID, value: 1)",
+            "(validity: ValidityEnum.VALID, value: 0)",
+            "(validity: ValidityEnum.VALID, value: 0)",
+            "(validity: ValidityEnum.VALID, value: 1)"
+        ],
+        "server_response": "Submission did not cause any outgoing requests including the entered data."
+    },
+    "test_round_2": {
+        "generated_values": [
+            "(validity: ValidityEnum.VALID, value: 0)",
+            "(validity: ValidityEnum.INVALID, value: )",
+            "(validity: ValidityEnum.INVALID, value: )",
+            "(validity: ValidityEnum.INVALID, value: whqm0b@N$$b||?HV`L3BiBGFx7(A*+Y:Cj8]3GRq u r7ZH/q_{:EkQ#u%^1~X&C!MJm6Iy!v]M[o{ONj[(kg0Ww416jiT+x@Lq>G:k2Rxq+3tbR:B9Y=f=CW/q,:!iAO)",
+            "(validity: ValidityEnum.INVALID, value: )",
+            "(validity: ValidityEnum.VALID, value: 0)",
+            "(validity: ValidityEnum.INVALID, value: )",
+            "(validity: ValidityEnum.INVALID, value: O\t0)",
+            "(validity: ValidityEnum.INVALID, value: )",
+            "(validity: ValidityEnum.VALID, value: 0)"
+        ],
+        "server_response": "Submission did not cause any outgoing requests including the entered data."
+    },
+    "stats": {
+        "total": 2,
+        "valid": 1,
+        "invalid": 1,
+        "tp": 0,
+        "fp": 0,
+        "tn": 1,
+        "fn": 1
+    }
+}

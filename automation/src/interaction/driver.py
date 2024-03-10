@@ -34,8 +34,8 @@ from src.utility.helpers import (
 )
 
 
-chrome_driver_path = "chromedriver/windows/chromedriver.exe"
-# chrome_driver_path = "chromedriver/linux/chromedriver"
+# chrome_driver_path = "chromedriver/windows/chromedriver.exe"
+chrome_driver_path = "chromedriver/linux/chromedriver"
 chrome_driver_abs_path = os.path.abspath(chrome_driver_path)
 disable_csp_extension_path = "chromedriver/chrome-csp-disable.crx"
 disable_csp_extension_path = os.path.abspath(disable_csp_extension_path)
@@ -126,7 +126,7 @@ class TestAutomationDriver:
         self.__exit()
 
     # TODO: Selection dependent inputs during testing?
-    def run_test(self, specification_file: str | None = None) -> None:
+    def run_test(self, specification_file: str | None = None, report_path: str | None = None) -> None:
         specification_parser = SpecificationParser(specification_file)
         spec, specification_dir = specification_parser.parse()
         if spec is None:
@@ -134,7 +134,7 @@ class TestAutomationDriver:
 
         url = spec["url"]
         form_tester = FormTester(
-            self.__driver, url, spec, specification_dir, self.__config
+            self.__driver, url, spec, specification_dir, self.__config, report_path
         )
         form_tester.start_generation()
 

@@ -14,7 +14,7 @@ if __name__ == "__main__":
     file = os.path.basename(__file__)[:-3]
     driver = TestAutomationDriver(
         config,
-        "http://localhost/start?do=register",
         setup_function=None,
     )
-    driver.run_test()
+
+    driver.run_test("evaluation/specifications/dokuwiki/specification.json", "evaluation/dokuwiki_test_results.json")

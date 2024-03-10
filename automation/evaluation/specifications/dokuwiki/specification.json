@@ -1,0 +1,39 @@
+{
+    "url": "http://localhost/start?do=register",
+    "controls": [
+        {
+            "name": "login",
+            "type": "text",
+            "reference": {
+                "access_method": "xpath",
+                "access_value": "/html/body/div[1]/div/div/main/div/div[2]/div[2]/form/div/fieldset/label[1]/input"
+            },
+            "grammar": "1.bnf",
+            "formula": "1.isla"
+        },
+        {
+            "name": "fullname",
+            "type": "text",
+            "reference": {
+                "access_method": "xpath",
+                "access_value": "/html/body/div[1]/div/div/main/div/div[2]/div[2]/form/div/fieldset/label[2]/input"
+            },
+            "grammar": "2.bnf",
+            "formula": "2.isla"
+        },
+        {
+            "name": "email",
+            "type": "email",
+            "reference": {
+                "access_method": "xpath",
+                "access_value": "/html/body/div[1]/div/div/main/div/div[2]/div[2]/form/div/fieldset/label[3]/input"
+            },
+            "grammar": "3.bnf",
+            "formula": "3.isla"
+        }
+    ],
+    "submit": {
+        "access_method": "xpath",
+        "access_value": "/html/body/div[1]/div/div/main/div/div[2]/div[2]/form/div/fieldset/button"
+    }
+}

@@ -1,0 +1,1 @@
+(str.len(<start>) > 0) and (str.len(<start>) <= 60)

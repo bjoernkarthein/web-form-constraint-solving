@@ -1,0 +1,125 @@
+{
+    "url": "http://localhost/admin/people/create",
+    "controls": [
+        {
+            "name": "status",
+            "type": "radio",
+            "reference": {
+                "access_method": "name",
+                "access_value": "status"
+            },
+            "options": [
+                {
+                    "reference": {
+                        "access_method": "id",
+                        "access_value": "edit-status-0"
+                    },
+                    "value": "0"
+                },
+                {
+                    "reference": {
+                        "access_method": "id",
+                        "access_value": "edit-status-1"
+                    },
+                    "value": "1"
+                }
+            ],
+            "grammar": "1.bnf",
+            "formula": "1.isla"
+        },
+        {
+            "name": "mail",
+            "type": "email",
+            "reference": {
+                "access_method": "id",
+                "access_value": "edit-mail"
+            },
+            "grammar": "2.bnf",
+            "formula": "2.isla"
+        },
+        {
+            "name": "name",
+            "type": "text",
+            "reference": {
+                "access_method": "id",
+                "access_value": "edit-name"
+            },
+            "grammar": "3.bnf",
+            "formula": "3.isla"
+        },
+        {
+            "name": "pass[pass1]",
+            "type": "password",
+            "reference": {
+                "access_method": "id",
+                "access_value": "edit-pass-pass1"
+            },
+            "grammar": "4.bnf",
+            "formula": "4.isla"
+        },
+        {
+            "name": "pass[pass2]",
+            "type": "password",
+            "reference": {
+                "access_method": "id",
+                "access_value": "edit-pass-pass2"
+            },
+            "grammar": "5.bnf",
+            "formula": "5.isla"
+        },
+        {
+            "name": "roles[authenticated]",
+            "type": "checkbox",
+            "reference": {
+                "access_method": "id",
+                "access_value": "edit-roles-authenticated"
+            },
+            "grammar": "6.bnf",
+            "formula": "6.isla"
+        },
+        {
+            "name": "roles[content_editor]",
+            "type": "checkbox",
+            "reference": {
+                "access_method": "id",
+                "access_value": "edit-roles-content-editor"
+            },
+            "grammar": "7.bnf",
+            "formula": "7.isla"
+        },
+        {
+            "name": "roles[administrator]",
+            "type": "checkbox",
+            "reference": {
+                "access_method": "id",
+                "access_value": "edit-roles-administrator"
+            },
+            "grammar": "8.bnf",
+            "formula": "8.isla"
+        },
+        {
+            "name": "notify",
+            "type": "checkbox",
+            "reference": {
+                "access_method": "id",
+                "access_value": "edit-notify"
+            },
+            "grammar": "9.bnf",
+            "formula": "9.isla"
+        },
+        {
+            "name": "contact",
+            "type": "checkbox",
+            "reference": {
+                "access_method": "id",
+                "access_value": "edit-contact--2"
+            },
+            "grammar": "10.bnf",
+            "formula": "10.isla"
+        }
+    ],
+    "submit": {
+        "access_method": "id",
+        "access_value": "edit-submit"
+    }
+}
