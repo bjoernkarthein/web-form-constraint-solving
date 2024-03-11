@@ -266,10 +266,12 @@ def click_web_element_by_reference(driver: Chrome, html_element_reference) -> No
         click_web_element(web_element)
 
 
-def update_value_map(type: str, name: str, value: str, html_element_reference) -> None:
+def update_value_map(
+    type: str, value_name: str | None, name: str, value: str, html_element_reference
+) -> None:
     if type == InputType.CHECKBOX.value:
         if value == "1":
-            __current_value_map[html_element_reference] = {name: "on"}
+            __current_value_map[html_element_reference] = {name: value_name or "on"}
     else:
         __current_value_map[html_element_reference] = {name: value}
 
@@ -277,12 +279,13 @@ def update_value_map(type: str, name: str, value: str, html_element_reference) -
 def write_to_web_element_by_reference_with_clear(
     driver: Chrome,
     type: str,
+    value_name: str | None,  # for checkboxes only
     html_element_reference,
     name: str,
     value: str,
     record: bool = True,
 ) -> None:
-    update_value_map(type, name, value, html_element_reference)
+    update_value_map(type, value_name, name, value, html_element_reference)
     web_element = get_web_element_by_reference(driver, html_element_reference)
     if web_element is None:
         return
@@ -316,15 +319,17 @@ def write_to_web_element_by_reference_with_clear(
 
 
 def select_button(button: WebElement, value: str) -> None:
-    if bool(value):
+    select = True if value == "1" else False
+    if select:
         click_web_element(button)
 
 
 def write_to_checkbox_with_clear(checkbox: WebElement, value: str) -> None:
+    select = True if value == "1" else False
     # deselect if already selected
     if checkbox.is_selected():
         click_web_element(checkbox)
-    if bool(value):
+    if select:
         click_web_element(checkbox)
 
 

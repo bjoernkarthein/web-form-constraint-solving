@@ -194,7 +194,12 @@ class ConstraintCandidateFinder:
     def fill_with_valid_values(self):
         for spec, values in self.__magic_value_map.items():
             write_to_web_element_by_reference_with_clear(
-                self.__driver, spec.type, spec.reference, spec.name, values[0]
+                self.__driver,
+                spec.type,
+                spec.constraints.v,
+                spec.reference,
+                spec.name,
+                values[0],
             )
 
     # def find_initial_js_constraint_candidates(
@@ -237,7 +242,12 @@ class ConstraintCandidateFinder:
 
         for value in values:
             write_to_web_element_by_reference_with_clear(
-                self.__driver, type, spec.reference, spec.name, value
+                self.__driver,
+                type,
+                spec.constraints.v,
+                spec.reference,
+                spec.name,
+                value,
             )
 
             self.__attempt_submit()
@@ -612,9 +622,7 @@ class SpecificationBuilder:
                 grammar, "email", html_constraints.list
             )
         if html_constraints.required is not None and html_constraints.minlength is None:
-            formula = self.__add_to_formula(
-                f"str.len(<start>) >= 3", formula, ISLa.AND
-            )
+            formula = self.__add_to_formula(f"str.len(<start>) >= 3", formula, ISLa.AND)
         if html_constraints.minlength is not None:
             minlength = clamp_to_range(int(html_constraints.minlength), 3)
             formula = self.__add_to_formula(
@@ -622,7 +630,7 @@ class SpecificationBuilder:
                 formula,
                 ISLa.AND,
             )
-        
+
         if html_constraints.maxlength is not None:
             formula = self.__add_to_formula(
                 f"str.len(<start>) <= {html_constraints.maxlength}",

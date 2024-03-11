@@ -277,6 +277,7 @@ class TestAutomationDriver:
             ) = self.__specification_builder.write_specification_to_file(
                 str(next_file_index), grammar, formula
             )
+
             form_specification["controls"].append(
                 specification.get_representation(grammar_file, formula_file)
             )
