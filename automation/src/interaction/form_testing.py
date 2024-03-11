@@ -130,6 +130,7 @@ class ValueGenerationSpecification:
         self.type = type
         self.grammar = grammar
         self.formula = formula
+        self.value = input_spec.value
 
     def __str__(self):
         return f"ValueGenenerationSpecification:\nspec: {self.input_spec}\ngrammar: {self.grammar}\nformula: {self.formula}"
@@ -254,7 +255,17 @@ class FormTester:
                 control["reference"]["access_method"],
                 control["reference"]["access_value"],
             )
-            element_spec = HTMLInputSpecification(element_reference, name=name)
+
+            value_property = None
+            if control["type"] == InputType.CHECKBOX.value:
+                value_property = control["value"] or "on"
+
+            print("HERE")
+            print(value_property)
+
+            element_spec = HTMLInputSpecification(
+                element_reference, name=name, value=value_property
+            )
 
         return ValueGenerationSpecification(
             element_spec, type, grammar, formula if formula != "" else None
@@ -280,9 +291,12 @@ class FormTester:
             )[0]
             values.append(generated_value)
 
+            print("Something I can find")
+            print(template.value)
             write_to_web_element_by_reference_with_clear(
                 self.__driver,
                 template.type,
+                template.value,
                 template.input_spec.reference,
                 template.input_spec.name,
                 generated_value.value,
@@ -346,6 +360,7 @@ class TestMonitor:
             )
 
             for request in interesting_requests:
+                print("in attempt submit", current_values)
                 if self.__request_scanner.all_values_in_form_request(
                     request, current_values
                 ):

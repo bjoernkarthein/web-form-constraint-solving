@@ -34,17 +34,18 @@ class HTMLElementReference:
 class HTMLConstraints:
     def __init__(
         self,
-        list: List[str] = None,
-        max: str = None,
-        maxlength: str = None,
-        min: str = None,
-        minlength: str = None,
-        multiple: str = None,
-        name: str = None,
-        pattern: str = None,
-        required: str = None,
-        step: str = None,
-        type: str = None,
+        list: List[str] | None = None,
+        max: str | None = None,
+        maxlength: str | None = None,
+        min: str | None = None,
+        minlength: str | None = None,
+        multiple: str | None = None,
+        name: str | None = None,
+        pattern: str | None = None,
+        required: str | None = None,
+        step: str | None = None,
+        type: str | None = None,
+        value: str | None = None,
     ) -> None:
         self.__list = list
         self.__max = max
@@ -57,6 +58,7 @@ class HTMLConstraints:
         self.__required = required
         self.__step = step
         self.__type = type or InputType.TEXT.value  # default for type is text
+        self.__value = value  # needed for checkboxes and radios
 
         self.__html_constraint_dict: dict = {
             "list": list,
@@ -70,6 +72,7 @@ class HTMLConstraints:
             "required": required,
             "step": step,
             "type": type,
+            "value": value,
         }
 
     @property
@@ -193,6 +196,17 @@ class HTMLConstraints:
         self.__type = value
         self.__html_constraint_dict["type"] = value
 
+    @property
+    def v(self) -> str:
+        """Getter for value"""
+        return self.__value
+
+    @type.setter
+    def value(self, v: str) -> None:
+        """Setter for value"""
+        self.__value = v
+        self.__html_constraint_dict["value"] = v
+
     def get_by_name(self, attribute_name: str) -> str:
         """Get an attributes value via the attributes name as string.
         If the provided name is not an HTML validation attribute None is returned.
@@ -201,6 +215,7 @@ class HTMLConstraints:
 
     def set_by_name(self, attribute_name: str, value: str) -> None:
         """Set the value of an attribute via the attribute name as string."""
+        print("setting", attribute_name, "to", value)
         setattr(self, attribute_name, value)
 
     def get_attributes(self) -> List[str]:
@@ -220,11 +235,15 @@ class HTMLInputSpecification:
         reference: HTMLElementReference,
         constraints: HTMLConstraints | None = None,
         name: str | None = None,
+        value: str | None = None,
     ) -> None:
         self.reference = reference
         self.constraints = constraints
         self.type = self.constraints.type if self.constraints is not None else None
         self.name = name or self.constraints.name
+        self.value = value or (
+            self.constraints.v if self.constraints is not None else None
+        )
 
     def get_as_dict(self) -> Dict[str, HTMLElementReference | HTMLConstraints]:
         return {
@@ -237,13 +256,24 @@ class HTMLInputSpecification:
     def get_representation(
         self, grammar_file: str, formula_file: str
     ) -> Dict[str, str | Dict[str, str]]:
-        return {
-            "name": self.name,
-            "type": self.constraints.type,
-            "reference": self.reference.get_as_dict(),
-            "grammar": grammar_file,
-            "formula": formula_file,
-        }
+        return (
+            {
+                "name": self.name,
+                "type": self.constraints.type,
+                "reference": self.reference.get_as_dict(),
+                "grammar": grammar_file,
+                "formula": formula_file,
+            }
+            if self.type != InputType.CHECKBOX.value
+            else {
+                "name": self.name,
+                "type": self.constraints.type,
+                "value": self.value,
+                "reference": self.reference.get_as_dict(),
+                "grammar": grammar_file,
+                "formula": formula_file,
+            }
+        )
 
     def __str__(self) -> str:
         return json.dumps(self.get_as_dict())
@@ -260,6 +290,7 @@ class HTMLRadioGroupSpecification:
         self.reference = HTMLElementReference("name", self.name)
         self.options = options
         self.type = "radio"
+        self.value = None
 
     def get_as_dict(
         self,
