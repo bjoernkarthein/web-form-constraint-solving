@@ -829,7 +829,7 @@ class SpecificationBuilder:
             )
         if html_constraints.required is not None and html_constraints.minlength is None:
             formula = self.__add_to_formula("str.len(<start>) >= 8", formula, ISLa.AND)
-        else:
+        elif html_constraints.minlength is not None:
             formula = self.__add_to_formula(
                 f"str.len(<start>) >= {html_constraints.minlength}",
                 formula,
