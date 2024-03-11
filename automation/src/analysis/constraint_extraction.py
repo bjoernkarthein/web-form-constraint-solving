@@ -241,6 +241,10 @@ class ConstraintCandidateFinder:
         start_trace_recording({"spec": spec.get_as_dict(), "values": values})
 
         for value in values:
+            set_trace_recording_flag(self.__driver, False)
+            self.fill_with_valid_values()
+            set_trace_recording_flag(self.__driver, True)
+
             write_to_web_element_by_reference_with_clear(
                 self.__driver,
                 type,
@@ -304,7 +308,7 @@ class ConstraintCandidateFinder:
         click_web_element_by_reference(self.__driver, self.__submit_element)
 
         if not self.__stop_on_first_success:
-            return None
+            return
 
         # Check if the submission was successful and exit if it was
         all_requests: List[Request] = self.__driver.requests
