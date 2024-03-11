@@ -215,7 +215,11 @@ class RequestScanner:
         body_str = decode_bytes(request.body)
         body: Dict = json.loads(body_str)
 
-        return self.generated_values.items() <= body.items()
+        if isinstance(body, Dict):
+            return self.generated_values.items() <= body.items()
+        else:
+            return False
+
 
     def __scan_for_values(self, request: Request) -> bool:
         body = decode_bytes(request.body)

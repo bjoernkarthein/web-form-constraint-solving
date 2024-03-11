@@ -1,0 +1,33 @@
+{
+  "test_round_1": {
+    "generated_values": [
+      "(validity: ValidityEnum.VALID, value: )",
+      "(validity: ValidityEnum.VALID, value: )",
+      "(validity: ValidityEnum.VALID, value: )",
+      "(validity: ValidityEnum.VALID, value: .@m------------------------------------------------------------------------------------------------u)",
+      "(validity: ValidityEnum.VALID, value: 1)",
+      "(validity: ValidityEnum.VALID, value: )"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_2": {
+    "generated_values": [
+      "(validity: ValidityEnum.INVALID, value: \n\u000b)",
+      "(validity: ValidityEnum.INVALID, value: \f)",
+      "(validity: ValidityEnum.INVALID, value: \\\t)",
+      "(validity: ValidityEnum.VALID, value: )",
+      "(validity: ValidityEnum.INVALID, value: \u0012)",
+      "(validity: ValidityEnum.INVALID, value: I+Hc)/:m9)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "stats": {
+    "total": 2,
+    "valid": 1,
+    "invalid": 1,
+    "tp": 0,
+    "fp": 0,
+    "tn": 1,
+    "fn": 1
+  }
+}

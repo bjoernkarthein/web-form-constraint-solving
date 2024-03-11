@@ -1,0 +1,60 @@
+{
+  "url": "http://localhost/course/edit.php",
+  "controls": [
+    {
+      "name": "fullname",
+      "type": "text",
+      "reference": {
+        "access_method": "id",
+        "access_value": "id_fullname"
+      },
+      "grammar": "1.bnf",
+      "formula": "1.isla"
+    },
+    {
+      "name": "shortname",
+      "type": "text",
+      "reference": {
+        "access_method": "id",
+        "access_value": "id_shortname"
+      },
+      "grammar": "2.bnf",
+      "formula": "2.isla"
+    },
+    {
+      "name": "enddate[enabled]",
+      "type": "checkbox",
+      "value": "1",
+      "reference": {
+        "access_method": "id",
+        "access_value": "id_enddate_enabled"
+      },
+      "grammar": "3.bnf",
+      "formula": "3.isla"
+    },
+    {
+      "name": "idnumber",
+      "type": "text",
+      "reference": {
+        "access_method": "id",
+        "access_value": "id_idnumber"
+      },
+      "grammar": "4.bnf",
+      "formula": "4.isla"
+    },
+    {
+      "name": "summary_editor[text]",
+      "type": "textarea",
+      "reference": {
+        "access_method": "id",
+        "access_value": "id_summary_editor"
+      },
+      "grammar": "5.bnf",
+      "formula": "5.isla"
+    }
+  ],
+  "submit": {
+    "access_method": "id",
+    "access_value": "id_saveanddisplay"
+  }
+}
