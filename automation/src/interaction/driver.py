@@ -7,6 +7,7 @@ import io
 import pandas as pd
 import pstats
 
+from copy import deepcopy
 from selenium.webdriver.chrome.service import Service
 from seleniumwire import webdriver
 from typing import List, Tuple
@@ -253,9 +254,21 @@ class TestAutomationDriver:
 
         for specification in html_specifications:
             if isinstance(specification, HTMLInputSpecification):
+
                 # more diversity for magic values that are not binary
+                grammar_with_required = None
+                formula_with_required = None
+
+                spec_with_required = deepcopy(specification)
                 if specification.constraints.type not in binary_input_types:
-                    specification.constraints.required = True
+                    spec_with_required.constraints.required = True
+
+                (
+                    grammar_with_required,
+                    formula_with_required,
+                ) = self.__specification_builder.create_specification_for_html_input(
+                    spec_with_required, use_datalist_options
+                )
 
                 (
                     grammar,
@@ -282,7 +295,13 @@ class TestAutomationDriver:
                 specification.get_representation(grammar_file, formula_file)
             )
             next_file_index += 1
-            result.append((specification, grammar, formula))
+            result.append(
+                (
+                    specification,
+                    grammar_with_required or grammar,
+                    formula_with_required or formula,
+                )
+            )
 
         write_to_file("specification/specification.json", form_specification)
         return result

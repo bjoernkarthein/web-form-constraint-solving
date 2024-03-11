@@ -1,0 +1,59 @@
+{
+  "url": "http://localhost/index.php?title=Special:CreateAccount&returnto=Main+Page",
+  "controls": [
+    {
+      "name": "wpName",
+      "type": "text",
+      "reference": {
+        "access_method": "id",
+        "access_value": "wpName2"
+      },
+      "grammar": "1.bnf",
+      "formula": "1.isla"
+    },
+    {
+      "name": "wpPassword",
+      "type": "password",
+      "reference": {
+        "access_method": "id",
+        "access_value": "wpPassword2"
+      },
+      "grammar": "2.bnf",
+      "formula": "2.isla"
+    },
+    {
+      "name": "retype",
+      "type": "password",
+      "reference": {
+        "access_method": "id",
+        "access_value": "wpRetype"
+      },
+      "grammar": "3.bnf",
+      "formula": "3.isla"
+    },
+    {
+      "name": "email",
+      "type": "email",
+      "reference": {
+        "access_method": "id",
+        "access_value": "wpEmail"
+      },
+      "grammar": "4.bnf",
+      "formula": "4.isla"
+    },
+    {
+      "name": "realname",
+      "type": "text",
+      "reference": {
+        "access_method": "id",
+        "access_value": "wpRealName"
+      },
+      "grammar": "5.bnf",
+      "formula": "5.isla"
+    }
+  ],
+  "submit": {
+    "access_method": "id",
+    "access_value": "wpCreateaccount"
+  }
+}

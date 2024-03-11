@@ -100,9 +100,9 @@ class SpecificationParser:
                 else set(["name", "type", "reference", "grammar", "formula"])
             )
             contained_keys = set(control.keys())
-            if not required_keys.issubset(contained_keys) or not self.__is_valid_reference(
-                control["reference"]
-            ):
+            if not required_keys.issubset(
+                contained_keys
+            ) or not self.__is_valid_reference(control["reference"]):
                 print("control is missing required fields")
                 return False
 
@@ -260,9 +260,6 @@ class FormTester:
             if control["type"] == InputType.CHECKBOX.value:
                 value_property = control["value"] or "on"
 
-            print("HERE")
-            print(value_property)
-
             element_spec = HTMLInputSpecification(
                 element_reference, name=name, value=value_property
             )
@@ -358,7 +355,6 @@ class TestMonitor:
             )
 
             for request in interesting_requests:
-                print("in attempt submit", current_values)
                 if self.__request_scanner.all_values_in_form_request(
                     request, current_values
                 ):

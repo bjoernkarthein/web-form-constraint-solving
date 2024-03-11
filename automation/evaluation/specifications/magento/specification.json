@@ -1,0 +1,81 @@
+{
+  "url": "http://localhost/customer/account/create/",
+  "controls": [
+    {
+      "name": "firstname",
+      "type": "text",
+      "reference": {
+        "access_method": "id",
+        "access_value": "firstname"
+      },
+      "grammar": "1.bnf",
+      "formula": "1.isla"
+    },
+    {
+      "name": "lastname",
+      "type": "text",
+      "reference": {
+        "access_method": "id",
+        "access_value": "lastname"
+      },
+      "grammar": "2.bnf",
+      "formula": "2.isla"
+    },
+    {
+      "name": "is_subscribed",
+      "type": "checkbox",
+      "value": "1",
+      "reference": {
+        "access_method": "id",
+        "access_value": "is_subscribed"
+      },
+      "grammar": "3.bnf",
+      "formula": "3.isla"
+    },
+    {
+      "name": "assistance_allowed_checkbox",
+      "type": "checkbox",
+      "value": "1",
+      "reference": {
+        "access_method": "id",
+        "access_value": "assistance_allowed_checkbox"
+      },
+      "grammar": "4.bnf",
+      "formula": "4.isla"
+    },
+    {
+      "name": "email",
+      "type": "email",
+      "reference": {
+        "access_method": "id",
+        "access_value": "email_address"
+      },
+      "grammar": "5.bnf",
+      "formula": "5.isla"
+    },
+    {
+      "name": "password",
+      "type": "password",
+      "reference": {
+        "access_method": "id",
+        "access_value": "password"
+      },
+      "grammar": "6.bnf",
+      "formula": "6.isla"
+    },
+    {
+      "name": "password_confirmation",
+      "type": "password",
+      "reference": {
+        "access_method": "id",
+        "access_value": "password-confirmation"
+      },
+      "grammar": "7.bnf",
+      "formula": "7.isla"
+    }
+  ],
+  "submit": {
+    "access_method": "id",
+    "access_value": "send2"
+  }
+}

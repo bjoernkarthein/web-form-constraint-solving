@@ -233,7 +233,9 @@ class RequestScanner:
         for name_var in name_vars:
             if "=" in name_var:
                 name, value = name_var.split("=")
-                var_dict[name] = urllib.parse.unquote_plus(value)
+                var_dict[urllib.parse.unquote_plus(name)] = urllib.parse.unquote_plus(
+                    value
+                )
 
         # Check for subset here because there can always be hidden fields with additional, non generated values
         return self.generated_values.items() <= var_dict.items()

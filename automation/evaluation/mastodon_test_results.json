@@ -1,0 +1,711 @@
+{
+  "test_round_1": {
+    "generated_values": [
+      "(validity: VALID, value: .@T)",
+      "(validity: VALID, value: K)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_2": {
+    "generated_values": [
+      "(validity: VALID, value: .@M)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_3": {
+    "generated_values": [
+      "(validity: VALID, value: .@R)",
+      "(validity: VALID, value: 8)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_4": {
+    "generated_values": [
+      "(validity: VALID, value: .@g)",
+      "(validity: VALID, value: s)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_5": {
+    "generated_values": [
+      "(validity: VALID, value: .@v)",
+      "(validity: VALID, value: @)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_6": {
+    "generated_values": [
+      "(validity: VALID, value: .@W)",
+      "(validity: VALID, value: N)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_7": {
+    "generated_values": [
+      "(validity: VALID, value: .@r)",
+      "(validity: VALID, value: >)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_8": {
+    "generated_values": [
+      "(validity: VALID, value: .@q)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_9": {
+    "generated_values": [
+      "(validity: VALID, value: .@f)",
+      "(validity: VALID, value: 4)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_10": {
+    "generated_values": [
+      "(validity: VALID, value: .@K)",
+      "(validity: VALID, value: V)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_11": {
+    "generated_values": [
+      "(validity: VALID, value: .@e)",
+      "(validity: VALID, value: 6)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_12": {
+    "generated_values": [
+      "(validity: VALID, value: .@E)",
+      "(validity: VALID, value: S)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_13": {
+    "generated_values": [
+      "(validity: VALID, value: .@i)",
+      "(validity: VALID, value: t)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_14": {
+    "generated_values": [
+      "(validity: VALID, value: .@J)",
+      "(validity: VALID, value: ,)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_15": {
+    "generated_values": [
+      "(validity: VALID, value: .@l)",
+      "(validity: VALID, value: %)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_16": {
+    "generated_values": [
+      "(validity: VALID, value: .@n)",
+      "(validity: VALID, value: i)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_17": {
+    "generated_values": [
+      "(validity: VALID, value: .@v)",
+      "(validity: VALID, value: 6)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_18": {
+    "generated_values": [
+      "(validity: VALID, value: .@i)",
+      "(validity: VALID, value: e)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_19": {
+    "generated_values": [
+      "(validity: VALID, value: .@u)",
+      "(validity: VALID, value: ;)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_20": {
+    "generated_values": [
+      "(validity: VALID, value: .@W)",
+      "(validity: VALID, value: /)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_21": {
+    "generated_values": [
+      "(validity: VALID, value: .@c)",
+      "(validity: VALID, value: ?)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_22": {
+    "generated_values": [
+      "(validity: VALID, value: .@a)",
+      "(validity: VALID, value: z)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_23": {
+    "generated_values": [
+      "(validity: VALID, value: .@Q)",
+      "(validity: VALID, value: :)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_24": {
+    "generated_values": [
+      "(validity: VALID, value: .@Z)",
+      "(validity: VALID, value: ')"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_25": {
+    "generated_values": [
+      "(validity: VALID, value: .@s)",
+      "(validity: VALID, value: b)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_26": {
+    "generated_values": [
+      "(validity: VALID, value: .@r)",
+      "(validity: VALID, value:  )"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_27": {
+    "generated_values": [
+      "(validity: VALID, value: .@H)",
+      "(validity: VALID, value: Z)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_28": {
+    "generated_values": [
+      "(validity: VALID, value: .@Z)",
+      "(validity: VALID, value: K)"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_29": {
+    "generated_values": [
+      "(validity: VALID, value: .@n)",
+      "(validity: VALID, value: h)"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_30": {
+    "generated_values": [
+      "(validity: VALID, value: .@C)",
+      "(validity: VALID, value: w)"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_31": {
+    "generated_values": [
+      "(validity: VALID, value: .@u)",
+      "(validity: VALID, value: R)"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_32": {
+    "generated_values": [
+      "(validity: VALID, value: .@O)",
+      "(validity: VALID, value: n)"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_33": {
+    "generated_values": [
+      "(validity: VALID, value: .@g)",
+      "(validity: VALID, value: m)"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_34": {
+    "generated_values": [
+      "(validity: VALID, value: .@n)",
+      "(validity: VALID, value: =)"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_35": {
+    "generated_values": [
+      "(validity: VALID, value: .@D)",
+      "(validity: VALID, value: @)"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_36": {
+    "generated_values": [
+      "(validity: VALID, value: .@l)",
+      "(validity: VALID, value: l)"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_37": {
+    "generated_values": [
+      "(validity: VALID, value: .@L)",
+      "(validity: VALID, value: h)"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_38": {
+    "generated_values": [
+      "(validity: VALID, value: .@I)",
+      "(validity: VALID, value: o)"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_39": {
+    "generated_values": [
+      "(validity: VALID, value: .@Z)",
+      "(validity: VALID, value: })"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_40": {
+    "generated_values": [
+      "(validity: VALID, value: .@i)",
+      "(validity: VALID, value: N)"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_41": {
+    "generated_values": [
+      "(validity: VALID, value: .@y)",
+      "(validity: VALID, value: Q)"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_42": {
+    "generated_values": [
+      "(validity: VALID, value: .@g)",
+      "(validity: VALID, value: !)"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_43": {
+    "generated_values": [
+      "(validity: VALID, value: .@V)",
+      "(validity: VALID, value: ;)"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_44": {
+    "generated_values": [
+      "(validity: VALID, value: .@j)",
+      "(validity: VALID, value: n)"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_45": {
+    "generated_values": [
+      "(validity: VALID, value: .@e)",
+      "(validity: VALID, value: j)"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_46": {
+    "generated_values": [
+      "(validity: VALID, value: .@H)",
+      "(validity: VALID, value: t)"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_47": {
+    "generated_values": [
+      "(validity: VALID, value: .@x)",
+      "(validity: VALID, value: y)"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_48": {
+    "generated_values": [
+      "(validity: VALID, value: .@c)",
+      "(validity: VALID, value: j)"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_49": {
+    "generated_values": [
+      "(validity: VALID, value: .@H)",
+      "(validity: VALID, value: ])"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_50": {
+    "generated_values": [
+      "(validity: VALID, value: .@P)",
+      "(validity: VALID, value: D)"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_51": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_52": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_53": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_54": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_55": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_56": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_57": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: %)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_58": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_59": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_60": {
+    "generated_values": [
+      "(validity: VALID, value: .@p)",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_61": {
+    "generated_values": [
+      "(validity: VALID, value: .@f)",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_62": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_63": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_64": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: A)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_65": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_66": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_67": {
+    "generated_values": [
+      "(validity: VALID, value: .@s)",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_68": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_69": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value:  )"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_70": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_71": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: })"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_72": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: :)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_73": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: ^)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_74": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: {)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_75": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_76": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_77": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_78": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: `)"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_79": {
+    "generated_values": [
+      "(validity: VALID, value: .@e)",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_80": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: i)"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_81": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: ])"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_82": {
+    "generated_values": [
+      "(validity: VALID, value: .@K)",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_83": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: +)"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_84": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: })"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_85": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_86": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_87": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_88": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: %)"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_89": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_90": {
+    "generated_values": [
+      "(validity: VALID, value: .@c)",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_91": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_92": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_93": {
+    "generated_values": [
+      "(validity: VALID, value: .@b)",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_94": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: U)"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_95": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_96": {
+    "generated_values": [
+      "(validity: VALID, value: .@E)",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_97": {
+    "generated_values": [
+      "(validity: VALID, value: .@T)",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_98": {
+    "generated_values": [
+      "(validity: VALID, value: .@z)",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_99": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: A)"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "test_round_100": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "429 Too Many Requests"
+  },
+  "stats": {
+    "total": 100,
+    "valid": 50,
+    "invalid": 50,
+    "tp": 50,
+    "fp": 50,
+    "tn": 0,
+    "fn": 0
+  }
+}

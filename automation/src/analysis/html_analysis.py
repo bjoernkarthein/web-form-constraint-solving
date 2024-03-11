@@ -215,7 +215,6 @@ class HTMLConstraints:
 
     def set_by_name(self, attribute_name: str, value: str) -> None:
         """Set the value of an attribute via the attribute name as string."""
-        print("setting", attribute_name, "to", value)
         setattr(self, attribute_name, value)
 
     def get_attributes(self) -> List[str]:
