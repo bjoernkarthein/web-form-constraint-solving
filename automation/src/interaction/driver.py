@@ -199,8 +199,6 @@ class TestAutomationDriver:
                 spec, grammar, formula
             )
 
-        self.__constraint_candidate_finder.fill_with_valid_values()
-
         for elem in specifications:
             spec, grammar, formula = elem
             previous_constraints = {"candidates": []}
@@ -253,12 +251,12 @@ class TestAutomationDriver:
         }
 
         for specification in html_specifications:
+            grammar_with_required = None
+            formula_with_required = None
+
             if isinstance(specification, HTMLInputSpecification):
 
                 # more diversity for magic values that are not binary
-                grammar_with_required = None
-                formula_with_required = None
-
                 spec_with_required = deepcopy(specification)
                 if specification.constraints.type not in binary_input_types:
                     spec_with_required.constraints.required = True

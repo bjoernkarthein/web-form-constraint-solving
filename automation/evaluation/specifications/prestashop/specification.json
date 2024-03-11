@@ -1,0 +1,129 @@
+{
+  "url": "http://localhost/order",
+  "controls": [
+    {
+      "name": "id_gender",
+      "type": "radio",
+      "reference": {
+        "access_method": "name",
+        "access_value": "id_gender"
+      },
+      "options": [
+        {
+          "reference": {
+            "access_method": "id",
+            "access_value": "field-id_gender-1"
+          },
+          "value": "1"
+        },
+        {
+          "reference": {
+            "access_method": "id",
+            "access_value": "field-id_gender-2"
+          },
+          "value": "2"
+        }
+      ],
+      "grammar": "1.bnf",
+      "formula": "1.isla"
+    },
+    {
+      "name": "firstname",
+      "type": "text",
+      "reference": {
+        "access_method": "id",
+        "access_value": "field-firstname"
+      },
+      "grammar": "2.bnf",
+      "formula": "2.isla"
+    },
+    {
+      "name": "lastname",
+      "type": "text",
+      "reference": {
+        "access_method": "id",
+        "access_value": "field-lastname"
+      },
+      "grammar": "3.bnf",
+      "formula": "3.isla"
+    },
+    {
+      "name": "email",
+      "type": "email",
+      "reference": {
+        "access_method": "id",
+        "access_value": "field-email"
+      },
+      "grammar": "4.bnf",
+      "formula": "4.isla"
+    },
+    {
+      "name": "password",
+      "type": "password",
+      "reference": {
+        "access_method": "id",
+        "access_value": "field-password"
+      },
+      "grammar": "5.bnf",
+      "formula": "5.isla"
+    },
+    {
+      "name": "birthday",
+      "type": "text",
+      "reference": {
+        "access_method": "id",
+        "access_value": "field-birthday"
+      },
+      "grammar": "6.bnf",
+      "formula": "6.isla"
+    },
+    {
+      "name": "optin",
+      "type": "checkbox",
+      "value": "1",
+      "reference": {
+        "access_method": "xpath",
+        "access_value": "/html/body/main/section/div/div/div/section/div/div[1]/section[1]/div/div/div[1]/form/div/div[7]/div[1]/span/label/input"
+      },
+      "grammar": "7.bnf",
+      "formula": "7.isla"
+    },
+    {
+      "name": "psgdpr",
+      "type": "checkbox",
+      "value": "1",
+      "reference": {
+        "access_method": "xpath",
+        "access_value": "/html/body/main/section/div/div/div/section/div/div[1]/section[1]/div/div/div[1]/form/div/div[8]/div[1]/span/label/input"
+      },
+      "grammar": "8.bnf",
+      "formula": "8.isla"
+    },
+    {
+      "name": "newsletter",
+      "type": "checkbox",
+      "value": "1",
+      "reference": {
+        "access_method": "xpath",
+        "access_value": "/html/body/main/section/div/div/div/section/div/div[1]/section[1]/div/div/div[1]/form/div/div[9]/div[1]/span/label/input"
+      },
+      "grammar": "9.bnf",
+      "formula": "9.isla"
+    },
+    {
+      "name": "customer_privacy",
+      "type": "checkbox",
+      "value": "1",
+      "reference": {
+        "access_method": "xpath",
+        "access_value": "/html/body/main/section/div/div/div/section/div/div[1]/section[1]/div/div/div[1]/form/div/div[10]/div[1]/span/label/input"
+      },
+      "grammar": "10.bnf",
+      "formula": "10.isla"
+    }
+  ],
+  "submit": {
+    "access_method": "xpath",
+    "access_value": "/html/body/main/section/div/div/div/section/div/div[1]/section[1]/div/div/div[1]/form/footer/button"
+  }
+}

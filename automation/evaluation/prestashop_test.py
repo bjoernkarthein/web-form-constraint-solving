@@ -38,18 +38,16 @@ def fill_cart(driver: TestAutomationDriver) -> None:
 
 
 if __name__ == "__main__":
-    config = yaml.safe_load(open("evaluation/config.yml"))
-
-    # initialize profiler
-    pr = cProfile.Profile()
+    config = yaml.safe_load(open("evaluation/config_test.yml"))
 
     file = os.path.basename(__file__)[:-3]
     driver = TestAutomationDriver(
         config,
         "http://localhost/order",
-        profiler=pr,
-        file=file,
     )
 
     fill_cart(driver)
-    driver.run_analysis()
+    driver.run_test(
+        "evaluation/specifications/prestashop/specification.json",
+        "evaluation/prestashop_test_results.json",
+    )

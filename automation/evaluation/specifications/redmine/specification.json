@@ -1,0 +1,181 @@
+{
+  "url": "http://localhost/projects/new",
+  "controls": [
+    {
+      "name": "project[name]",
+      "type": "text",
+      "reference": {
+        "access_method": "id",
+        "access_value": "project_name"
+      },
+      "grammar": "1.bnf",
+      "formula": "1.isla"
+    },
+    {
+      "name": "project[identifier]",
+      "type": "text",
+      "reference": {
+        "access_method": "id",
+        "access_value": "project_identifier"
+      },
+      "grammar": "2.bnf",
+      "formula": "2.isla"
+    },
+    {
+      "name": "project[homepage]",
+      "type": "text",
+      "reference": {
+        "access_method": "id",
+        "access_value": "project_homepage"
+      },
+      "grammar": "3.bnf",
+      "formula": "3.isla"
+    },
+    {
+      "name": "project[is_public]",
+      "type": "checkbox",
+      "value": "1",
+      "reference": {
+        "access_method": "id",
+        "access_value": "project_is_public"
+      },
+      "grammar": "4.bnf",
+      "formula": "4.isla"
+    },
+    {
+      "name": "project[inherit_members]",
+      "type": "checkbox",
+      "value": "1",
+      "reference": {
+        "access_method": "id",
+        "access_value": "project_inherit_members"
+      },
+      "grammar": "5.bnf",
+      "formula": "5.isla"
+    },
+    {
+      "name": "project[enabled_module_names][]",
+      "type": "checkbox",
+      "value": "issue_tracking",
+      "reference": {
+        "access_method": "id",
+        "access_value": "project_enabled_module_names_issue_tracking"
+      },
+      "grammar": "6.bnf",
+      "formula": "6.isla"
+    },
+    {
+      "name": "project[enabled_module_names][]",
+      "type": "checkbox",
+      "value": "time_tracking",
+      "reference": {
+        "access_method": "id",
+        "access_value": "project_enabled_module_names_time_tracking"
+      },
+      "grammar": "7.bnf",
+      "formula": "7.isla"
+    },
+    {
+      "name": "project[enabled_module_names][]",
+      "type": "checkbox",
+      "value": "news",
+      "reference": {
+        "access_method": "id",
+        "access_value": "project_enabled_module_names_news"
+      },
+      "grammar": "8.bnf",
+      "formula": "8.isla"
+    },
+    {
+      "name": "project[enabled_module_names][]",
+      "type": "checkbox",
+      "value": "documents",
+      "reference": {
+        "access_method": "id",
+        "access_value": "project_enabled_module_names_documents"
+      },
+      "grammar": "9.bnf",
+      "formula": "9.isla"
+    },
+    {
+      "name": "project[enabled_module_names][]",
+      "type": "checkbox",
+      "value": "files",
+      "reference": {
+        "access_method": "id",
+        "access_value": "project_enabled_module_names_files"
+      },
+      "grammar": "10.bnf",
+      "formula": "10.isla"
+    },
+    {
+      "name": "project[enabled_module_names][]",
+      "type": "checkbox",
+      "value": "wiki",
+      "reference": {
+        "access_method": "id",
+        "access_value": "project_enabled_module_names_wiki"
+      },
+      "grammar": "11.bnf",
+      "formula": "11.isla"
+    },
+    {
+      "name": "project[enabled_module_names][]",
+      "type": "checkbox",
+      "value": "repository",
+      "reference": {
+        "access_method": "id",
+        "access_value": "project_enabled_module_names_repository"
+      },
+      "grammar": "12.bnf",
+      "formula": "12.isla"
+    },
+    {
+      "name": "project[enabled_module_names][]",
+      "type": "checkbox",
+      "value": "boards",
+      "reference": {
+        "access_method": "id",
+        "access_value": "project_enabled_module_names_boards"
+      },
+      "grammar": "13.bnf",
+      "formula": "13.isla"
+    },
+    {
+      "name": "project[enabled_module_names][]",
+      "type": "checkbox",
+      "value": "calendar",
+      "reference": {
+        "access_method": "id",
+        "access_value": "project_enabled_module_names_calendar"
+      },
+      "grammar": "14.bnf",
+      "formula": "14.isla"
+    },
+    {
+      "name": "project[enabled_module_names][]",
+      "type": "checkbox",
+      "value": "gantt",
+      "reference": {
+        "access_method": "id",
+        "access_value": "project_enabled_module_names_gantt"
+      },
+      "grammar": "15.bnf",
+      "formula": "15.isla"
+    },
+    {
+      "name": "project[description]",
+      "type": "textarea",
+      "reference": {
+        "access_method": "id",
+        "access_value": "project_description"
+      },
+      "grammar": "16.bnf",
+      "formula": "16.isla"
+    }
+  ],
+  "submit": {
+    "access_method": "xpath",
+    "access_value": "/html/body/div[1]/div[4]/div[2]/form/input[3]"
+  }
+}
