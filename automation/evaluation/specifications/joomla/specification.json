@@ -24,6 +24,7 @@
     {
       "name": "remember",
       "type": "checkbox",
+      "value": "yes",
       "reference": {
         "access_method": "id",
         "access_value": "form-login-input-remember-16"

@@ -100,7 +100,7 @@ class SpecificationParser:
                 else set(["name", "type", "reference", "grammar", "formula"])
             )
             contained_keys = set(control.keys())
-            if required_keys != contained_keys or not self.__is_valid_reference(
+            if not required_keys.issubset(contained_keys) or not self.__is_valid_reference(
                 control["reference"]
             ):
                 print("control is missing required fields")
@@ -291,8 +291,6 @@ class FormTester:
             )[0]
             values.append(generated_value)
 
-            print("Something I can find")
-            print(template.value)
             write_to_web_element_by_reference_with_clear(
                 self.__driver,
                 template.type,
