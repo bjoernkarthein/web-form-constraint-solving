@@ -1,0 +1,39 @@
+{
+  "url": "https://localhost/",
+  "controls": [
+    {
+      "name": "username",
+      "type": "text",
+      "reference": {
+        "access_method": "id",
+        "access_value": "modlgn-username-16"
+      },
+      "grammar": "1.bnf",
+      "formula": "1.isla"
+    },
+    {
+      "name": "password",
+      "type": "password",
+      "reference": {
+        "access_method": "id",
+        "access_value": "modlgn-passwd-16"
+      },
+      "grammar": "2.bnf",
+      "formula": "2.isla"
+    },
+    {
+      "name": "remember",
+      "type": "checkbox",
+      "reference": {
+        "access_method": "id",
+        "access_value": "form-login-input-remember-16"
+      },
+      "grammar": "3.bnf",
+      "formula": "3.isla"
+    }
+  ],
+  "submit": {
+    "access_method": "xpath",
+    "access_value": "/html/body/div/div[2]/div[2]/div/form/div/div[5]/button"
+  }
+}
