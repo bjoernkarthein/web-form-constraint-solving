@@ -1,3 +1,4 @@
 {
-    "plugins": ["./src/plugins/function-trace-plugin.js", "./src/plugins/variable-assignment-plugin.js", "./src/plugins/conditional-resolve-plugin.js"]
+    // "plugins": ["./src/plugins/function-trace-plugin.js", "./src/plugins/variable-assignment-plugin.js", "./src/plugins/conditional-resolve-plugin.js"]
+    "plugins": ["./src/plugins/variable-assignment-plugin.js", "./src/plugins/function-trace-plugin.js"]
 }

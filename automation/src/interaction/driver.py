@@ -1,6 +1,7 @@
 import os
 import threading
 import sys
+import time
 
 import cProfile
 import io
@@ -18,6 +19,7 @@ from src.analysis.constraint_extraction import (
 )
 from src.analysis.html_analysis import (
     HTMLAnalyser,
+    HTMLElementReference,
     HTMLInputSpecification,
     FormObserver,
     HTMLRadioGroupSpecification,
@@ -32,6 +34,8 @@ from src.utility.helpers import (
     load_page,
     sub_to_service_messages,
     write_to_file,
+    write_to_web_element_by_reference_with_clear,
+    set_trace_recording_flag,
 )
 
 
@@ -77,6 +81,7 @@ class TestAutomationDriver:
         self.__config = config
         self.__setup_function = setup_function
         self.__url = url
+        self.__html_only = True
 
         # Options for the chrome webdriver
         chrome_options = webdriver.ChromeOptions()
@@ -96,17 +101,13 @@ class TestAutomationDriver:
 
         self.web_driver = self.__driver
 
-        html_only = True
         if (
             ConfigKey.ANALYSIS.value in self.__config
             and ConfigKey.HTML_ONLY.value in self.__config[ConfigKey.ANALYSIS.value]
         ):
-            html_only = self.__config[ConfigKey.ANALYSIS.value][
+            self.__html_only = self.__config[ConfigKey.ANALYSIS.value][
                 ConfigKey.HTML_ONLY.value
             ]
-
-        if not html_only:
-            self.__interceptor.instrument_files()
 
     def run_analysis(self) -> None:
         # subscribe to server messages
@@ -115,8 +116,28 @@ class TestAutomationDriver:
         # )
         # message_thread.start()
 
+        if not self.__html_only:
+            self.__interceptor.instrument_files()
+
         load_page(self.__driver, self.__url)
         # self.__interceptor.block_form_submission()
+
+        # time.sleep(2)
+        # ref = HTMLElementReference("id", "edit-pass-pass1")
+        # refCon = HTMLElementReference("id", "edit-pass-pass2")
+
+        # write_to_web_element_by_reference_with_clear(
+        #     self.__driver, "text", None, ref, "pass[pass1]", "test", False
+        # )
+
+        # time.sleep(2)
+        # set_trace_recording_flag(self.__driver, True)
+        # write_to_web_element_by_reference_with_clear(
+        #     self.__driver, "text", None, refCon, "pass[pass2]", "test", False
+        # )
+        # set_trace_recording_flag(self.__driver, False)
+        # time.sleep(1000)
+        # self.__exit()
 
         if self.__setup_function is not None:
             self.__setup_function(self)
@@ -193,39 +214,50 @@ class TestAutomationDriver:
         if html_only:
             self.__exit()
 
-        for elem in specifications:
-            spec, grammar, formula = elem
-            self.__constraint_candidate_finder.set_valid_value_sequence(
-                spec, grammar, formula
-            )
+        # for elem in specifications:
+        #     name = elem[0].reference.access_value
+        #     if name != "edit-pass-pass1" and name != "edit-pass-pass2":
+        #         continue
+        #     spec, grammar, formula = elem
+        #     values = self.__constraint_candidate_finder.set_valid_value_sequence(
+        #         spec, grammar, formula
+        #     )
+        #     print(spec.reference.access_value)
+        #     print(values)
 
         for elem in specifications:
             spec, grammar, formula = elem
+            name = spec.reference.access_value
+            print(name)
+            if name != "edit-pass-pass1" and name != "edit-pass-pass2":
+                continue
+
             previous_constraints = {"candidates": []}
 
             for _ in range(analysis_rounds):
-                constraint_candidates = (
-                    self.__constraint_candidate_finder.find_js_constraint_candidates(
-                        spec, grammar, formula, self.__magic_value_amount
-                    )
+                values = self.__constraint_candidate_finder.set_valid_value_sequence(
+                    spec, grammar, formula, self.__magic_value_amount
+                )
+                constraint_candidates = self.__constraint_candidate_finder.get_constraint_candidates_for_value_sequence(
+                    spec, values
                 )
 
-                # TODO: When to stop? How do I not apply the same candidates twice?
+                # # TODO: When to stop? How do I not apply the same candidates twice?
 
-                if len(constraint_candidates.candidates) == 0:
-                    break
+                # if len(constraint_candidates.candidates) == 0:
+                #     break
 
-                if constraint_candidates == previous_constraints:
-                    break
+                # if constraint_candidates == previous_constraints:
+                #     break
 
-                (
-                    grammar,
-                    formula,
-                ) = self.__specification_builder.add_constraints_to_current_specification(
-                    spec.reference, spec.constraints.type, constraint_candidates
-                )
+                # (
+                #     grammar,
+                #     formula,
+                # ) = self.__specification_builder.add_constraints_to_current_specification(
+                #     spec.reference, spec.constraints.type, constraint_candidates
+                # )
 
-                previous_constraints = constraint_candidates
+                # previous_constraints = constraint_candidates
 
     # TODO: refactor to not be this complex - is this the right class?
     def __build_html_specification(

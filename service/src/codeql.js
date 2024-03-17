@@ -13,10 +13,10 @@ const queryDirectory = `${codeqlDirectory}/queries`;
 const resultDirectory = `${codeqlDirectory}/results`;
 
 const allQueries = [
-  "to_literal_comp",
+  // "to_literal_comp",
   "to_var_comp",
-  "to_regex",
-  "to_string_match",
+  // "to_regex",
+  // "to_string_match",
 ];
 const queryTypes = {
   COMPARISON_TO_A_LITERAL: "To Literal Comparison",

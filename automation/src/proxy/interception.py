@@ -64,6 +64,7 @@ class NetworkInterceptor:
         """
 
         content_type = response.headers["Content-Type"]
+        # print(request.url, content_type)
         if content_type == None:
             return
 
@@ -72,7 +73,6 @@ class NetworkInterceptor:
         ):
             if request.url.startswith(f"{service_base_url}/static/"):
                 return
-
             response.body = self.__handle_js_file(request, response)
 
         if content_type.startswith("text/html"):
@@ -90,6 +90,7 @@ class NetworkInterceptor:
         name = request.url.split("/")[-1]
         if "?" in name:
             name = name.split("?")[0]
+
         body_string = decode_bytes(response.body)
 
         data = {"name": name, "source": body_string}
@@ -97,22 +98,40 @@ class NetworkInterceptor:
         return res.content
 
     def __handle_html_file(self, response: Response) -> bytes:
-        """Add script tag with common functions to HTML file body and return new content."""
+        """Optionally adjust existing CSP meta tag and add script tag with common functions to HTML file body and return new content."""
 
         try:
             body_string = decode_bytes(response.body)
             html_ast = html.fromstring(body_string)
-            html_head = html_ast.find(".//head")
         except Exception:
             return response.body
 
+        html_head = html_ast.find(".//head")
+        existing_csp_meta = html_head.find(
+            './/meta[@http-equiv="Content-Security-Policy"]'
+        )
+
         if html_head == None:
             return
+
+        # Add service base url as allowed url for externally loaded scripts
+        if existing_csp_meta is not None:
+            content: str = existing_csp_meta.get("content")
+            elements = content.split(";")
+            elements = list(map(lambda e: e.strip(), elements))
+            script_src = list(filter(lambda e: e.startswith("script-src"), elements))
+            if len(script_src) == 1:
+                s = script_src[0]
+                script_src_index = elements.index(s)
+                s = f"{s} {service_base_url}"
+                elements[script_src_index] = s
+                existing_csp_meta.set("content", "; ".join(elements))
 
         record_script_tag = etree.fromstring(
             f'<script src="{service_base_url}/static/record.js"></script>'
         )
 
+        # Add custom script to head
         html_head.append(record_script_tag)
         return html.tostring(html_ast, pretty_print=True)
 
@@ -220,7 +239,6 @@ class RequestScanner:
         else:
             return False
 
-
     def __scan_for_values(self, request: Request) -> bool:
         body = decode_bytes(request.body)
         return all(
@@ -250,7 +268,9 @@ def decode_bytes(body: bytes) -> str:
 
     try:
         body_string = body.decode("utf-8")
-    except UnicodeDecodeError:
+    except UnicodeDecodeError as e:
+        print("UnicodeDecodeError when decoding request body")
+        print(e)
         return ""
 
     return body_string

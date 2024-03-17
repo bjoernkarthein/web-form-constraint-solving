@@ -97,12 +97,13 @@ predicate isInLiteralComparison(Expr expr) {
 predicate hasVarComparisonParent(Expr expr, Expr parent, Expr varValue) {
   parent = expr.getParent*() and
   parent instanceof Comparison and
+  not parent.(Comparison).getRightOperand() instanceof Literal and
+  not parent.(Comparison).getLeftOperand() instanceof Literal and
   (
     varValue = parent.(Comparison).getRightOperand() or
     varValue = parent.(Comparison).getLeftOperand()
   ) and
-  not varValue instanceof Literal and
-  not varValue = expr
+  not varValue = expr.getParent*()
 }
 
 predicate isInVarComparison(Expr expr) {

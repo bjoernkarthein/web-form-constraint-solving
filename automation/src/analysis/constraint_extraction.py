@@ -214,19 +214,20 @@ class ConstraintCandidateFinder:
     #         html_specification, magic_value_sequence
     #     )
 
-    def find_js_constraint_candidates(
-        self,
-        spec: HTMLInputSpecification | HTMLRadioGroupSpecification,
-        grammar: str,
-        formula: str | None = None,
-        amount: int = 1,
-    ) -> ConstraintCandidateResult:
-        generator = InputGenerator()
-        values = generator.generate_inputs(grammar, formula, ValidityEnum.VALID, amount)
-        values = list(map(lambda v: v.value, values))
-        return self.__get_constraint_candidates_for_value_sequence(spec, values)
+    # def find_js_constraint_candidates(
+    #     self,
+    #     spec: HTMLInputSpecification | HTMLRadioGroupSpecification,
+    #     grammar: str,
+    #     formula: str | None = None,
+    #     amount: int = 1,
+    # ) -> ConstraintCandidateResult:
+    #     generator = InputGenerator()
+    #     values = generator.generate_inputs(grammar, formula, ValidityEnum.VALID, amount)
+    #     values = list(map(lambda v: v.value, values))
 
-    def __get_constraint_candidates_for_value_sequence(
+    #     return self.__get_constraint_candidates_for_value_sequence(spec, values)
+
+    def get_constraint_candidates_for_value_sequence(
         self,
         spec: HTMLInputSpecification | HTMLRadioGroupSpecification,
         values: List[str],
@@ -266,7 +267,7 @@ class ConstraintCandidateFinder:
         )
         set_trace_recording_flag(self.__driver, False)
 
-        # return ConstraintCandidateResult({"candidates": []})
+        return ConstraintCandidateResult({"candidates": []})
 
         constraint_candidate_response = get_constraint_candidates(all_traces)
         response_str = decode_bytes(constraint_candidate_response.content)

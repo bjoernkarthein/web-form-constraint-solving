@@ -22,13 +22,13 @@ const expressionToFieldMap = new Map();
 
 function hasValue(object, value) {
   if (!!object) {
-    for (const elem of Object.values(object)) {
-      if (typeof elem === "string") {
-        if (elem === value) {
+    for (const [name, propertyValue] of Object.entries(object)) {
+      if (typeof propertyValue === "string") {
+        if (name === "value" && propertyValue === value) {
           return [true, object];
         }
-      } else if (typeof elem === "object") {
-        const [result, object] = hasValue(elem, value);
+      } else if (typeof propertyValue === "object") {
+        const [result, object] = hasValue(propertyValue, value);
         if (result) {
           return [result, object];
         }
@@ -60,7 +60,7 @@ async function analyseTraces(traces) {
 
   const sourceDir = perpareForCodeQLQueries(allTraces);
   runQueries(pointsOfInterest, sourceDir);
-  return extractConstraintCandidates();
+  // return extractConstraintCandidates();
 }
 
 function processTraces(allTraces) {
@@ -84,33 +84,33 @@ function processTraces(allTraces) {
   interactionTraces.sort(compareTimestamps);
 
   const browserTraces = interactionTraces.filter((t) => t.pageFile);
-  if (browserTraces.length > 0) {
-    // TODO: does this always work and finds the first value of any other form field in the current traces?
-    outer: for (const magicValue of magicValueToReferenceMap.keys()) {
-      for (const trace of browserTraces) {
-        const [included, object] = hasValue(trace, magicValue);
-        if (included) {
-          const expression = object.expression;
-          expressionToFieldMap.set(
-            expression,
-            JSON.stringify({
-              references: Array.from(
-                magicValueToReferenceMap.get(magicValue)
-              ).map((ref) => JSON.parse(ref)),
-              generalLocation: trace.location,
-            })
-          );
-          // TODO: Is it a good idea to keep going and have possibly multiple results? Can I somehow check if all magic values of another input are there?
-          // break outer;
-        }
-      }
-    }
-  }
+  // if (browserTraces.length > 0) {
+  //   // TODO: does this always work and finds the first value of any other form field in the current traces?
+  //   outer: for (const magicValue of magicValueToReferenceMap.keys()) {
+  //     for (const trace of browserTraces) {
+  //       const [included, object] = hasValue(trace, magicValue);
+  //       if (included) {
+  //         const expression = object.expression;
+  //         expressionToFieldMap.set(
+  //           expression,
+  //           JSON.stringify({
+  //             references: Array.from(
+  //               magicValueToReferenceMap.get(magicValue)
+  //             ).map((ref) => JSON.parse(ref)),
+  //             generalLocation: trace.location,
+  //           })
+  //         );
+  //         // TODO: Is it a good idea to keep going and have possibly multiple results? Can I somehow check if all magic values of another input are there?
+  //         // break outer;
+  //       }
+  //     }
+  //   }
+  // }
 
-  const interactionStart = interactionTraces[0];
-  for (const value of interactionStart.args.values) {
-    addReferenceForMagicValue(value, interactionStart.args.spec.reference);
-  }
+  // const interactionStart = interactionTraces[0];
+  // for (const value of interactionStart.args.values) {
+  //   addReferenceForMagicValue(value, interactionStart.args.spec.reference);
+  // }
 
   // If there are no functions called in the browser we can return
   if (browserTraces.length === 0) {
@@ -238,7 +238,7 @@ function extractConstraintCandidates(
 }
 
 function buildLocationFromResult(locationData) {
-  if (/\[\[([^\]]+)\|([^\]]+)\]\]/g.test(locationData[0])) {
+  if (/\[\[("[^"]+")\|("[^"]+")\]\]/g.test(locationData[0])) {
     return buildLocationsFromString(locationData[0]);
   } else {
     return {
@@ -251,7 +251,7 @@ function buildLocationFromResult(locationData) {
 
 function buildLocationsFromString(value) {
   result = [];
-  const locationRegExp = /\[\[([^\]]+)\|([^\]]+)\]\]/g;
+  const locationRegExp = /\[\[("[^"]+")\|("[^"]+")\]\]/g;
   const matches = [...value.matchAll(locationRegExp)];
   for (const match of matches) {
     let sourceLoc = match[2];
@@ -274,7 +274,7 @@ function getCodeSliceFromFileByLocation(
   endPos,
   dir = instrumentation.originalDir
 ) {
-  let lines = fs.readFileSync(`${dir}${file}`, "utf-8").split("\r\n");
+  let lines = fs.readFileSync(`${dir}${file}`, "utf-8").split("\n");
   lines = lines.slice(startPos.line - 1, endPos.line);
   lines[0] = lines[0].substring(startPos.col - 1);
   lines[lines.length - 1] = lines[lines.length - 1].substring(
@@ -347,6 +347,9 @@ function handleVariableComparison(compSlice, comparedValue) {
 
   const candidates = [];
 
+  console.log(compSlice);
+  console.log(comparedValue);
+
   let otherValue = { type: "", value: "" };
   let result = { type: "VarComp", operator: "", otherValue };
 
@@ -381,3 +384,24 @@ module.exports = {
   hasValue,
   extractConstraintCandidates,
 };
+
+// const o = {
+//   action: "ARROW_FUNCTION_CALL",
+//   args: [{ expression: "confirmInputVal", value: "P" }],
+//   time: 1710692211758,
+//   file: "C:/Users/Björn/Documents/git/invariant-based-web-form-testing/service/src/original/js_yeHav59mdzr_UpZCqijeCTjBdhqaprHjC1vmYRieTu0.js",
+//   location: {
+//     file: "js_yeHav59mdzr_UpZCqijeCTjBdhqaprHjC1vmYRieTu0.js",
+//     start: { line: 91, column: 2322, index: 212111 },
+//     end: { line: 91, column: 2878, index: 212667 },
+//   },
+//   pageFile: 1,
+// };
+// const has = hasValue(o, "P");
+// console.log(has);
+
+// const traces = fs.readFileSync("trace.log", { encoding: "utf-8" });
+// const tracesArr = traces.split("\n");
+// analyseTraces(tracesArr);
+
+console.log(extractConstraintCandidates());

@@ -1,12 +1,6 @@
 let c989a310_3606_4512_bee4_2bc00a61e8ac = false;
 
-function b0aed879_987c_461b_af34_c9c06fe3ed46(
-  action,
-  args,
-  file,
-  location,
-  pageFile
-) {
+function b0aed879_987c_461b_af34_c9c06fe3ed46(action, args, file, location) {
   if (!c989a310_3606_4512_bee4_2bc00a61e8ac) {
     return;
   }
@@ -20,7 +14,7 @@ function b0aed879_987c_461b_af34_c9c06fe3ed46(
       time: new Date().getTime(),
       file,
       location,
-      pageFile,
+      pageFile: 1,
     })
   );
 }

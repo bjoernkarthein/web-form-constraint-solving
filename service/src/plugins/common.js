@@ -22,11 +22,17 @@ function getLocation(path, filePath) {
   const pathElements = filePath.split("/");
   const fileName = pathElements[pathElements.length - 1];
 
-  return JSON.stringify({
+  return {
     file: fileName,
     start: start,
     end: end,
-  });
+  };
+}
+
+function buildTraceFunctionCall(path, state, action, args) {
+  const file = toFilePath(state.filename);
+  const location = JSON.stringify(getLocation(path, file));
+  return `b0aed879_987c_461b_af34_c9c06fe3ed46(${action}, ${args}, '${file}', ${location});`;
 }
 
 const toFilePath = (filePath) =>
@@ -40,4 +46,9 @@ const toExpressionString = (expression) =>
     ? expression
     : JSON.stringify(expression);
 
-module.exports = { getLocation, toExpressionString, toFilePath };
+module.exports = {
+  buildTraceFunctionCall,
+  getLocation,
+  toExpressionString,
+  toFilePath,
+};

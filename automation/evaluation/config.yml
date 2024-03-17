@@ -1,7 +1,7 @@
 analysis:
   html-only: false
-  magic-value-amount: 5
-  analysis-rounds: 3
+  magic-value-amount: 1
+  analysis-rounds: 1
   block-all-requests: false
   stop-on-first-successful-submission: false
 generation:

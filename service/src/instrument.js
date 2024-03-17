@@ -22,11 +22,11 @@ function saveFile(originalName, originalContent) {
     fs.mkdirSync(instrumentedDir);
   }
 
-  fs.writeFile(`${originalDir}/${originalName}`, originalContent, (err) => {
-    if (err) {
-      logger.error(err);
-    }
-  });
+  try {
+    fs.writeFileSync(`${originalDir}/${originalName}`, originalContent);
+  } catch (e) {
+    logger.error(e);
+  }
 }
 
 /**

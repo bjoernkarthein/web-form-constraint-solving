@@ -1,6 +1,6 @@
 analysis:
   html-only: false
-  magic-value-amount: 5
+  magic-value-amount: 1
   analysis-rounds: 1
   block-all-requests: false
   stop-on-first-successful-submission: false
