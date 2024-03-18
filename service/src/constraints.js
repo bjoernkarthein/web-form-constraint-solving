@@ -60,7 +60,7 @@ async function analyseTraces(traces) {
 
   const sourceDir = perpareForCodeQLQueries(allTraces);
   runQueries(pointsOfInterest, sourceDir);
-  // return extractConstraintCandidates();
+  return extractConstraintCandidates();
 }
 
 function processTraces(allTraces) {
@@ -207,13 +207,15 @@ function extractConstraintCandidates(
   originalDir = instrumentation.originalDir
 ) {
   const results = codeql.readResults();
+  console.log(results);
   const codeLocations = results.map((res) => {
     csv = JSON.parse(res);
     return {
       type: csv[0],
-      location: buildLocationFromResult(csv.slice(3, csv.length)),
+      location: buildLocationsFromString(csv[3]),
     };
   });
+  console.log(codeLocations);
 
   let allCandidates = [];
 
@@ -233,26 +235,13 @@ function extractConstraintCandidates(
     allCandidates = allCandidates.concat(candidates);
   }
 
+  fs.rmSync(codeql.resultDirectory, { recursive: true, force: true });
   return allCandidates;
-  // fs.rmSync(codeql.resultDirectory, { recursive: true, force: true });
-}
-
-function buildLocationFromResult(locationData) {
-  if (/\[\[("[^"]+")\|("[^"]+")\]\]/g.test(locationData[0])) {
-    return buildLocationsFromString(locationData[0]);
-  } else {
-    return {
-      file: locationData[1],
-      startPos: { line: Number(locationData[2]), col: Number(locationData[3]) },
-      endPos: { line: Number(locationData[4]), col: Number(locationData[5]) },
-    };
-  }
 }
 
 function buildLocationsFromString(value) {
   result = [];
-  const locationRegExp = /\[\[("[^"]+")\|("[^"]+")\]\]/g;
-  const matches = [...value.matchAll(locationRegExp)];
+  const matches = [...value.matchAll(codeql.resultLocationPattern)];
   for (const match of matches) {
     let sourceLoc = match[2];
     sourceLoc = sourceLoc.substring(1, sourceLoc.length - 1);
@@ -274,7 +263,9 @@ function getCodeSliceFromFileByLocation(
   endPos,
   dir = instrumentation.originalDir
 ) {
-  let lines = fs.readFileSync(`${dir}${file}`, "utf-8").split("\n");
+  let lines = fs
+    .readFileSync(`${dir}${file}`, "utf-8")
+    .split(/\r\n|[\n\r\u2028\u2029]/);
   lines = lines.slice(startPos.line - 1, endPos.line);
   lines[0] = lines[0].substring(startPos.col - 1);
   lines[lines.length - 1] = lines[lines.length - 1].substring(
@@ -327,7 +318,7 @@ function handleLiteralComparison(compSlice, literal) {
   }
 
   const candidates = [];
-  let result = { type: "LitComp", operator: "", otherValue: literal };
+  let result = { type: "LiteralComp", operator: "", otherValue: literal };
 
   traverse(ast, {
     BinaryExpression: function (path) {
@@ -346,9 +337,6 @@ function handleVariableComparison(compSlice, comparedValue) {
   }
 
   const candidates = [];
-
-  console.log(compSlice);
-  console.log(comparedValue);
 
   let otherValue = { type: "", value: "" };
   let result = { type: "VarComp", operator: "", otherValue };
@@ -404,4 +392,4 @@ module.exports = {
 // const tracesArr = traces.split("\n");
 // analyseTraces(tracesArr);
 
-console.log(extractConstraintCandidates());
+// console.log(extractConstraintCandidates());

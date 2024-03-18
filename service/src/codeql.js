@@ -13,18 +13,22 @@ const queryDirectory = `${codeqlDirectory}/queries`;
 const resultDirectory = `${codeqlDirectory}/results`;
 
 const allQueries = [
-  // "to_literal_comp",
+  "to_literal_comp",
   "to_var_comp",
-  // "to_regex",
-  // "to_string_match",
+  "to_regex",
+  "to_string_match",
 ];
 const queryTypes = {
   COMPARISON_TO_A_LITERAL: "To Literal Comparison",
   COMPARISON_TO_ANOTHER_VARIABLE: "To Variable Comparison",
   REGEX_TEST: "To Regex Test",
 };
+const resultLocationPattern = /\[\[(.*?)\|(.*?)\]\]/g;
 
+let count = 0;
 function createDatabase(source) {
+  count = 0;
+
   if (!fs.existsSync(codeqlDirectory)) {
     fs.mkdirSync(codeqlDirectory);
   }
@@ -38,12 +42,10 @@ function createDatabase(source) {
   common.runCommandSync(command);
 }
 
-let number = 0;
-
 function runQuery(queryFile, queryDir = queryDirectory) {
-  const outFile = `${codeqlDirectory}/results/${queryFile}-${number}-results.csv`;
+  const outFile = `${codeqlDirectory}/results/${queryFile}-${count}-results.csv`;
   const command = `${codeqlPath} database analyze --format=csv --output=${outFile} ${databaseDirectory} ${queryDir}/${queryFile}.ql --rerun`;
-  number++;
+  count++;
   common.runCommandSync(command);
   return outFile;
 }
@@ -197,4 +199,5 @@ module.exports = {
   databaseDirectory,
   queryTypes,
   resultDirectory,
+  resultLocationPattern,
 };

@@ -108,7 +108,7 @@ class VarCompCandidate(ConstraintCandidate):
         ).get("type")
 
         other_value = json.get("otherValue").get("value")
-        if self.other_value_type == "unkown variable":
+        if self.other_value_type == "unknown variable":
             self.other_value = other_value
         else:
             method = other_value["access_method"]
@@ -135,6 +135,7 @@ class ConstraintCandidateResult:
     def __init__(self, request_response: Dict) -> None:
         self.candidates: List[ConstraintCandidate] = []
         for elem in request_response["candidates"]:
+            print(elem)
             self.candidates.append(ConstraintCandidate.from_dict(elem))
 
     def __eq__(self, other):
@@ -191,12 +192,18 @@ class ConstraintCandidateFinder:
                 html_specification, grammar, formula, amount
             )
 
-    def fill_with_valid_values(self):
+    def fill_with_valid_values(
+        self, current: HTMLInputSpecification | HTMLRadioGroupSpecification
+    ):
         for spec, values in self.__magic_value_map.items():
+            # Skip the currently analysed field
+            if spec == current:
+                continue
+
             write_to_web_element_by_reference_with_clear(
                 self.__driver,
                 spec.type,
-                spec.constraints.v,
+                spec.value,
                 spec.reference,
                 spec.name,
                 values[0],
@@ -230,26 +237,32 @@ class ConstraintCandidateFinder:
     def get_constraint_candidates_for_value_sequence(
         self,
         spec: HTMLInputSpecification | HTMLRadioGroupSpecification,
-        values: List[str],
     ) -> ConstraintCandidateResult:
         type = (
             spec.constraints.type
             if isinstance(spec, HTMLInputSpecification)
             else InputType.RADIO.value
         )
+        values = self.__magic_value_map.get(spec)
 
-        set_trace_recording_flag(self.__driver, True)
+        print(
+            "Now getting candidates for",
+            spec.reference.get_as_dict(),
+            "with values",
+            values,
+        )
+
         start_trace_recording({"spec": spec.get_as_dict(), "values": values})
 
         for value in values:
             set_trace_recording_flag(self.__driver, False)
-            self.fill_with_valid_values()
+            self.fill_with_valid_values(spec)
             set_trace_recording_flag(self.__driver, True)
 
             write_to_web_element_by_reference_with_clear(
                 self.__driver,
                 type,
-                spec.constraints.v,
+                spec.value,
                 spec.reference,
                 spec.name,
                 value,
@@ -266,8 +279,6 @@ class ConstraintCandidateFinder:
             ).content
         )
         set_trace_recording_flag(self.__driver, False)
-
-        return ConstraintCandidateResult({"candidates": []})
 
         constraint_candidate_response = get_constraint_candidates(all_traces)
         response_str = decode_bytes(constraint_candidate_response.content)
@@ -920,7 +931,7 @@ class SpecificationBuilder:
 
     def __grammar_string_to_dict(self, grammar: str) -> Dict[str, List[str]]:
         result: Dict[str, List[str]] = {}
-        lines = grammar.split("\n")
+        lines = split_on_newline(grammar)
         for line in lines:
             if line.startswith("<start> ::="):
                 continue

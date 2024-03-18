@@ -10,7 +10,6 @@ let instrument = (req, res) => {
   const content = req.body.source;
 
   instrumentationService.saveFile(name, content);
-  // res.sendFile(name, { root: path.join(__dirname, "..", "original") });
 
   common.runCommand(instrumentationService.getBabelCommand(name)).then(
     (result) => {

@@ -1,5 +1,6 @@
 import json
 import math
+import re
 import requests
 import time
 import websocket
@@ -190,9 +191,13 @@ def record_trace(action: Action, args=None) -> Response:
 
 
 def get_constraint_candidates(traces: str) -> Response:
-    trace_array = traces.split("\n")
+    trace_array = split_on_newline(traces)
     url = f"{analysis_controller}/candidates"
     return requests.post(url, json={"traces": trace_array})
+
+
+def split_on_newline(input: str) -> List[str]:
+    return re.split(r"\r\n|[\n\r\u2028\u2029]", input)
 
 
 def sub_to_service_messages() -> None:

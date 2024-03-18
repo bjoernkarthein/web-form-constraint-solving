@@ -36,6 +36,7 @@ from src.utility.helpers import (
     write_to_file,
     write_to_web_element_by_reference_with_clear,
     set_trace_recording_flag,
+    split_on_newline,
 )
 
 
@@ -210,39 +211,43 @@ class TestAutomationDriver:
             self.__exit,
         )
 
-        specifications = self.__build_html_specification(html_specifications)
         if html_only:
             self.__exit()
 
-        # for elem in specifications:
-        #     name = elem[0].reference.access_value
-        #     if name != "edit-pass-pass1" and name != "edit-pass-pass2":
-        #         continue
-        #     spec, grammar, formula = elem
-        #     values = self.__constraint_candidate_finder.set_valid_value_sequence(
-        #         spec, grammar, formula
-        #     )
-        #     print(spec.reference.access_value)
-        #     print(values)
+        next_specifications: (
+            List[
+                Tuple[
+                    HTMLInputSpecification | HTMLRadioGroupSpecification,
+                    str,
+                    str | None,
+                ]
+            ]
+            | None
+        ) = None
+        for _ in range(analysis_rounds):
+            specifications = next_specifications or self.__build_html_specification(
+                html_specifications
+            )
+            next_specifications = []
 
-        for elem in specifications:
-            spec, grammar, formula = elem
-            name = spec.reference.access_value
-            print(name)
-            if name != "edit-pass-pass1" and name != "edit-pass-pass2":
-                continue
-
-            previous_constraints = {"candidates": []}
-
-            for _ in range(analysis_rounds):
-                values = self.__constraint_candidate_finder.set_valid_value_sequence(
+            for elem in specifications:
+                spec, grammar, formula = elem
+                self.__constraint_candidate_finder.set_valid_value_sequence(
                     spec, grammar, formula, self.__magic_value_amount
                 )
+
+            for elem in specifications:
+                spec, grammar, formula = elem
+                name = spec.reference.access_value
+                # print(name)
+                # previous_constraints = {"candidates": []}
+
                 constraint_candidates = self.__constraint_candidate_finder.get_constraint_candidates_for_value_sequence(
-                    spec, values
+                    spec
                 )
 
                 # # TODO: When to stop? How do I not apply the same candidates twice?
+                print(str(constraint_candidates))
 
                 # if len(constraint_candidates.candidates) == 0:
                 #     break
@@ -250,20 +255,23 @@ class TestAutomationDriver:
                 # if constraint_candidates == previous_constraints:
                 #     break
 
-                # (
-                #     grammar,
-                #     formula,
-                # ) = self.__specification_builder.add_constraints_to_current_specification(
-                #     spec.reference, spec.constraints.type, constraint_candidates
-                # )
+                (
+                    grammar,
+                    formula,
+                ) = self.__specification_builder.add_constraints_to_current_specification(
+                    spec.reference, spec.type, constraint_candidates
+                )
 
                 # previous_constraints = constraint_candidates
+                next_specifications.append((spec, grammar, formula))
 
     # TODO: refactor to not be this complex - is this the right class?
     def __build_html_specification(
         self,
         html_specifications: List[HTMLInputSpecification | HTMLRadioGroupSpecification],
-    ) -> List[Tuple[HTMLInputSpecification | HTMLInputSpecification, str, str | None]]:
+    ) -> List[
+        Tuple[HTMLInputSpecification | HTMLRadioGroupSpecification, str, str | None]
+    ]:
         result = []
 
         self.__specification_builder = SpecificationBuilder()
@@ -355,6 +363,7 @@ class TestAutomationDriver:
 
         sys.exit(exit_code)
 
+    # TODO: remove all after evaluation is done
     def prof_to_csv(self, pr: cProfile.Profile) -> None:
         out_stream = io.StringIO()
         stats = pstats.Stats(pr, stream=out_stream)
@@ -363,7 +372,9 @@ class TestAutomationDriver:
         result = out_stream.getvalue()
 
         result = "ncalls" + result.split("ncalls")[-1]
-        lines = [",".join(line.rstrip().split(None, 5)) for line in result.split("\n")]
+        lines = [
+            ",".join(line.rstrip().split(None, 5)) for line in split_on_newline(result)
+        ]
         lines = list(filter(lambda l: l != "", lines))
         return "\n".join(lines)
 

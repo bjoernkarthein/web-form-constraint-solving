@@ -8,7 +8,11 @@ from selenium.webdriver import Chrome
 from seleniumwire.request import Request, Response
 from typing import Dict, List
 
-from src.utility.helpers import service_base_url, instrumentation_controller
+from src.utility.helpers import (
+    split_on_newline,
+    service_base_url,
+    instrumentation_controller,
+)
 
 """
 Proxy module
@@ -107,12 +111,12 @@ class NetworkInterceptor:
             return response.body
 
         html_head = html_ast.find(".//head")
+        if html_head == None:
+            return
+
         existing_csp_meta = html_head.find(
             './/meta[@http-equiv="Content-Security-Policy"]'
         )
-
-        if html_head == None:
-            return
 
         # Add service base url as allowed url for externally loaded scripts
         if existing_csp_meta is not None:
@@ -220,7 +224,7 @@ class RequestScanner:
         var_dict = {}
 
         body = decode_bytes(request.body)
-        elements = body.split("\r\n")
+        elements = split_on_newline(body)
 
         for name_var in elements:
             if "=" in name_var:
