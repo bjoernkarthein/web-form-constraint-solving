@@ -1,8 +1,9 @@
 import re
 import string
 
-from abc import ABC, abstractmethod
+from abc import ABC, abstractmethod, abstractproperty
 from typing import List, Dict
+from typing_extensions import Self
 
 """
 Simplified CFG for a JavaScript pattern (https://tc39.es/ecma262/#prod-Pattern)
@@ -41,8 +42,12 @@ class PatternConverter:
 
 
 class RegEx(ABC):
+    @abstractproperty
+    def leaves(self) -> str:
+        pass
+
     @abstractmethod
-    def __str__(self) -> str:
+    def __str__(self) -> List[Self]:
         pass
 
 
@@ -59,6 +64,10 @@ class Alternative(RegEx):
     def that(self) -> RegEx:
         return self.__that
 
+    @property
+    def leaves(self) -> List[RegEx]:
+        return self.__this.leaves + self.__that.leaves
+
     def __str__(self) -> str:
         return f"{self.__this} or {self.__that}"
 
@@ -68,9 +77,6 @@ class Sequence(RegEx):
         self.__first = first
         self.__second = second
 
-    def __str__(self) -> str:
-        return f"{self.__first} -> {self.__second}"
-
     @property
     def first(self) -> RegEx:
         return self.__first
@@ -79,19 +85,18 @@ class Sequence(RegEx):
     def second(self) -> RegEx:
         return self.__second
 
+    @property
+    def leaves(self) -> List[RegEx]:
+        return self.__first.leaves + self.__second.leaves
+
+    def __str__(self) -> str:
+        return f"{self.__first} -> {self.__second}"
+
 
 class Quantifier:
     def __init__(self, min_repeat: int, max_repeat: int = None) -> None:
         self.__min_repeat = int(min_repeat)
         self.__max_repeat = int(max_repeat) if max_repeat is not None else None
-
-    def __str__(self) -> str:
-        if self.__min_repeat == self.__max_repeat:
-            return f"times {self.__min_repeat}"
-        elif self.__max_repeat == None:
-            return f"times {self.__min_repeat} to unlimited"
-        else:
-            return f"times {self.__min_repeat} to {self.__max_repeat}"
 
     @property
     def min_repeat(self) -> int:
@@ -101,14 +106,19 @@ class Quantifier:
     def max_repeat(self) -> int:
         return self.__max_repeat
 
+    def __str__(self) -> str:
+        if self.__min_repeat == self.__max_repeat:
+            return f"times {self.__min_repeat}"
+        elif self.__max_repeat == None:
+            return f"times {self.__min_repeat} to unlimited"
+        else:
+            return f"times {self.__min_repeat} to {self.__max_repeat}"
+
 
 class Repetition(RegEx):
     def __init__(self, term: RegEx, quantifier: Quantifier) -> None:
         self.__term = term
         self.__quantifier = quantifier
-
-    def __str__(self) -> str:
-        return f"{self.__term} {self.__quantifier}"
 
     @property
     def term(self) -> RegEx:
@@ -118,10 +128,25 @@ class Repetition(RegEx):
     def quantifier(self) -> Quantifier:
         return self.__quantifier
 
+    @property
+    def leaves(self) -> List[RegEx]:
+        return self.__term.leaves
+
+    def __str__(self) -> str:
+        return f"{self.__term} {self.__quantifier}"
+
 
 class Primitive(RegEx):
     def __init__(self, char: str) -> None:
         self.__char = char
+
+    @property
+    def char(self) -> str:
+        return self.__char
+
+    @property
+    def leaves(self) -> List[RegEx]:
+        return [self]
 
     def __str__(self) -> str:
         return self.__char
@@ -137,10 +162,6 @@ class Primitive(RegEx):
 
     def __hash__(self) -> bool:
         return hash(self.__char)
-
-    @property
-    def char(self) -> str:
-        return self.__char
 
 
 class PatternParser:
@@ -200,7 +221,6 @@ class PatternParser:
         if self.peek() == "^":
             self.eat("^")
             excluded = self.not_in()
-            print(excluded)
             choices = list(set(self.__printable_characters) - set(excluded))
             return self.__create_choice_from_list(choices)
 
@@ -219,11 +239,11 @@ class PatternParser:
 
     def not_in(self) -> List[str]:
         choice = self.atom()
-        excluded = [str(c) for c in choice.leaves()]
+        excluded = [str(c) for c in choice.leaves]
 
         if self.more() and self.peek() == "-":
             self.eat("-")
-            end = str(self.atom().leaves()[0])
+            end = str(self.atom().leaves[0])
             excluded = self.__get_characters_from_range(excluded[0], end)
 
         while self.more() and self.peek() != "]":
@@ -368,9 +388,19 @@ class GrammarBuilder:
             if quantifier.max_repeat is None:
                 result += " | "
                 result += f"{expression} {non_terminal}"
-            elif quantifier.max_repeat is not None and quantifier.max_repeat > quantifier.min_repeat:
+            elif (
+                quantifier.max_repeat is not None
+                and quantifier.max_repeat > quantifier.min_repeat
+            ):
                 result += " | "
-                result += (" | ").join([(" ").join([expression] * i) for i in range(quantifier.min_repeat + 1, quantifier.max_repeat + 1)])
+                result += (" | ").join(
+                    [
+                        (" ").join([expression] * i)
+                        for i in range(
+                            quantifier.min_repeat + 1, quantifier.max_repeat + 1
+                        )
+                    ]
+                )
 
             return result
 

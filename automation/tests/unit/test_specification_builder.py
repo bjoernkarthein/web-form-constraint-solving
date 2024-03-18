@@ -33,7 +33,7 @@ class TestSpecificationBuilder(unittest.TestCase):
 
     def test_add_constraint_candidates_empty(self) -> None:
         old_grammar, old_formula = self.builder.refrence_to_spec_map.get(
-            str(self.input_spec.reference)
+            self.input_spec.reference
         )
         new_grammar, new_formula = (
             self.builder.add_constraints_to_current_specification(
@@ -74,7 +74,7 @@ class TestSpecificationBuilder(unittest.TestCase):
                     {
                         "candidates": [
                             {
-                                "type": ConstraintCandidateType.LITERAL_LENGTH_COMPARISON.value,
+                                "type": ConstraintCandidateType.LITERAL_COMPARISON.value,
                                 "operator": ">=",
                                 "otherValue": "2",
                             }
@@ -93,12 +93,12 @@ class TestSpecificationBuilder(unittest.TestCase):
                 {
                     "candidates": [
                         {
-                            "type": ConstraintCandidateType.LITERAL_LENGTH_COMPARISON.value,
+                            "type": ConstraintCandidateType.LITERAL_COMPARISON.value,
                             "operator": ">=",
                             "otherValue": "2",
                         },
                         {
-                            "type": ConstraintCandidateType.LITERAL_LENGTH_COMPARISON.value,
+                            "type": ConstraintCandidateType.LITERAL_COMPARISON.value,
                             "operator": "<=",
                             "otherValue": "30",
                         },
@@ -176,7 +176,7 @@ class TestSpecificationBuilder(unittest.TestCase):
                     {
                         "candidates": [
                             {
-                                "type": ConstraintCandidateType.VARIABLE_LENGTH_COMPARISON.value,
+                                "type": ConstraintCandidateType.VARIABLE_COMPARISON.value,
                                 "operator": "!==",
                                 "otherValue": {
                                     "type": ConstraintOtherValueType.REFERENCE.value,
@@ -197,7 +197,7 @@ class TestSpecificationBuilder(unittest.TestCase):
                 {
                     "candidates": [
                         {
-                            "type": ConstraintCandidateType.REGEX_TEST.value,
+                            "type": ConstraintCandidateType.PATTERN_TEST.value,
                             "pattern": "some string",
                         }
                     ]
@@ -217,7 +217,7 @@ class TestSpecificationBuilder(unittest.TestCase):
                 {
                     "candidates": [
                         {
-                            "type": ConstraintCandidateType.REGEX_TEST.value,
+                            "type": ConstraintCandidateType.PATTERN_TEST.value,
                             "pattern": "/a?/",
                         }
                     ]

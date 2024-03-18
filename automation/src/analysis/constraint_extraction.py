@@ -38,7 +38,7 @@ class ConstraintCandidateType(str, Enum):
 
 
 class ConstraintOtherValueType(str, Enum):
-    UNKOWN = "unokwn variable"
+    UNKOWN = "unknown variable"
     REFERENCE = "reference"
 
 
@@ -103,12 +103,12 @@ class VarCompCandidate(ConstraintCandidate):
     def __init__(self, json: Dict, candidate_type: ConstraintCandidateType) -> None:
         super().__init__(candidate_type)
         self.operator = self.convert_operator(json.get("operator"))
-        self.other_value_type: Literal["reference", "unknown variable"] = json.get(
-            "otherValue"
-        ).get("type")
+        self.other_value_type: Literal[
+            ConstraintOtherValueType.REFERENCE, ConstraintOtherValueType.UNKOWN
+        ] = json.get("otherValue").get("type")
 
         other_value = json.get("otherValue").get("value")
-        if self.other_value_type == "unknown variable":
+        if self.other_value_type == ConstraintOtherValueType.UNKOWN.value:
             self.other_value = other_value
         else:
             method = other_value["access_method"]

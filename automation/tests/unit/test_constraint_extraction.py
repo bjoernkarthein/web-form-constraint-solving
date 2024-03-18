@@ -80,11 +80,11 @@ class TestConstraintCandidate(unittest.TestCase):
             {
                 "candidates": [
                     {
-                        "type": ConstraintCandidateType.REGEX_TEST.value,
+                        "type": ConstraintCandidateType.PATTERN_TEST.value,
                         "pattern": "some string",
                     },
                     {
-                        "type": ConstraintCandidateType.STRING_MATCH.value,
+                        "type": ConstraintCandidateType.PATTERN_TEST.value,
                         "pattern": "/[A-Z]|\/x/g",
                     },
                 ]
@@ -108,11 +108,11 @@ class TestConstraintCandidate(unittest.TestCase):
             {
                 "candidates": [
                     {
-                        "type": ConstraintCandidateType.REGEX_TEST.value,
+                        "type": ConstraintCandidateType.PATTERN_TEST.value,
                         "pattern": "some string",
                     },
                     {
-                        "type": ConstraintCandidateType.STRING_MATCH.value,
+                        "type": ConstraintCandidateType.PATTERN_TEST.value,
                         "pattern": "/[A-Z]|\/x/g",
                     },
                 ]
@@ -123,7 +123,7 @@ class TestConstraintCandidate(unittest.TestCase):
             {
                 "candidates": [
                     {
-                        "type": ConstraintCandidateType.REGEX_TEST.value,
+                        "type": ConstraintCandidateType.PATTERN_TEST.value,
                         "pattern": "some string",
                     }
                 ]
