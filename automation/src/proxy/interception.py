@@ -32,8 +32,20 @@ class NetworkInterceptor:
 
     def __init__(self, web_driver: Chrome) -> None:
         self.generated_values: Dict[str, str] = {}
-        self.__allowed_urls = None
         self.__driver = web_driver
+        self.__javascript_mime_types = [
+            "text/javascript",
+            "application/javascript",
+            "application/x-javascript",
+            "text/javascript1.0",
+            "text/javascript1.1",
+            "text/javascript1.2",
+            "text/javascript1.3",
+            "text/javascript1.4",
+            "text/javascript1.5",
+            "text/jscript",
+            "text/livescript",
+        ]
 
     def delete_request_interceptor(self) -> None:
         del self.__driver.request_interceptor
@@ -68,15 +80,14 @@ class NetworkInterceptor:
         """
 
         content_type = response.headers["Content-Type"]
-        # print(request.url, content_type)
+        print(request, content_type)
         if content_type == None:
             return
 
-        if content_type.startswith("application/javascript") or content_type.startswith(
-            "text/javascript"
+        if any(
+            content_type.startswith(mime_type)
+            for mime_type in self.__javascript_mime_types
         ):
-            if request.url.startswith(f"{service_base_url}/static/"):
-                return
             response.body = self.__handle_js_file(request, response)
 
         if content_type.startswith("text/html"):
@@ -114,29 +125,30 @@ class NetworkInterceptor:
         if html_head == None:
             return
 
-        existing_csp_meta = html_head.find(
-            './/meta[@http-equiv="Content-Security-Policy"]'
-        )
-
-        # Add service base url as allowed url for externally loaded scripts
-        if existing_csp_meta is not None:
-            content: str = existing_csp_meta.get("content")
-            elements = content.split(";")
-            elements = list(map(lambda e: e.strip(), elements))
-            script_src = list(filter(lambda e: e.startswith("script-src"), elements))
-            if len(script_src) == 1:
-                s = script_src[0]
-                script_src_index = elements.index(s)
-                s = f"{s} {service_base_url}"
-                elements[script_src_index] = s
-                existing_csp_meta.set("content", "; ".join(elements))
-
-        record_script_tag = etree.fromstring(
-            f'<script src="{service_base_url}/static/record.js"></script>'
+        record_script = etree.fromstring(
+            """<script>var c989a310_3606_4512_bee4_2bc00a61e8ac = false;
+function b0aed879_987c_461b_af34_c9c06fe3ed46(action, args, file, location) {
+  if (!c989a310_3606_4512_bee4_2bc00a61e8ac) {
+    return;
+  }
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "http://localhost:4000/analysis/record", false); // make request synchronous to ensure that all traces arrive at the server before analysis starts
+  xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.send(
+    JSON.stringify({
+      action,
+      args,
+      time: new Date().getTime(),
+      file,
+      location,
+      pageFile: 1,
+    })
+  );
+}</script>"""
         )
 
         # Add custom script to head
-        html_head.append(record_script_tag)
+        html_head.insert(0, record_script)
         return html.tostring(html_ast, pretty_print=True)
 
     def __form_submission_interceptor(self, request: Request) -> None:

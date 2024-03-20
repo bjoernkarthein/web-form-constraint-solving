@@ -244,13 +244,16 @@ class ConstraintCandidateFinder:
             else InputType.RADIO.value
         )
         values = self.__magic_value_map.get(spec)
-
         print(
             "Now getting candidates for",
             spec.reference.get_as_dict(),
             "with values",
             values,
         )
+        set_trace_recording_flag(self.__driver, True)
+        test = input("Enter values and continue")
+        return ConstraintCandidateResult({"constraints": []})
+        set_trace_recording_flag(self.__driver, False)
 
         start_trace_recording({"spec": spec.get_as_dict(), "values": values})
 
@@ -526,6 +529,9 @@ class SpecificationBuilder:
         else:
             pattern_converter = PatternConverter(candidate.pattern)
             pattern_grammar = pattern_converter.convert_pattern_to_grammar()
+            if pattern_grammar is None:
+                return grammar, formula
+
             start_symbol = "<start> ::= "
             if pattern_grammar.startswith(start_symbol):
                 pattern_grammar = pattern_grammar[len(start_symbol) :]

@@ -98,8 +98,10 @@ class TestAutomationDriver:
             options=chrome_options,
             seleniumwire_options=wire_options,
         )
-        self.__interceptor = NetworkInterceptor(self.__driver)
 
+        # Set the timeout for a page load. This can be adjusted to be longer for pages with a lot of js files to instrument
+        self.__driver.set_page_load_timeout(1000)
+        self.__interceptor = NetworkInterceptor(self.__driver)
         self.web_driver = self.__driver
 
         if (
@@ -122,6 +124,7 @@ class TestAutomationDriver:
 
         load_page(self.__driver, self.__url)
         # self.__interceptor.block_form_submission()
+        test = input("page loaded")
 
         # time.sleep(2)
         # ref = HTMLElementReference("id", "edit-pass-pass1")

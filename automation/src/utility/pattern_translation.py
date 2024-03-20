@@ -33,7 +33,7 @@ class PatternConverter:
     def convert_pattern_to_grammar(self) -> str | None:
         try:
             pattern_ast = self.__parser.parse()
-        except ValueError as e:
+        except Exception as e:
             print(f"Could not convert given pattern {self.__javascript_pattern}")
             print(e)
             return None
@@ -169,7 +169,7 @@ class PatternParser:
         self.__pattern: str = javascript_pattern
         self.__printable_characters: List[str] = [*string.printable]
 
-    def parse(self):
+    def parse(self) -> RegEx | None:
         return self.disjunction()
 
     # recursive descent methods
@@ -193,7 +193,6 @@ class PatternParser:
         return len(self.__pattern) > 0
 
     # pattern element types
-
     def disjunction(self) -> RegEx:
         term = self.term()
 
