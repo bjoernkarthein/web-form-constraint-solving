@@ -320,17 +320,23 @@ class HTMLRadioGroupSpecification:
 
 
 class HTMLAnalyser:
-    def __init__(self, html_dom_snapshot: str) -> None:
+    def __init__(self, html_dom_snapshot: str, evaluation=None) -> None:
         self.__html_tree_root = html.fromstring(html_dom_snapshot)
+        self.__evaluation = evaluation
 
     def select_form(self) -> Tuple[etree.Element, str]:
         all_forms = self.__html_tree_root.xpath("//form")
+
+        self.__evaluation.save_stat("no_form", len(all_forms) == 0)
+        self.__evaluation.save_stat("multiple_forms", len(all_forms) > 1)
+
         if len(all_forms) == 0:
             print(
                 "The page for the provided url does not seem to contain any HTML form elements. Try checking the url in the browser or check your internet connection."
             )
             return (None, None)
         elif len(all_forms) == 1:
+            self.__evaluation.save_stat("form_position", 1)
             self.__form_access_xpath = "(//form)[1]"
             return (all_forms[0], self.__form_access_xpath)
         else:
@@ -348,14 +354,16 @@ class HTMLAnalyser:
                 print("The entered position does not match any form.")
                 return (None, None)
 
+            self.__evaluation.save_stat("form_position", position)
             self.__form_access_xpath = f"(//form)[{position}]"
             return (all_forms[position - 1], self.__form_access_xpath)
 
     def extract_static_constraints(
         self, form: html.FormElement
     ) -> List[HTMLInputSpecification]:
-        # TODO does order here matter with selection dependent inputs? If so order should be kept
+        self.__evaluation.save_stat("form_html", etree.tostring(form).decode("utf-8"))
 
+        # TODO does order here matter with selection dependent inputs? If so order should be kept
         all_inputs: List[HTMLInputElement] = form.xpath(
             f"{self.__form_access_xpath}/descendant::input"
         ) + form.xpath(f"{self.__form_access_xpath}/descendant::textarea")
@@ -374,10 +382,12 @@ class HTMLAnalyser:
                     submit_elements.append(button)
                     break
 
+        self.__evaluation.save_stat("has_submit", len(submit_elements) > 0)
         if len(submit_elements) == 0:
             print("The form does not contain an element to submit")
             return None
         elif len(submit_elements) == 1:
+            self.__evaluation.save_stat("submit_position", 1)
             self.__submit_element = self.__get_element_reference(submit_elements[0])
         else:
             submits: Dict[int, str] = dict()
@@ -393,12 +403,14 @@ class HTMLAnalyser:
                 print("The entered position does not match any submit element.")
                 return None
 
+            self.__evaluation.save_stat("submit_position", position)
             self.__submit_element = self.__get_element_reference(
                 submit_elements[position - 1]
             )
 
         # Remove inputs that have type submit
         all_inputs = [input for input in all_inputs if input.get("type") != "submit"]
+        self.__evaluation.save_stat("total_inputs", len(all_inputs))
 
         return self.__extract_static_constraints_from_inputs(all_inputs)
 
@@ -435,14 +447,26 @@ class HTMLAnalyser:
                 spec = HTMLRadioGroupSpecification(name, specifications)
                 result.append(spec)
 
+        self.__evaluation.save_stat("radio_groups", len(radio_groups))
+
+        textareas = 0
+        nonwritable = 0
+        otherinputs = 0
         for input in input_elements:
             html_constraints = HTMLConstraints()
 
-            if input.get("type") in [InputType.RADIO.value] + non_writable_input_types:
+            if input.get("type") == InputType.RADIO.value:
+                continue
+
+            if input.get("type") in non_writable_input_types:
+                nonwritable += 1
                 continue
 
             if input.tag == "textarea":
+                textareas += 1
                 html_constraints.type = "textarea"
+            else:
+                otherinputs += 1
 
             for attribute in list(input.attrib):
                 if attribute == "list":
@@ -456,6 +480,12 @@ class HTMLAnalyser:
             element_reference = self.__get_element_reference(input)
             result.append(HTMLInputSpecification(element_reference, html_constraints))
 
+        self.__evaluation.save_stat("text_areas", textareas)
+        self.__evaluation.save_stat("non_writable", nonwritable)
+        self.__evaluation.save_stat("other_inputs", otherinputs)
+        self.__evaluation.save_stat(
+            "html_constraints", list(map(lambda s: s.get_as_dict(), result))
+        )
         return result
 
     def __get_element_reference(self, element: etree.Element) -> HTMLElementReference:

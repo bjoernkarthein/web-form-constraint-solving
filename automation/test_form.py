@@ -3,6 +3,7 @@ import sys
 import yaml
 
 from src.interaction.driver import TestAutomationDriver
+from evaluation.util.helpers import EvaluationStub
 
 """
 Test module
@@ -35,7 +36,9 @@ def main(argv):
             specification_file = arg
 
     config = yaml.safe_load(open("config/test_config.yml"))
-    test_automation_driver = TestAutomationDriver(config)
+    test_automation_driver = TestAutomationDriver(
+        config, evaluation=EvaluationStub()  # TODO: remove when evaluation is done
+    )
     setup()
     test_automation_driver.run_test(specification_file)
 

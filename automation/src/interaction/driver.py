@@ -3,11 +3,6 @@ import threading
 import sys
 import time
 
-import cProfile
-import io
-import pandas as pd
-import pstats
-
 from copy import deepcopy
 from selenium.webdriver.chrome.service import Service
 from seleniumwire import webdriver
@@ -36,7 +31,6 @@ from src.utility.helpers import (
     write_to_file,
     write_to_web_element_by_reference_with_clear,
     set_trace_recording_flag,
-    split_on_newline,
 )
 
 
@@ -61,19 +55,8 @@ class TestAutomationDriver:
     """
 
     def __init__(
-        self,
-        config: dict,
-        url: str = None,
-        setup_function=None,
-        profiler=None,
-        file=None,
+        self, config: dict, url: str = None, setup_function=None, evaluation=None
     ) -> None:
-        self.__pr = None
-        if profiler is not None:
-            self.__pr = profiler
-            self.__file = file
-            self.__pr.enable()
-
         """Initialize the Test Automation
 
         Set options for selenium chrome driver and selenium wire proxy
@@ -83,6 +66,7 @@ class TestAutomationDriver:
         self.__setup_function = setup_function
         self.__url = url
         self.__html_only = True
+        self.__evaluation = evaluation
 
         # Options for the chrome webdriver
         chrome_options = webdriver.ChromeOptions()
@@ -124,29 +108,24 @@ class TestAutomationDriver:
 
         load_page(self.__driver, self.__url)
         # self.__interceptor.block_form_submission()
-        test = input("page loaded")
 
-        # time.sleep(2)
-        # ref = HTMLElementReference("id", "edit-pass-pass1")
-        # refCon = HTMLElementReference("id", "edit-pass-pass2")
-
-        # write_to_web_element_by_reference_with_clear(
-        #     self.__driver, "text", None, ref, "pass[pass1]", "test", False
-        # )
-
-        # time.sleep(2)
+        # test = input("page loaded")
+        # ref = HTMLElementReference("id", "password")
         # set_trace_recording_flag(self.__driver, True)
         # write_to_web_element_by_reference_with_clear(
-        #     self.__driver, "text", None, refCon, "pass[pass2]", "test", False
+        #     self.__driver, "text", None, ref, "password", "blahaha", False
         # )
         # set_trace_recording_flag(self.__driver, False)
-        # time.sleep(1000)
-        # self.__exit()
+        # test = input("written to field")
 
         if self.__setup_function is not None:
             self.__setup_function(self)
 
         html_input_specifications = self.__analyse_html(self.__driver.page_source)
+        if self.__html_only:
+            self.__build_html_specification(html_input_specifications)
+            self.__exit()
+
         self.__start_constraint_extraction(html_input_specifications)
 
         self.__exit()
@@ -175,7 +154,7 @@ class TestAutomationDriver:
 
         Select a web form and extract the built-in HTML constraints for it's inputs.
         """
-        self.__html_analyser = HTMLAnalyser(html_string)
+        self.__html_analyser = HTMLAnalyser(html_string, self.__evaluation)
         (form, access) = self.__html_analyser.select_form()
 
         if form is None or access is None:
@@ -197,7 +176,6 @@ class TestAutomationDriver:
     ) -> None:
         """Start the extraction of client-side validation constraints for a set of specified HTML inputs."""
 
-        html_only = self.__config[ConfigKey.ANALYSIS.value][ConfigKey.HTML_ONLY.value]
         analysis_rounds = self.__config[ConfigKey.ANALYSIS.value][
             ConfigKey.ANALYSIS_ROUNDS.value
         ]
@@ -212,10 +190,8 @@ class TestAutomationDriver:
             self.__interceptor,
             stop_on_first_success,
             self.__exit,
+            self.__evaluation,
         )
-
-        if html_only:
-            self.__exit()
 
         next_specifications: (
             List[
@@ -235,15 +211,18 @@ class TestAutomationDriver:
 
             for elem in specifications:
                 spec, grammar, formula = elem
+                # name = spec.reference.access_value
+                # if name != "password":
+                #     continue
                 self.__constraint_candidate_finder.set_valid_value_sequence(
                     spec, grammar, formula, self.__magic_value_amount
                 )
 
             for elem in specifications:
                 spec, grammar, formula = elem
-                name = spec.reference.access_value
-                # print(name)
-                # previous_constraints = {"candidates": []}
+                # name = spec.reference.access_value
+                # if name != "password":
+                #     continue
 
                 constraint_candidates = self.__constraint_candidate_finder.get_constraint_candidates_for_value_sequence(
                     spec
@@ -352,49 +331,19 @@ class TestAutomationDriver:
         # free_service_resources()
         self.__driver.quit()
 
-        # write performance to file
-        if self.__pr is not None:
-            self.__pr.disable()
-            csv = self.prof_to_csv(self.__pr)
-            with open(
-                f"evaluation/{self.__file}_stats.csv", "w+", encoding="utf-8"
-            ) as f:
-                f.write(csv)
-
-            self.clean_csv(f"evaluation/{self.__file}_stats")
-            self.get_isla_csv(f"evaluation/{self.__file}_stats")
+        # TODO: remove after evaluation?
+        if self.__evaluation is not None:
+            self.__evaluation.save_profiling()
+            self.__evaluation.save_stat(
+                "html_files_instrumented",
+                self.__interceptor.html_files_instrumented or 0,
+            )
+            self.__evaluation.save_stat(
+                "js_files_instrumented", self.__interceptor.js_files_instrumented or 0
+            )
+            service_stats = self.__evaluation.get_service_stats()
+            self.__evaluation.merge_stats(service_stats)
+            self.__evaluation.write_stats_to_file()
+            self.__evaluation.save_specification()
 
         sys.exit(exit_code)
-
-    # TODO: remove all after evaluation is done
-    def prof_to_csv(self, pr: cProfile.Profile) -> None:
-        out_stream = io.StringIO()
-        stats = pstats.Stats(pr, stream=out_stream)
-        stats.sort_stats(pstats.SortKey.CUMULATIVE)
-        stats.print_stats()
-        result = out_stream.getvalue()
-
-        result = "ncalls" + result.split("ncalls")[-1]
-        lines = [
-            ",".join(line.rstrip().split(None, 5)) for line in split_on_newline(result)
-        ]
-        lines = list(filter(lambda l: l != "", lines))
-        return "\n".join(lines)
-
-    def clean_csv(self, file: str) -> None:
-        df = pd.read_csv(f"{file}.csv", encoding="utf-8")
-        my_functions = df["filename:lineno(function)"].str.contains(
-            "invariant-based-web-form-testing"
-        )
-        df = df[my_functions]
-        df.reset_index(drop=True, inplace=True)
-
-        df.to_csv(f"{file}_clean.csv", index=False)
-
-    def get_isla_csv(self, file: str) -> None:
-        df = pd.read_csv(f"{file}.csv", encoding="utf-8")
-        my_functions = df["filename:lineno(function)"].str.contains("isla")
-        df = df[my_functions]
-        df.reset_index(drop=True, inplace=True)
-
-        df.to_csv(f"{file}_isla.csv", index=False)

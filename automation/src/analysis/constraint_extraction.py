@@ -165,6 +165,7 @@ class ConstraintCandidateFinder:
         interceptor: NetworkInterceptor,
         stop_on_first_success: bool,
         exit_method,
+        evaluation=None,
     ) -> None:
         self.__driver = web_driver
         self.__exit_method = exit_method
@@ -175,6 +176,7 @@ class ConstraintCandidateFinder:
         ] = {}
         self.__stop_on_first_success = stop_on_first_success
         self.__submit_element = submit_element
+        self.__evaluation = evaluation
 
     def set_valid_value_sequence(
         self,
@@ -244,15 +246,14 @@ class ConstraintCandidateFinder:
             else InputType.RADIO.value
         )
         values = self.__magic_value_map.get(spec)
-        print(
-            "Now getting candidates for",
-            spec.reference.get_as_dict(),
-            "with values",
-            values,
-        )
-        set_trace_recording_flag(self.__driver, True)
-        test = input("Enter values and continue")
-        return ConstraintCandidateResult({"constraints": []})
+        # print(
+        #     "Now getting candidates for",
+        #     spec.reference.get_as_dict(),
+        #     "with values",
+        #     values,
+        # )
+        # set_trace_recording_flag(self.__driver, True)
+        # return ConstraintCandidateResult({"candidates": []})
         set_trace_recording_flag(self.__driver, False)
 
         start_trace_recording({"spec": spec.get_as_dict(), "values": values})
@@ -282,6 +283,7 @@ class ConstraintCandidateFinder:
             ).content
         )
         set_trace_recording_flag(self.__driver, False)
+        # test = input("Enter values and continue")
 
         constraint_candidate_response = get_constraint_candidates(all_traces)
         response_str = decode_bytes(constraint_candidate_response.content)

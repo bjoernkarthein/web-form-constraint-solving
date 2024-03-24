@@ -72,6 +72,17 @@
       },
       "grammar": "7.bnf",
       "formula": "7.isla"
+    },
+    {
+      "name": "show-password",
+      "type": "checkbox",
+      "value": null,
+      "reference": {
+        "access_method": "id",
+        "access_value": "show-password"
+      },
+      "grammar": "8.bnf",
+      "formula": "8.isla"
     }
   ],
   "submit": {

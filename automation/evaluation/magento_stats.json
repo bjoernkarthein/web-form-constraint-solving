@@ -1,0 +1,199 @@
+{
+  "no_form": false,
+  "multiple_forms": true,
+  "form_position": 2,
+  "form_html": "<form class=\"form create account form-create-account\" action=\"http://localhost/customer/account/createpost/\" method=\"post\" id=\"form-validate\" enctype=\"multipart/form-data\" autocomplete=\"off\" novalidate=\"novalidate\">\n    <input name=\"form_key\" type=\"hidden\" value=\"zhqAJR8Do1t7udaL\"/>    <fieldset class=\"fieldset create info\">\n        <legend class=\"legend\"><span>Personal Information</span></legend>\n<br/>\n        <input type=\"hidden\" name=\"success_url\" value=\"\"/>\n        <input type=\"hidden\" name=\"error_url\" value=\"\"/>\n        \n            <div class=\"field field-name-firstname required\">\n            <label class=\"label\" for=\"firstname\">\n              <span>First Name</span>\n            </label>\n            <div class=\"control\">\n                <input type=\"text\" id=\"firstname\" name=\"firstname\" value=\"\" title=\"First Name\" class=\"input-text&#10;                        required-entry\" data-validate=\"{required:true}\" autocomplete=\"off\" aria-required=\"true\"/>\n            </div>\n        </div>\n            <div class=\"field field-name-lastname required\">\n            <label class=\"label\" for=\"lastname\">\n              <span>Last Name</span>\n            </label>\n            <div class=\"control\">\n                <input type=\"text\" id=\"lastname\" name=\"lastname\" value=\"\" title=\"Last Name\" class=\"input-text&#10;                        required-entry\" data-validate=\"{required:true}\" autocomplete=\"off\" aria-required=\"true\"/>\n            </div>\n        </div>\n    \n                        <div class=\"field choice newsletter\">\n                <input type=\"checkbox\" name=\"is_subscribed\" title=\"Sign Up for Newsletter\" value=\"1\" id=\"is_subscribed\" class=\"checkbox\"/>\n                <label for=\"is_subscribed\" class=\"label\">\n                    <span>Sign Up for Newsletter</span>\n                </label>\n            </div>\n                        \n        \n                \n                \n                            \n    <div class=\"field choice\">\n        <input type=\"checkbox\" name=\"assistance_allowed_checkbox\" title=\"Allow remote shopping assistance\" value=\"1\" id=\"assistance_allowed_checkbox\" class=\"checkbox\"/>\n        <label for=\"assistance_allowed_checkbox\" class=\"label\">\n            <span>Allow remote shopping assistance</span>\n        </label>\n\n        <input type=\"hidden\" name=\"assistance_allowed\" value=\"\"/>\n\n        <div class=\"field-tooltip toggle\">\n            <span id=\"tooltip-label\" class=\"label\"><span>Tooltip</span></span>\n            <span id=\"tooltip\" class=\"field-tooltip-action action-help\" tabindex=\"0\" data-toggle=\"dropdown\" data-bind=\"mageInit: {'dropdown':{'activeClass': '_active', 'parent': '.field-tooltip.toggle'}}\" aria-labelledby=\"tooltip-label\" aria-haspopup=\"true\" aria-expanded=\"false\" role=\"button\">\n         </span>\n            <div class=\"field-tooltip-content\" data-target=\"dropdown\" aria-hidden=\"true\">\n                This allows merchants to \"see what you see\" and take actions on your behalf in order to provide better assistance.            </div>\n        </div>\n    </div>\n    </fieldset>\n        <fieldset class=\"fieldset create account\" data-hasrequired=\"* Required Fields\">\n        <legend class=\"legend\"><span>Sign-in Information</span></legend>\n<br/>\n        <div class=\"field required\">\n            <label for=\"email_address\" class=\"label\"><span>Email</span></label>\n            <div class=\"control\">\n                <input type=\"email\" name=\"email\" autocomplete=\"email\" id=\"email_address\" value=\"\" title=\"Email\" class=\"input-text\" data-validate=\"{required:true, 'validate-email':true}\" aria-required=\"true\"/>\n            </div>\n        </div>\n        <div class=\"field password required\">\n            <label for=\"password\" class=\"label\"><span>Password</span></label>\n            <div class=\"control\">\n                <input type=\"password\" name=\"password\" id=\"password\" title=\"Password\" class=\"input-text\" data-password-min-length=\"8\" data-password-min-character-sets=\"3\" data-validate=\"{required:true, 'validate-customer-password':true}\" autocomplete=\"off\" aria-required=\"true\"/>\n                <div id=\"password-strength-meter-container\" data-role=\"password-strength-meter\" aria-live=\"polite\">\n                    <div id=\"password-strength-meter\" class=\"password-strength-meter\">\n                        Password Strength:\n                        <span id=\"password-strength-meter-label\" data-role=\"password-strength-meter-label\">\n                            No Password                        </span>\n                    </div>\n                </div>\n            </div>\n\n        </div>\n        <div class=\"field confirmation required\">\n            <label for=\"password-confirmation\" class=\"label\">\n                <span>Confirm Password</span>\n            </label>\n            <div class=\"control\">\n                <input type=\"password\" name=\"password_confirmation\" title=\"Confirm Password\" id=\"password-confirmation\" class=\"input-text\" data-validate=\"{required:true, equalTo:'#password'}\" autocomplete=\"off\" aria-required=\"true\"/>\n            </div>\n        </div>\n        <div class=\"field choice\" data-bind=\"scope: 'showPassword'\">\n            <!-- ko template: getTemplate() -->\n\n<input type=\"checkbox\" name=\"show-password\" data-bind=\"attr: {title : $t('Show Password')}, checked: isPasswordVisible\" id=\"show-password\" class=\"checkbox\" data-role=\"show-password\" title=\"Show Password\"/>\n<label for=\"show-password\" class=\"label\"><span data-bind=\"i18n: 'Show Password'\">Show Password</span></label>\n<!-- /ko -->\n        </div>\n    </fieldset>\n\n    <fieldset class=\"fieldset additional_info\">\n            </fieldset>\n\n    <div class=\"actions-toolbar\">\n        <div class=\"primary\">\n            <button type=\"submit\" class=\"action submit primary\" title=\"Create an Account\" id=\"send2\">\n                <span>Create an Account</span>\n            </button>\n        </div>\n        <div class=\"secondary\">\n            <a class=\"action back\" href=\"http://localhost/customer/account/login/referer/aHR0cDovL2xvY2FsaG9zdC9jdXN0b21lci9hY2NvdW50L2NyZWF0ZS8~/\">\n                <span>Back</span>\n            </a>\n        </div>\n    </div>\n</form>\n",
+  "has_submit": true,
+  "submit_position": 1,
+  "total_inputs": 12,
+  "radio_groups": 0,
+  "text_areas": 0,
+  "non_writable": 4,
+  "other_inputs": 8,
+  "html_constraints": [
+    {
+      "reference": {
+        "access_method": "id",
+        "access_value": "firstname"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "firstname",
+        "pattern": null,
+        "required": null,
+        "step": null,
+        "type": "text",
+        "value": ""
+      }
+    },
+    {
+      "reference": {
+        "access_method": "id",
+        "access_value": "lastname"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "lastname",
+        "pattern": null,
+        "required": null,
+        "step": null,
+        "type": "text",
+        "value": ""
+      }
+    },
+    {
+      "reference": {
+        "access_method": "id",
+        "access_value": "is_subscribed"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "is_subscribed",
+        "pattern": null,
+        "required": null,
+        "step": null,
+        "type": "checkbox",
+        "value": "1"
+      }
+    },
+    {
+      "reference": {
+        "access_method": "id",
+        "access_value": "assistance_allowed_checkbox"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "assistance_allowed_checkbox",
+        "pattern": null,
+        "required": null,
+        "step": null,
+        "type": "checkbox",
+        "value": "1"
+      }
+    },
+    {
+      "reference": {
+        "access_method": "id",
+        "access_value": "email_address"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "email",
+        "pattern": null,
+        "required": null,
+        "step": null,
+        "type": "email",
+        "value": ""
+      }
+    },
+    {
+      "reference": {
+        "access_method": "id",
+        "access_value": "password"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "password",
+        "pattern": null,
+        "required": null,
+        "step": null,
+        "type": "password",
+        "value": null
+      }
+    },
+    {
+      "reference": {
+        "access_method": "id",
+        "access_value": "password-confirmation"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "password_confirmation",
+        "pattern": null,
+        "required": null,
+        "step": null,
+        "type": "password",
+        "value": null
+      }
+    },
+    {
+      "reference": {
+        "access_method": "id",
+        "access_value": "show-password"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "show-password",
+        "pattern": null,
+        "required": null,
+        "step": null,
+        "type": "checkbox",
+        "value": null
+      }
+    }
+  ],
+  "html_files_instrumented": 2,
+  "js_files_instrumented": 1,
+  "time_instrumenting_ms": 2225.6152999401093,
+  "time_analyzing_ms": 51606.75259971619,
+  "constraint_candidates": [
+    [
+      {
+        "type": "LiteralComp",
+        "operator": "===",
+        "otherValue": "0"
+      },
+      {
+        "type": "VarComp",
+        "operator": "===",
+        "otherValue": {
+          "type": "unknown variable",
+          "value": "this.options.cache.email.val().toLowerCase()"
+        }
+      }
+    ]
+  ],
+  "js_files_analyzed": [
+    "C:/Users/Bj\u00f6rn/Documents/git/invariant-based-web-form-testing/service/src/original/password-strength-indicator.js"
+  ]
+}

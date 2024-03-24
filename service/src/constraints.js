@@ -8,6 +8,7 @@ const fs = require("fs");
 const instrumentation = require("./instrument");
 const { logger } = require("./log");
 const trace = require("./trace");
+const { getStat, saveStat } = require("../evaluation/evaluation");
 
 const magicValueToReferenceMap = new Map();
 // const magicValueToReferenceMap = new Map([
@@ -192,9 +193,12 @@ function perpareForCodeQLQueries(traces) {
   }
 
   let allFiles = traces.filter((t) => t.file).map((t) => t.file);
-  allFiles = new Set(allFiles);
+  const uniqueFiles = new Set(allFiles);
+  saveStat("js_files_analyzed", [
+    ...new Set([...getStat("js_files_analyzed"), ...uniqueFiles]),
+  ]);
 
-  for (const file of allFiles) {
+  for (const file of uniqueFiles) {
     const elements = file.split("/");
     const fileName = elements[elements.length - 1];
     fs.copyFileSync(file, `source/${fileName}`);
@@ -236,6 +240,10 @@ function extractConstraintCandidates(
   }
 
   fs.rmSync(codeql.resultDirectory, { recursive: true, force: true });
+
+  const candidates = getStat("constraint_candidates");
+  candidates.push(allCandidates);
+  saveStat("constraint_candidates", candidates);
   return allCandidates;
 }
 

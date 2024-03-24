@@ -47,6 +47,9 @@ class NetworkInterceptor:
             "text/livescript",
         ]
 
+        self.html_files_instrumented = 0
+        self.js_files_instrumented = 0
+
     def delete_request_interceptor(self) -> None:
         del self.__driver.request_interceptor
 
@@ -80,7 +83,7 @@ class NetworkInterceptor:
         """
 
         content_type = response.headers["Content-Type"]
-        print(request, content_type)
+        # print(request, content_type)
         if content_type == None:
             return
 
@@ -88,10 +91,16 @@ class NetworkInterceptor:
             content_type.startswith(mime_type)
             for mime_type in self.__javascript_mime_types
         ):
-            response.body = self.__handle_js_file(request, response)
+            new_body = self.__handle_js_file(request, response)
+            if new_body:
+                response.body = new_body
+                self.js_files_instrumented += 1
 
         if content_type.startswith("text/html"):
-            response.body = self.__handle_html_file(response)
+            new_body = self.__handle_html_file(response)
+            if new_body:
+                response.body = new_body
+                self.html_files_instrumented += 1
 
         # Set correct new content length header
         content_length = response.headers.get("content-length")
@@ -106,6 +115,9 @@ class NetworkInterceptor:
         if "?" in name:
             name = name.split("?")[0]
 
+        if name != "password-strength-indicator.js":
+            return
+
         body_string = decode_bytes(response.body)
 
         data = {"name": name, "source": body_string}
@@ -119,7 +131,7 @@ class NetworkInterceptor:
             body_string = decode_bytes(response.body)
             html_ast = html.fromstring(body_string)
         except Exception:
-            return response.body
+            return ""
 
         html_head = html_ast.find(".//head")
         if html_head == None:
@@ -285,8 +297,8 @@ def decode_bytes(body: bytes) -> str:
     try:
         body_string = body.decode("utf-8")
     except UnicodeDecodeError as e:
-        print("UnicodeDecodeError when decoding request body")
-        print(e)
+        # print("UnicodeDecodeError when decoding request body")
+        # print(e)
         return ""
 
     return body_string

@@ -1,0 +1,81 @@
+{
+  "no_form": false,
+  "multiple_forms": true,
+  "form_position": 3,
+  "form_html": "<form id=\"dw__register\" action=\"/start?do=register\" method=\"post\" accept-charset=\"utf-8\" class=\"doku_form\">\n<input type=\"hidden\" name=\"sectok\" value=\"\"/><input type=\"hidden\" name=\"do\" value=\"register\"/><input type=\"hidden\" name=\"save\" value=\"1\"/><div class=\"no\"><fieldset>\n<legend>Register</legend>\n<label class=\"block\">\n<span>Username</span>\n<input name=\"login\" type=\"text\" size=\"50\" required=\"required\" class=\"edit\" value=\"\"/>\n</label><br/>\n<label class=\"block\">\n<span>Real name</span>\n<input name=\"fullname\" type=\"text\" size=\"50\" required=\"required\" class=\"edit\" value=\"\"/>\n</label><br/>\n<label class=\"block\">\n<span>E-Mail</span>\n<input name=\"email\" type=\"email\" size=\"50\" required=\"required\" class=\"edit\" value=\"\"/>\n</label><br/>\n<button value=\"1\" type=\"submit\">Register</button>\n</fieldset></div>\n</form>",
+  "has_submit": true,
+  "submit_position": 1,
+  "total_inputs": 6,
+  "radio_groups": 0,
+  "text_areas": 0,
+  "non_writable": 3,
+  "other_inputs": 3,
+  "html_constraints": [
+    {
+      "reference": {
+        "access_method": "xpath",
+        "access_value": "/html/body/div[1]/div/div/main/div/div[2]/div[2]/form/div/fieldset/label[1]/input"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "login",
+        "pattern": null,
+        "required": "required",
+        "step": null,
+        "type": "text",
+        "value": ""
+      }
+    },
+    {
+      "reference": {
+        "access_method": "xpath",
+        "access_value": "/html/body/div[1]/div/div/main/div/div[2]/div[2]/form/div/fieldset/label[2]/input"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "fullname",
+        "pattern": null,
+        "required": "required",
+        "step": null,
+        "type": "text",
+        "value": ""
+      }
+    },
+    {
+      "reference": {
+        "access_method": "xpath",
+        "access_value": "/html/body/div[1]/div/div/main/div/div[2]/div[2]/form/div/fieldset/label[3]/input"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "email",
+        "pattern": null,
+        "required": "required",
+        "step": null,
+        "type": "email",
+        "value": ""
+      }
+    }
+  ],
+  "html_files_instrumented": 2,
+  "js_files_instrumented": 2,
+  "time_instrumenting_ms": 5606.194100022316,
+  "time_analyzing_ms": 0,
+  "constraint_candidates": [],
+  "js_files_analyzed": {}
+}

@@ -70,6 +70,7 @@
     {
       "name": "roles[authenticated]",
       "type": "checkbox",
+      "value": "authenticated",
       "reference": {
         "access_method": "id",
         "access_value": "edit-roles-authenticated"
@@ -80,6 +81,7 @@
     {
       "name": "roles[content_editor]",
       "type": "checkbox",
+      "value": "content_editor",
       "reference": {
         "access_method": "id",
         "access_value": "edit-roles-content-editor"
@@ -90,6 +92,7 @@
     {
       "name": "roles[administrator]",
       "type": "checkbox",
+      "value": "administrator",
       "reference": {
         "access_method": "id",
         "access_value": "edit-roles-administrator"
@@ -100,6 +103,7 @@
     {
       "name": "notify",
       "type": "checkbox",
+      "value": "1",
       "reference": {
         "access_method": "id",
         "access_value": "edit-notify"
@@ -110,6 +114,7 @@
     {
       "name": "contact",
       "type": "checkbox",
+      "value": "1",
       "reference": {
         "access_method": "id",
         "access_value": "edit-contact--2"

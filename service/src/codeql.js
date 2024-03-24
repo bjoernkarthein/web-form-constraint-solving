@@ -1,9 +1,11 @@
 require("dotenv").config({ path: "../../.env" });
 
-const fs = require("fs");
 const CSV = require("csv-string");
+const fs = require("fs");
+const { performance } = require("perf_hooks");
 
 const common = require("./common");
+const { getStat, saveStat } = require("../evaluation/evaluation");
 
 const codeqlPath = process.env.CODEQL_PATH;
 const codeqlDirectory = "codeql";
@@ -39,14 +41,20 @@ function createDatabase(source) {
 
   fs.rmSync(databaseDirectory, { recursive: true, force: true });
   const command = `${codeqlPath} database create --language=javascript --source-root=${source} ${databaseDirectory}`;
+  const start = performance.now();
   common.runCommandSync(command);
+  const end = performance.now();
+  saveStat("time_analyzing_ms", getStat("time_analyzing_ms") + (end - start));
 }
 
 function runQuery(queryFile, queryDir = queryDirectory) {
   const outFile = `${codeqlDirectory}/results/${queryFile}-${count}-results.csv`;
   const command = `${codeqlPath} database analyze --format=csv --output=${outFile} ${databaseDirectory} ${queryDir}/${queryFile}.ql --rerun`;
   count++;
+  const start = performance.now();
   common.runCommandSync(command);
+  const end = performance.now();
+  saveStat("time_analyzing_ms", getStat("time_analyzing_ms") + (end - start));
   return outFile;
 }
 

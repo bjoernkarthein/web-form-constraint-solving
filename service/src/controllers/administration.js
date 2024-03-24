@@ -5,6 +5,10 @@ const tracerService = require("../trace");
 const { logger } = require("../log");
 const constraintService = require("../constraints");
 const codeqlService = require("../codeql");
+const {
+  writeStatsToFile,
+  getCurrentStats,
+} = require("../../evaluation/evaluation");
 
 const WEBSOCKET_SERVER_PORT = 1337;
 const wss = new WebSocketServer({ port: WEBSOCKET_SERVER_PORT });
@@ -24,10 +28,16 @@ let clean = (req, res) => {
   res.send("Cleaned up all resources");
 };
 
+let getStats = (req, res) => {
+  const stats = getCurrentStats();
+  res.json(stats);
+};
+
 let log = (req, res) => {
   for (const connection of connections) {
     connection.send(JSON.stringify(req.body));
   }
+  res.send("Notified subscribers");
 };
 
-module.exports = { clean, log };
+module.exports = { clean, log, getStats };
