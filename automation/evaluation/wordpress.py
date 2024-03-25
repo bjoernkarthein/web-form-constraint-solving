@@ -12,6 +12,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 
 from src.interaction.driver import TestAutomationDriver
+from util.helpers import Evaluation
 
 
 def setup(driver: TestAutomationDriver) -> None:
@@ -46,15 +47,14 @@ def setup(driver: TestAutomationDriver) -> None:
 if __name__ == "__main__":
     config = yaml.safe_load(open("evaluation/config.yml"))
 
-    # initialize profiler
+    # evaluation
     pr = cProfile.Profile()
-
     file = os.path.basename(__file__)[:-3]
+    eval = Evaluation(pr, file)
+    eval.start_profiling()
+
     driver = TestAutomationDriver(
-        config,
-        "http://localhost/wp-admin/user-new.php",
-        profiler=pr,
-        file=file,
+        config, "http://localhost/wp-admin/user-new.php", evaluation=eval
     )
 
     setup(driver)

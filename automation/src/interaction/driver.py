@@ -211,24 +211,24 @@ class TestAutomationDriver:
 
             for elem in specifications:
                 spec, grammar, formula = elem
-                # name = spec.reference.access_value
-                # if name != "password":
-                #     continue
+                name = spec.reference.access_value
+                if name != "password":
+                    continue
                 self.__constraint_candidate_finder.set_valid_value_sequence(
                     spec, grammar, formula, self.__magic_value_amount
                 )
 
             for elem in specifications:
                 spec, grammar, formula = elem
-                # name = spec.reference.access_value
-                # if name != "password":
-                #     continue
+                name = spec.reference.access_value
+                if name != "password":
+                    continue
 
                 constraint_candidates = self.__constraint_candidate_finder.get_constraint_candidates_for_value_sequence(
                     spec
                 )
 
-                # # TODO: When to stop? How do I not apply the same candidates twice?
+                # TODO: When to stop? How do I not apply the same candidates twice?
                 print(str(constraint_candidates))
 
                 # if len(constraint_candidates.candidates) == 0:

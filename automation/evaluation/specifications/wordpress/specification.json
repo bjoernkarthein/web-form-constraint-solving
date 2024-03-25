@@ -77,7 +77,7 @@
       "value": null,
       "reference": {
         "access_method": "xpath",
-        "access_value": "/html/body/div/div[2]/div[2]/div[1]/div[3]/form/table/tbody/tr[8]/td/label/input"
+        "access_value": "/html/body/div[1]/div[2]/div[2]/div[1]/div[3]/form/table/tbody/tr[8]/td/label/input"
       },
       "grammar": "8.bnf",
       "formula": "8.isla"
