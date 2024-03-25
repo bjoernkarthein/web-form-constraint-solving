@@ -115,8 +115,8 @@ class NetworkInterceptor:
         if "?" in name:
             name = name.split("?")[0]
 
-        if name != "password-strength-indicator.js":
-            return
+        # if name != "password-strength-indicator.js":
+        #     return
 
         body_string = decode_bytes(response.body)
 

@@ -1,5 +1,5 @@
 /**
- * @name ToStringMatch
+ * @name To String Match
  * @kind problem
  * @problem.severity warning
  * @id javascript/to-string-match

@@ -110,16 +110,21 @@ predicate isInVarComparison(Expr expr) {
   exists(Expr parent, Expr e | hasVarComparisonParent(expr, parent, e))
 }
 
-predicate hasLiteralLengthComparisonParent(Expr expr, Expr parent) {
+predicate hasLiteralLengthComparisonParent(Expr expr, Expr parent, NumberLiteral lit) {
   parent = expr.getParent*() and
   parent instanceof Comparison and
-  parent.(Comparison).getRightOperand() instanceof NumberLiteral and
+  (lit = parent.(Comparison).getRightOperand() or lit = parent.(Comparison).getLeftOperand()) and
   parent.(Comparison).getLeftOperand() instanceof PropAccess and
   parent.(Comparison).getLeftOperand().(PropAccess).getPropertyName() = "length"
+  or
+  parent.(Comparison).getRightOperand() instanceof PropAccess and
+  parent.(Comparison).getRightOperand().(PropAccess).getPropertyName() = "length"
 }
 
 predicate isInLiteralLengthComparison(Expr expr) {
-  exists(Expr parent | hasLiteralLengthComparisonParent(expr, parent))
+  exists(Expr parent, NumberLiteral literal |
+    hasLiteralLengthComparisonParent(expr, parent, literal)
+  )
 }
 
 predicate hasVarLengthComparisonParent(Expr expr, Expr parent) {

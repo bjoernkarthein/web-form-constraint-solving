@@ -32,7 +32,7 @@ class TestSpecificationBuilder(unittest.TestCase):
         self.builder.create_specification_for_html_radio_group(self.radio_spec)
 
     def test_add_constraint_candidates_empty(self) -> None:
-        old_grammar, old_formula = self.builder.refrence_to_spec_map.get(
+        old_grammar, old_formula = self.builder.reference_to_spec_map.get(
             self.input_spec.reference
         )
         new_grammar, new_formula = (

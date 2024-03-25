@@ -296,7 +296,10 @@ function buildConstraintCandidates(type, slices) {
       return handleLiteralComparison(slices[0], slices[1]);
     case codeql.queryTypes.COMPARISON_TO_ANOTHER_VARIABLE:
       return handleVariableComparison(slices[0], slices[1]);
+    case codeql.queryTypes.COMPARISON_TO_LITERAL_LENGTH:
+      return handleLiteralComparison(slices[0], slices[1], true);
     case codeql.queryTypes.REGEX_TEST:
+    case codeql.queryTypes.STRING_MATCH:
       return handleRegexTest(slices[1]);
     default:
       return [];
@@ -319,14 +322,18 @@ function handleRegexTest(pattern) {
   return [{ type: "PatternTest", pattern: pattern }];
 }
 
-function handleLiteralComparison(compSlice, literal) {
+function handleLiteralComparison(compSlice, literal, length = false) {
   const ast = parseSliceToAst(compSlice);
   if (!ast) {
     return [];
   }
 
   const candidates = [];
-  let result = { type: "LiteralComp", operator: "", otherValue: literal };
+  let result = {
+    type: length ? "LiteralLengthComp" : "LiteralComp",
+    operator: "",
+    otherValue: literal,
+  };
 
   traverse(ast, {
     BinaryExpression: function (path) {

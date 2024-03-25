@@ -352,12 +352,14 @@ class ISLa(Enum):
 
 class SpecificationBuilder:
     def __init__(self) -> None:
-        self.refrence_to_spec_map: Dict[
-            HTMLElementReference, Tuple[str, str | None]
+        self.reference_to_spec_map: Dict[
+            HTMLElementReference, Tuple[str, str | None, int]
         ] = {}
 
     def create_specification_for_html_radio_group(
-        self, html_radio_group_specification: HTMLRadioGroupSpecification
+        self,
+        html_radio_group_specification: HTMLRadioGroupSpecification,
+        file_index: int,
     ) -> Tuple[str, str | None]:
         grammar = load_file_content(
             f"{pre_built_specifications_path}/radio-group/radio-group.bnf"
@@ -368,15 +370,17 @@ class SpecificationBuilder:
             list(map(lambda o: f'"{o[1]}"', html_radio_group_specification.options)),
         )
 
-        self.refrence_to_spec_map[html_radio_group_specification.reference] = (
+        self.reference_to_spec_map[html_radio_group_specification.reference] = (
             grammar,
             None,
+            file_index,
         )
         return grammar, None
 
     def create_specification_for_html_input(
         self,
         html_input_specification: HTMLInputSpecification,
+        file_index: int,
         use_datalist_options=False,
     ) -> Tuple[str, str | None]:
         match html_input_specification.constraints.type:
@@ -429,9 +433,10 @@ class SpecificationBuilder:
                     f"The provided type '{html_input_specification.constraints.type}' does not match any known html input type"
                 )
 
-        self.refrence_to_spec_map[html_input_specification.reference] = (
+        self.reference_to_spec_map[html_input_specification.reference] = (
             grammar,
             formula,
+            file_index,
         )
         return grammar, formula
 
@@ -455,12 +460,13 @@ class SpecificationBuilder:
         input_type: str,
         new_constraints: ConstraintCandidateResult,
     ) -> Tuple[str, str]:
-        existing_spec = self.refrence_to_spec_map.get(reference)
+        existing_spec = self.reference_to_spec_map.get(reference)
         if existing_spec is None:
             grammar = ""
             formula = None
+            index = 50  # TODO: What to do here?
         else:
-            grammar, formula = existing_spec
+            grammar, formula, index = existing_spec
 
         for candidate in new_constraints.candidates:
             constraint_type = candidate.type
@@ -473,6 +479,12 @@ class SpecificationBuilder:
                     grammar, formula = self.__handle_var_comparison_candidate(
                         grammar, formula, candidate
                     )
+                case ConstraintCandidateType.LITERAL_LENGTH_COMPARISON.value:
+                    grammar, formula = (
+                        self.__handle_literal_length_comparison_candidate(
+                            input_type, grammar, formula, candidate
+                        )
+                    )
                 case ConstraintCandidateType.PATTERN_TEST.value:
                     grammar, formula = self.__handle_pattern_candidate(
                         input_type, grammar, formula, candidate
@@ -480,7 +492,8 @@ class SpecificationBuilder:
                 case _:
                     raise TypeError(f"type {constraint_type} not recognized")
 
-        self.refrence_to_spec_map[reference] = grammar, formula
+        self.reference_to_spec_map[reference] = grammar, formula, index
+        self.write_specification_to_file(str(index), grammar, formula)
         return grammar, formula
 
     def __handle_literal_comparison_candidate(
@@ -490,8 +503,24 @@ class SpecificationBuilder:
         formula: str,
         candidate: LiteralCompCandidate,
     ) -> Tuple[str, str | None]:
+        new_part = self.__get_formula_for_operator(
+            f"<{input_type}>", candidate.other_value, candidate.operator
+        )
+        formula = self.__add_to_formula(new_part, formula, ISLa.OR)
+        return grammar, formula
+
+    def __handle_literal_length_comparison_candidate(
+        self,
+        input_type: str,
+        grammar: str,
+        formula: str,
+        candidate: LiteralCompCandidate,
+    ) -> Tuple[str, str | None]:
+        new_part = self.__get_formula_for_operator(
+            f"str.len(<{input_type}>)", candidate.other_value, candidate.operator
+        )
         formula = self.__add_to_formula(
-            f'<{input_type}> {candidate.operator} "{candidate.other_value}"',
+            new_part,
             formula,
             ISLa.OR,
         )
@@ -501,9 +530,9 @@ class SpecificationBuilder:
         self, grammar: str, formula: str, candidate: VarCompCandidate
     ) -> Tuple[str, str | None]:
         if candidate.other_value_type == ConstraintOtherValueType.REFERENCE.value:
-            other_spec = self.refrence_to_spec_map.get(candidate.other_value)
+            other_spec = self.reference_to_spec_map.get(candidate.other_value)
             if other_spec is not None:
-                other_grammar, other_formula = other_spec
+                other_grammar, other_formula, _ = other_spec
                 other_grammar_dict = self.__grammar_string_to_dict(other_grammar)
                 grammar_dict = self.__grammar_string_to_dict(grammar)
                 new_grammar_dict, formula = self.__combine_grammars_and_formulas(
@@ -515,7 +544,7 @@ class SpecificationBuilder:
                 )
                 grammar = self.__grammar_dict_to_string(new_grammar_dict)
 
-        return formula, grammar
+        return grammar, formula
 
     def __handle_pattern_candidate(
         self,
@@ -974,17 +1003,22 @@ class SpecificationBuilder:
 
         nt1 = f"<nt{start_number}>"
         nt2 = f"<nt{next_nt_number}>"
+        compFormula = self.__get_formula_for_operator(nt1, nt2, compOperator)
 
         start = {"<start>": [f"{nt1} {nt2}"]}
-        if "VALUE" in compOperator and "OTHER" in compOperator:
-            compOperator = compOperator.replace("VALUE", nt1)
-            compFormula = compOperator.replace("OTHER", nt2)
-        else:
-            compFormula = f"{nt1} {compOperator} {nt2}"
 
         return (start | grammar | other_grammar), (f" {ISLa.AND.value} ").join(
             filter(None, (f"({formula})", f"({other_formula})", f"({compFormula})"))
         )
+
+    def __get_formula_for_operator(
+        self, value: str, other_value: str, operator: str
+    ) -> str:
+        if "VALUE" in operator and "OTHER" in operator:
+            compOperator = compOperator.replace("VALUE", value)
+            return compOperator.replace("OTHER", other_value)
+
+        return f"{value} {operator} {other_value}"
 
     def __convert_non_terminals(
         self, grammar_dict: Dict[str, List[str]], formula: str | None, start_number

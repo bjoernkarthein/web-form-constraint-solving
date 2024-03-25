@@ -1,5 +1,5 @@
 /**
- * @name ToLitLengthComp
+ * @name To Literal Length Comparison
  * @kind problem
  * @problem.severity warning
  * @id javascript/to-literal-length-comp
@@ -18,6 +18,9 @@ class LiteralLengthCompFlowConfiguration extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { isInLiteralLengthComparison(sink.asExpr()) }
 }
 
-from LiteralLengthCompFlowConfiguration cfg, DataFlow::Node source, DataFlow::Node sink, Expr parent
-where cfg.hasFlow(source, sink) and hasLiteralLengthComparisonParent(sink.asExpr(), parent)
-select parent, parent.toString()
+from
+  LiteralLengthCompFlowConfiguration cfg, DataFlow::Node source, DataFlow::Node sink, Expr parent,
+  NumberLiteral lit
+where cfg.hasFlow(source, sink) and hasLiteralLengthComparisonParent(sink.asExpr(), parent, lit)
+select parent, "Full Comparison: $@, Compared Value: $@", parent, parent.toString(), lit,
+  lit.toString()

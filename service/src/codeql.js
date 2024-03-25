@@ -16,6 +16,7 @@ const resultDirectory = `${codeqlDirectory}/results`;
 
 const allQueries = [
   "to_literal_comp",
+  "to_literal_length_comp",
   "to_var_comp",
   "to_regex",
   "to_string_match",
@@ -23,7 +24,9 @@ const allQueries = [
 const queryTypes = {
   COMPARISON_TO_A_LITERAL: "To Literal Comparison",
   COMPARISON_TO_ANOTHER_VARIABLE: "To Variable Comparison",
+  COMPARISON_TO_LITERAL_LENGTH: "To Literal Length Comparison",
   REGEX_TEST: "To Regex Test",
+  STRING_MATCH: "To String Match",
 };
 const resultLocationPattern = /\[\[(.*?)\|(.*?)\]\]/g;
 

@@ -211,18 +211,18 @@ class TestAutomationDriver:
 
             for elem in specifications:
                 spec, grammar, formula = elem
-                name = spec.reference.access_value
-                if name != "password":
-                    continue
+                # name = spec.reference.access_value
+                # if name != "password":
+                #     continue
                 self.__constraint_candidate_finder.set_valid_value_sequence(
                     spec, grammar, formula, self.__magic_value_amount
                 )
 
             for elem in specifications:
                 spec, grammar, formula = elem
-                name = spec.reference.access_value
-                if name != "password":
-                    continue
+                # name = spec.reference.access_value
+                # if name != "password":
+                #     continue
 
                 constraint_candidates = self.__constraint_candidate_finder.get_constraint_candidates_for_value_sequence(
                     spec
@@ -287,21 +287,21 @@ class TestAutomationDriver:
                     grammar_with_required,
                     formula_with_required,
                 ) = self.__specification_builder.create_specification_for_html_input(
-                    spec_with_required, use_datalist_options
+                    spec_with_required, next_file_index, use_datalist_options
                 )
 
                 (
                     grammar,
                     formula,
                 ) = self.__specification_builder.create_specification_for_html_input(
-                    specification, use_datalist_options
+                    specification, next_file_index, use_datalist_options
                 )
             else:
                 (
                     grammar,
                     formula,
                 ) = self.__specification_builder.create_specification_for_html_radio_group(
-                    specification
+                    specification, next_file_index
                 )
 
             (
