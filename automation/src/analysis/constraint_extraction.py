@@ -246,12 +246,12 @@ class ConstraintCandidateFinder:
             else InputType.RADIO.value
         )
         values = self.__magic_value_map.get(spec)
-        # print(
-        #     "Now getting candidates for",
-        #     spec.reference.get_as_dict(),
-        #     "with values",
-        #     values,
-        # )
+        print(
+            "Now getting candidates for",
+            spec.reference.get_as_dict(),
+            "with values",
+            values,
+        )
         # set_trace_recording_flag(self.__driver, True)
         # return ConstraintCandidateResult({"candidates": []})
         set_trace_recording_flag(self.__driver, False)

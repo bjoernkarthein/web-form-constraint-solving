@@ -11,14 +11,6 @@ const trace = require("./trace");
 const { getStat, saveStat } = require("../evaluation/evaluation");
 
 const magicValueToReferenceMap = new Map();
-// const magicValueToReferenceMap = new Map([
-//   ["l", 1],
-//   ["Yy", 2],
-//   ["71p", 3],
-//   ["aHH}", 4],
-//   ["6*`O?", 5],
-// ]);
-
 const expressionToFieldMap = new Map();
 
 function hasValue(object, value) {
