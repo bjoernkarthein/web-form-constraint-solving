@@ -16,7 +16,11 @@ module.exports = function assignmentPlugin() {
         const decls = [];
         for (const decl of declarations) {
           const init = generator(decl.init).code || decl.id.name;
-          decls.push(`{ "expression": "${init}", "value": ${decl.id.name}}`);
+          decls.push(
+            `{ "expression": ${JSON.stringify(init)}, "value": ${
+              decl.id.name
+            }, "line": ${decl.loc.start.line}}`
+          );
         }
         const code = getVarDeclCode(path, state, decls);
         path.insertAfter(template.ast(code));

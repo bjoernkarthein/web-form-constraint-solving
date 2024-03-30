@@ -283,7 +283,7 @@ class ConstraintCandidateFinder:
             ).content
         )
         set_trace_recording_flag(self.__driver, False)
-        # test = input("Enter values and continue")
+        test = input("Enter values and continue")
 
         constraint_candidate_response = get_constraint_candidates(all_traces)
         response_str = decode_bytes(constraint_candidate_response.content)

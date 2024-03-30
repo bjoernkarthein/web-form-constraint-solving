@@ -15,7 +15,9 @@ module.exports = function functionTracePlugin() {
         const params = [];
         for (const p of path.node.params) {
           if (!!p.name) {
-            params.push(`{"expression": "${p.name}", "value": ${p.name}}`);
+            params.push(
+              `{"expression": "${p.name}", "value": ${p.name}, "line": ${p.loc.start.line}}`
+            );
           }
         }
 
@@ -78,42 +80,4 @@ function getArrowFunctionCode(path, state, args) {
     "'ARROW_FUNCTION_CALL'",
     `[${args}]`
   );
-}
-
-function getCallStatement(path) {
-  const functionName = path.node.id.name;
-  const params = path.node.params;
-
-  const paramList = [];
-
-  for (let i = 0; i < params.length; i++) {
-    let paramName = params[i].name;
-    paramList.push(`{ expression: "${paramName}", value: ${paramName} }`);
-  }
-
-  return `{ name: "${functionName}", args: [ ${paramList.join(", ")} ] }`;
-}
-
-function getExpressionStatement(path) {
-  if (path.parent.type === "CallExpression") {
-    const property = path.parent.callee.property || { name: "unkown" };
-    const params = path.parent.arguments;
-
-    let paramList = [];
-
-    for (let i = 0; i < params.length; i++) {
-      if (params[i].type !== "FunctionExpression") {
-        const generatedCode = generator(params[i]);
-        paramList.push(
-          `{ expression: ${toExpressionString(generatedCode.code)}, value: ${
-            generatedCode.code
-          } }`
-        );
-      }
-    }
-
-    return `{ property: "${property.name}", args: [ ${paramList.join(", ")} ]}`;
-  }
-
-  return "{}";
 }

@@ -139,7 +139,7 @@ class NetworkInterceptor:
 
         record_script = etree.fromstring(
             """<script>var c989a310_3606_4512_bee4_2bc00a61e8ac = false;
-function b0aed879_987c_461b_af34_c9c06fe3ed46(action, args, file, location) {
+function b0aed879_987c_461b_af34_c9c06fe3ed46(action, args, location) {
   if (!c989a310_3606_4512_bee4_2bc00a61e8ac) {
     return;
   }
@@ -151,7 +151,6 @@ function b0aed879_987c_461b_af34_c9c06fe3ed46(action, args, file, location) {
       action,
       args,
       time: new Date().getTime(),
-      file,
       location,
       pageFile: 1,
     })

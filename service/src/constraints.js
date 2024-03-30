@@ -74,7 +74,7 @@ function processTraces(allTraces) {
   const interactionTraces = allTraces.filter(
     (t) => t.time >= start && t.time <= end
   );
-  interactionTraces.sort(compareTimestamps);
+  interactionTraces.sort(compareTimestamps); // TODO: still needed?
 
   const browserTraces = interactionTraces.filter((t) => t.pageFile);
   // if (browserTraces.length > 0) {
@@ -138,7 +138,8 @@ function findMagicValues(traceGroup) {
       if (hasMagicValue) {
         tracesWithMagicValue.push({
           expression: element.expression,
-          location: t.location,
+          line: element.line || t.location.start.line,
+          file: t.location.file,
         });
       }
     }
@@ -166,11 +167,7 @@ function runQueries(pointsOfInterest, sourceDir) {
   codeql.createDatabase(sourceDir, "db");
 
   for (const point of pointsOfInterest) {
-    codeql.prepareQueries(
-      point.location.file,
-      point.location.start.line,
-      point.expression
-    );
+    codeql.prepareQueries(point.file, point.line, point.expression);
     codeql.runQueries(codeql.allQueries);
     codeql.resetQueries();
   }
@@ -184,16 +181,16 @@ function perpareForCodeQLQueries(traces) {
     fs.mkdirSync("source");
   }
 
-  let allFiles = traces.filter((t) => t.file).map((t) => t.file);
+  let allFiles = traces
+    .filter((t) => !!t.location?.file)
+    .map((t) => t.location.file);
   const uniqueFiles = new Set(allFiles);
   saveStat("js_files_analyzed", [
     ...new Set([...getStat("js_files_analyzed"), ...uniqueFiles]),
   ]);
 
-  for (const file of uniqueFiles) {
-    const elements = file.split("/");
-    const fileName = elements[elements.length - 1];
-    fs.copyFileSync(file, `source/${fileName}`);
+  for (const fileName of uniqueFiles) {
+    fs.copyFileSync(`original/${fileName}`, `source/${fileName}`);
   }
 
   return "source";

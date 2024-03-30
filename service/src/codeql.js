@@ -85,7 +85,7 @@ function addDataToQuery(
   });
 
   fs.writeFileSync(`${queryDir}/${queryFile}.ql`, "");
-  // This is needed because codeql for javascript automatically sanitizes strings
+  // This is needed because codeql for javascript automatically sanitizes long strings
   // (https://github.com/github/codeql/blob/7361ad977a5dd5252d21f5fd23de47d75b763651/javascript/extractor/src/com/semmle/js/extractor/TextualExtractor.java#L121)
   if (expression.length > 20) {
     expression =

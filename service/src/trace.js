@@ -21,7 +21,6 @@ function addToTraceLog(req) {
   traceEntry.action = req.body.action;
   traceEntry.args = req.body.args;
   traceEntry.time = req.body.time;
-  traceEntry.file = req.body.file;
   traceEntry.location = req.body.location;
   traceEntry.pageFile = req.body.pageFile;
 
