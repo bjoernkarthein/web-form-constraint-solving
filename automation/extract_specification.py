@@ -13,8 +13,15 @@ client side validation constraints.
 """
 
 
-def setup() -> None:
-    # Do anything here to get to the form, login or click buttons, etc.
+def setup(automation: TestAutomationDriver) -> None:
+    # Do anything here to get to the page with the form, login or click buttons, etc.
+    # You can access the selenium driver via automation.web_driver
+    pass
+
+
+def access_form(automation: TestAutomationDriver) -> None:
+    # Do anything here to get to the actual form once you are on the right page. (e.g. click a button to show the form popup)
+    # You can access the selenium driver via automation.web_driver
     pass
 
 
@@ -40,9 +47,11 @@ def main(argv):
             config = yaml.safe_load(open("config/analysis_config.yml"))
             test_automation_driver = TestAutomationDriver(
                 config,
-                arg,
+                url=arg,
+                setup_function=access_form,
                 evaluation=EvaluationStub(),  # TODO: remove when evaluation is done
             )
+
             setup()
             test_automation_driver.run_analysis()
 

@@ -37,8 +37,6 @@ from src.utility.helpers import (
 chrome_driver_path = "chromedriver/windows/chromedriver.exe"
 # chrome_driver_path = "chromedriver/linux/chromedriver"
 chrome_driver_abs_path = os.path.abspath(chrome_driver_path)
-disable_csp_extension_path = "chromedriver/chrome-csp-disable.crx"
-disable_csp_extension_path = os.path.abspath(disable_csp_extension_path)
 
 
 """
@@ -51,16 +49,22 @@ Handles all of the browser driver management.
 class TestAutomationDriver:
     """Test Automation class
 
-    ...
+    provides entry methods for automatic constraint extraction and form testing
     """
 
     def __init__(
-        self, config: dict, url: str = None, setup_function=None, evaluation=None
+        self, config: dict, url: str | None = None, setup_function=None, evaluation=None
     ) -> None:
         """Initialize the Test Automation
 
         Set options for selenium chrome driver and selenium wire proxy
         Initilaize web driver.
+
+        Parameters:
+        config (dict): The configuration as a json dict
+        url (str | None): The url of the web page to test (default None; only required for extraction)
+        setup_function: The function with selenium instructions to get to the actual web form on the page (default None)
+        evaluation: The evaluation tracking instance (default None; only for evaluation purposes)
         """
         self.__config = config
         self.__setup_function = setup_function
@@ -70,7 +74,6 @@ class TestAutomationDriver:
 
         # Options for the chrome webdriver
         chrome_options = webdriver.ChromeOptions()
-        # chrome_options.add_extension(disable_csp_extension_path)
         chrome_options.add_experimental_option("excludeSwitches", ["enable-logging"])
         chrome_options.add_argument("--lang=en")
 
@@ -85,6 +88,7 @@ class TestAutomationDriver:
 
         # Set the timeout for a page load. This can be adjusted to be longer for pages with a lot of js files to instrument
         self.__driver.set_page_load_timeout(1000)
+
         self.__interceptor = NetworkInterceptor(self.__driver)
         self.web_driver = self.__driver
 
@@ -97,48 +101,55 @@ class TestAutomationDriver:
             ]
 
     def run_analysis(self) -> None:
-        # subscribe to server messages
-        # message_thread = threading.Thread(
-        #     target=sub_to_service_messages, daemon=True
-        # )
-        # message_thread.start()
+        """Run the code analysis
 
+        Connects to the server for status messages, starts instrumentation of JavaScript files,
+        analyzes HTML and builds the specification from HTML and JavaScript validation.
+        """
+
+        # subscribe to server messages
+        message_thread = threading.Thread(target=sub_to_service_messages, daemon=True)
+        message_thread.start()
+
+        # start network interception for instrumentation if the analysis is not HTML only
         if not self.__html_only:
             self.__interceptor.instrument_files()
 
+        # load the page and optionally execute setup function to get to the actual web form
         load_page(self.__driver, self.__url)
-        # self.__interceptor.block_form_submission()
-
-        test = input("page loaded")
-        # ref = HTMLElementReference("id", "password")
-        # set_trace_recording_flag(self.__driver, True)
-        # write_to_web_element_by_reference_with_clear(
-        #     self.__driver, "text", None, ref, "password", "blahaha", False
-        # )
-        # set_trace_recording_flag(self.__driver, False)
-        # test = input("written to field")
-
         if self.__setup_function is not None:
             self.__setup_function(self)
 
+        # build specification from HTML validation
         html_input_specifications = self.__analyse_html(self.__driver.page_source)
         if self.__html_only:
-            self.__build_html_specification(html_input_specifications)
+            self.__build_specification(html_input_specifications)
             self.__exit()
 
+        # extract additional JavaScript constrants
         self.__start_constraint_extraction(html_input_specifications)
 
         self.__exit()
 
-    # TODO: Selection dependent inputs during testing?
     def run_test(
         self, specification_file: str | None = None, report_path: str | None = None
     ) -> None:
+        """Start the testing of a web form.
+
+        Parses either the extracted specification or a custom, user-defined spec and initiates the test.
+
+        Parameters:
+        specification_file (str | None): The file path to a valid specification file (default None; See "automation\pre-built-specifications\specification_example.json" for an example)
+        report_path (str |  None): The path for the generated report file (default None; only for evaluation)
+        """
+
+        # parse specification file
         specification_parser = SpecificationParser(specification_file)
         spec, specification_dir = specification_parser.parse()
         if spec is None:
             self.__exit()
 
+        # start value generation and form testing
         url = spec["url"]
         form_tester = FormTester(
             self.__driver, url, spec, specification_dir, self.__config, report_path
@@ -152,29 +163,41 @@ class TestAutomationDriver:
     ) -> List[HTMLInputSpecification | HTMLRadioGroupSpecification]:
         """Analyse the HTML content of the web page.
 
-        Select a web form and extract the built-in HTML constraints for it's inputs.
+        Selects a web form and extract the built-in HTML constraints for it's inputs.
+
+        Parameters:
+        html_string (str): The snapchot of the DOM to analyze as a string
+
+        Returns:
+        List[HTMLInputSpecification | HTMLRadioGroupSpecification]: The specification for all form fields including the built-in HTML constraints
         """
         self.__html_analyser = HTMLAnalyser(html_string, self.__evaluation)
         (form, access) = self.__html_analyser.select_form()
 
+        # if the page does not contain a form we exit
         if form is None or access is None:
             self.__exit()
 
-        # TODO check for form changes and handle
-        self.__form_observer = FormObserver(form, access)
-
+        # colecting HTML constraints
         html_constraints = self.__html_analyser.extract_static_constraints(form)
         if html_constraints is None:
             self.__exit()
 
         return html_constraints
 
-    # TODO refactor to not be that complex - is this the right class?
     def __start_constraint_extraction(
         self,
         html_specifications: List[HTMLInputSpecification | HTMLRadioGroupSpecification],
     ) -> None:
-        """Start the extraction of client-side validation constraints for a set of specified HTML inputs."""
+        """Start the extraction of client-side validation constraints for a set of specified HTML inputs.
+
+        Starts with the identified HTML constraints for one input field and iteratively builds a specification, looks for new JavaScript constraint candidates,
+        adds them to the current specification for the field and starts over.
+        This is done for as many rounds per input as specified in the config and until all input fields are analyzed.
+
+        Parameters:
+        html_specifications (List[HTMLInputSpecification | HTMLRadioGroupSpecification]): List of specifications for all form fields
+        """
 
         analysis_rounds = self.__config[ConfigKey.ANALYSIS.value][
             ConfigKey.ANALYSIS_ROUNDS.value
@@ -203,40 +226,26 @@ class TestAutomationDriver:
             ]
             | None
         ) = None
+
         for _ in range(analysis_rounds):
-            specifications = next_specifications or self.__build_html_specification(
+            specifications = next_specifications or self.__build_specification(
                 html_specifications
             )
             next_specifications = []
 
             for elem in specifications:
                 spec, grammar, formula = elem
-                # name = spec.reference.access_value
-                # if name != "password":
-                #     continue
                 self.__constraint_candidate_finder.set_valid_value_sequence(
                     spec, grammar, formula, self.__magic_value_amount
                 )
 
             for elem in specifications:
                 spec, grammar, formula = elem
-                # name = spec.reference.access_value
-                # if name != "password":
-                #     continue
-
                 constraint_candidates = self.__constraint_candidate_finder.get_constraint_candidates_for_value_sequence(
                     spec
                 )
 
                 # TODO: When to stop? How do I not apply the same candidates twice?
-                print(str(constraint_candidates))
-
-                # if len(constraint_candidates.candidates) == 0:
-                #     break
-
-                # if constraint_candidates == previous_constraints:
-                #     break
-
                 (
                     grammar,
                     formula,
@@ -244,16 +253,24 @@ class TestAutomationDriver:
                     spec.reference, spec.type, constraint_candidates
                 )
 
-                # previous_constraints = constraint_candidates
                 next_specifications.append((spec, grammar, formula))
 
-    # TODO: refactor to not be this complex - is this the right class?
-    def __build_html_specification(
+    def __build_specification(
         self,
         html_specifications: List[HTMLInputSpecification | HTMLRadioGroupSpecification],
     ) -> List[
         Tuple[HTMLInputSpecification | HTMLRadioGroupSpecification, str, str | None]
     ]:
+        """Converts all constraints to a human-readable and editable specification file for the whole form.
+
+        Paramaters:
+        html_specifications (List[HTMLInputSpecification | HTMLRadioGroupSpecification]): All html constraints for all input fields
+
+        Returns:
+        List[Tuple[HTMLInputSpecification | HTMLRadioGroupSpecification, str, str | None]]: A List that contains a tuple
+        for each input field with the original spec, the grammar and the formula
+
+        """
         result = []
 
         self.__specification_builder = SpecificationBuilder()
@@ -326,12 +343,17 @@ class TestAutomationDriver:
         write_to_file("specification/specification.json", form_specification)
         return result
 
-    def __exit(self, exit_code: int = None) -> None:
-        """Free all resources and exit"""
+    def __exit(self, exit_code: int | None = None) -> None:
+        """Free all resources and exit
+
+        Parameters:
+        exit_code (int | None): The code with which to exit the execution
+        """
+
         # free_service_resources()
         self.__driver.quit()
 
-        # TODO: remove after evaluation?
+        # Saving measurements for evaluation
         if self.__evaluation is not None:
             self.__evaluation.save_profiling()
             self.__evaluation.save_stat(
