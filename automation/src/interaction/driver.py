@@ -1,7 +1,6 @@
 import os
 import threading
 import sys
-import time
 
 from copy import deepcopy
 from selenium.webdriver.chrome.service import Service
@@ -14,9 +13,7 @@ from src.analysis.constraint_extraction import (
 )
 from src.analysis.html_analysis import (
     HTMLAnalyser,
-    HTMLElementReference,
     HTMLInputSpecification,
-    FormObserver,
     HTMLRadioGroupSpecification,
 )
 from src.interaction.form_testing import FormTester, SpecificationParser
@@ -29,8 +26,6 @@ from src.utility.helpers import (
     load_page,
     sub_to_service_messages,
     write_to_file,
-    write_to_web_element_by_reference_with_clear,
-    set_trace_recording_flag,
 )
 
 
@@ -350,7 +345,7 @@ class TestAutomationDriver:
         exit_code (int | None): The code with which to exit the execution
         """
 
-        # free_service_resources()
+        free_service_resources()
         self.__driver.quit()
 
         # Saving measurements for evaluation
