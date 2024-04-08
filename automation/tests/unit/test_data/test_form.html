@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+</head>
+
+<body>
+    <form method="GET" action="http://localhost/form/get">
+        <input type="text" name="get-first">
+        <input type="text" name="get-second">
+        <input type="checkbox" name="get-check" value="yessir">
+        <input type="hidden" name="get-nonce" value="jsawwdhajdapofdiqaf">
+        <input type="submit" id="get-sub" value="Send">
+    </form>
+
+    <form method="POST" enctype="application/x-www-form-urlencoded" action="http://localhost/form/post">
+        <input type="text" name="post-www-first">
+        <input type="text" name="post-www-second">
+        <input type="checkbox" name="post-www-check" value="yessir">
+        <input type="hidden" name="post-www-nonce" value="asdlasfjasfhl">
+        <input type="submit" id="post-www-sub" value="Send">
+    </form>
+
+    <form method="POST" enctype="multipart/form-data" action="http://localhost/form/post">
+        <input type="text" name="post-fd-first">
+        <input type="text" name="post-fd-second">
+        <input type="checkbox" name="post-fd-check" value="yessir">
+        <input type="hidden" name="post-fd-nonce" value="asdlasfjasfhl">
+        <input type="submit" id="post-fd-sub" value="Send">
+    </form>
+
+    <form method="POST" enctype="text/plain" action="http://localhost/form/post">
+        <input type="text" name="post-text-first">
+        <input type="text" name="post-text-second">
+        <input type="checkbox" name="post-text-check" value="yessir">
+        <input type="hidden" name="post-text-nonce" value="asdlasfjasfhl">
+        <input type="submit" id="post-text-sub" value="Send">
+    </form>
+
+    <form id="json-form">
+        <input type="text" name="post-json-first">
+        <input type="text" name="post-json-second">
+        <input type="checkbox" name="post-json-check" value="yessir">
+        <input type="hidden" name="post-json-nonce" value="asdlasfjasfhl">
+        <input type="submit" id="post-json-sub" value="Send json">
+    </form>
+
+    <script>
+        document.getElementById("json-form").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            var form = document.getElementById("json-form");
+            var formData = new FormData(form);
+
+            var jsonData = {};
+            formData.forEach(function (value, key) {
+                jsonData[key] = value;
+            });
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "http://localhost/form/post", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.send(JSON.stringify(jsonData));
+        });
+    </script>
+</body>
+
+</html>

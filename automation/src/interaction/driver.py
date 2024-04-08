@@ -70,9 +70,11 @@ class TestAutomationDriver:
 
         # Options for the chrome webdriver
         chrome_options = webdriver.ChromeOptions()
-        # chrome_options.add_extension(disable_csp_extension_path)
         chrome_options.add_experimental_option("excludeSwitches", ["enable-logging"])
         chrome_options.add_argument("--lang=en")
+        chrome_options.add_argument(
+            "--disable-web-security"
+        )  # TODO: This is needed for the unit tests. Is it okay to keep this?
 
         # Options for the seleniumwire proxy
         wire_options = {"disable_encoding": True}

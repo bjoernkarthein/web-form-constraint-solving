@@ -274,6 +274,7 @@ class RequestScanner:
         )
 
     def __all_values_in_query_string(self, query_string: str) -> bool:
+        print("in query string", query_string)
         if "&" not in query_string:
             return False
 
@@ -287,6 +288,8 @@ class RequestScanner:
                 )
 
         # Check for subset here because there can always be hidden fields with additional, non generated values
+        print(self.generated_values)
+        print(var_dict)
         return self.generated_values.items() <= var_dict.items()
 
 
