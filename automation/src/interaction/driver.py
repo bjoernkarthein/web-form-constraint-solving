@@ -111,7 +111,7 @@ class TestAutomationDriver:
         load_page(self.__driver, self.__url)
         # self.__interceptor.block_form_submission()
 
-        test = input("page loaded")
+        # test = input("page loaded")
         # ref = HTMLElementReference("id", "password")
         # set_trace_recording_flag(self.__driver, True)
         # write_to_web_element_by_reference_with_clear(
@@ -330,7 +330,7 @@ class TestAutomationDriver:
 
     def __exit(self, exit_code: int = None) -> None:
         """Free all resources and exit"""
-        # free_service_resources()
+        free_service_resources()
         self.__driver.quit()
 
         # TODO: remove after evaluation?
