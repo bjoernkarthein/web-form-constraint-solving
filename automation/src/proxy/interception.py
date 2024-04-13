@@ -83,7 +83,6 @@ class NetworkInterceptor:
         """
 
         content_type = response.headers["Content-Type"]
-        # print(request, content_type)
         if content_type == None:
             return
 
@@ -114,9 +113,6 @@ class NetworkInterceptor:
         name = request.url.split("/")[-1]
         if "?" in name:
             name = name.split("?")[0]
-
-        # if name != "password-strength-indicator.js":
-        #     return
 
         body_string = decode_bytes(response.body)
 
@@ -274,7 +270,6 @@ class RequestScanner:
         )
 
     def __all_values_in_query_string(self, query_string: str) -> bool:
-        print("in query string", query_string)
         if "&" not in query_string:
             return False
 
@@ -287,9 +282,11 @@ class RequestScanner:
                     value
                 )
 
+        # print(json.dumps(self.generated_values, sort_keys=True, indent=4))
+        # print(json.dumps(var_dict, sort_keys=True, indent=4))
+        # print(self.generated_values.items() <= var_dict.items())
+
         # Check for subset here because there can always be hidden fields with additional, non generated values
-        print(self.generated_values)
-        print(var_dict)
         return self.generated_values.items() <= var_dict.items()
 
 

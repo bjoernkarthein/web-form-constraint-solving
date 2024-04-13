@@ -11,6 +11,7 @@ from src.generation.mutation import ValueMutator
 class ValidityEnum(str, Enum):
     VALID = "VALID"
     INVALID = "INVALID"
+    INDETERMINATE = "INDETERMINATE"
 
 
 class GeneratedValue:
@@ -58,21 +59,19 @@ class InputGenerator:
         amount: int = 1,
         timeout_seconds: int = 60,
     ) -> List[GeneratedValue]:
-        print(f"Generating {amount} valid values for")
-        print("Grammar:")
-        print(grammar)
-        print("Formula")
-        print(formula)
-
         values: List[GeneratedValue] = []
         if amount < 1:
             return []
 
-        solver = ISLaSolver(
-            grammar,
-            formula,
-            timeout_seconds=timeout_seconds,
-        )
+        try:
+            solver = ISLaSolver(
+                grammar,
+                formula,
+                timeout_seconds=timeout_seconds,
+            )
+        except Exception as e:
+            print("Error creating solver:", e)
+            return [GeneratedValue("", ValidityEnum.INDETERMINATE)] * amount
 
         values = []
         for _ in range(amount):
@@ -81,13 +80,11 @@ class InputGenerator:
                 values.append(GeneratedValue(str_value, ValidityEnum.VALID))
             except TimeoutError as te:
                 print(f"value generation timed out after {te} seconds")
-                values.append(GeneratedValue("", ValidityEnum.VALID))
+                values.append(GeneratedValue("", ValidityEnum.INDETERMINATE))
             except Exception as e:
                 print(e)
-                values.append(GeneratedValue("", ValidityEnum.VALID))
+                values.append(GeneratedValue("", ValidityEnum.INDETERMINATE))
 
-        for v in values:
-            print(str(v))
         return values
 
     def __generate_invalid_inputs(
@@ -97,19 +94,25 @@ class InputGenerator:
         amount: int = 1,
         timeout_seconds: int = 60,
     ) -> List[GeneratedValue]:
-        print(f"Generating {amount} invalid values for")
-        print("Grammar:")
-        print(grammar)
-        print("Formula")
-        print(formula)
-
         if formula is not None:
             negated_formula = f"not ({formula})"
             values = self.__generate_valid_inputs(
                 grammar, negated_formula, amount, timeout_seconds
             )
+
+            # Return the values but change the validity enum to invalid if it was valid before and keep as indeterminate otherwise
             return list(
-                map(lambda v: GeneratedValue(v.value, ValidityEnum.INVALID), values)
+                map(
+                    lambda v: GeneratedValue(
+                        v.value,
+                        (
+                            ValidityEnum.INVALID
+                            if v.validity == ValidityEnum.VALID
+                            else ValidityEnum.INDETERMINATE
+                        ),
+                    ),
+                    values,
+                )
             )
 
         return self.__generate_invalid_values_for_non_existent_formula(
@@ -130,13 +133,11 @@ class InputGenerator:
                 values.append(invalid_value)
             except TimeoutError as te:
                 print(f"value generation timed out after {te} seconds")
-                values.append(GeneratedValue("", ValidityEnum.VALID))
+                values.append(GeneratedValue("", ValidityEnum.INDETERMINATE))
             except Exception as e:
                 print(e)
-                values.append(GeneratedValue("", ValidityEnum.INVALID))
+                values.append(GeneratedValue("", ValidityEnum.INDETERMINATE))
 
-        for v in values:
-            print(str(v))
         return values
 
     def __look_for_value_not_in_grammar(
@@ -150,6 +151,7 @@ class InputGenerator:
                 grammar,
                 timeout_seconds=timeout_seconds,
             )
+
             str_value = str(solver.solve())
             mutator = ValueMutator(str_value, grammar_terminals)
             last_value = mutator.mutate(last_value)
@@ -159,7 +161,7 @@ class InputGenerator:
                 return value
 
         print(f"value generation timed out after {timeout_seconds} seconds")
-        return GeneratedValue("", ValidityEnum.INVALID)
+        return GeneratedValue("", ValidityEnum.INDETERMINATE)
 
     def __get_terminal_characters_from_grammar(self, grammar: str) -> Set[str]:
         result = []

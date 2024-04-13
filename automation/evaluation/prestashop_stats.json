@@ -1,0 +1,220 @@
+{
+  "no_form": false,
+  "multiple_forms": true,
+  "form_position": 2,
+  "form_html": "<form action=\"http://localhost/order\" id=\"customer-form\" class=\"js-customer-form\" method=\"post\">\n  <div>\n    \n              \n      \n                      \n  <div class=\"form-group row \">\n    <label class=\"col-md-3 form-control-label\" for=\"field-id_gender\">\n              Social title\n          </label>\n    <div class=\"col-md-6 js-input-column form-control-valign\">\n\n      \n        \n                      <label class=\"radio-inline\" for=\"field-id_gender-1\">\n              <span class=\"custom-radio\">\n                <input name=\"id_gender\" id=\"field-id_gender-1\" type=\"radio\" value=\"1\"/>\n                <span/>\n              </span>\n              Mr.\n            </label>\n                      <label class=\"radio-inline\" for=\"field-id_gender-2\">\n              <span class=\"custom-radio\">\n                <input name=\"id_gender\" id=\"field-id_gender-2\" type=\"radio\" value=\"2\"/>\n                <span/>\n              </span>\n              Mrs.\n            </label>\n                  \n\n      \n      \n              \n\n    </div>\n\n    <div class=\"col-md-3 form-control-comment\">\n      \n              \n    </div>\n  </div>\n\n\n                  \n  \n              \n      \n                      \n  <div class=\"form-group row \">\n    <label class=\"col-md-3 form-control-label required\" for=\"field-firstname\">\n              First name\n          </label>\n    <div class=\"col-md-6 js-input-column\">\n\n      \n        \n          <input id=\"field-firstname\" class=\"form-control\" name=\"firstname\" type=\"text\" value=\"\" required=\"\"/>\n                      <span class=\"form-control-comment\">\n              Only letters and the dot (.) character, followed by a space, are allowed.\n            </span>\n                  \n\n      \n      \n              \n\n    </div>\n\n    <div class=\"col-md-3 form-control-comment\">\n      \n              \n    </div>\n  </div>\n\n\n                  \n  \n              \n      \n                      \n  <div class=\"form-group row \">\n    <label class=\"col-md-3 form-control-label required\" for=\"field-lastname\">\n              Last name\n          </label>\n    <div class=\"col-md-6 js-input-column\">\n\n      \n        \n          <input id=\"field-lastname\" class=\"form-control\" name=\"lastname\" type=\"text\" value=\"\" required=\"\"/>\n                      <span class=\"form-control-comment\">\n              Only letters and the dot (.) character, followed by a space, are allowed.\n            </span>\n                  \n\n      \n      \n              \n\n    </div>\n\n    <div class=\"col-md-3 form-control-comment\">\n      \n              \n    </div>\n  </div>\n\n\n                  \n  \n              \n      \n                      \n  <div class=\"form-group row \">\n    <label class=\"col-md-3 form-control-label required\" for=\"field-email\">\n              Email\n          </label>\n    <div class=\"col-md-6 js-input-column\">\n\n      \n        \n          <input id=\"field-email\" class=\"form-control\" name=\"email\" type=\"email\" value=\"\" required=\"\"/>\n                  \n\n      \n      \n              \n\n    </div>\n\n    <div class=\"col-md-3 form-control-comment\">\n      \n              \n    </div>\n  </div>\n\n\n                  \n  \n              \n        <p class=\"form-informations\">\n        <span class=\"font-weight-bold form-informations-title\">Create an account</span> <span class=\"font-italic form-informations-option\">(optional)</span>\n        <br/>\n        <span class=\"text-muted form-informations-subtitle\">And save time on your next order!</span>\n      </p>\n      \n                      <div class=\"field-password-policy\">\n              \n  <div class=\"form-group row \">\n    <label class=\"col-md-3 form-control-label\" for=\"field-password\">\n              Password\n          </label>\n    <div class=\"col-md-6 js-input-column\">\n\n      \n        \n          <div class=\"input-group js-parent-focus\">\n            <input id=\"field-password\" class=\"form-control js-child-focus js-visible-password\" name=\"password\" aria-label=\"Password input\" type=\"password\" data-minlength=\"8\" data-maxlength=\"72\" data-minscore=\"3\" value=\"\" pattern=\".{5,}\"/>\n            <span class=\"input-group-btn\">\n              <button class=\"btn\" type=\"button\" data-action=\"show-password\" data-text-show=\"Show\" data-text-hide=\"Hide\">\n                Show\n              </button>\n            </span>\n          </div>\n        \n\n      \n      \n              \n\n    <div>\n  <div class=\"password-strength-feedback mt-1\" style=\"display: none;\">\n    <div class=\"progress-container\">\n      <div class=\"progress mb-1\">\n        <div class=\"progress-bar\" role=\"progressbar\" value=\"50\" aria-valuemin=\"0\" aria-valuemax=\"100\"/>\n      </div>\n    </div>\n    <script type=\"text/javascript\" class=\"js-hint-password\">\n              {\"0\":\"Very weak\",\"1\":\"Weak\",\"2\":\"Average\",\"3\":\"Strong\",\"4\":\"Very strong\",\"Straight rows of keys are easy to guess\":\"Straight rows of keys are easy to guess\",\"Short keyboard patterns are easy to guess\":\"Short keyboard patterns are easy to guess\",\"Use a longer keyboard pattern with more turns\":\"Use a longer keyboard pattern with more turns\",\"Repeats like \\\"aaa\\\" are easy to guess\":\"Repeats like \\\"aaa\\\" are easy to guess\",\"Repeats like \\\"abcabcabc\\\" are only slightly harder to guess than \\\"abc\\\"\":\"Repeats like \\\"abcabcabc\\\" are only slightly harder to guess than \\\"abc\\\"\",\"Sequences like abc or 6543 are easy to guess\":\"Sequences like \\\"abc\\\" or \\\"6543\\\" are easy to guess.\",\"Recent years are easy to guess\":\"Recent years are easy to guess\",\"Dates are often easy to guess\":\"Dates are often easy to guess\",\"This is a top-10 common password\":\"This is a top-10 common password\",\"This is a top-100 common password\":\"This is a top-100 common password\",\"This is a very common password\":\"This is a very common password\",\"This is similar to a commonly used password\":\"This is similar to a commonly used password\",\"A word by itself is easy to guess\":\"A word by itself is easy to guess\",\"Names and surnames by themselves are easy to guess\":\"Names and surnames by themselves are easy to guess\",\"Common names and surnames are easy to guess\":\"Common names and surnames are easy to guess\",\"Use a few words, avoid common phrases\":\"Use a few words, avoid common phrases\",\"No need for symbols, digits, or uppercase letters\":\"No need for symbols, digits, or uppercase letters\",\"Avoid repeated words and characters\":\"Avoid repeated words and characters\",\"Avoid sequences\":\"Avoid sequences\",\"Avoid recent years\":\"Avoid recent years\",\"Avoid years that are associated with you\":\"Avoid years that are associated with you\",\"Avoid dates and years that are associated with you\":\"Avoid dates and years that are associated with you\",\"Capitalization doesn't help very much\":\"Capitalization doesn't help very much\",\"All-uppercase is almost as easy to guess as all-lowercase\":\"All-uppercase is almost as easy to guess as all-lowercase\",\"Reversed words aren't much harder to guess\":\"Reversed words aren't much harder to guess\",\"Predictable substitutions like '@' instead of 'a' don't help very much\":\"Predictable substitutions like \\\"@\\\" instead of \\\"a\\\" don't help very much.\",\"Add another word or two. Uncommon words are better.\":\"Add another word or two. Uncommon words are better.\"}\n          </script>\n\n    <div class=\"password-strength-text\"/>\n    <div class=\"password-requirements\">\n      <p class=\"password-requirements-length\" data-translation=\"Enter a password between %s and %s characters\">\n        <i class=\"material-icons\">check_circle</i>\n        <span>Enter a password between 8 and 72 characters</span>\n      </p>\n      <p class=\"password-requirements-score\" data-translation=\"The minimum score must be: %s\">\n        <i class=\"material-icons\">check_circle</i>\n        <span>The minimum score must be: Strong</span>\n      </p>\n    </div>\n  </div>\n</div></div>\n\n    <div class=\"col-md-3 form-control-comment\">\n      \n                 Optional\n              \n    </div>\n  </div>\n\n\n            </div>\n                  \n  \n              \n      \n                      \n  <div class=\"form-group row \">\n    <label class=\"col-md-3 form-control-label\" for=\"field-birthday\">\n              Birthdate\n          </label>\n    <div class=\"col-md-6 js-input-column\">\n\n      \n        \n          <input id=\"field-birthday\" class=\"form-control\" name=\"birthday\" type=\"text\" value=\"\" placeholder=\"MM/DD/YYYY\"/>\n                      <span class=\"form-control-comment\">\n              (E.g.: 05/31/1970)\n            </span>\n                  \n\n      \n      \n              \n\n    </div>\n\n    <div class=\"col-md-3 form-control-comment\">\n      \n                 Optional\n              \n    </div>\n  </div>\n\n\n                  \n  \n              \n      \n                      \n  <div class=\"form-group row \">\n    <label class=\"col-md-3 form-control-label\" for=\"field-optin\">\n          </label>\n    <div class=\"col-md-6 js-input-column\">\n\n      \n        \n          <span class=\"custom-checkbox\">\n            <label>\n              <input name=\"optin\" type=\"checkbox\" value=\"1\"/>\n              <span><i class=\"material-icons rtl-no-flip checkbox-checked\">&#58826;</i></span>\n              Receive offers from our partners\n            </label>\n          </span>\n        \n\n      \n      \n              \n\n    </div>\n\n    <div class=\"col-md-3 form-control-comment\">\n      \n              \n    </div>\n  </div>\n\n\n                  \n  \n              \n      \n                      \n  <div class=\"form-group row \">\n    <label class=\"col-md-3 form-control-label required\" for=\"field-psgdpr\">\n          </label>\n    <div class=\"col-md-6 js-input-column\">\n\n      \n        \n          <span class=\"custom-checkbox\">\n            <label>\n              <input name=\"psgdpr\" type=\"checkbox\" value=\"1\" required=\"\"/>\n              <span><i class=\"material-icons rtl-no-flip checkbox-checked\">&#58826;</i></span>\n              I agree to the terms and conditions and the privacy policy\n            </label>\n          </span>\n        \n\n      \n      \n              \n\n    </div>\n\n    <div class=\"col-md-3 form-control-comment\">\n      \n              \n    </div>\n  </div>\n\n\n                  \n  \n              \n      \n                      \n  <div class=\"form-group row \">\n    <label class=\"col-md-3 form-control-label\" for=\"field-newsletter\">\n          </label>\n    <div class=\"col-md-6 js-input-column\">\n\n      \n        \n          <span class=\"custom-checkbox\">\n            <label>\n              <input name=\"newsletter\" type=\"checkbox\" value=\"1\"/>\n              <span><i class=\"material-icons rtl-no-flip checkbox-checked\">&#58826;</i></span>\n              Sign up for our newsletter<br/><em>You may unsubscribe at any moment. For that purpose, please find our contact info in the legal notice.</em>\n            </label>\n          </span>\n        \n\n      \n      \n              \n\n    </div>\n\n    <div class=\"col-md-3 form-control-comment\">\n      \n              \n    </div>\n  </div>\n\n\n                  \n  \n              \n      \n                      \n  <div class=\"form-group row \">\n    <label class=\"col-md-3 form-control-label required\" for=\"field-customer_privacy\">\n          </label>\n    <div class=\"col-md-6 js-input-column\">\n\n      \n        \n          <span class=\"custom-checkbox\">\n            <label>\n              <input name=\"customer_privacy\" type=\"checkbox\" value=\"1\" required=\"\"/>\n              <span><i class=\"material-icons rtl-no-flip checkbox-checked\">&#58826;</i></span>\n              Customer data privacy<br/><em>The personal data you provide is used to answer queries, process orders or allow access to specific information. You have the right to modify and delete all the personal information found in the \"My Account\" page.</em>\n            </label>\n          </span>\n        \n\n      \n      \n              \n\n    </div>\n\n    <div class=\"col-md-3 form-control-comment\">\n      \n              \n    </div>\n  </div>\n\n\n                  \n  \n            \n    \n  </div>\n\n  \n    <footer class=\"form-footer clearfix\">\n      <input type=\"hidden\" name=\"submitCreate\" value=\"1\"/>\n      \n    <button class=\"continue btn btn-primary float-xs-right\" name=\"continue\" data-link-action=\"register-new-customer\" type=\"submit\" value=\"1\">\n        Continue\n    </button>\n\n    </footer>\n  \n\n</form>\n\n\n      ",
+  "has_submit": true,
+  "submit_position": 1,
+  "total_inputs": 12,
+  "radio_groups": 1,
+  "text_areas": 0,
+  "non_writable": 1,
+  "other_inputs": 9,
+  "html_constraints": [
+    {
+      "name": "id_gender",
+      "options": [
+        {
+          "reference": {
+            "access_method": "id",
+            "access_value": "field-id_gender-1"
+          },
+          "value": "1"
+        },
+        {
+          "reference": {
+            "access_method": "id",
+            "access_value": "field-id_gender-2"
+          },
+          "value": "2"
+        }
+      ]
+    },
+    {
+      "reference": {
+        "access_method": "id",
+        "access_value": "field-firstname"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "firstname",
+        "pattern": null,
+        "required": "",
+        "step": null,
+        "type": "text",
+        "value": ""
+      }
+    },
+    {
+      "reference": {
+        "access_method": "id",
+        "access_value": "field-lastname"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "lastname",
+        "pattern": null,
+        "required": "",
+        "step": null,
+        "type": "text",
+        "value": ""
+      }
+    },
+    {
+      "reference": {
+        "access_method": "id",
+        "access_value": "field-email"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "email",
+        "pattern": null,
+        "required": "",
+        "step": null,
+        "type": "email",
+        "value": ""
+      }
+    },
+    {
+      "reference": {
+        "access_method": "id",
+        "access_value": "field-password"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "password",
+        "pattern": ".{5,}",
+        "required": null,
+        "step": null,
+        "type": "password",
+        "value": ""
+      }
+    },
+    {
+      "reference": {
+        "access_method": "id",
+        "access_value": "field-birthday"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "birthday",
+        "pattern": null,
+        "required": null,
+        "step": null,
+        "type": "text",
+        "value": ""
+      }
+    },
+    {
+      "reference": {
+        "access_method": "xpath",
+        "access_value": "/html/body/main/section/div/div/div/section/div/div[1]/section[1]/div/div/div[1]/form/div/div[7]/div[1]/span/label/input"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "optin",
+        "pattern": null,
+        "required": null,
+        "step": null,
+        "type": "checkbox",
+        "value": "1"
+      }
+    },
+    {
+      "reference": {
+        "access_method": "xpath",
+        "access_value": "/html/body/main/section/div/div/div/section/div/div[1]/section[1]/div/div/div[1]/form/div/div[8]/div[1]/span/label/input"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "psgdpr",
+        "pattern": null,
+        "required": "",
+        "step": null,
+        "type": "checkbox",
+        "value": "1"
+      }
+    },
+    {
+      "reference": {
+        "access_method": "xpath",
+        "access_value": "/html/body/main/section/div/div/div/section/div/div[1]/section[1]/div/div/div[1]/form/div/div[9]/div[1]/span/label/input"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "newsletter",
+        "pattern": null,
+        "required": null,
+        "step": null,
+        "type": "checkbox",
+        "value": "1"
+      }
+    },
+    {
+      "reference": {
+        "access_method": "xpath",
+        "access_value": "/html/body/main/section/div/div/div/section/div/div[1]/section[1]/div/div/div[1]/form/div/div[10]/div[1]/span/label/input"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "customer_privacy",
+        "pattern": null,
+        "required": "",
+        "step": null,
+        "type": "checkbox",
+        "value": "1"
+      }
+    }
+  ],
+  "html_files_instrumented": 2,
+  "js_files_instrumented": 1,
+  "time_instrumenting_ms": 2705.4781999886036,
+  "time_analyzing_ms": 0,
+  "constraint_candidates": [],
+  "js_files_analyzed": []
+}

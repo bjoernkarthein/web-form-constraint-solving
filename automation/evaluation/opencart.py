@@ -10,6 +10,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+from evaluation.util.helpers import Evaluation
 from src.interaction.driver import TestAutomationDriver
 
 
@@ -31,15 +32,14 @@ def fill_cart(driver: TestAutomationDriver) -> None:
 if __name__ == "__main__":
     config = yaml.safe_load(open("evaluation/config.yml"))
 
-    # initialize profiler
+    # evaluation
     pr = cProfile.Profile()
-
     file = os.path.basename(__file__)[:-3]
+    eval = Evaluation(pr, file)
+    eval.start_profiling()
+
     driver = TestAutomationDriver(
-        config,
-        "http://localhost/en-gb?route=checkout/checkout",
-        profiler=pr,
-        file=file,
+        config, "http://localhost/en-gb?route=checkout/checkout", evaluation=eval
     )
 
     fill_cart(driver)

@@ -1,0 +1,125 @@
+{
+  "url": "http://localhost/en-gb?route=checkout/checkout",
+  "controls": [
+    {
+      "name": "account",
+      "type": "radio",
+      "reference": {
+        "access_method": "name",
+        "access_value": "account"
+      },
+      "options": [
+        {
+          "reference": {
+            "access_method": "id",
+            "access_value": "input-register"
+          },
+          "value": "1"
+        },
+        {
+          "reference": {
+            "access_method": "id",
+            "access_value": "input-guest"
+          },
+          "value": "0"
+        }
+      ],
+      "grammar": "1.bnf",
+      "formula": "1.isla"
+    },
+    {
+      "name": "firstname",
+      "type": "text",
+      "reference": {
+        "access_method": "id",
+        "access_value": "input-firstname"
+      },
+      "grammar": "2.bnf",
+      "formula": "2.isla"
+    },
+    {
+      "name": "lastname",
+      "type": "text",
+      "reference": {
+        "access_method": "id",
+        "access_value": "input-lastname"
+      },
+      "grammar": "3.bnf",
+      "formula": "3.isla"
+    },
+    {
+      "name": "email",
+      "type": "text",
+      "reference": {
+        "access_method": "id",
+        "access_value": "input-email"
+      },
+      "grammar": "4.bnf",
+      "formula": "4.isla"
+    },
+    {
+      "name": "shipping_company",
+      "type": "text",
+      "reference": {
+        "access_method": "id",
+        "access_value": "input-shipping-company"
+      },
+      "grammar": "5.bnf",
+      "formula": "5.isla"
+    },
+    {
+      "name": "shipping_address_1",
+      "type": "text",
+      "reference": {
+        "access_method": "id",
+        "access_value": "input-shipping-address-1"
+      },
+      "grammar": "6.bnf",
+      "formula": "6.isla"
+    },
+    {
+      "name": "shipping_address_2",
+      "type": "text",
+      "reference": {
+        "access_method": "id",
+        "access_value": "input-shipping-address-2"
+      },
+      "grammar": "7.bnf",
+      "formula": "7.isla"
+    },
+    {
+      "name": "shipping_city",
+      "type": "text",
+      "reference": {
+        "access_method": "id",
+        "access_value": "input-shipping-city"
+      },
+      "grammar": "8.bnf",
+      "formula": "8.isla"
+    },
+    {
+      "name": "shipping_postcode",
+      "type": "text",
+      "reference": {
+        "access_method": "id",
+        "access_value": "input-shipping-postcode"
+      },
+      "grammar": "9.bnf",
+      "formula": "9.isla"
+    },
+    {
+      "name": "password",
+      "type": "password",
+      "reference": {
+        "access_method": "id",
+        "access_value": "input-password"
+      },
+      "grammar": "10.bnf",
+      "formula": "10.isla"
+    }
+  ],
+  "submit": {
+    "access_method": "id",
+    "access_value": "button-register"
+  }
+}

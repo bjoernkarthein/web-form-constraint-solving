@@ -1,0 +1,125 @@
+{
+  "no_form": false,
+  "multiple_forms": true,
+  "form_position": 2,
+  "form_html": "<form class=\"mw-htmlform mw-htmlform-codex\" action=\"/index.php?title=Special:CreateAccount&amp;returnto=Main+Page\" method=\"post\" id=\"userlogin2\" name=\"userlogin2\">\n<input type=\"hidden\" value=\"Special:CreateAccount\" name=\"title\"/>\n<div>\n<div class=\"mw-htmlform-field-HTMLInfoField mw-ui-vform-field\"><div class=\"mw-input mw-htmlform-nolabel\">\n<div id=\"mw-createacct-status-area\"/>\n</div></div>\n<div class=\"mw-htmlform-field-HTMLTextField loginText mw-userlogin-username mw-ui-vform-field\">\n<label for=\"wpName2\">Username</label><div class=\"mw-input\">\n<div class=\"cdx-text-input\"><input id=\"wpName2\" name=\"wpName\" size=\"20\" class=\"loginText mw-userlogin-username cdx-text-input__input\" placeholder=\"Enter your username\" tabindex=\"1\" required=\"\" autocomplete=\"username\"/><div style=\"display: none;\"/></div>\n</div>\n</div>\n<div class=\"mw-htmlform-field-HTMLTextField loginPassword mw-userlogin-password mw-ui-vform-field\">\n<label for=\"wpPassword2\">Password</label><div class=\"mw-input\">\n<div class=\"cdx-text-input\"><input id=\"wpPassword2\" name=\"wpPassword\" size=\"20\" class=\"loginPassword mw-userlogin-password cdx-text-input__input\" placeholder=\"Enter a password\" tabindex=\"2\" required=\"\" autocomplete=\"new-password\" type=\"password\"/><div style=\"display: none;\"/></div>\n</div>\n</div>\n<div class=\"htmlform-tip\">It is recommended to use a unique password that you are not using on any other website.</div>\n<div class=\"mw-htmlform-field-HTMLTextField loginPassword mw-ui-vform-field\">\n<label for=\"wpRetype\">Confirm password</label><div class=\"mw-input\">\n<div class=\"cdx-text-input\"><input id=\"wpRetype\" name=\"retype\" size=\"20\" class=\"loginPassword cdx-text-input__input\" placeholder=\"Enter password again\" tabindex=\"3\" required=\"\" autocomplete=\"new-password\" type=\"password\"/></div>\n</div>\n</div>\n<div class=\"mw-htmlform-field-HTMLTextField loginText mw-ui-vform-field\">\n<label for=\"wpEmail\">Email address (optional)</label><div class=\"mw-input\">\n<div class=\"cdx-text-input\"><input id=\"wpEmail\" name=\"email\" size=\"20\" class=\"loginText cdx-text-input__input\" placeholder=\"Enter your email address\" maxlength=\"255\" tabindex=\"4\" autocomplete=\"email\" type=\"email\"/></div>\n</div>\n</div>\n<div class=\"mw-htmlform-field-HTMLTextField loginText mw-ui-vform-field\">\n<label for=\"wpRealName\">Real name (optional)</label><div class=\"mw-input\">\n<div class=\"cdx-text-input\"><input id=\"wpRealName\" name=\"realname\" size=\"20\" class=\"loginText cdx-text-input__input\" placeholder=\"Real name (optional)\" tabindex=\"5\" autocomplete=\"name\"/></div>\n</div>\n</div>\n<div class=\"htmlform-tip\">Real name is optional.\nIf provided, it may be used to give you attribution for your work.</div>\n<div class=\"mw-htmlform-field-HTMLSubmitField mw-ui-vform-field\"><div class=\"mw-input mw-htmlform-nolabel\">\n<button class=\"mw-htmlform-submit cdx-button cdx-button--action-progressive cdx-button--weight-primary mw-htmlform-primary mw-htmlform-progressive\" id=\"wpCreateaccount\" type=\"submit\" name=\"wpCreateaccount\" value=\"Create your account\" tabindex=\"6\">Create your account</button>\n</div></div>\n</div>\n<input id=\"wpEditToken\" type=\"hidden\" value=\"+\\\" name=\"wpEditToken\"/>\n<input name=\"authAction\" type=\"hidden\" value=\"create\"/>\n<input name=\"force\" type=\"hidden\"/>\n<input name=\"wpCreateaccountToken\" type=\"hidden\" value=\"41a73449496b1385d69b4782bf4babe76617b173+\\\"/>\n</form>",
+  "has_submit": true,
+  "submit_position": 1,
+  "total_inputs": 10,
+  "radio_groups": 0,
+  "text_areas": 0,
+  "non_writable": 5,
+  "other_inputs": 5,
+  "html_constraints": [
+    {
+      "reference": {
+        "access_method": "id",
+        "access_value": "wpName2"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "wpName",
+        "pattern": null,
+        "required": "",
+        "step": null,
+        "type": null,
+        "value": null
+      }
+    },
+    {
+      "reference": {
+        "access_method": "id",
+        "access_value": "wpPassword2"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "wpPassword",
+        "pattern": null,
+        "required": "",
+        "step": null,
+        "type": "password",
+        "value": null
+      }
+    },
+    {
+      "reference": {
+        "access_method": "id",
+        "access_value": "wpRetype"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "retype",
+        "pattern": null,
+        "required": "",
+        "step": null,
+        "type": "password",
+        "value": null
+      }
+    },
+    {
+      "reference": {
+        "access_method": "id",
+        "access_value": "wpEmail"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": "255",
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "email",
+        "pattern": null,
+        "required": null,
+        "step": null,
+        "type": "email",
+        "value": null
+      }
+    },
+    {
+      "reference": {
+        "access_method": "id",
+        "access_value": "wpRealName"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "realname",
+        "pattern": null,
+        "required": null,
+        "step": null,
+        "type": null,
+        "value": null
+      }
+    }
+  ],
+  "html_files_instrumented": 12,
+  "js_files_instrumented": 6,
+  "time_instrumenting_ms": 17130.2893999964,
+  "time_analyzing_ms": 9049.191499985754,
+  "constraint_candidates": [
+    []
+  ],
+  "js_files_analyzed": [
+    "load.php"
+  ]
+}

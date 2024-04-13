@@ -14,6 +14,6 @@
   ],
   "submit": {
     "access_method": "xpath",
-    "access_value": "/html/body/div/section[1]/div/form/button"
+    "access_value": "/html/body/div[1]/section[1]/div/form/button"
   }
 }

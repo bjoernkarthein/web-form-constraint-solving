@@ -10,7 +10,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
-
+from evaluation.util.helpers import Evaluation
 from src.interaction.driver import TestAutomationDriver
 
 
@@ -49,16 +49,17 @@ def wait_for_form(driver: TestAutomationDriver) -> None:
 if __name__ == "__main__":
     config = yaml.safe_load(open("evaluation/config.yml"))
 
-    # initialize profiler
+    # evaluation
     pr = cProfile.Profile()
-
     file = os.path.basename(__file__)[:-3]
+    eval = Evaluation(pr, file)
+    eval.start_profiling()
+
     driver = TestAutomationDriver(
         config,
         "http://localhost/#/contacts/edit?return_module=Contacts&return_action=DetailView",
-        profiler=pr,
-        file=file,
         setup_function=wait_for_form,
+        evaluation=eval,
     )
 
     setup(driver)

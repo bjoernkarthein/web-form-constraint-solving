@@ -239,7 +239,9 @@ class HTMLInputSpecification:
         self.reference = reference
         self.constraints = constraints
         self.type = self.constraints.type if self.constraints is not None else None
-        self.name = name or self.constraints.name
+        self.name = name or (
+            self.constraints.name if self.constraints is not None else None
+        )
         self.value = value or (
             self.constraints.v if self.constraints is not None else None
         )

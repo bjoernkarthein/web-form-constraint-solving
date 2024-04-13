@@ -42,7 +42,7 @@
       "formula": "4.isla"
     },
     {
-      "name": "tz_select_date_suggest",
+      "name": null,
       "type": "button",
       "reference": {
         "access_method": "id",

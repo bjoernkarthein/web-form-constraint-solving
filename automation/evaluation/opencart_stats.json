@@ -1,0 +1,260 @@
+{
+  "no_form": false,
+  "multiple_forms": true,
+  "form_position": 3,
+  "form_html": "<form id=\"form-register\">\n  <p>If you already have an account with us, please login at the <a href=\"http://localhost/en-gb?route=account/login&amp;redirect=http%3A//localhost/en-gb%3Froute%3Dcheckout/checkout\"><strong>login page</strong></a>.</p>\n  <fieldset>\n    <legend>Your Personal Details</legend>\n    <div class=\"row\">\n              <div class=\"col mb-3 required\">\n          <div class=\"form-check form-check-inline\">\n            <input type=\"radio\" name=\"account\" value=\"1\" id=\"input-register\" class=\"form-check-input\" checked=\"\"/> <label for=\"input-register\" class=\"form-check-label\">Register Account</label>\n          </div>\n          <div class=\"form-check form-check-inline\">\n            <input type=\"radio\" name=\"account\" value=\"0\" id=\"input-guest\" class=\"form-check-input\"/> <label for=\"input-guest\" class=\"form-check-label\">Guest Checkout</label>\n          </div>\n        </div>\n            <div class=\"col mb-3 d-none\">\n        <label class=\"form-label\">Account Type</label>\n        <select name=\"customer_group_id\" id=\"input-customer-group\" class=\"form-select\">\n                      <option value=\"1\" selected=\"\">Default</option>\n                  </select>\n      </div>\n    </div>\n    <div class=\"row row-cols-1 row-cols-md-2\">\n      <div class=\"col mb-3 required\">\n        <label for=\"input-firstname\" class=\"form-label\">First Name</label>\n        <input type=\"text\" name=\"firstname\" value=\"\" placeholder=\"First Name\" id=\"input-firstname\" class=\"form-control\"/>\n        <div id=\"error-firstname\" class=\"invalid-feedback\"/>\n      </div>\n      <div class=\"col mb-3 required\">\n        <label for=\"input-lastname\" class=\"form-label\">Last Name</label>\n        <input type=\"text\" name=\"lastname\" value=\"\" placeholder=\"Last Name\" id=\"input-lastname\" class=\"form-control\"/>\n        <div id=\"error-lastname\" class=\"invalid-feedback\"/>\n      </div>\n      <div class=\"col mb-3 required\">\n        <label for=\"input-email\" class=\"form-label\">E-Mail</label>\n        <input type=\"text\" name=\"email\" value=\"\" placeholder=\"E-Mail\" id=\"input-email\" class=\"form-control\"/>\n        <div id=\"error-email\" class=\"invalid-feedback\"/>\n      </div>\n                </div>\n  </fieldset>\n    <fieldset id=\"shipping-address\" style=\"display: block;\">\n    <legend>Shipping Address</legend>\n    <div class=\"row row-cols-1 row-cols-md-2\">\n            <div class=\"col mb-3\">\n        <label for=\"input-shipping-company\" class=\"form-label\">Company</label>\n        <input type=\"text\" name=\"shipping_company\" value=\"\" placeholder=\"Company\" id=\"input-shipping-company\" class=\"form-control\"/>\n      </div>\n      <div class=\"col mb-3 required\">\n        <label for=\"input-shipping-address-1\" class=\"form-label\">Address 1</label>\n        <input type=\"text\" name=\"shipping_address_1\" value=\"\" placeholder=\"Address 1\" id=\"input-shipping-address-1\" class=\"form-control\"/>\n        <div id=\"error-shipping-address-1\" class=\"invalid-feedback\"/>\n      </div>\n      <div class=\"col mb-3\">\n        <label for=\"input-shipping-address-2\" class=\"form-label\">Address 2</label>\n        <input type=\"text\" name=\"shipping_address_2\" value=\"\" placeholder=\"Address 2\" id=\"input-shipping-address-2\" class=\"form-control\"/>\n      </div>\n      <div class=\"col mb-3 required\">\n        <label for=\"input-shipping-city\" class=\"form-label\">City</label>\n        <input type=\"text\" name=\"shipping_city\" value=\"\" placeholder=\"City\" id=\"input-shipping-city\" class=\"form-control\"/>\n        <div id=\"error-shipping-city\" class=\"invalid-feedback\"/>\n      </div>\n      <div class=\"col mb-3 required\">\n        <label for=\"input-shipping-postcode\" class=\"form-label\">Post Code</label>\n        <input type=\"text\" name=\"shipping_postcode\" value=\"\" placeholder=\"Post Code\" id=\"input-shipping-postcode\" class=\"form-control\"/>\n        <div id=\"error-shipping-postcode\" class=\"invalid-feedback\"/>\n      </div>\n      <div class=\"col mb-3 required\">\n        <label for=\"input-shipping-country\" class=\"form-label\">Country</label>\n        <select name=\"shipping_country_id\" id=\"input-shipping-country\" class=\"form-select\" disabled=\"\">\n          <option value=\"\"> --- Please Select --- </option>\n                      <option value=\"244\">Aaland Islands</option>\n                      <option value=\"1\">Afghanistan</option>\n                      <option value=\"2\">Albania</option>\n                      <option value=\"3\">Algeria</option>\n                      <option value=\"4\">American Samoa</option>\n                      <option value=\"5\">Andorra</option>\n                      <option value=\"6\">Angola</option>\n                      <option value=\"7\">Anguilla</option>\n                      <option value=\"8\">Antarctica</option>\n                      <option value=\"9\">Antigua and Barbuda</option>\n                      <option value=\"10\">Argentina</option>\n                      <option value=\"11\">Armenia</option>\n                      <option value=\"12\">Aruba</option>\n                      <option value=\"252\">Ascension Island (British)</option>\n                      <option value=\"13\">Australia</option>\n                      <option value=\"14\">Austria</option>\n                      <option value=\"15\">Azerbaijan</option>\n                      <option value=\"16\">Bahamas</option>\n                      <option value=\"17\">Bahrain</option>\n                      <option value=\"18\">Bangladesh</option>\n                      <option value=\"19\">Barbados</option>\n                      <option value=\"20\">Belarus</option>\n                      <option value=\"21\">Belgium</option>\n                      <option value=\"22\">Belize</option>\n                      <option value=\"23\">Benin</option>\n                      <option value=\"24\">Bermuda</option>\n                      <option value=\"25\">Bhutan</option>\n                      <option value=\"26\">Bolivia</option>\n                      <option value=\"245\">Bonaire, Sint Eustatius and Saba</option>\n                      <option value=\"27\">Bosnia and Herzegovina</option>\n                      <option value=\"28\">Botswana</option>\n                      <option value=\"29\">Bouvet Island</option>\n                      <option value=\"30\">Brazil</option>\n                      <option value=\"31\">British Indian Ocean Territory</option>\n                      <option value=\"32\">Brunei Darussalam</option>\n                      <option value=\"33\">Bulgaria</option>\n                      <option value=\"34\">Burkina Faso</option>\n                      <option value=\"35\">Burundi</option>\n                      <option value=\"36\">Cambodia</option>\n                      <option value=\"37\">Cameroon</option>\n                      <option value=\"38\">Canada</option>\n                      <option value=\"251\">Canary Islands</option>\n                      <option value=\"39\">Cape Verde</option>\n                      <option value=\"40\">Cayman Islands</option>\n                      <option value=\"41\">Central African Republic</option>\n                      <option value=\"42\">Chad</option>\n                      <option value=\"43\">Chile</option>\n                      <option value=\"44\">China</option>\n                      <option value=\"45\">Christmas Island</option>\n                      <option value=\"46\">Cocos (Keeling) Islands</option>\n                      <option value=\"47\">Colombia</option>\n                      <option value=\"48\">Comoros</option>\n                      <option value=\"49\">Congo</option>\n                      <option value=\"50\">Cook Islands</option>\n                      <option value=\"51\">Costa Rica</option>\n                      <option value=\"52\">Cote D'Ivoire</option>\n                      <option value=\"53\">Croatia</option>\n                      <option value=\"54\">Cuba</option>\n                      <option value=\"246\">Curacao</option>\n                      <option value=\"55\">Cyprus</option>\n                      <option value=\"56\">Czech Republic</option>\n                      <option value=\"237\">Democratic Republic of Congo</option>\n                      <option value=\"57\">Denmark</option>\n                      <option value=\"58\">Djibouti</option>\n                      <option value=\"59\">Dominica</option>\n                      <option value=\"60\">Dominican Republic</option>\n                      <option value=\"61\">East Timor</option>\n                      <option value=\"62\">Ecuador</option>\n                      <option value=\"63\">Egypt</option>\n                      <option value=\"64\">El Salvador</option>\n                      <option value=\"65\">Equatorial Guinea</option>\n                      <option value=\"66\">Eritrea</option>\n                      <option value=\"67\">Estonia</option>\n                      <option value=\"68\">Ethiopia</option>\n                      <option value=\"69\">Falkland Islands (Malvinas)</option>\n                      <option value=\"70\">Faroe Islands</option>\n                      <option value=\"71\">Fiji</option>\n                      <option value=\"72\">Finland</option>\n                      <option value=\"74\">France, Metropolitan</option>\n                      <option value=\"75\">French Guiana</option>\n                      <option value=\"76\">French Polynesia</option>\n                      <option value=\"77\">French Southern Territories</option>\n                      <option value=\"126\">FYROM</option>\n                      <option value=\"78\">Gabon</option>\n                      <option value=\"79\">Gambia</option>\n                      <option value=\"80\">Georgia</option>\n                      <option value=\"81\">Germany</option>\n                      <option value=\"82\">Ghana</option>\n                      <option value=\"83\">Gibraltar</option>\n                      <option value=\"84\">Greece</option>\n                      <option value=\"85\">Greenland</option>\n                      <option value=\"86\">Grenada</option>\n                      <option value=\"87\">Guadeloupe</option>\n                      <option value=\"88\">Guam</option>\n                      <option value=\"89\">Guatemala</option>\n                      <option value=\"256\">Guernsey</option>\n                      <option value=\"90\">Guinea</option>\n                      <option value=\"91\">Guinea-Bissau</option>\n                      <option value=\"92\">Guyana</option>\n                      <option value=\"93\">Haiti</option>\n                      <option value=\"94\">Heard and Mc Donald Islands</option>\n                      <option value=\"95\">Honduras</option>\n                      <option value=\"96\">Hong Kong</option>\n                      <option value=\"97\">Hungary</option>\n                      <option value=\"98\">Iceland</option>\n                      <option value=\"99\">India</option>\n                      <option value=\"100\">Indonesia</option>\n                      <option value=\"101\">Iran (Islamic Republic of)</option>\n                      <option value=\"102\">Iraq</option>\n                      <option value=\"103\">Ireland</option>\n                      <option value=\"254\">Isle of Man</option>\n                      <option value=\"104\">Israel</option>\n                      <option value=\"105\">Italy</option>\n                      <option value=\"106\">Jamaica</option>\n                      <option value=\"107\">Japan</option>\n                      <option value=\"257\">Jersey</option>\n                      <option value=\"108\">Jordan</option>\n                      <option value=\"109\">Kazakhstan</option>\n                      <option value=\"110\">Kenya</option>\n                      <option value=\"111\">Kiribati</option>\n                      <option value=\"253\">Kosovo, Republic of</option>\n                      <option value=\"114\">Kuwait</option>\n                      <option value=\"115\">Kyrgyzstan</option>\n                      <option value=\"116\">Lao People's Democratic Republic</option>\n                      <option value=\"117\">Latvia</option>\n                      <option value=\"118\">Lebanon</option>\n                      <option value=\"119\">Lesotho</option>\n                      <option value=\"120\">Liberia</option>\n                      <option value=\"121\">Libyan Arab Jamahiriya</option>\n                      <option value=\"122\">Liechtenstein</option>\n                      <option value=\"123\">Lithuania</option>\n                      <option value=\"124\">Luxembourg</option>\n                      <option value=\"125\">Macau</option>\n                      <option value=\"127\">Madagascar</option>\n                      <option value=\"128\">Malawi</option>\n                      <option value=\"129\">Malaysia</option>\n                      <option value=\"130\">Maldives</option>\n                      <option value=\"131\">Mali</option>\n                      <option value=\"132\">Malta</option>\n                      <option value=\"133\">Marshall Islands</option>\n                      <option value=\"134\">Martinique</option>\n                      <option value=\"135\">Mauritania</option>\n                      <option value=\"136\">Mauritius</option>\n                      <option value=\"137\">Mayotte</option>\n                      <option value=\"138\">Mexico</option>\n                      <option value=\"139\">Micronesia, Federated States of</option>\n                      <option value=\"140\">Moldova, Republic of</option>\n                      <option value=\"141\">Monaco</option>\n                      <option value=\"142\">Mongolia</option>\n                      <option value=\"242\">Montenegro</option>\n                      <option value=\"143\">Montserrat</option>\n                      <option value=\"144\">Morocco</option>\n                      <option value=\"145\">Mozambique</option>\n                      <option value=\"146\">Myanmar</option>\n                      <option value=\"147\">Namibia</option>\n                      <option value=\"148\">Nauru</option>\n                      <option value=\"149\">Nepal</option>\n                      <option value=\"150\">Netherlands</option>\n                      <option value=\"151\">Netherlands Antilles</option>\n                      <option value=\"152\">New Caledonia</option>\n                      <option value=\"153\">New Zealand</option>\n                      <option value=\"154\">Nicaragua</option>\n                      <option value=\"155\">Niger</option>\n                      <option value=\"156\">Nigeria</option>\n                      <option value=\"157\">Niue</option>\n                      <option value=\"158\">Norfolk Island</option>\n                      <option value=\"112\">North Korea</option>\n                      <option value=\"159\">Northern Mariana Islands</option>\n                      <option value=\"160\">Norway</option>\n                      <option value=\"161\">Oman</option>\n                      <option value=\"162\">Pakistan</option>\n                      <option value=\"163\">Palau</option>\n                      <option value=\"247\">Palestinian Territory, Occupied</option>\n                      <option value=\"164\">Panama</option>\n                      <option value=\"165\">Papua New Guinea</option>\n                      <option value=\"166\">Paraguay</option>\n                      <option value=\"167\">Peru</option>\n                      <option value=\"168\">Philippines</option>\n                      <option value=\"169\">Pitcairn</option>\n                      <option value=\"170\">Poland</option>\n                      <option value=\"171\">Portugal</option>\n                      <option value=\"172\">Puerto Rico</option>\n                      <option value=\"173\">Qatar</option>\n                      <option value=\"174\">Reunion</option>\n                      <option value=\"175\">Rom&#226;nia</option>\n                      <option value=\"176\">Russian Federation</option>\n                      <option value=\"177\">Rwanda</option>\n                      <option value=\"178\">Saint Kitts and Nevis</option>\n                      <option value=\"179\">Saint Lucia</option>\n                      <option value=\"180\">Saint Vincent and the Grenadines</option>\n                      <option value=\"181\">Samoa</option>\n                      <option value=\"182\">San Marino</option>\n                      <option value=\"183\">Sao Tome and Principe</option>\n                      <option value=\"184\">Saudi Arabia</option>\n                      <option value=\"185\">Senegal</option>\n                      <option value=\"243\">Serbia</option>\n                      <option value=\"186\">Seychelles</option>\n                      <option value=\"187\">Sierra Leone</option>\n                      <option value=\"188\">Singapore</option>\n                      <option value=\"189\">Slovak Republic</option>\n                      <option value=\"190\">Slovenia</option>\n                      <option value=\"191\">Solomon Islands</option>\n                      <option value=\"192\">Somalia</option>\n                      <option value=\"193\">South Africa</option>\n                      <option value=\"194\">South Georgia &amp; South Sandwich Islands</option>\n                      <option value=\"113\">South Korea</option>\n                      <option value=\"248\">South Sudan</option>\n                      <option value=\"195\">Spain</option>\n                      <option value=\"196\">Sri Lanka</option>\n                      <option value=\"249\">St. Barthelemy</option>\n                      <option value=\"197\">St. Helena</option>\n                      <option value=\"250\">St. Martin (French part)</option>\n                      <option value=\"198\">St. Pierre and Miquelon</option>\n                      <option value=\"199\">Sudan</option>\n                      <option value=\"200\">Suriname</option>\n                      <option value=\"201\">Svalbard and Jan Mayen Islands</option>\n                      <option value=\"202\">Swaziland</option>\n                      <option value=\"203\">Sweden</option>\n                      <option value=\"204\">Switzerland</option>\n                      <option value=\"205\">Syrian Arab Republic</option>\n                      <option value=\"206\">Taiwan</option>\n                      <option value=\"207\">Tajikistan</option>\n                      <option value=\"208\">Tanzania, United Republic of</option>\n                      <option value=\"209\">Thailand</option>\n                      <option value=\"210\">Togo</option>\n                      <option value=\"211\">Tokelau</option>\n                      <option value=\"212\">Tonga</option>\n                      <option value=\"213\">Trinidad and Tobago</option>\n                      <option value=\"255\">Tristan da Cunha</option>\n                      <option value=\"214\">Tunisia</option>\n                      <option value=\"215\">Turkey</option>\n                      <option value=\"216\">Turkmenistan</option>\n                      <option value=\"217\">Turks and Caicos Islands</option>\n                      <option value=\"218\">Tuvalu</option>\n                      <option value=\"219\">Uganda</option>\n                      <option value=\"220\">Ukraine</option>\n                      <option value=\"221\">United Arab Emirates</option>\n                      <option value=\"222\" selected=\"\">United Kingdom</option>\n                      <option value=\"223\">United States</option>\n                      <option value=\"224\">United States Minor Outlying Islands</option>\n                      <option value=\"225\">Uruguay</option>\n                      <option value=\"226\">Uzbekistan</option>\n                      <option value=\"227\">Vanuatu</option>\n                      <option value=\"228\">Vatican City State (Holy See)</option>\n                      <option value=\"229\">Venezuela</option>\n                      <option value=\"230\">Viet Nam</option>\n                      <option value=\"231\">Virgin Islands (British)</option>\n                      <option value=\"232\">Virgin Islands (U.S.)</option>\n                      <option value=\"233\">Wallis and Futuna Islands</option>\n                      <option value=\"234\">Western Sahara</option>\n                      <option value=\"235\">Yemen</option>\n                      <option value=\"238\">Zambia</option>\n                      <option value=\"239\">Zimbabwe</option>\n                  </select>\n        <div id=\"error-shipping-country\" class=\"invalid-feedback\"/>\n      </div>\n      <div class=\"col mb-3 required\">\n        <label for=\"input-shipping-zone\" class=\"form-label\">Region / State</label>\n        <select name=\"shipping_zone_id\" id=\"input-shipping-zone\" class=\"form-select\" data-oc-value=\"\" disabled=\"\"/>\n        <div id=\"error-shipping-zone\" class=\"invalid-feedback\"/>\n      </div>\n          </div>\n  </fieldset>\n  <div id=\"\" class=\"row row-cols-1 row-cols-md-2\">\n    <div id=\"password\" class=\"col mb-3 required\">\n      <fieldset>\n        <legend>Your Password</legend>\n        <div class=\"row\">\n          <div class=\"col mb-3 required\">\n            <label for=\"input-password\" class=\"form-label\">Password</label> <input type=\"password\" name=\"password\" value=\"\" placeholder=\"Password\" id=\"input-password\" class=\"form-control\"/>\n            <div id=\"error-password\" class=\"invalid-feedback\"/>\n          </div>\n        </div>\n      </fieldset>\n    </div>\n    <div class=\"col mb-3 required\"/>\n  </div>\n  <div id=\"\" class=\"row\">\n    <div class=\"col\">\n      <div class=\"form-check form-switch form-switch-lg\">\n        <label for=\"input-newsletter\" class=\"form-check-label\">I wish to subscribe to the Your Store newsletter.</label>\n        <input type=\"checkbox\" name=\"newsletter\" value=\"1\" id=\"input-newsletter\" class=\"form-check-input\"/>\n      </div>\n              <div id=\"register-agree\" class=\"form-check form-switch form-switch-lg\">\n          <label class=\"form-check-label\">I have read and agree to the <a href=\"http://localhost/en-gb/privacy/info\" class=\"modal-link\"><b>Privacy Policy</b></a></label>\n          <input type=\"checkbox\" name=\"agree\" value=\"1\" id=\"input-register-agree\" class=\"form-check-input\"/>\n        </div>\n            <button type=\"submit\" id=\"button-register\" class=\"btn btn-primary mt-2\">Continue</button>\n    </div>\n  </div>\n</form>\n",
+  "has_submit": true,
+  "submit_position": 1,
+  "total_inputs": 13,
+  "radio_groups": 1,
+  "text_areas": 0,
+  "non_writable": 0,
+  "other_inputs": 11,
+  "html_constraints": [
+    {
+      "name": "account",
+      "options": [
+        {
+          "reference": {
+            "access_method": "id",
+            "access_value": "input-register"
+          },
+          "value": "1"
+        },
+        {
+          "reference": {
+            "access_method": "id",
+            "access_value": "input-guest"
+          },
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "reference": {
+        "access_method": "id",
+        "access_value": "input-firstname"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "firstname",
+        "pattern": null,
+        "required": null,
+        "step": null,
+        "type": "text",
+        "value": ""
+      }
+    },
+    {
+      "reference": {
+        "access_method": "id",
+        "access_value": "input-lastname"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "lastname",
+        "pattern": null,
+        "required": null,
+        "step": null,
+        "type": "text",
+        "value": ""
+      }
+    },
+    {
+      "reference": {
+        "access_method": "id",
+        "access_value": "input-email"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "email",
+        "pattern": null,
+        "required": null,
+        "step": null,
+        "type": "text",
+        "value": ""
+      }
+    },
+    {
+      "reference": {
+        "access_method": "id",
+        "access_value": "input-shipping-company"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "shipping_company",
+        "pattern": null,
+        "required": null,
+        "step": null,
+        "type": "text",
+        "value": ""
+      }
+    },
+    {
+      "reference": {
+        "access_method": "id",
+        "access_value": "input-shipping-address-1"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "shipping_address_1",
+        "pattern": null,
+        "required": null,
+        "step": null,
+        "type": "text",
+        "value": ""
+      }
+    },
+    {
+      "reference": {
+        "access_method": "id",
+        "access_value": "input-shipping-address-2"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "shipping_address_2",
+        "pattern": null,
+        "required": null,
+        "step": null,
+        "type": "text",
+        "value": ""
+      }
+    },
+    {
+      "reference": {
+        "access_method": "id",
+        "access_value": "input-shipping-city"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "shipping_city",
+        "pattern": null,
+        "required": null,
+        "step": null,
+        "type": "text",
+        "value": ""
+      }
+    },
+    {
+      "reference": {
+        "access_method": "id",
+        "access_value": "input-shipping-postcode"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "shipping_postcode",
+        "pattern": null,
+        "required": null,
+        "step": null,
+        "type": "text",
+        "value": ""
+      }
+    },
+    {
+      "reference": {
+        "access_method": "id",
+        "access_value": "input-password"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "password",
+        "pattern": null,
+        "required": null,
+        "step": null,
+        "type": "password",
+        "value": ""
+      }
+    },
+    {
+      "reference": {
+        "access_method": "id",
+        "access_value": "input-newsletter"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "newsletter",
+        "pattern": null,
+        "required": null,
+        "step": null,
+        "type": "checkbox",
+        "value": "1"
+      }
+    },
+    {
+      "reference": {
+        "access_method": "id",
+        "access_value": "input-register-agree"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "agree",
+        "pattern": null,
+        "required": null,
+        "step": null,
+        "type": "checkbox",
+        "value": "1"
+      }
+    }
+  ],
+  "html_files_instrumented": 2,
+  "js_files_instrumented": 0,
+  "time_instrumenting_ms": 0,
+  "time_analyzing_ms": 0,
+  "constraint_candidates": [],
+  "js_files_analyzed": []
+}

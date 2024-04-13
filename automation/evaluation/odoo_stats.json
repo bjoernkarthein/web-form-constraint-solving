@@ -1,0 +1,61 @@
+{
+  "no_form": false,
+  "multiple_forms": false,
+  "form_position": 1,
+  "form_html": "<form class=\"oe_login_form\" role=\"form\" method=\"post\" onsubmit=\"this.action = '/web/login' + location.hash\" action=\"/web/login\">\n                <input type=\"hidden\" name=\"csrf_token\" value=\"4a5eabfafd24f1dfd91f67daf9f05468c31ea492o1744456601\"/>\n\n\n                <div class=\"mb-3 field-login\">\n                    <label for=\"login\" class=\"form-label\">Email</label>\n                    <input type=\"text\" placeholder=\"Email\" name=\"login\" id=\"login\" required=\"required\" autocomplete=\"username\" autofocus=\"autofocus\" autocapitalize=\"off\" class=\"form-control \"/>\n                </div>\n\n                <div class=\"mb-3\">\n                    <label for=\"password\" class=\"form-label\">Password</label>\n                    <input type=\"password\" placeholder=\"Password\" name=\"password\" id=\"password\" required=\"required\" autocomplete=\"current-password\" maxlength=\"4096\" class=\"form-control \"/>\n                </div>\n\n\n                <div class=\"clearfix oe_login_buttons text-center gap-1 d-grid mb-1 pt-3\">\n                    <button type=\"submit\" class=\"btn btn-primary\">Log in</button>\n                    <div class=\"o_login_auth\"/>\n                </div>\n\n                <input type=\"hidden\" name=\"redirect\"/>\n            </form>\n        \n                        ",
+  "has_submit": true,
+  "submit_position": 1,
+  "total_inputs": 4,
+  "radio_groups": 0,
+  "text_areas": 0,
+  "non_writable": 2,
+  "other_inputs": 2,
+  "html_constraints": [
+    {
+      "reference": {
+        "access_method": "id",
+        "access_value": "login"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "login",
+        "pattern": null,
+        "required": "required",
+        "step": null,
+        "type": "text",
+        "value": null
+      }
+    },
+    {
+      "reference": {
+        "access_method": "id",
+        "access_value": "password"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": "4096",
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "password",
+        "pattern": null,
+        "required": "required",
+        "step": null,
+        "type": "password",
+        "value": null
+      }
+    }
+  ],
+  "html_files_instrumented": 1,
+  "js_files_instrumented": 1,
+  "time_instrumenting_ms": 2026.7245000004768,
+  "time_analyzing_ms": 0,
+  "constraint_candidates": [],
+  "js_files_analyzed": []
+}

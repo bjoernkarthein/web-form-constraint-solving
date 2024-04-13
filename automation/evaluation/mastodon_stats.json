@@ -1,0 +1,61 @@
+{
+  "no_form": false,
+  "multiple_forms": false,
+  "form_position": 1,
+  "form_html": "<form class=\"simple_form new_user\" id=\"new_user\" novalidate=\"novalidate\" action=\"/auth/sign_in\" accept-charset=\"UTF-8\" method=\"post\">\n<input type=\"hidden\" name=\"authenticity_token\" value=\"jp9YyqRk0v61g8iVS4xhFoOhvlvs_Tbc2xT2eLvnhX5l9-A_8r4pRT_GumgiTo3aikUwrrvrxlDBpWmrZ3nifw\" autocomplete=\"off\"/><h1 class=\"title\">Login to localhost</h1>\n<p class=\"lead\">Login with your <strong>localhost</strong> credentials. If your account is hosted on a different server, you will not be able to log in here.</p>\n<div class=\"fields-group\">\n<div class=\"input with_label email optional user_email\"><div class=\"label_input\">\n<label class=\"email optional\" for=\"user_email\">E-mail address</label><div class=\"label_input__wrapper\"><input aria-label=\"E-mail address\" class=\"string email optional\" autofocus=\"autofocus\" type=\"email\" value=\"\" name=\"user[email]\" id=\"user_email\"/></div>\n</div></div>\n</div>\n<div class=\"fields-group\">\n<div class=\"input with_label password optional user_password\"><div class=\"label_input\">\n<label class=\"password optional\" for=\"user_password\">Password</label><div class=\"label_input__wrapper\"><input aria-label=\"Password\" autocomplete=\"current-password\" class=\"password optional\" type=\"password\" name=\"user[password]\" id=\"user_password\"/></div>\n</div></div>\n</div>\n<div class=\"actions\">\n<button name=\"button\" type=\"submit\" class=\"btn\">Log in</button>\n</div>\n</form>\n",
+  "has_submit": true,
+  "submit_position": 1,
+  "total_inputs": 3,
+  "radio_groups": 0,
+  "text_areas": 0,
+  "non_writable": 1,
+  "other_inputs": 2,
+  "html_constraints": [
+    {
+      "reference": {
+        "access_method": "id",
+        "access_value": "user_email"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "user[email]",
+        "pattern": null,
+        "required": null,
+        "step": null,
+        "type": "email",
+        "value": ""
+      }
+    },
+    {
+      "reference": {
+        "access_method": "id",
+        "access_value": "user_password"
+      },
+      "constraints": {
+        "list": null,
+        "max": null,
+        "maxlength": null,
+        "min": null,
+        "minlength": null,
+        "multiple": null,
+        "name": "user[password]",
+        "pattern": null,
+        "required": null,
+        "step": null,
+        "type": "password",
+        "value": null
+      }
+    }
+  ],
+  "html_files_instrumented": 6,
+  "js_files_instrumented": 3,
+  "time_instrumenting_ms": 11229.792300008237,
+  "time_analyzing_ms": 0,
+  "constraint_candidates": [],
+  "js_files_analyzed": []
+}

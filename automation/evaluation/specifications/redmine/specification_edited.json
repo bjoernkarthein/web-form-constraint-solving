@@ -1,0 +1,61 @@
+{
+  "url": "http://localhost/projects/new",
+  "controls": [
+    {
+      "name": "project[name]",
+      "type": "text",
+      "reference": {
+        "access_method": "id",
+        "access_value": "project_name"
+      },
+      "grammar": "1.bnf",
+      "formula": "1.isla"
+    },
+    {
+      "name": "project[identifier]",
+      "type": "text",
+      "reference": {
+        "access_method": "id",
+        "access_value": "project_identifier"
+      },
+      "grammar": "2.bnf",
+      "formula": "2.isla"
+    },
+    {
+      "name": "project[homepage]",
+      "type": "text",
+      "reference": {
+        "access_method": "id",
+        "access_value": "project_homepage"
+      },
+      "grammar": "3.bnf",
+      "formula": "3.isla"
+    },
+    {
+      "name": "project[is_public]",
+      "type": "checkbox",
+      "value": "1",
+      "reference": {
+        "access_method": "id",
+        "access_value": "project_is_public"
+      },
+      "grammar": "4.bnf",
+      "formula": "4.isla"
+    },
+    {
+      "name": "project[inherit_members]",
+      "type": "checkbox",
+      "value": "1",
+      "reference": {
+        "access_method": "id",
+        "access_value": "project_inherit_members"
+      },
+      "grammar": "5.bnf",
+      "formula": "5.isla"
+    }
+  ],
+  "submit": {
+    "access_method": "xpath",
+    "access_value": "/html/body/div[1]/div[4]/div[2]/form/input[3]"
+  }
+}

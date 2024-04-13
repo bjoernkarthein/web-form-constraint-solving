@@ -54,6 +54,6 @@ if __name__ == "__main__":
 
     setup(driver)
     driver.run_test(
-        "evaluation/specifications/wordpress/specification.json",
-        "evaluation/wordpress_test_results.json",
+        "evaluation/specifications/wordpress/specification_edited.json",
+        "evaluation/wordpress_edited_test_results.json",
     )

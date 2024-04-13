@@ -22,6 +22,16 @@
       "formula": "2.isla"
     },
     {
+      "name": null,
+      "type": "text",
+      "reference": {
+        "access_method": "id",
+        "access_value": "form_autocomplete_input-1712915426046"
+      },
+      "grammar": "3.bnf",
+      "formula": "3.isla"
+    },
+    {
       "name": "enddate[enabled]",
       "type": "checkbox",
       "value": "1",
@@ -29,8 +39,8 @@
         "access_method": "id",
         "access_value": "id_enddate_enabled"
       },
-      "grammar": "3.bnf",
-      "formula": "3.isla"
+      "grammar": "4.bnf",
+      "formula": "4.isla"
     },
     {
       "name": "idnumber",
@@ -39,8 +49,18 @@
         "access_method": "id",
         "access_value": "id_idnumber"
       },
-      "grammar": "4.bnf",
-      "formula": "4.isla"
+      "grammar": "5.bnf",
+      "formula": "5.isla"
+    },
+    {
+      "name": null,
+      "type": "text",
+      "reference": {
+        "access_method": "id",
+        "access_value": "form_autocomplete_input-1712915426047"
+      },
+      "grammar": "6.bnf",
+      "formula": "6.isla"
     },
     {
       "name": "summary_editor[text]",
@@ -49,8 +69,8 @@
         "access_method": "id",
         "access_value": "id_summary_editor"
       },
-      "grammar": "5.bnf",
-      "formula": "5.isla"
+      "grammar": "7.bnf",
+      "formula": "7.isla"
     }
   ],
   "submit": {

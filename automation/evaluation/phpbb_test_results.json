@@ -1,33 +1,55 @@
 {
   "test_round_1": {
     "generated_values": [
-      "(validity: ValidityEnum.VALID, value: )",
-      "(validity: ValidityEnum.VALID, value: )",
-      "(validity: ValidityEnum.VALID, value: )",
-      "(validity: ValidityEnum.VALID, value: .@m------------------------------------------------------------------------------------------------u)",
-      "(validity: ValidityEnum.VALID, value: 1)",
-      "(validity: ValidityEnum.VALID, value: )"
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: W)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: .@m------------------------------------------------------------------------------------------------b)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: )"
     ],
     "server_response": "Submission did not cause any outgoing requests including the entered data."
   },
   "test_round_2": {
     "generated_values": [
-      "(validity: ValidityEnum.INVALID, value: \n\u000b)",
-      "(validity: ValidityEnum.INVALID, value: \f)",
-      "(validity: ValidityEnum.INVALID, value: \\\t)",
-      "(validity: ValidityEnum.VALID, value: )",
-      "(validity: ValidityEnum.INVALID, value: \u0012)",
-      "(validity: ValidityEnum.INVALID, value: I+Hc)/:m9)"
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: INDETERMINATE, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: )"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_3": {
+    "generated_values": [
+      "(validity: INVALID, value: \b)",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: \r)",
+      "(validity: VALID, value: .@f--------------------------------------------------------------------------------------------H)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: 1w]`xCy`')"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_4": {
+    "generated_values": [
+      "(validity: INVALID, value: \"F?)",
+      "(validity: INVALID, value: \"i\fO)",
+      "(validity: INVALID, value: \"L)",
+      "(validity: INVALID, value: .@o-------------------------------------------------------------------------------------------------e)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: e2AT4>3r#)"
     ],
     "server_response": "Submission did not cause any outgoing requests including the entered data."
   },
   "stats": {
-    "total": 2,
-    "valid": 1,
-    "invalid": 1,
+    "total": 4,
+    "valid": 2,
+    "invalid": 2,
     "tp": 0,
-    "fp": 0,
-    "tn": 1,
-    "fn": 1
+    "fp": 2,
+    "tn": 2,
+    "fn": 0
   }
 }

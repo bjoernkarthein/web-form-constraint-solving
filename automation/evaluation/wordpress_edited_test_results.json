@@ -1,0 +1,1211 @@
+{
+  "test_round_1": {
+    "generated_values": [
+      "(validity: VALID, value: !UYx->A(t)1^a;WH}EAQ`|st[JkIhGw~PH>XK!859l_2~$pvgyrrC4G_)",
+      "(validity: VALID, value: T@u.9-q)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: B)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_2": {
+    "generated_values": [
+      "(validity: VALID, value: qU8 QV_Ham4Ftmm>H!L+Z[k^5DPWmyp[FFVyC =}w^a|)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_3": {
+    "generated_values": [
+      "(validity: VALID, value: 8-J~6=_[RWX^/h8BaL;)R?fG~o%aQk&OUi5E0AG+?Ajl!L(m|iNY)f NIdMk)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: o)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_4": {
+    "generated_values": [
+      "(validity: VALID, value: elE>Iis(NTvZ'.HAf-aJZ[:Py.ahOkV*GvM!t Om#+64v%3x.5,incMH)",
+      "(validity: VALID, value: %.@6N.W)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_5": {
+    "generated_values": [
+      "(validity: VALID, value: FK3H^b`}KjS[C3[revy~I_f|e@6+qMsP`4Wu>bGBI-?Tpd,{}^G')",
+      "(validity: VALID, value: .@4-Df)",
+      "(validity: VALID, value: g<)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_6": {
+    "generated_values": [
+      "(validity: VALID, value: @Uiz% i~hvL4BpP#LJ9~eb^C4=:1)",
+      "(validity: VALID, value: 0.@1X.e)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: ;)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_7": {
+    "generated_values": [
+      "(validity: VALID, value: |L%,;t:GqV*n+BhO?n4H*_K#w-/hd2|ylmetKn9'm3VV)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: $)",
+      "(validity: VALID, value: !)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_8": {
+    "generated_values": [
+      "(validity: VALID, value: ?Y/v%xtUryPL,GvAb/N${~^qr:=g)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: P)",
+      "(validity: VALID, value: ])",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_9": {
+    "generated_values": [
+      "(validity: VALID, value: |?(g`88jfw'#li-72W[;j(RnH|'Bms4`0(/#%BU$M09#LsbC3G )bSOW)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_10": {
+    "generated_values": [
+      "(validity: VALID, value: ;q3UqkvJ#N&l=7^R3sYHylyXka|hl#&l?S;f>C/P g2`am*x-2.kF8A&WNI&)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: B)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_11": {
+    "generated_values": [
+      "(validity: VALID, value: A&G q_E|1'=[MS&yjdL$%,Y1fFo/U+8k;/~h^n(1.Yef{~62|6,LAi#/4,[')",
+      "(validity: VALID, value: .*@s)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: !)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_12": {
+    "generated_values": [
+      "(validity: VALID, value: /E+}[%k=ANlp32tqQ8)@[SbPF$7Kw~eX?=8(Yp zog?[$r/(*naY|D%~y%Qm)",
+      "(validity: VALID, value: Q.@p.B1)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: xF)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_13": {
+    "generated_values": [
+      "(validity: VALID, value: /TP$jdJS/kpk(o|:^g;g7BL:$Dll7Yu=,YF`zoi|&fKAd,hkN#^?)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: a)",
+      "(validity: VALID, value: {)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_14": {
+    "generated_values": [
+      "(validity: VALID, value: ]1oS+ QFm5y`T9}/f+xQyiMH2T]du|CytS)7QF^ f7@7=`aU7Y5I)",
+      "(validity: VALID, value: .@VzC.4)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: i)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_15": {
+    "generated_values": [
+      "(validity: VALID, value: 78C>4r^KEN1.Kyk[{AKeO`z||P[Sy]UAQ9hn!;bl@,}N)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: A)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_16": {
+    "generated_values": [
+      "(validity: VALID, value: bi5>_qJ=JC]%,;kU%w.nsWd]/B935V8I>+ZM~[LvM{,Oz=f';_ TvXo2w`sf)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: H[)",
+      "(validity: VALID, value: 8)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_17": {
+    "generated_values": [
+      "(validity: VALID, value: CQKbW:iiE~u^]SVg@Xz@D8rH6o>H:z#{SEFs|GQd89zEV'bKeG;%M=W) R1M)",
+      "(validity: VALID, value: .1@r7.G)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_18": {
+    "generated_values": [
+      "(validity: VALID, value: F2D+Vsmc3WJZOjGl.93+8n&hG3e Nc#{-S7`J5*T7Yd5V@bQIG@5|11+)",
+      "(validity: VALID, value: .@6.IUu)",
+      "(validity: VALID, value: =m)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_19": {
+    "generated_values": [
+      "(validity: VALID, value: M]EJ^ B9*h91,g[W|Xh#+oc.YvM kRami'y6*C)ou4d6pNfnswv.{oM;)",
+      "(validity: VALID, value: .@2.La-C)",
+      "(validity: VALID, value: b)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_20": {
+    "generated_values": [
+      "(validity: VALID, value: SCQsYtFgH#4NFLez4l-?$7y!=%+}AjS(`T`;{=7[SG8C/{Ul=H;w|!B%)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: <)",
+      "(validity: VALID, value: O)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_21": {
+    "generated_values": [
+      "(validity: VALID, value: ^:RA{Pt718W2.{aSeyNNh>&l(W~V)",
+      "(validity: VALID, value: .@S)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_22": {
+    "generated_values": [
+      "(validity: VALID, value: Gbnd1X3lZ?5k0gcRX30lk>8`m~CF)",
+      "(validity: VALID, value: .-@4Qc)",
+      "(validity: VALID, value: `)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_23": {
+    "generated_values": [
+      "(validity: VALID, value: ep0&@kk~8h[%'>9>+}bTrj:0m)M')",
+      "(validity: VALID, value: 4.@C.8A)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: *C)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_24": {
+    "generated_values": [
+      "(validity: VALID, value: U*>}1w2ZruZe([O'j6-C`'1vSo#|+iAl,t0.2+M2_7V7|Bh]!kDI(::*)",
+      "(validity: VALID, value: .@A-lW.7)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: U)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_25": {
+    "generated_values": [
+      "(validity: VALID, value: Rspo4YRz;Hk9$5O{r9N/bjnwL/)/)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: %)",
+      "(validity: VALID, value: W)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_26": {
+    "generated_values": [
+      "(validity: VALID, value: C^@0kG9!oda~P)~vZhHPr1sH|9QqU?bKVqnL:FNMJ-kf`$mu.dT%)",
+      "(validity: VALID, value: V.@6L-w.G)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_27": {
+    "generated_values": [
+      "(validity: VALID, value: AWcQu:Y}btBUl?CE.>Cv;{?grXqf)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_28": {
+    "generated_values": [
+      "(validity: VALID, value: (*ruSFVf.+-:(vq}`M:U|xkNg4 dzi~K'J'`^ loFDOr)",
+      "(validity: VALID, value: .@3Wo)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_29": {
+    "generated_values": [
+      "(validity: VALID, value: _V$((yJAe$T}-PSk4i}p|Wv:A}2W1a3#~7u,'rw.;S9X)",
+      "(validity: VALID, value: 0@A.U-9)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_30": {
+    "generated_values": [
+      "(validity: VALID, value: HeRL^6[eorJ3@Oj++9`l1G/fHso]KF$OO#)bj[4kHALzx97u?)=`H%(e)",
+      "(validity: VALID, value: .@2)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: kH)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_31": {
+    "generated_values": [
+      "(validity: VALID, value: 0X`U:bNQ!nZZ4p5a{`4dI$i!r[q:y*m%H7lBR7|w[l5p+^x0)eM/.4V^)",
+      "(validity: VALID, value: .@W)",
+      "(validity: VALID, value: +h)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_32": {
+    "generated_values": [
+      "(validity: VALID, value: 2kJ+3XnO2k{$hX*g|Y^)D,Xbf`zs)",
+      "(validity: VALID, value: .J@u-8)",
+      "(validity: VALID, value: 7P)",
+      "(validity: VALID, value: W*)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_33": {
+    "generated_values": [
+      "(validity: VALID, value: s=K;>!.#s%J9$3$Nz>CuUB0}j.-'+Nxp:k^S7F05IK&'~oB~]2VW!)2O)",
+      "(validity: VALID, value: .&@p)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 'g)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_34": {
+    "generated_values": [
+      "(validity: VALID, value: i)YMl/@1bS;D-|zRD^Oh#(,MyCZCh8,Pf]Dp89~Na~kD9qx^BRnt(Ry`)",
+      "(validity: VALID, value: .+@b)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: qU)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_35": {
+    "generated_values": [
+      "(validity: VALID, value: Uo=[[Xos*R=31r@vm!*`CZSuj=.qOW_^hJPx !o8h.stD4tx@|(')",
+      "(validity: VALID, value: 3@F1)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: ([)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_36": {
+    "generated_values": [
+      "(validity: VALID, value: /Kk1tN11=_19~Pf%e|X*.)GaznRW_=RK73Gl1!_Yihoz)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: @)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_37": {
+    "generated_values": [
+      "(validity: VALID, value: 37(@Kqd`3bwCC]Qq+}EwecRzm?QaHtQnT>^ S%QCE%k:62 Zc>Z: a7a)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: %Y)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_38": {
+    "generated_values": [
+      "(validity: VALID, value: |n}X``&'|s2+EDy=+hK8zj/!cVgFjmgoCD7]}b8ykl;xXsUTo^$caPg1hJ_?)",
+      "(validity: VALID, value: D.@J8c)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_39": {
+    "generated_values": [
+      "(validity: VALID, value: nhyz7uG:nX-11sOWH$7EbD!C,Bd/hB-Iq@(N`]5)fdvq/!$1l]j=Is6D)",
+      "(validity: VALID, value: u@y)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: h)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_40": {
+    "generated_values": [
+      "(validity: VALID, value: 1dX6_)9O'WZgj01UKBn!QO`XmD}*:a>jql6SN47D&Jw=~4uIdx4EPpK9)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_41": {
+    "generated_values": [
+      "(validity: VALID, value: ey4aH9t5 @tq|Eee)~ipvaZ%){O]GGW3|-+&0VuyE'EQ1C*Xp9$SH``o4`g/)",
+      "(validity: VALID, value: +.@7)",
+      "(validity: VALID, value: g5)",
+      "(validity: VALID, value: |})",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_42": {
+    "generated_values": [
+      "(validity: VALID, value: URPgL5I2{6?O)FXpqa1GsWQ7Wu{c!>ZR=Tm]J*G2,EvX)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 4)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_43": {
+    "generated_values": [
+      "(validity: VALID, value: wN~j0cakkxj0SaLlT6&JE5h3vJGIB^jA?47}GXI#K>[9)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: sb)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_44": {
+    "generated_values": [
+      "(validity: VALID, value: mns /zs5d'}KT3*;01pbwPfL]4~'DbR#K$d9R0k/_,i_)",
+      "(validity: VALID, value: .@9)",
+      "(validity: VALID, value: M)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_45": {
+    "generated_values": [
+      "(validity: VALID, value: 0Rz>_s4Du#zWQd,}s~j-oYBQ~5f6X:cXn~s-ZV=-e_)90|m@5I367szH)",
+      "(validity: VALID, value: .@7.jh-u)",
+      "(validity: VALID, value: &.)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_46": {
+    "generated_values": [
+      "(validity: VALID, value: /jFj15BhfUAP&`hg|_4pNNHoy8}`FoJvbwbTQ415f#&D)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: %X)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_47": {
+    "generated_values": [
+      "(validity: VALID, value: eRm>PLlu=Exvc!*?$HaHqx#BU1}*E90-rE!uzO63lEI)eod:59v,a#C1~nO()",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: I|)",
+      "(validity: VALID, value: k)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_48": {
+    "generated_values": [
+      "(validity: VALID, value: 3:p58Kis@~&t[q`8eDHxno*P7Q4^)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_49": {
+    "generated_values": [
+      "(validity: VALID, value: IQUctKMe-;fr} 1') n-|Raj8|`r't~ZKWzIAF&xkF@@_f0T +_i)",
+      "(validity: VALID, value: .@Vb.3)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: Ct)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_50": {
+    "generated_values": [
+      "(validity: VALID, value: rGWjQKP&?at}aS@FrCf=7'Z1bl4XCO1h_nPA!(=DEH$a)",
+      "(validity: VALID, value: .P@y-p.0)",
+      "(validity: VALID, value: R<)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_51": {
+    "generated_values": [
+      "(validity: INVALID, value: >$|U9b~92PX~l% 5A>_[n5!}n|U,?,g+,*br+ltvX'cA?;g#-hqzw#{I[zMED)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: Y`)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_52": {
+    "generated_values": [
+      "(validity: VALID, value: 3P_RPN%O>6%w>j/#S)`4Gt29Q=6NBsX=@5,l9=nzkDsZXEU+l'!'^T=gTd1d)",
+      "(validity: INVALID, value: >)",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: \u000b`)",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_53": {
+    "generated_values": [
+      "(validity: INVALID, value: K_uObf+Ue8L ZacZBaFr/um~BY4udP;778PnM[aZSB(n]ZIsB1+[VrOKGd2)N)",
+      "(validity: INVALID, value: .w@\")",
+      "(validity: INVALID, value: \u000b)",
+      "(validity: INVALID, value: \r\u000b)",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_54": {
+    "generated_values": [
+      "(validity: INVALID, value: E!}0}7o&'ol5AT}F~;$~ F.:${hH8e})EPb9KpEo,)nW7B%TD1WL6!6K$0q{=)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_55": {
+    "generated_values": [
+      "(validity: VALID, value: IvK6U5_6_)=im[9,fUri)N~vZmz.)",
+      "(validity: INVALID, value: 0)",
+      "(validity: INVALID, value: \u000f)",
+      "(validity: INVALID, value: \t\t)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_56": {
+    "generated_values": [
+      "(validity: INVALID, value: *r[,#tq0JZ ZrO9NYG9]wlK]JB=633I]42%_b#L|s5FPctIL8G>?qYT=s:4+c)",
+      "(validity: INVALID, value: 4@D.J%s6)",
+      "(validity: INVALID, value: \f\\)",
+      "(validity: VALID, value: D)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: 9V)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_57": {
+    "generated_values": [
+      "(validity: INVALID, value: s4h,rGx$flos?&?%D?Wgx[`Yacn-dJyVVdzKC %U3v]Wg:9TC+WzFKe]-9 .Y)",
+      "(validity: INVALID, value: :])",
+      "(validity: INVALID, value: \f)",
+      "(validity: INVALID, value: \u000b)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: ^5)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_58": {
+    "generated_values": [
+      "(validity: INVALID, value: >W`NczN9on$w0l(=$UCaOI|1YCSW.`H-G51:>3V^iK.hws=HPv|=F&=^,9U8b)",
+      "(validity: INVALID, value: F.@Gl6<)",
+      "(validity: INVALID, value: b\r)",
+      "(validity: INVALID, value: *m\u000b)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: z)",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_59": {
+    "generated_values": [
+      "(validity: VALID, value: aTS`f6bs`z4;W^flz8/d59{(QVsF,>d0BY@,[Ke~zv57K-w(mA{M)",
+      "(validity: VALID, value: .@3.sU)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_60": {
+    "generated_values": [
+      "(validity: VALID, value: ;y?8]?v2Yv$m))o.HeuRKY'!VNu;n'7+Rq8-nF2xK!_Km87)5f{~3r_a)",
+      "(validity: INVALID, value: \f)",
+      "(validity: INVALID, value: \u000b\rYc)",
+      "(validity: VALID, value: q)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_61": {
+    "generated_values": [
+      "(validity: INVALID, value: >9};cS*ecN2ml/..pwF&XuP@1saJ/%'FA.*ZKL{>0:7-aC!;v@ !Z3$T'AXd{)",
+      "(validity: VALID, value: .@6-p)",
+      "(validity: VALID, value: B)",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_62": {
+    "generated_values": [
+      "(validity: VALID, value: 2 Y-n35@:`XB1js74}kI[DL!:TMs@ukQWpL_CSWkn&e*gGb[_wgE)",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: \\\")",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_63": {
+    "generated_values": [
+      "(validity: VALID, value: xHJ23IU~v8vR>9ZlR9g~Rl,jz{*>1DS0)dW0F6TtagE&[j9gJCS>'Yx=)",
+      "(validity: INVALID, value: \")",
+      "(validity: INVALID, value: \f)",
+      "(validity: INVALID, value: U\t)",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_64": {
+    "generated_values": [
+      "(validity: INVALID, value: !O^bLTDjN`@}1#`.R&$D]u.-yA!dRcK&m -> 19'j)pxWun?$TPN>HQN^gdV2)",
+      "(validity: INVALID, value: <)",
+      "(validity: INVALID, value: \u000b\r)",
+      "(validity: INVALID, value: \t)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: m)",
+      "(validity: INVALID, value: u5)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_65": {
+    "generated_values": [
+      "(validity: INVALID, value: Zq=69](Ks Ug]cyX[|C1p3 U*T?uYNKpPA#knoS:n>l~%PQ(cAu,1?sh;u|q*)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_66": {
+    "generated_values": [
+      "(validity: VALID, value: ucD[a$CHsel?9=;T-^!`r?uWCZ88f'-yMc[DU/M!%:[cem M0#z:)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: \u000b\\)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_67": {
+    "generated_values": [
+      "(validity: INVALID, value: `d`F(}!fh,^ + p{DZsN7vCsqiT-V~O#I*>8^Na(**t;`kPD+:8puX{{Q`x%J)",
+      "(validity: INVALID, value: ].\u0013@e1)",
+      "(validity: INVALID, value: \u001c)",
+      "(validity: INVALID, value: \r)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: R{1)",
+      "(validity: INVALID, value: ;)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_68": {
+    "generated_values": [
+      "(validity: INVALID, value: zdWeGVVtVnHrclU,W;j}_R6Eq;q(}{g#B.F;V#[Pm%V7DY9~)^px_h4f-a=!f)",
+      "(validity: INVALID, value: [)",
+      "(validity: INVALID, value: \f)",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_69": {
+    "generated_values": [
+      "(validity: INVALID, value: lI*qSWx~C-*_4%vS84UiZTBS?*nY*nHRnF|&Iq+c1jlh@h%57&EP:rvg[}zgW)",
+      "(validity: VALID, value: '@dH.0)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: Q)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_70": {
+    "generated_values": [
+      "(validity: VALID, value: ^6Tg@`'I~T1zBW,zSe}TS!:[p{TrY}o-G5dbnT,_J(e/Gu60@ %oXf=0v' `)",
+      "(validity: INVALID, value:  )",
+      "(validity: INVALID, value: \\)",
+      "(validity: INVALID, value: '\r\";)",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_71": {
+    "generated_values": [
+      "(validity: INVALID, value: ?0t$/zNY/H#3'AczB>]9AVODu}k2bC[wz1Y=/gZQR~D@e+E:7RX@_vdLQ/x.q)",
+      "(validity: INVALID, value: .^@f*\u000b9i)",
+      "(validity: INVALID, value: \"\")",
+      "(validity: INVALID, value: \"c~)",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: _3)",
+      "(validity: INVALID, value: v)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_72": {
+    "generated_values": [
+      "(validity: INVALID, value: hcObLwwp:p&)Be}lj. D7ua)HTguM8s@8UqkP%`%hI]DhM@~LxA4)qzg,A=Q1)",
+      "(validity: VALID, value: .@0)",
+      "(validity: VALID, value: j)",
+      "(validity: VALID, value: -.)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_73": {
+    "generated_values": [
+      "(validity: INVALID, value: {Z!p&p>P8i3R):3]!3wq)Bq>Uaj+1T]D:gto^30OwP-cx%} 7 jlr52G{G,Up)",
+      "(validity: INVALID, value: >@3p.,w)",
+      "(validity: INVALID, value: \u000b\u000b+D)",
+      "(validity: INVALID, value: \n)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: 0b4)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_74": {
+    "generated_values": [
+      "(validity: INVALID, value: &}s6=x$*e&{3+y)qv7S)w;Oi]S=,E)sE>{:w]/vI56`tXs{8lwD4ax.v^F^B`)",
+      "(validity: INVALID, value: ;)",
+      "(validity: INVALID, value: \t\f)",
+      "(validity: VALID, value: In)",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_75": {
+    "generated_values": [
+      "(validity: VALID, value: YL;JZHSx5+o19x :1r+@?v`Pf~kpr~Q1;^PFeqf1mJ8mPT$A(z*p0n08-V0h)",
+      "(validity: INVALID, value: }@,9)",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: \f)",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: u0?)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_76": {
+    "generated_values": [
+      "(validity: INVALID, value: P!zkQ+QBB3yK?5@Aqn]ctzh,O9IV;C K0{V;r%WcJq 7gD'|&'oNlbjD;I}3g)",
+      "(validity: INVALID, value: \u000eG@n4)",
+      "(validity: INVALID, value: \r\r)",
+      "(validity: INVALID, value: \")",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: \fp)",
+      "(validity: INVALID, value: =0K)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_77": {
+    "generated_values": [
+      "(validity: VALID, value: nn(o#`KD>qbjRSD[BdH@8$l/`[LrUgT[[&Ln1=1ZMAv`)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: /\t)",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: A )",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_78": {
+    "generated_values": [
+      "(validity: VALID, value: Z~ot?a:EHe+w,;J>I]b`=6i{a_xKqgZEc{9Xy1hUm=zY)",
+      "(validity: INVALID, value: .@nG/))",
+      "(validity: INVALID, value: \u0003)",
+      "(validity: INVALID, value: 9\f\"})",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_79": {
+    "generated_values": [
+      "(validity: INVALID, value: )/efJuxhBiuqjf[Zx(_L1KuH&Bm.. h -3]R0tnqr9g?[!DQFFxp3k[99eKRL)",
+      "(validity: INVALID, value: @x\")",
+      "(validity: INVALID, value: \u0002)",
+      "(validity: INVALID, value: \u000b\\)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: pp)",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_80": {
+    "generated_values": [
+      "(validity: INVALID, value: kMOxoa|k,x|+fQ76+-J^Ei#lFYsVT1:4=aNqZ5XhT}@En.fHheuA(sbyg`>`G)",
+      "(validity: INVALID, value: .!@5])",
+      "(validity: INVALID, value: \\)",
+      "(validity: INVALID, value: \nC)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: 80/)",
+      "(validity: INVALID, value: \t3)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_81": {
+    "generated_values": [
+      "(validity: INVALID, value: (/d>zw#iNJjiS[sKjPi]/%.P,Z94u5X$2UnXY60 %Z-.(+]yGnuv)KQjra'SO)",
+      "(validity: VALID, value: .@0h-M)",
+      "(validity: VALID, value: +)",
+      "(validity: VALID, value: [|)",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: {)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_82": {
+    "generated_values": [
+      "(validity: INVALID, value: '31f[E=RFdJ:4jd@+e9x+'HNS)1Wnsch OHO/U&N`K0^yAKqW-y)!g7`bmnX.)",
+      "(validity: VALID, value: 7@8-F)",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: \u000b\r)",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: INVALID, value: :)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_83": {
+    "generated_values": [
+      "(validity: INVALID, value: KEt/@'Y,'LCK3UVR%R%j3#ux{ru5|[$q1BDa]L k=Cd@B40_CdpreS>8Hv/05)",
+      "(validity: INVALID, value: .6o)",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: \")",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: \r_1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_84": {
+    "generated_values": [
+      "(validity: VALID, value: J{i?ORYWLg#KIC^o>2bJc1{ydyP*Ml0$~#jSg$JTk!y*jCR@$I0-)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: \r)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_85": {
+    "generated_values": [
+      "(validity: VALID, value: L(@.CB]@|E6g4~Dr!r2^~SJ$;*uX/b$8HNp=:e'X]/`=YR98WA(6Ti%#)",
+      "(validity: INVALID, value: \u000b)",
+      "(validity: INVALID, value: \bL)",
+      "(validity: INVALID, value: \"\t)",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_86": {
+    "generated_values": [
+      "(validity: INVALID, value: cv1 8=WzIuGrR?b;OuADdm+MD=6|+}trCvv)To*b9*!rjpu|i-(KA;hiK2cDs)",
+      "(validity: INVALID, value: ;.@8-J[r.Z)",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: \u000b)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: ^1)",
+      "(validity: INVALID, value: Z)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_87": {
+    "generated_values": [
+      "(validity: INVALID, value: Sh{onOFZa7 % +-&1z=;sO'BP(4|ZwZBfC]8M6QLtV*s$)0ZKz:;q7Ru9b@-1)",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: \t)",
+      "(validity: INVALID, value: \f)",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: 1[)",
+      "(validity: INVALID, value: 9U)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_88": {
+    "generated_values": [
+      "(validity: VALID, value: Gu{5gTWU852xb&x!jj*I4J6gy#Erx@88yJ:WZ5whH66lHN+#|ByOG-)so~N7)",
+      "(validity: VALID, value: .-@Y)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: Z)",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: K)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_89": {
+    "generated_values": [
+      "(validity: INVALID, value: ?Kr|uO%+96`H[mGqi&M0}*0u(}zE4$$ dj=G,J]}410L[2MK]gBlyM`LN)7(K)",
+      "(validity: INVALID, value: ( )",
+      "(validity: VALID, value: ')",
+      "(validity: INVALID, value: \n\t)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: 85)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_90": {
+    "generated_values": [
+      "(validity: VALID, value: =]pL?9NMXf/n#|qE~~02$]@C$p@91KP($*.n9V/.'Wb|8 ]2~RYmS23s)",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: \n\"TB)",
+      "(validity: VALID, value: w)",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: 0<V)",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_91": {
+    "generated_values": [
+      "(validity: INVALID, value: a-L$od^85?hy-Yo6_u'x)O2]'~#yq>y_sld-:4)`EP?F-J0|;(YLa6;fAm$3z)",
+      "(validity: VALID, value: 6@1v-h)",
+      "(validity: INVALID, value: \\)",
+      "(validity: INVALID, value: \")",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: 0$)",
+      "(validity: INVALID, value: V1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_92": {
+    "generated_values": [
+      "(validity: INVALID, value: 6:JTXvZ]Ep&gHSDn[_D }*c0Eb7I;1}X,v])ex$);}urcVMsA~G5.veI9_d%B)",
+      "(validity: INVALID, value: ;)",
+      "(validity: INVALID, value: \\&\r)",
+      "(validity: VALID, value: E7)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: t)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_93": {
+    "generated_values": [
+      "(validity: VALID, value: K-TXWI_jSMs:{X=fe(G: +5U=Xa5fha6q$v;Mkn6E~kjBZOR(6b|>(R.)",
+      "(validity: VALID, value: .@4)",
+      "(validity: INVALID, value: \\7\n)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_94": {
+    "generated_values": [
+      "(validity: INVALID, value:  &M}1{c&>U%4?%XFQAJ,hNl-DLHgc===Wg6BL(.S |Krxv.a'*Qo)U9Fs}S>t)",
+      "(validity: INVALID, value: \r)",
+      "(validity: INVALID, value: l\f\u000b)",
+      "(validity: INVALID, value: \u0003q)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: Xq)",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_95": {
+    "generated_values": [
+      "(validity: VALID, value: x[KW0;D>[1[Eh$^BG hRZ30K/$3p~FsqqeWV~iv|/@Jz^ZusSDS:E|R0)",
+      "(validity: INVALID, value: @p.2O)",
+      "(validity: VALID, value: CS)",
+      "(validity: INVALID, value: \u000b)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: INVALID, value: q18)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_96": {
+    "generated_values": [
+      "(validity: VALID, value: 7-)(EFkole)98qAm!E>yG.FW>))O)",
+      "(validity: VALID, value: .U@M.7k-x)",
+      "(validity: VALID, value: q)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: 0Pz)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_97": {
+    "generated_values": [
+      "(validity: INVALID, value: jY&0IU8%b+ztWOE-sb6N74G^OUvF@VqvjY|/vmFzPJ>ZZSAz%Y.COoBL#>Ae4)",
+      "(validity: INVALID, value: .@Y\".p/MB)",
+      "(validity: INVALID, value: \\)",
+      "(validity: INVALID, value: \r)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: 0D@)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_98": {
+    "generated_values": [
+      "(validity: VALID, value: c4?IW1_){9%_P-o%KZMm8|_5?&DT+Y436=?I{#^Ks[?})",
+      "(validity: VALID, value: .@j-r2)",
+      "(validity: VALID, value: vS)",
+      "(validity: INVALID, value: \f)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_99": {
+    "generated_values": [
+      "(validity: INVALID, value: Th-Wpcj2igj?m&v iElN/T*2>6o!t9,xm MS[UF;ug[~tC6)!+%cT1)/%dEqm)",
+      "(validity: INVALID, value: \f)",
+      "(validity: INVALID, value: \r)",
+      "(validity: INVALID, value: \u000b)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: 0B)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_100": {
+    "generated_values": [
+      "(validity: VALID, value: o?#c!(ZIz=@8Ij(6W>8(rfkK;WjOK?|Qi5Us;SB|8QNtIo q_NVKkldm)",
+      "(validity: VALID, value: 0.@L7.F)",
+      "(validity: VALID, value: C)",
+      "(validity: INVALID, value: f\\)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "stats": {
+    "total": 100,
+    "valid": 50,
+    "invalid": 50,
+    "tp": 14,
+    "fp": 36,
+    "tn": 48,
+    "fn": 2
+  }
+}

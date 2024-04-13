@@ -145,7 +145,7 @@ class TestAutomationDriver:
         form_tester = FormTester(
             self.__driver, url, spec, specification_dir, self.__config, report_path
         )
-        form_tester.start_generation()
+        form_tester.start_generation(self.__setup_function, self)
 
         self.__exit()
 

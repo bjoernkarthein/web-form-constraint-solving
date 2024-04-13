@@ -1,1 +1,2 @@
-<start> ::= OPTIONS
+<start> ::= <radio>
+<radio> ::= OPTIONS

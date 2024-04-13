@@ -1,0 +1,29 @@
+{
+  "url": "http://localhost/web/login",
+  "controls": [
+    {
+      "name": "login",
+      "type": "text",
+      "reference": {
+        "access_method": "id",
+        "access_value": "login"
+      },
+      "grammar": "1.bnf",
+      "formula": "1.isla"
+    },
+    {
+      "name": "password",
+      "type": "password",
+      "reference": {
+        "access_method": "id",
+        "access_value": "password"
+      },
+      "grammar": "2.bnf",
+      "formula": "2.isla"
+    }
+  ],
+  "submit": {
+    "access_method": "xpath",
+    "access_value": "/html/body/div/main/div/div/div/form/div[3]/button"
+  }
+}

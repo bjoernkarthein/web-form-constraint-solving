@@ -366,7 +366,7 @@ class SpecificationBuilder:
         )
         grammar = self.__replace_by_list_options(
             grammar,
-            "start",
+            get_grammar_identifier_for_type_string(InputType.RADIO.value),
             list(map(lambda o: f'"{o[1]}"', html_radio_group_specification.options)),
         )
 
@@ -503,8 +503,9 @@ class SpecificationBuilder:
         formula: str,
         candidate: LiteralCompCandidate,
     ) -> Tuple[str, str | None]:
+        grammar_identifier = get_grammar_identifier_for_type_string(input_type)
         new_part = self.__get_formula_for_operator(
-            f"<{input_type}>", candidate.other_value, candidate.operator
+            f"<{grammar_identifier}>", candidate.other_value, candidate.operator
         )
         formula = self.__add_to_formula(new_part, formula, ISLa.OR)
         return grammar, formula
@@ -516,8 +517,11 @@ class SpecificationBuilder:
         formula: str,
         candidate: LiteralCompCandidate,
     ) -> Tuple[str, str | None]:
+        grammar_identifier = get_grammar_identifier_for_type_string(input_type)
         new_part = self.__get_formula_for_operator(
-            f"str.len(<{input_type}>)", candidate.other_value, candidate.operator
+            f"str.len(<{grammar_identifier}>)",
+            candidate.other_value,
+            candidate.operator,
         )
         formula = self.__add_to_formula(
             new_part,
@@ -553,21 +557,24 @@ class SpecificationBuilder:
         formula: str,
         candidate: PatternMatchCandidate,
     ) -> Tuple[str, str | None]:
+        grammar_identifier = get_grammar_identifier_for_type_string(input_type)
         if not candidate.is_regex:
             formula = self.__add_to_formula(
-                f'str.contains(<{input_type}>, "{candidate.pattern}")', formula, ISLa.OR
+                f'str.contains(<{grammar_identifier}>, "{candidate.pattern}")',
+                formula,
+                ISLa.OR,
             )
-        else:
-            pattern_converter = PatternConverter(candidate.pattern)
-            pattern_grammar = pattern_converter.convert_pattern_to_grammar()
-            if pattern_grammar is None:
-                return grammar, formula
+        # else:
+        #     pattern_converter = PatternConverter(candidate.pattern)
+        #     pattern_grammar = pattern_converter.convert_pattern_to_grammar()
+        #     if pattern_grammar is None:
+        #         return grammar, formula
 
-            start_symbol = "<start> ::= "
-            if pattern_grammar.startswith(start_symbol):
-                pattern_grammar = pattern_grammar[len(start_symbol) :]
+        #     start_symbol = "<start> ::= "
+        #     if pattern_grammar.startswith(start_symbol):
+        #         pattern_grammar = pattern_grammar[len(start_symbol) :]
 
-            grammar = self.__replace_by_any_string(grammar, input_type, pattern_grammar)
+        #     grammar = self.__replace_by_any_string(grammar, grammar_identifier, pattern_grammar)
 
         return grammar, formula
 
@@ -588,7 +595,9 @@ class SpecificationBuilder:
 
         if use_datalist_options and html_constraints.list is not None:
             grammar = self.__replace_by_list_options(
-                grammar, "data", html_constraints.list
+                grammar,
+                get_grammar_identifier_for_type_string(html_constraints.type),
+                html_constraints.list,
             )
         if html_constraints.required is not None:
             formula = self.__add_to_formula("str.len(<start>) > 0", formula, ISLa.AND)
@@ -627,7 +636,9 @@ class SpecificationBuilder:
 
         if use_datalist_options and html_constraints.list is not None:
             grammar = self.__replace_by_list_options(
-                grammar, "datetime", html_constraints.list
+                grammar,
+                get_grammar_identifier_for_type_string(html_constraints.type),
+                html_constraints.list,
             )
         if html_constraints.required is not None:
             formula = self.__add_to_formula("str.len(<start>) > 0", formula, ISLa.AND)
@@ -672,7 +683,9 @@ class SpecificationBuilder:
 
         if use_datalist_options and html_constraints.list is not None:
             grammar = self.__replace_by_list_options(
-                grammar, "email", html_constraints.list
+                grammar,
+                get_grammar_identifier_for_type_string(html_constraints.type),
+                html_constraints.list,
             )
         if html_constraints.required is not None and html_constraints.minlength is None:
             formula = self.__add_to_formula(f"str.len(<start>) >= 3", formula, ISLa.AND)
@@ -690,11 +703,11 @@ class SpecificationBuilder:
                 formula,
                 ISLa.AND,
             )
-        if html_constraints.pattern is not None:
-            pattern_converter = PatternConverter(html_constraints.pattern)
-            grammar = (
-                pattern_converter.convert_pattern_to_grammar() or grammar
-            )  # As the intersection of two CFGs is non-trivial to compute, we just replace the old type grammar with the pattern grammar
+        # if html_constraints.pattern is not None:
+        #     pattern_converter = PatternConverter(html_constraints.pattern)
+        #     grammar = (
+        #         pattern_converter.convert_pattern_to_grammar() or grammar
+        #     )  # As the intersection of two CFGs is non-trivial to compute, we just replace the old type grammar with the pattern grammar
 
         return grammar, formula
 
@@ -706,7 +719,9 @@ class SpecificationBuilder:
 
         if use_datalist_options and html_constraints.list is not None:
             grammar = self.__replace_by_list_options(
-                grammar, "month", html_constraints.list
+                grammar,
+                get_grammar_identifier_for_type_string(html_constraints.type),
+                html_constraints.list,
             )
         if html_constraints.required is not None:
             formula = self.__add_to_formula("str.len(<start>) > 0", formula, ISLa.AND)
@@ -764,7 +779,9 @@ class SpecificationBuilder:
 
         if use_datalist_options and html_constraints.list is not None:
             grammar = self.__replace_by_list_options(
-                grammar, "number", html_constraints.list
+                grammar,
+                get_grammar_identifier_for_type_string(html_constraints.type),
+                html_constraints.list,
             )
 
         if html_constraints.required is not None:
@@ -805,7 +822,9 @@ class SpecificationBuilder:
 
         if use_datalist_options and html_constraints.list is not None:
             grammar = self.__replace_by_list_options(
-                grammar, "text", html_constraints.list
+                grammar,
+                get_grammar_identifier_for_type_string(html_constraints.type),
+                html_constraints.list,
             )
         if html_constraints.required is not None and html_constraints.minlength is None:
             formula = self.__add_to_formula("str.len(<start>) > 0", formula, ISLa.AND)
@@ -821,11 +840,11 @@ class SpecificationBuilder:
                 formula,
                 ISLa.AND,
             )
-        if html_constraints.pattern is not None:
-            pattern_converter = PatternConverter(html_constraints.pattern)
-            grammar = (
-                pattern_converter.convert_pattern_to_grammar() or grammar
-            )  # As the intersection of two CFGs is non-trivial to compute, we just replace the old type grammar with the pattern grammar
+        # if html_constraints.pattern is not None:
+        #     pattern_converter = PatternConverter(html_constraints.pattern)
+        #     grammar = (
+        #         pattern_converter.convert_pattern_to_grammar() or grammar
+        #     )  # As the intersection of two CFGs is non-trivial to compute, we just replace the old type grammar with the pattern grammar
 
         return grammar, formula
 
@@ -837,7 +856,9 @@ class SpecificationBuilder:
 
         if use_datalist_options and html_constraints.list is not None:
             grammar = self.__replace_by_list_options(
-                grammar, "time", html_constraints.list
+                grammar,
+                get_grammar_identifier_for_type_string(html_constraints.type),
+                html_constraints.list,
             )
         if html_constraints.required is not None:
             formula = self.__add_to_formula("str.len(<start>) > 0", formula, ISLa.AND)
@@ -865,19 +886,17 @@ class SpecificationBuilder:
     def __add_constraints_for_url(
         self, html_constraints: HTMLConstraints, use_datalist_options=False
     ) -> Tuple[str, str | None]:
-        # TODO: grammar not always accepted by chrome
         grammar = load_file_content(f"{pre_built_specifications_path}/url/url.bnf")
-        # TODO: formula not working
-        # formula = load_file_content(
-        #     f'{pre_built_specifications_path}/url/url.isla')
-        formula = None
+        formula = load_file_content(f"{pre_built_specifications_path}/url/url.isla")
 
         if use_datalist_options and html_constraints.list is not None:
             grammar = self.__replace_by_list_options(
-                grammar, "url", html_constraints.list
+                grammar,
+                get_grammar_identifier_for_type_string(html_constraints.type),
+                html_constraints.list,
             )
         if html_constraints.required is not None and html_constraints.minlength is None:
-            formula = self.__add_to_formula("str.len(<start>) >= 8", formula, ISLa.AND)
+            formula = self.__add_to_formula("str.len(<start>) > 0", formula, ISLa.AND)
         elif html_constraints.minlength is not None:
             formula = self.__add_to_formula(
                 f"str.len(<start>) >= {html_constraints.minlength}",
@@ -890,11 +909,11 @@ class SpecificationBuilder:
                 formula,
                 ISLa.AND,
             )
-        if html_constraints.pattern is not None:
-            pattern_converter = PatternConverter(html_constraints.pattern)
-            grammar = (
-                pattern_converter.convert_pattern_to_grammar() or grammar
-            )  # As the intersection of two CFGs is non-trivial to compute, we just replace the old type grammar with the pattern grammar
+        # if html_constraints.pattern is not None:
+        #     pattern_converter = PatternConverter(html_constraints.pattern)
+        #     grammar = (
+        #         pattern_converter.convert_pattern_to_grammar() or grammar
+        #     )  # As the intersection of two CFGs is non-trivial to compute, we just replace the old type grammar with the pattern grammar
 
         return grammar, formula
 
@@ -906,7 +925,9 @@ class SpecificationBuilder:
 
         if use_datalist_options and html_constraints.list is not None:
             grammar = self.__replace_by_list_options(
-                grammar, "week", html_constraints.list
+                grammar,
+                get_grammar_identifier_for_type_string(html_constraints.type),
+                html_constraints.list,
             )
         if html_constraints.required is not None:
             formula = self.__add_to_formula("str.len(<start>) > 0", formula, ISLa.AND)
@@ -1015,7 +1036,7 @@ class SpecificationBuilder:
         self, value: str, other_value: str, operator: str
     ) -> str:
         if "VALUE" in operator and "OTHER" in operator:
-            compOperator = compOperator.replace("VALUE", value)
+            compOperator = operator.replace("VALUE", value)
             return compOperator.replace("OTHER", other_value)
 
         return f"{value} {operator} {other_value}"

@@ -1,5 +1,5 @@
 <start> ::= <week-or-empty>
-<week-or-empty> ::= "" | <<week>
+<week-or-empty> ::= "" | <week>
 <week> ::= <year> "-W" <week>
 <year> ::= <digit><digit><digit><digit>
 <week> ::= <digit><digit>

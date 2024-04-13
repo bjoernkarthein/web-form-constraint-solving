@@ -1,5 +1,5 @@
 {
-  "url": "https://some-test-website-with-a-form.com",
+  "url": "https://some-web-page-with-a-form.com",
   "controls": [
     {
       "type": "email",

@@ -1,4 +1,3 @@
-import cProfile
 import os
 import sys
 import yaml
@@ -39,6 +38,6 @@ if __name__ == "__main__":
 
     fill_cart(driver)
     driver.run_test(
-        "evaluation/specifications/opencart/specification.json",
+        "evaluation/specifications/opencart/specification_edited.json",
         "evaluation/opencart_test_results.json",
     )

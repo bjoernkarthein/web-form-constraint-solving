@@ -26,14 +26,10 @@ def setup(driver: TestAutomationDriver) -> None:
 if __name__ == "__main__":
     config = yaml.safe_load(open("evaluation/config_test.yml"))
 
-    # initialize profiler
-    pr = cProfile.Profile()
-
-    file = os.path.basename(__file__)[:-3]
-    driver = TestAutomationDriver(
-        config,
-        "http://localhost/admin/people/create"
-    )
+    driver = TestAutomationDriver(config, "http://localhost/admin/people/create")
 
     setup(driver)
-    driver.run_test("evaluation/specifications/drupal/specification.json", "evaluation/drupal_test_results.json")
+    driver.run_test(
+        "evaluation/specifications/drupal/specification.json",
+        "evaluation/drupal_test_results.json",
+    )

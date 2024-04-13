@@ -1,0 +1,1011 @@
+{
+  "test_round_1": {
+    "generated_values": [
+      "(validity: VALID, value: 6d)",
+      "(validity: VALID, value: k,cWVhKt>pb^U+{r:}K!B470dms!=#* ?W0x)+: sR(MW*utw-+I]d;%#%7[P ^Q6d4S?*&$O2M~z]Qm7%F!AT>m5@veKMV(SoC$)",
+      "(validity: VALID, value: :!)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_2": {
+    "generated_values": [
+      "(validity: VALID, value: x)",
+      "(validity: VALID, value: x&9x}O>9HR/=Tar%vj`8sYSwvj%nE>di)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_3": {
+    "generated_values": [
+      "(validity: VALID, value: Q)",
+      "(validity: VALID, value: toy)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "302 Found"
+  },
+  "test_round_4": {
+    "generated_values": [
+      "(validity: VALID, value: ;)",
+      "(validity: VALID, value: 2~wc5)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_5": {
+    "generated_values": [
+      "(validity: VALID, value: I)",
+      "(validity: VALID, value: $ODk#)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_6": {
+    "generated_values": [
+      "(validity: VALID, value: Dk)",
+      "(validity: VALID, value: 5Qol#NPPA|]_C|NYCegVkaHEPn5(bBV*)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_7": {
+    "generated_values": [
+      "(validity: VALID, value: f)",
+      "(validity: VALID, value: }Fw5>)",
+      "(validity: VALID, value: 4u)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_8": {
+    "generated_values": [
+      "(validity: VALID, value: w)",
+      "(validity: VALID, value: p)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "302 Found"
+  },
+  "test_round_9": {
+    "generated_values": [
+      "(validity: VALID, value: s)",
+      "(validity: VALID, value: KI)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_10": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 62oj|o)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_11": {
+    "generated_values": [
+      "(validity: VALID, value: i9)",
+      "(validity: VALID, value: 082|deq!_ZS7oQGn5xvnxb8^D)X8Hy%vSQv+$8?)",
+      "(validity: VALID, value: C)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_12": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: B]X6*g4=2oLRX+wd3Q?OmL})F%t,(d-4I{`}+*Z@vdgWXf{xtz*' uHH&dp]LGcx)",
+      "(validity: VALID, value: P)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_13": {
+    "generated_values": [
+      "(validity: VALID, value: X)",
+      "(validity: VALID, value: 7?RX)r$K4ype`dH:%a>w/~pPWO}e|Q=EoPBNM%Z96GFT'C4D0f;iM5_X`q%IWv55yO>#()",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_14": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: D9(WlMI/48eliVoLun~+`^1:T1$#{L^!KI%=G)",
+      "(validity: VALID, value: Y)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_15": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: >)",
+      "(validity: VALID, value: U)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_16": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: ( Vmy{)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_17": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: z@pvttYs%]T-$6q:Aw5JFU.NY0:0;##OyD,^&#]r>` ke!h]1s>jgXXUDxJjYKZ-)",
+      "(validity: VALID, value: <A)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_18": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: jFfVI AS0y(b~AMZEx~/cd1k8(wufzbs)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_19": {
+    "generated_values": [
+      "(validity: VALID, value: y)",
+      "(validity: VALID, value: ui&D>:',,s{F>wd:#J+u%{hiBIV]:(Ut{8Y5v:9GTZ C1K3w?kUO>.hr)&^gDx:WMRadnguhi}$N_W)HK1u@Zg~HXs5Rg#3`iE+|)",
+      "(validity: VALID, value: eT)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_20": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: t:2; s+V0)XXC8v9n?OZ+*B2yazR?dM[*WoQ_~67K4npM-aGgBFYsmm$%|R^3CGt)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_21": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: `}-$T/(H/a$(mb{,1EMa>/BSUkGLU}lN)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_22": {
+    "generated_values": [
+      "(validity: VALID, value: o^)",
+      "(validity: VALID, value: U#{h!BiM$_}d3QP~Xkuz1Q&'I@D)_(`:(['&r#w|geXHJ14oWF0|IYP!o`e/Q}nxNBW_+j|m^+gZGhd~/ZuH{_:W/3l`D[.1)",
+      "(validity: VALID, value: m;)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_23": {
+    "generated_values": [
+      "(validity: VALID, value: M8)",
+      "(validity: VALID, value: T#%)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_24": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: *0f~vl)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_25": {
+    "generated_values": [
+      "(validity: VALID, value: o!)",
+      "(validity: VALID, value: yK4 FD#Q$2>R^g^zqSG1Cd[0vWNGlQ{&lvr6[UGks&FAIvqA;z*>]oedMmqs6_ZfdefUA)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_26": {
+    "generated_values": [
+      "(validity: VALID, value: O)",
+      "(validity: VALID, value: ;6`I>|-5t_.dC_OC/`Z2'uvF#n~]gB}6)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_27": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: G${5.%wL;Q9]{faM)XV,.%{Z@Nj=r+ylML&5*T@?v$0ME6YR!R36GhKc0x$Y&X)g)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_28": {
+    "generated_values": [
+      "(validity: VALID, value: kS)",
+      "(validity: VALID, value: +2wyc-QOcH@2VwTTUm6I&ZM#!J~oU>yx)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_29": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: {e)",
+      "(validity: VALID, value: r)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_30": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 5J},S{6+tS@~ cZV7dlM@qqU~)_@CE]y{Hd(TWFfCAiZ3G'@h{DgjUFxH+Z'_Xf)r0,N`F94)E$WXArErOW~Li9}gr;dL[YX1)",
+      "(validity: VALID, value: Q)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_31": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: a)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_32": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: VALID, value:  9)Se&/)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_33": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: pM)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_34": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: W+UU~e^n!]K?@xr&S^'R-Xcp*5#AqRf](_rZ-5P3Nra7Z$4`q/*yb;{JG1=F9g`R+C9WnEKjO[ZRi,y&g:g+FwA#1xM/hIr=F)",
+      "(validity: VALID, value: b)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_35": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: XDk.K4#)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_36": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: $Ca!D')",
+      "(validity: VALID, value: O)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_37": {
+    "generated_values": [
+      "(validity: VALID, value: z[)",
+      "(validity: VALID, value: OrAZ!4_~=a%Vx&QL`#djx$Ph~0wn$Toc/QswAqj*u}?y&b8P-(oZlr:[=UxKe?7=+KNOgz)",
+      "(validity: VALID, value: |)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_38": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: W&^3mF; >V;'t$_(6N(rGr^k&gpF7b*JCgY&? Hq8p'9rs~c:s%'w@_g#@S,[!2 )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_39": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: ]e.N/|Y2A!w]`F]n8*{J8?Wa{4xB/u9()CF>@^)",
+      "(validity: VALID, value: /R)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_40": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: Q 0V_)",
+      "(validity: VALID, value: |k)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_41": {
+    "generated_values": [
+      "(validity: VALID, value: z)",
+      "(validity: VALID, value: DQrBN+ )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_42": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: c?^oC=jUhheQ p1|^;[x,+?mmSXCqd|/)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_43": {
+    "generated_values": [
+      "(validity: VALID, value: 7)",
+      "(validity: VALID, value: 'Qh@cXE8RsIz2oXM8dw=FL]4$?&+|Gky)",
+      "(validity: VALID, value: A)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_44": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: :WiqCk6yK.hRl%lQEb*,/3lK}w]#&R-M-[4.Y>qM ;r?z),i#]mc,_-mxW:##unH)",
+      "(validity: VALID, value: aB)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_45": {
+    "generated_values": [
+      "(validity: VALID, value: >5)",
+      "(validity: VALID, value: j)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "302 Found"
+  },
+  "test_round_46": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: VALID, value:  gi-_^|Q0nU-~m@_%5O{(-VTk,[o&j_TqbsMld@Pn}yjk*|?8+Q=zt$yPY6^*HWM)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_47": {
+    "generated_values": [
+      "(validity: VALID, value: <[)",
+      "(validity: VALID, value: Zf]#_%C)",
+      "(validity: VALID, value: P)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_48": {
+    "generated_values": [
+      "(validity: VALID, value: X)",
+      "(validity: VALID, value: 2k;^'%N)iG`jiY/j4Ez*hP]Z)L'i_}o-WOCw>4Gor=b'67hTaNiwmnKsd)G`xJGT)",
+      "(validity: VALID, value: NX)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_49": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: f[K^d2p)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_50": {
+    "generated_values": [
+      "(validity: VALID, value: C)",
+      "(validity: VALID, value: r!4{}o74Ac7_/Eo!;(ASKl_?8PMtHR>OwJZ^W)",
+      "(validity: VALID, value: f)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_51": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: }E=RvqUIPnPU'bgNV'xoU;0usu0tCbWx)",
+      "(validity: INVALID, value: \\-)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_52": {
+    "generated_values": [
+      "(validity: INVALID, value: \f\f)",
+      "(validity: INVALID, value: mLYNT9?WJTMS`F 'r;Yv*QsgO#lmV./fO,Fei|FErGVBd@zQy[bYq1RMKbav.7c#pZ@`gF&{p{:v$N%X@Vla!&Is?_bi/](woNuB:)",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: i\u0010)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_53": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: P~&ME#pEO0S2QSASfy8m&Jxd=NxFsatz@DK_*7$79v3.je4FxDsU;8|i7awo $q9)",
+      "(validity: VALID, value: U,)",
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: !2)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_54": {
+    "generated_values": [
+      "(validity: INVALID, value: Z\r\tq)",
+      "(validity: INVALID, value: E~Q6R7c2|ifkd$v J=~6QI&x:a2mFwE1{zF8kmKJ20UA.v!:Rp~v;FJw*;vfO&+GFi@6[9O4@grvi1]aZT72WA^CU1)}Pyl{Lf)}y)",
+      "(validity: INVALID, value: \tS)",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_55": {
+    "generated_values": [
+      "(validity: VALID, value: F)",
+      "(validity: INVALID, value: *SB,T?zboU]UPkFM?PECV?221Q(y{Y Mapg*Q0OU$dQN}e4,o^YF2cfsWO0JS'>'VvX,=$lpcjhd|Q6wNV!;V3Z}E8oJFy3L(01:')",
+      "(validity: INVALID, value: \\)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: p6)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_56": {
+    "generated_values": [
+      "(validity: INVALID, value: \u000b\n)",
+      "(validity: VALID, value: #58qFL*i.{xDTX5jL: 1qKjGXwV7u5nur,kH2WKmI>sEjXqwawC14O'UgXV;K3/5}n|W|lPrEEvY,l1M(%NZGp.r?1*VTa9f;ke=)",
+      "(validity: INVALID, value: \f)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_57": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: ()",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_58": {
+    "generated_values": [
+      "(validity: INVALID, value: \f)",
+      "(validity: INVALID, value: SkkFTy'6TME9%IC{rXK,Z,CS;3;(P&[B[.mK|urq7yQ]tYX@Bs/OyP{#boS{'^h$+8]z]sNlj-q3w+k,Q@_NeewOuHTbz>m}>J?fO)",
+      "(validity: INVALID, value: \n)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_59": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: 5&VHc Ek;[7qM2E+?}`6+(]YJVUwA.t>mghC2?%&M6QM)2mLEhfEgk#dpcF::xq7jK=G2.x_e!)*1KtD]2:tgGadXTjXdjSl|koZ*)",
+      "(validity: INVALID, value: \r)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_60": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: mn!&$.ll&q'%&i1]Wd.qvb,I5^dY`6v4b=$*,Zx!y4w k5=Fm}io}`ZcdKhsdK7W3P!#BMKlz3}?F!}w+YRRsZ^vC`Q;ff0S={|-n)",
+      "(validity: INVALID, value: \r\f)",
+      "(validity: VALID, value: 0)",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_61": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: aO#G[`Lqx>BL|'Y68dzj#c',u-8K_wkpBPX3+$#]nY(Ss[gWC?R_O2Y(2}U>^t#YdVD}6nhEgTxR6tx`4^UMw pF9CLIH+4[v;^~P)",
+      "(validity: VALID, value: u)",
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: F\\0)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_62": {
+    "generated_values": [
+      "(validity: INVALID, value: i\nv)",
+      "(validity: INVALID, value: hmEF8-g8A2{gJ7nOR|n;w#&%E*(?[&AMD*]W4{a_)+Wb=w{ai*26wuu*nE',2}Wz/bL3/@-e?JreeI)o_iPR!!.k(vVjjghyzmJ_w)",
+      "(validity: INVALID, value: \u001a)",
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: =)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_63": {
+    "generated_values": [
+      "(validity: INVALID, value: -\u000b)",
+      "(validity: INVALID, value: 20PZn0siZ+5aYl^8tV$UYyKPK5wQ/{E'tPo]b)hdM*P~QVd/RB-pi%WoJ.|6>L?Yo/2SZ&IX*wdPkVr1P>6zu49BmF_Q]S:hwz3|l)",
+      "(validity: INVALID, value: n\\)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: 9S)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_64": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: _^gHD2Mj+rnC-maS8t{v.Y;M?3f.V48a_.n,w4*[H%ujnz^M9PhTn&FOg0Qf]2|XT=pu?DP#l1H{z&!O^js$*tmH}YLGLMsi>gnmm)",
+      "(validity: INVALID, value: \"0)",
+      "(validity: VALID, value: 0)",
+      "(validity: INVALID, value: 9r)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_65": {
+    "generated_values": [
+      "(validity: INVALID, value: \")",
+      "(validity: INVALID, value: ](dG99,gf[P(UlF_rkNGinrwJ$mg_5I4r M#jfWU jyndnRJ&t#|/xv`>^RxK|E,[iB]+b|s^ni{c$|qD'#cz.IvY/&wr1 W)+AI1)",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_66": {
+    "generated_values": [
+      "(validity: VALID, value: X)",
+      "(validity: VALID, value: Qy)",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_67": {
+    "generated_values": [
+      "(validity: INVALID, value: \\OI\\)",
+      "(validity: VALID, value: f|cA?#LII(~-@nu#gRGWJs*{Rio+JLiunEbd}Bcd:W#{v MyKiwo^LK!u'qx_+h -`9mF{+KRIZc(;EIvquykH=&c$(^s@({a)",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: @)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_68": {
+    "generated_values": [
+      "(validity: INVALID, value: \\)",
+      "(validity: VALID, value: A*0.0}$rXf?6`,lK,,#G4vrspblT)bW~3g7dar&m_L)/Hp3GMy qJTR!:{2M_b3;wStfeq/#']?9oA&h/{Fg/r!1&2$8=fR3(')",
+      "(validity: INVALID, value: \f)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_69": {
+    "generated_values": [
+      "(validity: VALID, value: I)",
+      "(validity: INVALID, value: dZ3aZP'--gyPDe=)iUiXu2M.F=+(qtYud,}*Nj[2Be[(W$Rf$AJ$e)'%KJNt[c^s(zq6.}ErIFmDsj]~V+>'o7aW[_x8 4IAlNbO$)",
+      "(validity: INVALID, value: \u000bm\r)",
+      "(validity: VALID, value: 0)",
+      "(validity: INVALID, value: DY0)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_70": {
+    "generated_values": [
+      "(validity: INVALID, value: \")",
+      "(validity: VALID, value: ,:d+)-&A5TP6 %klD?Egeg[Fa*D:]G)XA,7bhz'Sm9B15e_$Ca27`y1{?aS`.;J,:V_|p3)",
+      "(validity: INVALID, value: \u000bu\\)",
+      "(validity: INVALID, value: p)",
+      "(validity: INVALID, value: sp)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_71": {
+    "generated_values": [
+      "(validity: INVALID, value: \"\n)",
+      "(validity: INVALID, value: O@^UYqv$Y3N$[}jIz'()hXOJB)JN2Jk2/8.kygFWGX_Ps:E{>3GCK#A@vuT!G/3G1=zP*4JX;ii=^VUud7qO_*GrTO3n^N6LY^&},)",
+      "(validity: VALID, value: 8)",
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: Q)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_72": {
+    "generated_values": [
+      "(validity: INVALID, value: \u000b)",
+      "(validity: INVALID, value: mQ-VfXP4/tDT6uA%=;WT1b(N;,q^s%K1S!8V:*(,QY2@.j}_|-3|Sn8TSZI*z-+K*Ob@?86O|Oo|G?u/eBqxOgH MxMO%_Dm^q_g/)",
+      "(validity: INVALID, value: }\r\t7)",
+      "(validity: INVALID, value: -17)",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_73": {
+    "generated_values": [
+      "(validity: INVALID, value: _\"=)",
+      "(validity: VALID, value: o7)",
+      "(validity: VALID, value: 3[)",
+      "(validity: INVALID, value: U)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "302 Found"
+  },
+  "test_round_74": {
+    "generated_values": [
+      "(validity: INVALID, value: \u0005\")",
+      "(validity: INVALID, value: ]II!+u~)Fd*v4vw5sEY{M*^1QWr5Ef%gqh$GqQc4VlMJw`%O2V8EQm[HR),ipm%+$[Y3ArERb:4VhRN=&|MeU/9SPyr=@&7/.Itx2)",
+      "(validity: INVALID, value: \b')",
+      "(validity: INVALID, value: q)",
+      "(validity: INVALID, value: 9,)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_75": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: wRA9O7f)",
+      "(validity: VALID, value: E`)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_76": {
+    "generated_values": [
+      "(validity: INVALID, value: \u0016\f)",
+      "(validity: INVALID, value: e-Q!Z)2=kii'TgpZ|`{N:Do$P(rfFXld]z43+$~8b'1o>?>$=rM_NI;|I3RYoai]ThR;K- d%+V`GevHd-#G}=xjk8vv)EXA@Naiv)",
+      "(validity: INVALID, value: \u000e)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: K)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_77": {
+    "generated_values": [
+      "(validity: INVALID, value: \\)",
+      "(validity: INVALID, value:  go47awY,Wkg}#9V%+7k9~l)0^-tHLl)T5BAmsVuY-(d%9#I4T9}#m'_'K^X%&Hls##IibVdm2B>>nc';7uy>&Ms]RdeSZSsWW|E})",
+      "(validity: VALID, value: G)",
+      "(validity: INVALID, value: B)",
+      "(validity: INVALID, value: +)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_78": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: ~dP7H}/]MjrL.O(CUC6*]bqr`:f8~l.R)",
+      "(validity: VALID, value: s)",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_79": {
+    "generated_values": [
+      "(validity: VALID, value: ~G)",
+      "(validity: VALID, value: !)",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_80": {
+    "generated_values": [
+      "(validity: INVALID, value: \n)",
+      "(validity: INVALID, value: X^|_>BR 4iL`O|u5edm+7,+q|uA2A$!Lr{CAbbe_A*-n8']HGkCyp)^jc&WJTRqyW'I6>t,,q3sn$m/nxnQl,T[.,pw~#[ldZO%jj)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_81": {
+    "generated_values": [
+      "(validity: VALID, value: %5)",
+      "(validity: INVALID, value: 2~Av#x2%s%S*L+$`HIx(c%?cN*h6]LnN7sGj)H+-CEDg>MD02a}p4n#os`{UfZ?&J-):gYf51V,wS.-t?l(Oso(uQ!)W;#:7d!qd{)",
+      "(validity: VALID, value: 1X)",
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_82": {
+    "generated_values": [
+      "(validity: VALID, value: >$)",
+      "(validity: VALID, value: CqGu`Iyi79*Pm1p+878 XMv_.8T%'j2c+ALMFZ;@M8yeR'Q|Zg}X`ilR00|q-*L07RwPJWf?D$P+Yheo08kyMlV(DIO)-a#[2d)",
+      "(validity: INVALID, value: \rs\fe)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_83": {
+    "generated_values": [
+      "(validity: INVALID, value: \t\t)",
+      "(validity: VALID, value: /@FcArN)",
+      "(validity: INVALID, value: \n)",
+      "(validity: INVALID, value: P)",
+      "(validity: INVALID, value: ^a1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_84": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: rM2@-m$iM[Y&nUkT-)?A(6^x('1?uRH`:3,21SDT7MIVT4()TcXINy$zyqaBFw0C8B.NQP/ y%@+3qYwI,it6>W'g!c@iY0Usqq[:)",
+      "(validity: VALID, value: u)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_85": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: Pn09`^r-EP'G?m5+4zKH >mLr7%7UJjj&c5qPGy9vC@(KUY=@@.ryQ~yN[Ae;CM@-&[W0n,c:B`MbIx60>g]CM@*5)#eWVn.YS4kF)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_86": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: ,/a$k!$e2qqo'!9>5P+S+2a6mPNw?0gB.O*d|Ynf @|*{mZB$5~W3XLYdk9Jv>?5)",
+      "(validity: INVALID, value: \\\u000b)",
+      "(validity: INVALID, value: O)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_87": {
+    "generated_values": [
+      "(validity: INVALID, value: \r)",
+      "(validity: VALID, value: `d^ff~w~#e2QIgrXW8X1g5K9NiqjqV^BJ&iw@uckvn2v7)wca)[g3F/.$x0Z;Q`NGo+d.o_=5w@V+]1)I'b}2 vhZ~L(pkry)",
+      "(validity: VALID, value: N+)",
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_88": {
+    "generated_values": [
+      "(validity: VALID, value: jt)",
+      "(validity: INVALID, value: }{myads}FG#tQ|NX,>+oALCIAhEQ09eN*5Nc+2[BPBs[,LpFmZLf)-@n=_2s[ZCx(`yj?P5_lqM#|'1y'h28.]0,I>jW(o:>B~L-f)",
+      "(validity: INVALID, value: \u000b\n)",
+      "(validity: VALID, value: 0)",
+      "(validity: INVALID, value: 1\"6)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_89": {
+    "generated_values": [
+      "(validity: INVALID, value: \r\t)",
+      "(validity: VALID, value: }{KE[Wm_-|*0*/%rr|ceV*]DU%rK,pXkMMB,f)",
+      "(validity: INVALID, value: \tj)",
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: ()"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_90": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: Ti!o{j)I~Yv&` 2t!Z;~+ Af4kfyRDy/3!uKv4J)!%5w=-4 krTGci*Ahw6F~U4uG4>!HBL>h2HYinf+)qr9!Hs6j0+hhZ`LDe*p)",
+      "(validity: VALID, value: B)",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_91": {
+    "generated_values": [
+      "(validity: VALID, value:  )",
+      "(validity: INVALID, value: 7WB]+' 6|pRjoL;9^bXi9]t!GAaxx-F C;kW*'BUvP~y@Ep[mJ@FQ]VVpLOd'y-Nm(+H.|1Gq->Rr%wL`2IU_W+OT&/mJ.qZl4%Nr)",
+      "(validity: INVALID, value: \f)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_92": {
+    "generated_values": [
+      "(validity: INVALID, value: \r)",
+      "(validity: VALID, value: Yzg|_]&/0#t+k3KujJhG},0U6-hC`r8G>^[sg&!=b035M,NY_xd{$&dnZ}d|>#$h)",
+      "(validity: VALID, value: >)",
+      "(validity: INVALID, value: V1Q)",
+      "(validity: INVALID, value: c)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_93": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: *6zQ9*gaQ HECZ%12FjzztkGVsL{dYvE$?Rdl9S24`v):A6VuGgV/0fHbt+jO.gog9Ay1d5[i^~{x6~~2r0:1RBkUfe *W#$|:I$@)",
+      "(validity: VALID, value: O)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_94": {
+    "generated_values": [
+      "(validity: INVALID, value: \"f\\)",
+      "(validity: INVALID, value: W'1z]^l&qT=f5-e*Rq+Xw,VPfHZfspD--4J6[zO!{Aov>.-jrDca=dkmE*^GZ14W]k/j2Ov|b;.r4V^Id;cI6-Zs@jQ/3i_nyyA$r)",
+      "(validity: INVALID, value: \rs)",
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_95": {
+    "generated_values": [
+      "(validity: INVALID, value: \rE)",
+      "(validity: INVALID, value: 5H/!DEDOn +?MA:7x+mq.oO[vm5~F4^:[H~?*o}T}ujUoc)m7g]-i@}Qa4YyW1iDVw]7Nj}{9dyI:+_Oc$1dcD+m$6E`OjP_,E-z})",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: INVALID, value: Vq)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_96": {
+    "generated_values": [
+      "(validity: INVALID, value: \\)",
+      "(validity: VALID, value: 3e042Gx0w|U]Y2+eP40i48X,R`2AbR)NS.KtD1z@!~,c^U;k=RlNq+l.~AfE:Ngt}!~F?fGp*7[0NK{)ZiuZB7u3?!?;()GxnS)",
+      "(validity: INVALID, value: \u000bC=\n)",
+      "(validity: INVALID, value: 2X)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_97": {
+    "generated_values": [
+      "(validity: INVALID, value: \u000b)",
+      "(validity: INVALID, value: $s[#j)gUKuByK6aD}b3+$ )V48b&bvvw~bHWA0vAnpA,B&X[+~V@:U],H^Qj`:C&8?plMR^n)/;Eakv^UQqk&Wm41dyTEm_T$ A&T)",
+      "(validity: INVALID, value: \"\")",
+      "(validity: INVALID, value: Q1W)",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_98": {
+    "generated_values": [
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: 'H'|@ 2@}MxE5R-A 5(X[=&;A5#G)x4;&m%g;Y rfb6,3d^WAwCf^%de&mlDB4RtnrhOV?+5bNY;MtIo:=j+8x>yV KA06[a2R'Cm)",
+      "(validity: INVALID, value: \u000b\")",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_99": {
+    "generated_values": [
+      "(validity: INVALID, value: w\t\r)",
+      "(validity: VALID, value: YGJ$wZ1`2wJ$w?KAJeFe5wPE:v'0,b']Q{sj'ZB56&j($uLI*_LQ~=Prp2[xZ}_$(2=0oV82]89Yh{8WV@dWL'dQ1oAq*Y$J[)",
+      "(validity: VALID, value: E)",
+      "(validity: INVALID, value: ))",
+      "(validity: INVALID, value: 3')"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_100": {
+    "generated_values": [
+      "(validity: VALID, value: iL)",
+      "(validity: INVALID, value: Sqihoz[|&,&vlm|`2Q@TDxV]t/c?L/bZnxMx`hP2yAyYTz.jHaN,bH-!t&82yJD6+7NiZF0R%Y.0[SuU8F-a/nmcK6rCbU^o@Dkk )",
+      "(validity: INVALID, value: \b)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "stats": {
+    "total": 100,
+    "valid": 50,
+    "invalid": 50,
+    "tp": 50,
+    "fp": 0,
+    "tn": 40,
+    "fn": 10
+  }
+}

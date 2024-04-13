@@ -173,7 +173,7 @@ class FormTester:
         self.__url = url
         self.__report_path = report_path
 
-    def start_generation(self, setup_function=None) -> None:
+    def start_generation(self, setup_function=None, automation=None) -> None:
         self.__interceptor = NetworkInterceptor(self.__driver)
         if self.__block_successful_submissions:
             self.__interceptor.scan_for_form_submission()
@@ -201,21 +201,21 @@ class FormTester:
         # TODO generate all values in advance for better diversity and just fill in afterwards. Not that easy with current setup
         for i in range(self.__valid):
             print(f"Round {i + 1}: Generating a valid instance...")
-            self.__prepare_next_form_filling(setup_function)
+            self.__prepare_next_form_filling(setup_function, automation)
             self.__fill_form_with_values_and_submit(generator)
 
         for i in range(self.__invalid):
             print(f"Round {self.__valid + i + 1}: Generating an invalid instance...")
-            self.__prepare_next_form_filling(setup_function)
+            self.__prepare_next_form_filling(setup_function, automation)
             self.__fill_form_with_values_and_submit(generator, ValidityEnum.INVALID)
 
         self.__test_monitor.process_saved_submissions()
 
-    def __prepare_next_form_filling(self, setup_function=None) -> None:
+    def __prepare_next_form_filling(self, setup_function=None, automation=None) -> None:
         clear_value_mapping()
         load_page(self.__driver, self.__url)
         if setup_function is not None:
-            setup_function()
+            setup_function(automation)
 
     def __get_submit_element_from_json(self, spec: Dict) -> HTMLElementReference:
         return HTMLElementReference(
@@ -299,7 +299,7 @@ class FormTester:
             )
 
         self.__test_monitor.attempt_submit_and_save_response(
-            get_current_values_from_form(), values
+            get_current_values_from_form(), values, validity
         )
 
 
@@ -331,12 +331,17 @@ class TestMonitor:
         self.__fn = 0
 
     def attempt_submit_and_save_response(
-        self, current_values: Dict[str, str], generated_values: List[GeneratedValue]
+        self,
+        current_values: Dict[str, str],
+        generated_values: List[GeneratedValue],
+        current_validity: ValidityEnum,
     ) -> None:
         self.__interceptor.generated_values = current_values
 
         start_time = datetime.now()
-        click_web_element_by_reference(self.__driver, self.__submit_element)
+        click_web_element_by_reference(
+            self.__driver, self.__submit_element, explicit=True
+        )
 
         # Wait 5 seconds before checking all requests for form values
         try:
@@ -363,15 +368,14 @@ class TestMonitor:
             self.__saved_submissions.append((generated_values, response))
 
         # Calculate stats
-        validities = set(map(lambda v: v.validity, generated_values))
-        if ValidityEnum.INVALID in validities:
+        if current_validity == ValidityEnum.INVALID:
             if response is None:
                 self.__tn += 1
             else:
-                self.__fp += 1
+                self.__fn += 1
         else:
             if response is None:
-                self.__fn += 1
+                self.__fp += 1
             else:
                 self.__tp += 1
 
@@ -434,10 +438,10 @@ class TestMonitor:
         print(
             tabulate(
                 [
-                    ["Actual Positive", self.__tp, self.__fn],
-                    ["Actual Negative", self.__fp, self.__tn],
+                    ["Predicted Positive", self.__tp, self.__fp],
+                    ["Predicted Negative", self.__fn, self.__tn],
                 ],
-                headers=["", "Predicted Positive", "Predicted Negative"],
+                headers=["", "Actual Positive", "Actual Negative"],
                 tablefmt="pretty",
             ),
             "\n",

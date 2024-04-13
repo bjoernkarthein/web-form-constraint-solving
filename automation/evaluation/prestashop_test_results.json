@@ -1,0 +1,1511 @@
+{
+  "test_round_1": {
+    "generated_values": [
+      "(validity: VALID, value: 2)",
+      "(validity: VALID, value: s)",
+      "(validity: VALID, value: ~)",
+      "(validity: VALID, value: .@N)",
+      "(validity: VALID, value: .g)",
+      "(validity: VALID, value: I)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_2": {
+    "generated_values": [
+      "(validity: VALID, value: 2)",
+      "(validity: VALID, value: })",
+      "(validity: VALID, value: f)",
+      "(validity: VALID, value: .@W)",
+      "(validity: VALID, value: d#)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_3": {
+    "generated_values": [
+      "(validity: VALID, value: 2)",
+      "(validity: VALID, value: $)",
+      "(validity: VALID, value: 7)",
+      "(validity: VALID, value: .@A)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: S)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_4": {
+    "generated_values": [
+      "(validity: VALID, value: 2)",
+      "(validity: VALID, value: /)",
+      "(validity: VALID, value: d)",
+      "(validity: VALID, value: .@r)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: Kr)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_5": {
+    "generated_values": [
+      "(validity: VALID, value: 2)",
+      "(validity: VALID, value: T)",
+      "(validity: VALID, value: -)",
+      "(validity: VALID, value: .@b)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_6": {
+    "generated_values": [
+      "(validity: VALID, value: 2)",
+      "(validity: VALID, value: p)",
+      "(validity: VALID, value: |)",
+      "(validity: VALID, value: .@L)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_7": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: A)",
+      "(validity: VALID, value: @)",
+      "(validity: VALID, value: .@s)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_8": {
+    "generated_values": [
+      "(validity: VALID, value: 2)",
+      "(validity: VALID, value: ,)",
+      "(validity: VALID, value: N)",
+      "(validity: VALID, value: .@L)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: dM)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_9": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: c)",
+      "(validity: VALID, value: E)",
+      "(validity: VALID, value: .@B)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: #)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_10": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: m)",
+      "(validity: VALID, value: ')",
+      "(validity: VALID, value: .@c)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_11": {
+    "generated_values": [
+      "(validity: VALID, value: 2)",
+      "(validity: VALID, value: =)",
+      "(validity: VALID, value: *)",
+      "(validity: VALID, value: .@P)",
+      "(validity: VALID, value: l)",
+      "(validity: VALID, value: cB)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_12": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: f)",
+      "(validity: VALID, value: u)",
+      "(validity: VALID, value: .@C)",
+      "(validity: VALID, value: hT)",
+      "(validity: VALID, value: r)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_13": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: %)",
+      "(validity: VALID, value: V)",
+      "(validity: VALID, value: .@i)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_14": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: I)",
+      "(validity: VALID, value: 6)",
+      "(validity: VALID, value: .@e)",
+      "(validity: VALID, value: @3)",
+      "(validity: VALID, value: D)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_15": {
+    "generated_values": [
+      "(validity: VALID, value: 2)",
+      "(validity: VALID, value: &)",
+      "(validity: VALID, value: +)",
+      "(validity: VALID, value: .@m)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: p)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_16": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 7)",
+      "(validity: VALID, value: N)",
+      "(validity: VALID, value: .@n)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 02)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_17": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: e)",
+      "(validity: VALID, value: b)",
+      "(validity: VALID, value: .@u)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: U)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_18": {
+    "generated_values": [
+      "(validity: VALID, value: 2)",
+      "(validity: VALID, value: K)",
+      "(validity: VALID, value: S)",
+      "(validity: VALID, value: .@V)",
+      "(validity: VALID, value: [^)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_19": {
+    "generated_values": [
+      "(validity: VALID, value: 2)",
+      "(validity: VALID, value: ')",
+      "(validity: VALID, value: e)",
+      "(validity: VALID, value: .@c)",
+      "(validity: VALID, value: :)",
+      "(validity: VALID, value: ~S)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_20": {
+    "generated_values": [
+      "(validity: VALID, value: 2)",
+      "(validity: VALID, value: f)",
+      "(validity: VALID, value: x)",
+      "(validity: VALID, value: .@i)",
+      "(validity: VALID, value: lk)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_21": {
+    "generated_values": [
+      "(validity: VALID, value: 2)",
+      "(validity: VALID, value: [)",
+      "(validity: VALID, value: ))",
+      "(validity: VALID, value: .@d)",
+      "(validity: VALID, value: uy)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_22": {
+    "generated_values": [
+      "(validity: VALID, value: 2)",
+      "(validity: VALID, value: P)",
+      "(validity: VALID, value: @)",
+      "(validity: VALID, value: .@x)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: u)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_23": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 2)",
+      "(validity: VALID, value: !)",
+      "(validity: VALID, value: .@u)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: ].)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_24": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: P)",
+      "(validity: VALID, value: c)",
+      "(validity: VALID, value: .@G)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_25": {
+    "generated_values": [
+      "(validity: VALID, value: 2)",
+      "(validity: VALID, value: -)",
+      "(validity: VALID, value: S)",
+      "(validity: VALID, value: .@h)",
+      "(validity: VALID, value: ^')",
+      "(validity: VALID, value: Oq)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_26": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: @)",
+      "(validity: VALID, value: U)",
+      "(validity: VALID, value: .@W)",
+      "(validity: VALID, value: a)",
+      "(validity: VALID, value: G)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_27": {
+    "generated_values": [
+      "(validity: VALID, value: 2)",
+      "(validity: VALID, value: u)",
+      "(validity: VALID, value: G)",
+      "(validity: VALID, value: .@R)",
+      "(validity: VALID, value: k)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_28": {
+    "generated_values": [
+      "(validity: VALID, value: 2)",
+      "(validity: VALID, value: X)",
+      "(validity: VALID, value: T)",
+      "(validity: VALID, value: .@Y)",
+      "(validity: VALID, value: ))",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_29": {
+    "generated_values": [
+      "(validity: VALID, value: 2)",
+      "(validity: VALID, value: *)",
+      "(validity: VALID, value: ,)",
+      "(validity: VALID, value: .@Z)",
+      "(validity: VALID, value: h()",
+      "(validity: VALID, value: _z)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_30": {
+    "generated_values": [
+      "(validity: VALID, value: 2)",
+      "(validity: VALID, value: -)",
+      "(validity: VALID, value: A)",
+      "(validity: VALID, value: .@x)",
+      "(validity: VALID, value: ()",
+      "(validity: VALID, value: #>)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_31": {
+    "generated_values": [
+      "(validity: VALID, value: 2)",
+      "(validity: VALID, value: K)",
+      "(validity: VALID, value: ])",
+      "(validity: VALID, value: .@N)",
+      "(validity: VALID, value: *x)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_32": {
+    "generated_values": [
+      "(validity: VALID, value: 2)",
+      "(validity: VALID, value: ^)",
+      "(validity: VALID, value: 3)",
+      "(validity: VALID, value: .@w)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_33": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: {)",
+      "(validity: VALID, value: $)",
+      "(validity: VALID, value: .@Y)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_34": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: a)",
+      "(validity: VALID, value: C)",
+      "(validity: VALID, value: .@T)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: ')",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_35": {
+    "generated_values": [
+      "(validity: VALID, value: 2)",
+      "(validity: VALID, value: o)",
+      "(validity: VALID, value: Q)",
+      "(validity: VALID, value: .@C)",
+      "(validity: VALID, value: #?)",
+      "(validity: VALID, value: )A)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_36": {
+    "generated_values": [
+      "(validity: VALID, value: 2)",
+      "(validity: VALID, value: p)",
+      "(validity: VALID, value: 4)",
+      "(validity: VALID, value: .@K)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 7)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_37": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: ~)",
+      "(validity: VALID, value: Q)",
+      "(validity: VALID, value: .@Z)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_38": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: P)",
+      "(validity: VALID, value: 3)",
+      "(validity: VALID, value: .@m)",
+      "(validity: VALID, value: })",
+      "(validity: VALID, value: *F)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_39": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: c)",
+      "(validity: VALID, value: q)",
+      "(validity: VALID, value: .@t)",
+      "(validity: VALID, value: {)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_40": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: D)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: .@O)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 7t)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_41": {
+    "generated_values": [
+      "(validity: VALID, value: 2)",
+      "(validity: VALID, value: ()",
+      "(validity: VALID, value: z)",
+      "(validity: VALID, value: .@C)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_42": {
+    "generated_values": [
+      "(validity: VALID, value: 2)",
+      "(validity: VALID, value: l)",
+      "(validity: VALID, value: `)",
+      "(validity: VALID, value: .@r)",
+      "(validity: VALID, value: T)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_43": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: ;)",
+      "(validity: VALID, value: Y)",
+      "(validity: VALID, value: .@C)",
+      "(validity: VALID, value: Hq)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_44": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: f)",
+      "(validity: VALID, value: %)",
+      "(validity: VALID, value: .@n)",
+      "(validity: VALID, value: 4)",
+      "(validity: VALID, value: k)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_45": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: x)",
+      "(validity: VALID, value: u)",
+      "(validity: VALID, value: .@D)",
+      "(validity: VALID, value: _)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_46": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: ])",
+      "(validity: VALID, value: ;)",
+      "(validity: VALID, value: .@q)",
+      "(validity: VALID, value: BP)",
+      "(validity: VALID, value: J)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_47": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: !)",
+      "(validity: VALID, value: G)",
+      "(validity: VALID, value: .@e)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_48": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: |)",
+      "(validity: VALID, value: A)",
+      "(validity: VALID, value: .@H)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_49": {
+    "generated_values": [
+      "(validity: VALID, value: 2)",
+      "(validity: VALID, value: $)",
+      "(validity: VALID, value: ))",
+      "(validity: VALID, value: .@C)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_50": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value:  )",
+      "(validity: VALID, value: L)",
+      "(validity: VALID, value: .@Z)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "200 OK"
+  },
+  "test_round_51": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: D)",
+      "(validity: VALID, value: Y)",
+      "(validity: VALID, value: .@V)",
+      "(validity: INVALID, value: \r)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)",
+      "(validity: INVALID, value: ))"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_52": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value:  )",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: .@m)",
+      "(validity: VALID, value: v)",
+      "(validity: VALID, value: .;)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_53": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: M)",
+      "(validity: VALID, value: .@L)",
+      "(validity: VALID, value: a)",
+      "(validity: INVALID, value: \t)",
+      "(validity: VALID, value: 0)",
+      "(validity: INVALID, value: i1E)",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_54": {
+    "generated_values": [
+      "(validity: INVALID, value: Bq)",
+      "(validity: VALID, value: 8)",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: .@E)",
+      "(validity: INVALID, value: \u000bz7)",
+      "(validity: INVALID, value: \r)",
+      "(validity: INVALID, value: @8)",
+      "(validity: INVALID, value: +)",
+      "(validity: INVALID, value: y)",
+      "(validity: INVALID, value: 1+k)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_55": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: %)",
+      "(validity: VALID, value: .@g)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_56": {
+    "generated_values": [
+      "(validity: INVALID, value: dJ2)",
+      "(validity: VALID, value: /)",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: .@B)",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: \t&)",
+      "(validity: INVALID, value: \u0011P)",
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_57": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INDETERMINATE, value: )",
+      "(validity: INVALID, value: \n)",
+      "(validity: INVALID, value: \r)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: c\u0011)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_58": {
+    "generated_values": [
+      "(validity: INVALID, value: o)",
+      "(validity: VALID, value: h)",
+      "(validity: VALID, value: z)",
+      "(validity: INDETERMINATE, value: )",
+      "(validity: INVALID, value: \"\f)",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: x)",
+      "(validity: INVALID, value: +)",
+      "(validity: INVALID, value: v )",
+      "(validity: INVALID, value: n)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_59": {
+    "generated_values": [
+      "(validity: INVALID, value: W1)",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: b)",
+      "(validity: INDETERMINATE, value: )",
+      "(validity: INVALID, value: \f)",
+      "(validity: VALID, value: [~)",
+      "(validity: VALID, value: 0)",
+      "(validity: INVALID, value: u)",
+      "(validity: VALID, value: 0)",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_60": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INDETERMINATE, value: )",
+      "(validity: INVALID, value: \u001d)",
+      "(validity: INVALID, value: \u000b)",
+      "(validity: INVALID, value: 2\\)",
+      "(validity: INVALID, value: /)",
+      "(validity: INVALID, value: \")",
+      "(validity: INVALID, value: })"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_61": {
+    "generated_values": [
+      "(validity: VALID, value: 2)",
+      "(validity: VALID, value: Q)",
+      "(validity: VALID, value: B)",
+      "(validity: INDETERMINATE, value: )",
+      "(validity: VALID, value: qc)",
+      "(validity: VALID, value: )')",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_62": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INDETERMINATE, value: )",
+      "(validity: INVALID, value: \u000b)",
+      "(validity: INVALID, value: \u000b\\)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: <)",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_63": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: W)",
+      "(validity: INVALID, value: )",
+      "(validity: INDETERMINATE, value: )",
+      "(validity: INVALID, value: !\t)",
+      "(validity: INVALID, value: \"K\u000b)",
+      "(validity: INVALID, value: I\u0011)",
+      "(validity: INVALID, value: Q)",
+      "(validity: INVALID, value: p/)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_64": {
+    "generated_values": [
+      "(validity: VALID, value: 2)",
+      "(validity: VALID, value: e)",
+      "(validity: VALID, value: %)",
+      "(validity: VALID, value: .@V)",
+      "(validity: INVALID, value: \t)",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: h1/)",
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: Q\u0011)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_65": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: l)",
+      "(validity: INDETERMINATE, value: )",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: \t)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)",
+      "(validity: INVALID, value: AM1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_66": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: =)",
+      "(validity: VALID, value: .@M)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: \\!)",
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: 1M)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_67": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: `)",
+      "(validity: INDETERMINATE, value: )",
+      "(validity: INVALID, value: \\)",
+      "(validity: INVALID, value: g\u000b\f)",
+      "(validity: INVALID, value: 1R)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: M3)",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_68": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: j)",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: .@d)",
+      "(validity: INVALID, value: \u000b\f)",
+      "(validity: VALID, value: tw)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_69": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 9)",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: .@F)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: [)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_70": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: f)",
+      "(validity: VALID, value: K)",
+      "(validity: VALID, value: .@z)",
+      "(validity: VALID, value: ')",
+      "(validity: INVALID, value: \t)",
+      "(validity: VALID, value: 0)",
+      "(validity: INVALID, value: u)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_71": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INDETERMINATE, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: k\u0011)",
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: 6|0)",
+      "(validity: INVALID, value:  )"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_72": {
+    "generated_values": [
+      "(validity: INVALID, value: P\")",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INDETERMINATE, value: )",
+      "(validity: INVALID, value: ^\f\"P)",
+      "(validity: INVALID, value: )\")",
+      "(validity: INVALID, value: \u0011\t)",
+      "(validity: INVALID, value: ^1)",
+      "(validity: INVALID, value: :)",
+      "(validity: INVALID, value: l1+)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_73": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INDETERMINATE, value: )",
+      "(validity: INVALID, value: \\\f)",
+      "(validity: INVALID, value: \r)",
+      "(validity: INVALID, value:  Q)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value:  1)",
+      "(validity: INVALID, value: q\\)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_74": {
+    "generated_values": [
+      "(validity: INVALID, value: *^1)",
+      "(validity: VALID, value: v)",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: .@u)",
+      "(validity: INVALID, value: >\n)",
+      "(validity: VALID, value: ]b)",
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: 1\u0003)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_75": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INDETERMINATE, value: )",
+      "(validity: INVALID, value: \t)",
+      "(validity: VALID, value: w)",
+      "(validity: VALID, value: 0)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: 1[)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_76": {
+    "generated_values": [
+      "(validity: VALID, value: 2)",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: p)",
+      "(validity: INDETERMINATE, value: )",
+      "(validity: VALID, value: ())",
+      "(validity: INVALID, value: \"\n)",
+      "(validity: INVALID, value: x)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)",
+      "(validity: INVALID, value: 5q)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_77": {
+    "generated_values": [
+      "(validity: INVALID, value: o!)",
+      "(validity: VALID, value: w)",
+      "(validity: INVALID, value: )",
+      "(validity: INDETERMINATE, value: )",
+      "(validity: INVALID, value: \u001c)",
+      "(validity: INVALID, value: W\r)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: V0\\)",
+      "(validity: INVALID, value: 09)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_78": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: K)",
+      "(validity: VALID, value: .@n)",
+      "(validity: VALID, value: '7)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_79": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 3)",
+      "(validity: VALID, value: v)",
+      "(validity: VALID, value: .@C)",
+      "(validity: VALID, value: n)",
+      "(validity: INVALID, value: \n)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: 1Fk)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_80": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: L)",
+      "(validity: VALID, value: *)",
+      "(validity: INDETERMINATE, value: )",
+      "(validity: VALID, value: O)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_81": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: b)",
+      "(validity: INVALID, value: )",
+      "(validity: INDETERMINATE, value: )",
+      "(validity: VALID, value: 2-)",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: ..1)",
+      "(validity: INVALID, value: o!)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_82": {
+    "generated_values": [
+      "(validity: VALID, value: 2)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INDETERMINATE, value: )",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: \"3\\)",
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: !H)",
+      "(validity: INVALID, value: \u000b)",
+      "(validity: INVALID, value: a)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_83": {
+    "generated_values": [
+      "(validity: INVALID, value: \u00113)",
+      "(validity: VALID, value: *)",
+      "(validity: VALID, value: I)",
+      "(validity: VALID, value: .@O)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: e)",
+      "(validity: INVALID, value: (0J)",
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: !)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_84": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INDETERMINATE, value: )",
+      "(validity: INVALID, value: \"\r)",
+      "(validity: INVALID, value: \n\u000b)",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: q!)",
+      "(validity: INVALID, value: 1/%)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_85": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: A)",
+      "(validity: VALID, value: .@I)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)",
+      "(validity: INVALID, value: :)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_86": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: x)",
+      "(validity: INDETERMINATE, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: 8)",
+      "(validity: VALID, value: 0)",
+      "(validity: INVALID, value: \u0011q)",
+      "(validity: INVALID, value: \u000b)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_87": {
+    "generated_values": [
+      "(validity: INVALID, value: 2f)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INDETERMINATE, value: )",
+      "(validity: VALID, value: J5)",
+      "(validity: INVALID, value: \n)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: -1x)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_88": {
+    "generated_values": [
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INDETERMINATE, value: )",
+      "(validity: INVALID, value: \r)",
+      "(validity: INVALID, value: \t\t)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: T)",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_89": {
+    "generated_values": [
+      "(validity: INVALID, value: 0D)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INDETERMINATE, value: )",
+      "(validity: INVALID, value: \u0001)",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_90": {
+    "generated_values": [
+      "(validity: INVALID, value: 2\u000bZ)",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: .)",
+      "(validity: VALID, value: .@m)",
+      "(validity: VALID, value: J)",
+      "(validity: VALID, value: I/)",
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_91": {
+    "generated_values": [
+      "(validity: INVALID, value: z)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INDETERMINATE, value: )",
+      "(validity: INVALID, value: \")",
+      "(validity: INVALID, value: \\)",
+      "(validity: INVALID, value: ])",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: 0)",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_92": {
+    "generated_values": [
+      "(validity: VALID, value: 2)",
+      "(validity: VALID, value: 3)",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: .@z)",
+      "(validity: INVALID, value: \n\f)",
+      "(validity: INVALID, value: \u0002)",
+      "(validity: INVALID, value: pJ)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_93": {
+    "generated_values": [
+      "(validity: INVALID, value: #)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INDETERMINATE, value: )",
+      "(validity: INVALID, value: \r$)",
+      "(validity: INVALID, value: \u000b)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: ID1)",
+      "(validity: INVALID, value: *)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_94": {
+    "generated_values": [
+      "(validity: VALID, value: 2)",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value:  )",
+      "(validity: VALID, value: .@r)",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: T)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_95": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: })",
+      "(validity: INDETERMINATE, value: )",
+      "(validity: VALID, value: )",
+      "(validity: VALID, value: c{)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 0)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_96": {
+    "generated_values": [
+      "(validity: VALID, value: 2)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INDETERMINATE, value: )",
+      "(validity: VALID, value: .)",
+      "(validity: INVALID, value: \f\\)",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_97": {
+    "generated_values": [
+      "(validity: INVALID, value: 9)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: .@y)",
+      "(validity: INVALID, value: \"\n)",
+      "(validity: INVALID, value: \\,\n)",
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: !)",
+      "(validity: INVALID, value: 1~)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_98": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: )",
+      "(validity: INVALID, value: )",
+      "(validity: INDETERMINATE, value: )",
+      "(validity: VALID, value: vk)",
+      "(validity: INVALID, value: \r)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: x)",
+      "(validity: INVALID, value: q9)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_99": {
+    "generated_values": [
+      "(validity: INVALID, value: J)",
+      "(validity: VALID, value: {)",
+      "(validity: INVALID, value: )",
+      "(validity: VALID, value: .@s)",
+      "(validity: INVALID, value: \\\")",
+      "(validity: INVALID, value: \n@)",
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: ^1V)",
+      "(validity: INVALID, value: =)",
+      "(validity: INVALID, value: )"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "test_round_100": {
+    "generated_values": [
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: s)",
+      "(validity: VALID, value: S)",
+      "(validity: VALID, value: .@K)",
+      "(validity: VALID, value: )",
+      "(validity: INVALID, value: \r)",
+      "(validity: INVALID, value: .9)",
+      "(validity: VALID, value: 1)",
+      "(validity: VALID, value: 1)",
+      "(validity: INVALID, value: 5\f)"
+    ],
+    "server_response": "Submission did not cause any outgoing requests including the entered data."
+  },
+  "stats": {
+    "total": 100,
+    "valid": 50,
+    "invalid": 50,
+    "tp": 26,
+    "fp": 24,
+    "tn": 50,
+    "fn": 0
+  }
+}

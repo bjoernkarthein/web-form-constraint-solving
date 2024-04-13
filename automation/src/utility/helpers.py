@@ -87,7 +87,6 @@ one_line_text_input_types = [
 ]
 binary_input_types = [
     InputType.CHECKBOX.value,
-    InputType.RADIO.value,
     InputType.BUTTON.value,
 ]
 non_writable_input_types = [
@@ -101,6 +100,34 @@ non_writable_input_types = [
 ]
 
 __current_value_map: Dict = {}
+
+
+def get_grammar_identifier_for_type_string(type_str: str) -> str | None:
+    grammar_identifier_to_type_map = {
+        "binary": binary_input_types,
+        "text": one_line_text_input_types + [InputType.TEXTAREA.value, None],
+        "date": [InputType.DATE.value],
+        "datetime": [InputType.DATETIME_LOCAL.value],
+        "email": [InputType.EMAIL.value],
+        "month": [InputType.MONTH.value],
+        "number": [InputType.NUMBER.value],
+        "radio": [InputType.RADIO.value],
+        "time": [InputType.TIME.value],
+        "url": [InputType.URL.value],
+        "week": [InputType.WEEK.value],
+    }
+
+    type_to_grammar_identifier_map = {
+        value: key
+        for key in grammar_identifier_to_type_map
+        for value in grammar_identifier_to_type_map[key]
+    }
+
+    return (
+        type_to_grammar_identifier_map[type_str]
+        if type_str in type_to_grammar_identifier_map
+        else None
+    )
 
 
 def clear_value_mapping() -> None:
@@ -225,10 +252,13 @@ def clear_web_element(web_element: WebElement) -> None:
         pass
 
 
-def click_web_element(web_element: WebElement) -> None:
+def click_web_element(web_element: WebElement, driver: Chrome | None = None) -> None:
     try:
-        web_element.click()
-    except Exception:
+        if driver is not None:
+            ActionChains(driver).click(web_element).perform()
+        else:
+            web_element.click()
+    except Exception as e:
         pass
 
 
@@ -265,10 +295,12 @@ def get_web_elements_by_reference(
         return None
 
 
-def click_web_element_by_reference(driver: Chrome, html_element_reference) -> None:
+def click_web_element_by_reference(
+    driver: Chrome, html_element_reference, explicit: bool = False
+) -> None:
     web_element = get_web_element_by_reference(driver, html_element_reference)
     if web_element is not None:
-        click_web_element(web_element)
+        click_web_element(web_element, driver if explicit else None)
 
 
 def update_value_map(
