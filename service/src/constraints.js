@@ -1,7 +1,5 @@
-const generate = require("@babel/generator").default;
 const parser = require("@babel/parser");
 const traverse = require("@babel/traverse").default;
-const t = require("@babel/types");
 
 const codeql = require("./codeql");
 const fs = require("fs");
@@ -11,6 +9,10 @@ const trace = require("./trace");
 const { getStat, saveStat } = require("../evaluation/evaluation");
 
 const magicValueToReferenceMap = new Map();
+// const magicValueToReferenceMap = new Map([
+//   ["0", new Set(['{"access_method":"id","access_value":"edit-status-0"}'])],
+//   ["1", new Set(['{"access_method":"id","access_value":"edit-status-1"}'])],
+// ]);
 const expressionToFieldMap = new Map();
 
 function hasValue(object, value) {
@@ -74,36 +76,47 @@ function processTraces(allTraces) {
   const interactionTraces = allTraces.filter(
     (t) => t.time >= start && t.time <= end
   );
-  interactionTraces.sort(compareTimestamps); // TODO: still needed?
+  // interactionTraces.sort(compareTimestamps); // TODO: still needed?
 
   const browserTraces = interactionTraces.filter((t) => t.pageFile);
-  // if (browserTraces.length > 0) {
-  //   // TODO: does this always work and finds the first value of any other form field in the current traces?
-  //   outer: for (const magicValue of magicValueToReferenceMap.keys()) {
-  //     for (const trace of browserTraces) {
-  //       const [included, object] = hasValue(trace, magicValue);
-  //       if (included) {
-  //         const expression = object.expression;
-  //         expressionToFieldMap.set(
-  //           expression,
-  //           JSON.stringify({
-  //             references: Array.from(
-  //               magicValueToReferenceMap.get(magicValue)
-  //             ).map((ref) => JSON.parse(ref)),
-  //             generalLocation: trace.location,
-  //           })
-  //         );
-  //         // TODO: Is it a good idea to keep going and have possibly multiple results? Can I somehow check if all magic values of another input are there?
-  //         // break outer;
-  //       }
-  //     }
-  //   }
-  // }
+  if (browserTraces.length > 0) {
+    // TODO: does this always work and finds the first value of any other form field in the current traces?
+    outer: for (const magicValue of magicValueToReferenceMap.keys()) {
+      for (const trace of browserTraces) {
+        const [included, object] = hasValue(trace, magicValue);
+        if (included) {
+          const expression = object.expression;
+          try {
+            expressionToFieldMap.set(
+              expression,
+              JSON.stringify({
+                references: Array.from(
+                  magicValueToReferenceMap.get(magicValue)
+                ).map((ref) => JSON.parse(ref)),
+                generalLocation: trace.location,
+              })
+            );
+          } catch (e) {
+            // Do nothing
+          }
+          // TODO: Is it a good idea to keep going and have possibly multiple results? Can I somehow check if all magic values of another input are there?
+          // break outer;
+        }
+      }
+    }
+  }
 
-  // const interactionStart = interactionTraces[0];
-  // for (const value of interactionStart.args.values) {
-  //   addReferenceForMagicValue(value, interactionStart.args.spec.reference);
-  // }
+  const interactionStart = interactionTraces[0];
+
+  if (!!interactionStart.args.spec.options) {
+    for (const option of interactionStart.args.spec.options) {
+      addReferenceForMagicValue(option.value, option.reference);
+    }
+  } else {
+    for (const value of interactionStart.args.values) {
+      addReferenceForMagicValue(value, interactionStart.args.spec.reference);
+    }
+  }
 
   // If there are no functions called in the browser we can return
   if (browserTraces.length === 0) {
@@ -396,4 +409,5 @@ module.exports = {
 // const tracesArr = traces.split("\n");
 // analyseTraces(tracesArr);
 
-// console.log(extractConstraintCandidates());
+// console.log(magicValueToReferenceMap);
+// console.log(expressionToFieldMap);

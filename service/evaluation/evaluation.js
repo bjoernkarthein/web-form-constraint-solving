@@ -1,5 +1,3 @@
-const fs = require("fs");
-
 const defaultStats = {
   time_instrumenting_ms: 0,
   time_analyzing_ms: 0,
@@ -17,9 +15,8 @@ function getStat(name) {
 }
 
 function getCurrentStats() {
-  // fs.writeFileSync("../evaluation/service_stats.json", JSON.stringify(stats));
   const current = { ...stats };
-  stats = defaultStats;
+  stats = { ...defaultStats };
   return current;
 }
 
