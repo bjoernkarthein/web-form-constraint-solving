@@ -218,7 +218,7 @@
   "constraint_candidates": [
     [
       {
-        "type": "LiteralComp",
+        "type": "LiteralLengthComp",
         "operator": "<",
         "otherValue": "12"
       },
@@ -271,7 +271,5 @@
       }
     ]
   ],
-  "js_files_analyzed": [
-    "js_yygN5tLcNOJAgnY2UVhDf3_pDkAgcp5xP4dyf5aRlM4.js"
-  ]
+  "js_files_analyzed": ["js_yygN5tLcNOJAgnY2UVhDf3_pDkAgcp5xP4dyf5aRlM4.js"]
 }

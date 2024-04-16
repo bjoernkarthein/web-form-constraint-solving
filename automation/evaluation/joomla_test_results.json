@@ -405,7 +405,7 @@
       "(validity: VALID, value: )",
       "(validity: INVALID, value: )"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_52": {
     "generated_values": [
@@ -413,7 +413,7 @@
       "(validity: INVALID, value: \f\r)",
       "(validity: INVALID, value:  \u0011)"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_53": {
     "generated_values": [
@@ -421,7 +421,7 @@
       "(validity: INVALID, value: \u000b)",
       "(validity: INVALID, value: :)"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_54": {
     "generated_values": [
@@ -429,7 +429,7 @@
       "(validity: INVALID, value: \u000b)",
       "(validity: INVALID, value: )"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_55": {
     "generated_values": [
@@ -437,7 +437,7 @@
       "(validity: INVALID, value: \n)",
       "(validity: VALID, value: 1)"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_56": {
     "generated_values": [
@@ -445,7 +445,7 @@
       "(validity: INVALID, value: .X\r)",
       "(validity: INVALID, value: 1.)"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_57": {
     "generated_values": [
@@ -453,7 +453,7 @@
       "(validity: VALID, value: )",
       "(validity: VALID, value: 0)"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_58": {
     "generated_values": [
@@ -477,7 +477,7 @@
       "(validity: INVALID, value: \r:)",
       "(validity: INVALID, value: o0)"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_61": {
     "generated_values": [
@@ -485,7 +485,7 @@
       "(validity: INVALID, value: ?\f)",
       "(validity: VALID, value: 1)"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_62": {
     "generated_values": [
@@ -493,7 +493,7 @@
       "(validity: INVALID, value: <\u000b)",
       "(validity: INVALID, value: uu1)"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_63": {
     "generated_values": [
@@ -501,7 +501,7 @@
       "(validity: INVALID, value: \u000b\n)",
       "(validity: INVALID, value: q[)"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_64": {
     "generated_values": [
@@ -509,7 +509,7 @@
       "(validity: INVALID, value: \"I)",
       "(validity: INVALID, value: )"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_65": {
     "generated_values": [
@@ -517,7 +517,7 @@
       "(validity: INVALID, value: js\n\\)",
       "(validity: INVALID, value: I0)"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_66": {
     "generated_values": [
@@ -525,7 +525,7 @@
       "(validity: INVALID, value: \")",
       "(validity: INVALID, value: )"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_67": {
     "generated_values": [
@@ -533,7 +533,7 @@
       "(validity: INVALID, value: \\\n)",
       "(validity: INVALID, value: \"3)"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_68": {
     "generated_values": [
@@ -541,7 +541,7 @@
       "(validity: INVALID, value: \nfL\\)",
       "(validity: INVALID, value: \")"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_69": {
     "generated_values": [
@@ -549,7 +549,7 @@
       "(validity: INVALID, value: \u001b{)",
       "(validity: INVALID, value: )"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_70": {
     "generated_values": [
@@ -557,7 +557,7 @@
       "(validity: VALID, value: )",
       "(validity: INVALID, value: )"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_71": {
     "generated_values": [
@@ -565,7 +565,7 @@
       "(validity: INVALID, value: \")",
       "(validity: INVALID, value: )"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_72": {
     "generated_values": [
@@ -573,7 +573,7 @@
       "(validity: INVALID, value: \u000b)",
       "(validity: INVALID, value: r)"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_73": {
     "generated_values": [
@@ -589,7 +589,7 @@
       "(validity: VALID, value: )",
       "(validity: VALID, value: 0)"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_75": {
     "generated_values": [
@@ -597,7 +597,7 @@
       "(validity: VALID, value: m:)",
       "(validity: INVALID, value: })"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_76": {
     "generated_values": [
@@ -605,7 +605,7 @@
       "(validity: INVALID, value: \np)",
       "(validity: INVALID, value:  c)"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_77": {
     "generated_values": [
@@ -613,7 +613,7 @@
       "(validity: INVALID, value: \u000b)",
       "(validity: INVALID, value: 3)"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_78": {
     "generated_values": [
@@ -621,7 +621,7 @@
       "(validity: VALID, value: )",
       "(validity: INVALID, value: u)"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_79": {
     "generated_values": [
@@ -629,7 +629,7 @@
       "(validity: INVALID, value: k\n\\)",
       "(validity: INVALID, value: )"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_80": {
     "generated_values": [
@@ -653,7 +653,7 @@
       "(validity: INVALID, value: \r)",
       "(validity: VALID, value: 1)"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_83": {
     "generated_values": [
@@ -661,7 +661,7 @@
       "(validity: INVALID, value: \f)",
       "(validity: INVALID, value: 1z)"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_84": {
     "generated_values": [
@@ -669,7 +669,7 @@
       "(validity: INVALID, value: \u001b)",
       "(validity: INVALID, value: f)"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_85": {
     "generated_values": [
@@ -677,7 +677,7 @@
       "(validity: INVALID, value: Q\r)",
       "(validity: INVALID, value: \u0015)"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_86": {
     "generated_values": [
@@ -693,7 +693,7 @@
       "(validity: INVALID, value: 1\tF)",
       "(validity: INVALID, value: )"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_88": {
     "generated_values": [
@@ -701,7 +701,7 @@
       "(validity: INVALID, value: \r\\)",
       "(validity: INVALID, value: U)"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_89": {
     "generated_values": [
@@ -709,7 +709,7 @@
       "(validity: INVALID, value: \f$\rW)",
       "(validity: INVALID, value: Y)"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_90": {
     "generated_values": [
@@ -717,7 +717,7 @@
       "(validity: VALID, value: wH)",
       "(validity: INVALID, value: /3)"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_91": {
     "generated_values": [
@@ -725,7 +725,7 @@
       "(validity: INVALID, value: \u000b\n)",
       "(validity: INVALID, value: J)"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_92": {
     "generated_values": [
@@ -733,7 +733,7 @@
       "(validity: INVALID, value: \f\n)",
       "(validity: INVALID, value: 1\"\r)"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_93": {
     "generated_values": [
@@ -741,7 +741,7 @@
       "(validity: INVALID, value: \\\t)",
       "(validity: VALID, value: 1)"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_94": {
     "generated_values": [
@@ -749,7 +749,7 @@
       "(validity: INVALID, value: \f)",
       "(validity: INVALID, value: )"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_95": {
     "generated_values": [
@@ -757,7 +757,7 @@
       "(validity: INVALID, value: \u001c)",
       "(validity: VALID, value: 0)"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_96": {
     "generated_values": [
@@ -765,7 +765,7 @@
       "(validity: VALID, value: )",
       "(validity: INVALID, value: )"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_97": {
     "generated_values": [
@@ -773,7 +773,7 @@
       "(validity: INVALID, value: \"\u000b)",
       "(validity: INVALID, value: )"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_98": {
     "generated_values": [
@@ -781,7 +781,7 @@
       "(validity: INVALID, value: \")",
       "(validity: INVALID, value: )"
     ],
-    "server_response": "Submission did not cause any outgoing requests including the entered data."
+    "server_response": "303 See other"
   },
   "test_round_99": {
     "generated_values": [
@@ -805,7 +805,7 @@
     "invalid": 50,
     "tp": 50,
     "fp": 0,
-    "tn": 42,
-    "fn": 8
+    "tn": 0,
+    "fn": 50
   }
 }

@@ -252,8 +252,7 @@ class ConstraintCandidateFinder:
             "with values",
             values,
         )
-        # set_trace_recording_flag(self.__driver, True)
-        # return ConstraintCandidateResult({"candidates": []})
+
         set_trace_recording_flag(self.__driver, False)
 
         start_trace_recording({"spec": spec.get_as_dict(), "values": values})
@@ -678,8 +677,7 @@ class SpecificationBuilder:
         self, html_constraints: HTMLConstraints, use_datalist_options=False
     ) -> Tuple[str, str | None]:
         grammar = load_file_content(f"{pre_built_specifications_path}/email/email.bnf")
-        # formula = load_file_content(f"{pre_built_specifications_path}/email/email.isla")
-        formula = None
+        formula = load_file_content(f"{pre_built_specifications_path}/email/email.isla")
 
         if use_datalist_options and html_constraints.list is not None:
             grammar = self.__replace_by_list_options(

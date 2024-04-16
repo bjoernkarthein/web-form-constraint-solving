@@ -179,7 +179,7 @@
   "constraint_candidates": [
     [
       {
-        "type": "LiteralComp",
+        "type": "LiteralLengthComp",
         "operator": "===",
         "otherValue": "0"
       },

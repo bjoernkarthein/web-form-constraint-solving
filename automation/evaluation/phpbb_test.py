@@ -14,17 +14,15 @@ from src.interaction.driver import TestAutomationDriver
 
 
 def agree(driver: TestAutomationDriver) -> None:
-    agree = WebDriverWait(driver.web_driver, 5).until(
-        EC.element_to_be_clickable(
-            (
-                By.ID,
-                "agreed",
-            )
-        )
-    )
+    for _ in range(3):
+        time.sleep(0.5)
+        agree = driver.web_driver.find_element(By.ID, "agreed")
+    try:
+        agree.click()
+    except Exception:
+        pass
 
-    ActionChains(driver.web_driver).click(agree).perform()
-    time.sleep(2)
+    time.sleep(1)
 
 
 if __name__ == "__main__":
@@ -37,6 +35,6 @@ if __name__ == "__main__":
     )
 
     driver.run_test(
-        "evaluation/specifications/phpbb/specification.json",
-        "evaluation/phpbb_test_results.json",
+        "evaluation/specifications/phpbb/specification_edited.json",
+        "evaluation/phpbb_edited_test_results.json",
     )

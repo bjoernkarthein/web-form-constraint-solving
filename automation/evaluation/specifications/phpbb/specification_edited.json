@@ -1,0 +1,59 @@
+{
+  "url": "https://localhost/ucp.php?mode=register",
+  "controls": [
+    {
+      "name": "username",
+      "type": "text",
+      "reference": {
+        "access_method": "id",
+        "access_value": "username"
+      },
+      "grammar": "1.bnf",
+      "formula": "1.isla"
+    },
+    {
+      "name": "new_password",
+      "type": "password",
+      "reference": {
+        "access_method": "id",
+        "access_value": "new_password"
+      },
+      "grammar": "2.bnf",
+      "formula": "2.isla"
+    },
+    {
+      "name": "password_confirm",
+      "type": "password",
+      "reference": {
+        "access_method": "id",
+        "access_value": "password_confirm"
+      },
+      "grammar": "3.bnf",
+      "formula": "3.isla"
+    },
+    {
+      "name": "email",
+      "type": "email",
+      "reference": {
+        "access_method": "id",
+        "access_value": "email"
+      },
+      "grammar": "4.bnf",
+      "formula": "4.isla"
+    },
+    {
+      "name": "confirm_code",
+      "type": "text",
+      "reference": {
+        "access_method": "id",
+        "access_value": "confirm_code"
+      },
+      "grammar": "6.bnf",
+      "formula": "6.isla"
+    }
+  ],
+  "submit": {
+    "access_method": "id",
+    "access_value": "submit"
+  }
+}
