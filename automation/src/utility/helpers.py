@@ -1,5 +1,7 @@
 import json
 import math
+import os
+import platform
 import re
 import requests
 import time
@@ -450,3 +452,15 @@ def clamp_to_range(input: int, start: int, end: int | None = None) -> int:
         return max(start, input)
     else:
         return max(start, min(input, end))
+
+def get_chromedriver_for_platform() -> str:
+    os = platform.system()
+
+    if os == "Windows":
+        chrome_driver_path = "chromedriver/windows/chromedriver.exe"
+    elif os == "Linux":
+        chrome_driver_path = "chromedriver/linux/chromedriver"
+    else:
+        raise EnvironmentError(f"Operating system {os} not supported.")
+
+    return os.path.abspath(chrome_driver_path)

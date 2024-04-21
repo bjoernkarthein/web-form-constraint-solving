@@ -1,4 +1,3 @@
-import os
 import threading
 import sys
 import time
@@ -31,14 +30,8 @@ from src.utility.helpers import (
     write_to_file,
     write_to_web_element_by_reference_with_clear,
     set_trace_recording_flag,
+    get_chromedriver_for_platform
 )
-
-
-chrome_driver_path = "chromedriver/windows/chromedriver.exe"
-# chrome_driver_path = "chromedriver/linux/chromedriver"
-chrome_driver_abs_path = os.path.abspath(chrome_driver_path)
-disable_csp_extension_path = "chromedriver/chrome-csp-disable.crx"
-disable_csp_extension_path = os.path.abspath(disable_csp_extension_path)
 
 
 """
@@ -80,7 +73,7 @@ class TestAutomationDriver:
         wire_options = {"disable_encoding": True}
 
         self.__driver = webdriver.Chrome(
-            service=Service(chrome_driver_abs_path),
+            service=Service(get_chromedriver_for_platform()),
             options=chrome_options,
             seleniumwire_options=wire_options,
         )
