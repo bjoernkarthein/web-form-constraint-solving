@@ -82,20 +82,20 @@ class NetworkInterceptor:
         For each HTML file a script tag is added to enable access of common methods for dynamic analysis.
         """
 
-        content_type = response.headers["Content-Type"]
-        if content_type == None:
-            return
+        content_type = response.headers["Content-Type"] or ""
+        name = self.__get_file_name_from_url(request.url)
+        file_type = name.split(".")[-1]
 
         if any(
             content_type.startswith(mime_type)
             for mime_type in self.__javascript_mime_types
-        ):
+        ) or file_type == "js":
             new_body = self.__handle_js_file(request, response)
             if new_body:
                 response.body = new_body
                 self.js_files_instrumented += 1
 
-        if content_type.startswith("text/html"):
+        if content_type.startswith("text/html") or file_type == "html":
             new_body = self.__handle_html_file(response)
             if new_body:
                 response.body = new_body
@@ -110,10 +110,7 @@ class NetworkInterceptor:
     def __handle_js_file(self, request: Request, response: Response) -> bytes:
         """Send JavaScript file to the instrumentation service and return instrumented content."""
 
-        name = request.url.split("/")[-1]
-        if "?" in name:
-            name = name.split("?")[0]
-
+        name = self.__get_file_name_from_url(request.url)
         body_string = decode_bytes(response.body)
 
         data = {"name": name, "source": body_string}
@@ -189,6 +186,13 @@ function b0aed879_987c_461b_af34_c9c06fe3ed46(action, args, location) {
             },
             body=b"{}",
         )
+
+    def __get_file_name_from_url(self, url: str) -> str:
+        name = url.split("/")[-1]
+        if "?" in name:
+            name = name.split("?")[0]
+        
+        return name
 
 
 class RequestScanner:

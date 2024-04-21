@@ -102,16 +102,6 @@ class TestAutomationDriver:
             self.__interceptor.instrument_files()
 
         load_page(self.__driver, self.__url)
-        # self.__interceptor.block_form_submission()
-
-        # test = input("page loaded")
-        # ref = HTMLElementReference("id", "password")
-        # set_trace_recording_flag(self.__driver, True)
-        # write_to_web_element_by_reference_with_clear(
-        #     self.__driver, "text", None, ref, "password", "blahaha", False
-        # )
-        # set_trace_recording_flag(self.__driver, False)
-        # test = input("written to field")
 
         if self.__setup_function is not None:
             self.__setup_function(self)
