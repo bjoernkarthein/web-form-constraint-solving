@@ -329,6 +329,9 @@ def write_to_web_element_by_reference_with_clear(
     if web_element is None:
         return
 
+    if not value:
+        return
+
     match type:
         case InputType.BUTTON.value:
             select_button(web_element, value)
