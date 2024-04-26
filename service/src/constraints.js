@@ -9,10 +9,6 @@ const trace = require("./trace");
 const { getStat, saveStat } = require("../evaluation/evaluation");
 
 const magicValueToReferenceMap = new Map();
-// const magicValueToReferenceMap = new Map([
-//   ["0", new Set(['{"access_method":"id","access_value":"edit-status-0"}'])],
-//   ["1", new Set(['{"access_method":"id","access_value":"edit-status-1"}'])],
-// ]);
 const expressionToFieldMap = new Map();
 
 function hasValue(object, value) {
@@ -389,25 +385,3 @@ module.exports = {
   hasValue,
   extractConstraintCandidates,
 };
-
-// const o = {
-//   action: "ARROW_FUNCTION_CALL",
-//   args: [{ expression: "confirmInputVal", value: "P" }],
-//   time: 1710692211758,
-//   file: "C:/Users/Björn/Documents/git/invariant-based-web-form-testing/service/src/original/js_yeHav59mdzr_UpZCqijeCTjBdhqaprHjC1vmYRieTu0.js",
-//   location: {
-//     file: "js_yeHav59mdzr_UpZCqijeCTjBdhqaprHjC1vmYRieTu0.js",
-//     start: { line: 91, column: 2322, index: 212111 },
-//     end: { line: 91, column: 2878, index: 212667 },
-//   },
-//   pageFile: 1,
-// };
-// const has = hasValue(o, "P");
-// console.log(has);
-
-// const traces = fs.readFileSync("trace.log", { encoding: "utf-8" });
-// const tracesArr = traces.split("\n");
-// analyseTraces(tracesArr);
-
-// console.log(magicValueToReferenceMap);
-// console.log(expressionToFieldMap);

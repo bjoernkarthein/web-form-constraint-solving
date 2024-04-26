@@ -32,7 +32,6 @@ function addToTraceLog(req) {
 }
 
 function cleanUp() {
-  // fs.appendFileSync(traceLogFile, "\nnext\n\n");
   fs.writeFileSync(traceLogFile, "");
 }
 

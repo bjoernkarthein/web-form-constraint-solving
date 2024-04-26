@@ -29,9 +29,7 @@ app.use("/analysis", analysisController);
 app.use("/instrumentation", instrumentationController);
 
 app.get("/", (req, res) => {
-  res.send(
-    "Instrumentation server running. View all logs at /static/combined.log\nIf you are interested in errors you can view /static/error.log"
-  );
+  res.send("Instrumentation server running...");
 });
 
 const server = app.listen(API_PORT, () => {
