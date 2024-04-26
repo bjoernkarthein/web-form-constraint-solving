@@ -211,31 +211,6 @@ class ConstraintCandidateFinder:
                 values[0],
             )
 
-    # def find_initial_js_constraint_candidates(
-    #     self, html_specification: HTMLInputSpecification | HTMLRadioGroupSpecification
-    # ) -> ConstraintCandidateResult:
-    #     """Try to extract as many constraint candidates as possible from the JavaScript source code for a given input."""
-    #     magic_value_sequence = self.__magic_value_map.get(html_specification)
-    #     if magic_value_sequence is None:
-    #         return ConstraintCandidateResult({"candidates": []})
-
-    #     return self.__get_constraint_candidates_for_value_sequence(
-    #         html_specification, magic_value_sequence
-    #     )
-
-    # def find_js_constraint_candidates(
-    #     self,
-    #     spec: HTMLInputSpecification | HTMLRadioGroupSpecification,
-    #     grammar: str,
-    #     formula: str | None = None,
-    #     amount: int = 1,
-    # ) -> ConstraintCandidateResult:
-    #     generator = InputGenerator()
-    #     values = generator.generate_inputs(grammar, formula, ValidityEnum.VALID, amount)
-    #     values = list(map(lambda v: v.value, values))
-
-    #     return self.__get_constraint_candidates_for_value_sequence(spec, values)
-
     def get_constraint_candidates_for_value_sequence(
         self,
         spec: HTMLInputSpecification | HTMLRadioGroupSpecification,
@@ -504,7 +479,7 @@ class SpecificationBuilder:
     ) -> Tuple[str, str | None]:
         grammar_identifier = get_grammar_identifier_for_type_string(input_type)
         new_part = self.__get_formula_for_operator(
-            f"<{grammar_identifier}>", candidate.other_value, candidate.operator
+            f"<{grammar_identifier}>", f'"{candidate.other_value}"', candidate.operator
         )
         formula = self.__add_to_formula(new_part, formula, ISLa.OR)
         return grammar, formula
@@ -563,6 +538,7 @@ class SpecificationBuilder:
                 formula,
                 ISLa.OR,
             )
+        # TODO: Handle pattern candidate
         # else:
         #     pattern_converter = PatternConverter(candidate.pattern)
         #     pattern_grammar = pattern_converter.convert_pattern_to_grammar()
@@ -701,6 +677,7 @@ class SpecificationBuilder:
                 formula,
                 ISLa.AND,
             )
+        # TODO: Handle pattern constraint
         # if html_constraints.pattern is not None:
         #     pattern_converter = PatternConverter(html_constraints.pattern)
         #     grammar = (
@@ -838,6 +815,7 @@ class SpecificationBuilder:
                 formula,
                 ISLa.AND,
             )
+        # TODO: Handle pattern constraint
         # if html_constraints.pattern is not None:
         #     pattern_converter = PatternConverter(html_constraints.pattern)
         #     grammar = (
@@ -907,6 +885,7 @@ class SpecificationBuilder:
                 formula,
                 ISLa.AND,
             )
+        # TODO: Handle pattern constraint
         # if html_constraints.pattern is not None:
         #     pattern_converter = PatternConverter(html_constraints.pattern)
         #     grammar = (
@@ -991,7 +970,7 @@ class SpecificationBuilder:
         for line in lines:
             if line.startswith("<start> ::="):
                 continue
-            head, sep, tail = line.partition(" ::= ")
+            head, _, tail = line.partition(" ::= ")
             result[head] = tail.split(" | ")
 
         return result

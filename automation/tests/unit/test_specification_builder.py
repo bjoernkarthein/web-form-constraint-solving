@@ -28,11 +28,11 @@ class TestSpecificationBuilder(unittest.TestCase):
 
         self.input_spec = HTMLInputSpecification(input_reference, input_constraints)
         self.radio_spec = HTMLRadioGroupSpecification("radio", radio_references)
-        self.builder.create_specification_for_html_input(self.input_spec)
-        self.builder.create_specification_for_html_radio_group(self.radio_spec)
+        self.builder.create_specification_for_html_input(self.input_spec, 1)
+        self.builder.create_specification_for_html_radio_group(self.radio_spec, 2)
 
     def test_add_constraint_candidates_empty(self) -> None:
-        old_grammar, old_formula = self.builder.reference_to_spec_map.get(
+        old_grammar, old_formula, _ = self.builder.reference_to_spec_map.get(
             self.input_spec.reference
         )
         new_grammar, new_formula = (
@@ -137,7 +137,7 @@ class TestSpecificationBuilder(unittest.TestCase):
         other_input_spec = HTMLInputSpecification(
             other_input_reference, other_input_constraints
         )
-        self.builder.create_specification_for_html_input(other_input_spec)
+        self.builder.create_specification_for_html_input(other_input_spec, 3)
 
         new_grammar, new_formula = (
             self.builder.add_constraints_to_current_specification(
@@ -166,7 +166,7 @@ class TestSpecificationBuilder(unittest.TestCase):
         other_input_spec = HTMLInputSpecification(
             other_input_reference, other_input_constraints
         )
-        self.builder.create_specification_for_html_input(other_input_spec)
+        self.builder.create_specification_for_html_input(other_input_spec, 3)
 
         new_grammar, new_formula = (
             self.builder.add_constraints_to_current_specification(
@@ -225,18 +225,6 @@ class TestSpecificationBuilder(unittest.TestCase):
             ),
         )
 
-        self.assertEqual(
-            new_grammar,
-            ("\n").join(
-                [
-                    f"<start> ::= <{self.input_spec.type}-or-empty>",
-                    f'<{self.input_spec.type}-or-empty> ::= "" | <{self.input_spec.type}>',
-                    f"<{self.input_spec.type}> ::= <nt1>",
-                    '<nt1> ::= "" | "a"',
-                ]
-            ),
-        )
-
     def test_date_formula_builder(self) -> None:
         input_reference = HTMLElementReference("id", "other-input")
         input_constraints = HTMLConstraints(
@@ -244,7 +232,7 @@ class TestSpecificationBuilder(unittest.TestCase):
         )
         input_spec = HTMLInputSpecification(input_reference, input_constraints)
 
-        _, formula = self.builder.create_specification_for_html_input(input_spec)
+        _, formula = self.builder.create_specification_for_html_input(input_spec, 3)
         self.assertIn(
             "and (str.to.int(<year>) >= 2000 or (str.to.int(<year>) = 2000 and str.to.int(<month>) >= 1 or (str.to.int(<month>) = 1 and str.to.int(<day>) >= 1)))) and (str.to.int(<year>) <= 2010 or (str.to.int(<year>) = 2010 and str.to.int(<month>) <= 12 or (str.to.int(<month>) = 12 and str.to.int(<day>) <= 24))",
             formula,

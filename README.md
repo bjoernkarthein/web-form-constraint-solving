@@ -9,18 +9,19 @@
 | Google Chrome     | -               |
 | Node.js           | 16.13.1         |
 | Python            | 3.10            |
-| Pipenv            | 2023.11.15      |
 | CodeQL            | -               |
 
 ## Setup
 
 Clone the repository.
 
-From the /automation directory run the following command to create and start a python virtual environment with all dependencies for the test automation.
+From the /automation directory run the following commands to create and start a python virtual environment with all dependencies for the test automation.
 
 ```sh
-pipenv install
-pipenv shell
+python3.10 -m venv venv
+source venv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
 ```
 
 Go to the /service directory and run
@@ -31,21 +32,13 @@ npm i
 
 to install all required node dependencies.
 
-Change node and CodeQL path in environment file
-To start all required services go to the application root directory and run
+Change the CodeQL path in .env file and run
 
 ```sh
-./scripts/bootstrap.sh
+node app.js
 ```
 
-To stop all services and clean up the resources run
-
-```sh
-./scrpts/teardown.sh
-exit
-```
-
-## Getting Started
+from the /service/src directory to start the service.
 
 ## Tests
 
@@ -69,12 +62,8 @@ to run any specific test alone.
 
 #### Service
 
-From service directory
+From /service/src directory
 
 ```sh
-npm test
+npm test --tests=./tests/
 ```
-
-## Custom Specifications
-
-Something about template examples and ISLa github for more information on grammar and formula.
