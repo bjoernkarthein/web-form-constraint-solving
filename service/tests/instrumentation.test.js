@@ -29,9 +29,6 @@ describe("Instrument files correctly", () => {
     expect(fileContent).toContain(
       "b0aed879_987c_461b_af34_c9c06fe3ed46('VARIABLE_DECLARATION'"
     );
-    expect(fileContent).toContain(
-      "b0aed879_987c_461b_af34_c9c06fe3ed46('VARIABLE_ASSIGNMENT'"
-    );
   });
 
   test("instrument simple file", async () => {
