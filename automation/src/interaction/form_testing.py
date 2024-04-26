@@ -34,12 +34,34 @@ from src.utility.helpers import (
     get_current_values_from_form,
 )
 
+"""
+Form Testing Module
+
+Includes all methods to automatically test a web form via a specification
+"""
+
 
 class SpecificationParser:
+    """SpecificationParser class
+
+    Methods to verify and parse a specification file
+    """
+
     def __init__(self, specification_file_path: str) -> None:
+        """Initializes the specification parser
+
+        Parameters:
+        specification_file_path (str): Path to a specification file
+        """
         self.__specification_file_path = specification_file_path
 
     def parse(self) -> Tuple[Dict | None, str]:
+        """Parses a specification and handles errors that might occur
+
+        Returns:
+        Tuple[Dict | None, str]: A python dict with all parts of the specification and the name of the containing directory
+        """
+
         file_name = (
             "specification/specification.json"
             if self.__specification_file_path is None
@@ -49,7 +71,7 @@ class SpecificationParser:
         specification_str = load_file_content(file_name)
         if specification_str == "":
             print(
-                "No existing specification file found. Either pass a path to a valid specification file via the -s flag or run the analyse.py to extract a specification automatically.\nRun test.py -h for help."
+                "No existing specification file found. Either pass a path to a valid specification file via the -s flag or run the extract_specificaation.py script to extract a specification automatically.\nRun test.py -h for help."
             )
             return None, ""
 
@@ -70,6 +92,15 @@ class SpecificationParser:
         return specification, parent_dir
 
     def __check_specification_format(self, specification: Dict) -> bool:
+        """Validates the format of a specification
+
+        Parameters:
+        specification (Dict): The specification to validate as a python dictionary
+
+        Returns:
+        bool: True if the specification has a valid format, False otherwise
+        """
+
         print("Checking provided spec file")
         if "url" not in specification:
             print("url missing")
@@ -80,8 +111,6 @@ class SpecificationParser:
         if "submit" not in specification:
             print("submit element not specified")
             return False
-
-        # TODO check if it is a valid url?
 
         submit_ref = specification["submit"]
         if not self.__is_valid_reference(submit_ref):
@@ -106,11 +135,18 @@ class SpecificationParser:
                 print("control is missing required fields")
                 return False
 
-            # TODO: Check if the provided value for formula and grammar is a file?
-
         return True
 
     def __is_valid_reference(self, ref: Dict) -> bool:
+        """Validates a reference entry in a specification
+
+        Parameters:
+        ref (Dict): The reference to validate as a python dictionary
+
+        Returns:
+        bool: True if the reference has a valid format, False otherwise
+        """
+
         if "access_method" not in ref or "access_value" not in ref:
             print("element reference has wrong format")
             return False
@@ -119,6 +155,11 @@ class SpecificationParser:
 
 
 class ValueGenerationSpecification:
+    """ValueGenerationSpecification class
+
+    Class that combines all the information needed for one input field to be tested by the FormTester
+    """
+
     def __init__(
         self,
         input_spec: HTMLInputSpecification | HTMLRadioGroupSpecification,
@@ -126,6 +167,15 @@ class ValueGenerationSpecification:
         grammar: str,
         formula: str | None = None,
     ):
+        """Initializes a ValueGenerationSpecification
+
+        Parameters:
+        input_spec (HTMLInputSpecification | HTMLRadioGroupSpecification): The original html specification of the input field
+        type (str): The html type of the input field
+        grammar (str): The extracted (or specified) CFG for the input field
+        formula (str | None): The extracted (or specified) ISLa formula for the input field (default None)
+        """
+
         self.input_spec = input_spec
         self.type = type
         self.grammar = grammar
@@ -137,6 +187,11 @@ class ValueGenerationSpecification:
 
 
 class FormTester:
+    """FormTester class
+
+    Contains all methods to test a web form with a given specification
+    """
+
     def __init__(
         self,
         driver: Chrome,
@@ -146,9 +201,17 @@ class FormTester:
         config: Dict,
         report_path: str | None = None,
     ) -> None:
-        self.__block_all_requests = config[ConfigKey.TESTING.value][
-            ConfigKey.BLOCK_ALL_REQUESTS.value
-        ]
+        """Initializes the FormTester
+
+        Parameters:
+        driver (Chrome):
+        url (str):
+        specification (Dict):
+        specification_directory (str):
+        config (Dict):
+        report_path (str | None): (default None)
+        """
+
         self.__block_successful_submissions = config[ConfigKey.TESTING.value][
             ConfigKey.BLOCK_SUBMISSION.value
         ]
@@ -198,7 +261,6 @@ class FormTester:
             self.__report_path,
         )
 
-        # TODO generate all values in advance for better diversity and just fill in afterwards. Not that easy with current setup
         for i in range(self.__valid):
             print(f"Round {i + 1}: Generating a valid instance...")
             self.__prepare_next_form_filling(setup_function, automation)

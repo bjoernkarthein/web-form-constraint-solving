@@ -12,8 +12,15 @@ Serves as the entry point for testing a web form with a given specification.
 """
 
 
-def setup() -> None:
-    # Do anything here to get to the form, login or click buttons, etc.
+def setup(automation: TestAutomationDriver) -> None:
+    # Do anything here to get to the page with the form, login or click buttons, etc.
+    # You can access the selenium driver via automation.web_driver
+    pass
+
+
+def access_form(automation: TestAutomationDriver) -> None:
+    # Do anything here to get to the actual form once you are on the right page. (e.g. click a button to show the form popup)
+    # You can access the selenium driver via automation.web_driver
     pass
 
 
@@ -37,8 +44,11 @@ def main(argv):
 
     config = yaml.safe_load(open("config/test_config.yml"))
     test_automation_driver = TestAutomationDriver(
-        config, evaluation=EvaluationStub()  # TODO: remove when evaluation is done
+        config,
+        setup_function=access_form,
+        evaluation=EvaluationStub(),  # TODO: remove when evaluation is done
     )
+
     setup()
     test_automation_driver.run_test(specification_file)
 
@@ -51,7 +61,7 @@ def print_help():
 Options and arguments:
 -?, -h, --help:                 Print this help message and exit
 -s, --specification-file:       Optional path to a specification file that is used to generate inputs.
-                                For an example of the structure of such a specification file see https://projects.cispa.saarland/s8bjkart/invariant-based-web-form-testing/-/blob/main/automation/pre-built-specifications/specification_example.json?ref_type=heads
+                                For an example of the structure of such a specification file see "automation\pre-built-specifications\specification_example.json"
                                 If no file is provided an existing specification file is used.
                                 Run 'analyse.py' to extract the secification for a given url automatically"""
     )

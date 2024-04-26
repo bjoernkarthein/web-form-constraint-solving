@@ -18,28 +18,31 @@ client side validation constraints.
 
 
 def setup(automation: TestAutomationDriver) -> None:
-    automation.web_driver.get("http://localhost:3000/static/example")
-    WebDriverWait(automation.web_driver, 5).until(
-        EC.visibility_of_element_located(
-            (By.ID, "loginForm")
-        )
-    )
+    # Do anything here to get to the page with the form, login or click buttons, etc.
+    # You can access the selenium driver via automation.web_driver
+    pass
+
+
+def access_form(automation: TestAutomationDriver) -> None:
+    # Do anything here to get to the actual form once you are on the right page. (e.g. click a button to show the form popup)
+    # You can access the selenium driver via automation.web_driver
+    pass
 
     user = automation.web_driver.find_element(By.ID, "username")
     password = automation.web_driver.find_element(By.ID, "password")
     submit = automation.web_driver.find_element(By.XPATH, "/html/body/form/button")
-    
+
     user.send_keys("user")
     password.send_keys("12345678")
     submit.click()
 
+
 def get_to_form(automation: TestAutomationDriver) -> None:
     add = WebDriverWait(automation.web_driver, 5).until(
-        EC.visibility_of_element_located(
-            (By.ID, "openFormButton")
-        )
+        EC.visibility_of_element_located((By.ID, "openFormButton"))
     )
     add.click()
+
 
 def main(argv):
     """Handle command line arguments and start the analysis."""
@@ -63,12 +66,12 @@ def main(argv):
             config = yaml.safe_load(open("config/analysis_config.yml"))
             test_automation_driver = TestAutomationDriver(
                 config,
-                arg,
-                setup_function=get_to_form,
+                url=arg,
+                setup_function=access_form,
                 evaluation=EvaluationStub(),  # TODO: remove when evaluation is done
             )
 
-            setup(test_automation_driver)
+            setup()
             test_automation_driver.run_analysis()
 
 
