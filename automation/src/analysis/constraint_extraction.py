@@ -527,20 +527,17 @@ class SpecificationBuilder:
                 grammar = self.__grammar_dict_to_string(new_grammar_dict)
 
             # Combine fields in existing specification file
-            overall_spec = load_json_from_file("specification/specification.json") # TODO
+            overall_spec = load_json_from_file("specification/specification.json")
             first_input = None
             second_input = None
             new_controls = []
             combined_controls = {"combined": True, "fields": [], "grammar": f"{index}.bnf", "formula": f"{index}.isla"}
             
-            print(other_reference.get_as_dict())
-            print(candidate.other_value)
             for c in overall_spec["controls"]:
-                print(c)
-                if c["reference"] == other_reference.get_as_dict(): # TODO: wont work due to different types
-                    first_input = c
-                elif c["reference"] == candidate.other_value:
+                if c["reference"] == other_reference.get_as_dict():
                     second_input = c
+                elif c["reference"] == candidate.other_value.get_as_dict():
+                    first_input = c
                 else:
                     new_controls.append(c)
 
@@ -549,8 +546,7 @@ class SpecificationBuilder:
                 second_input = self.__omit_keys(second_input, ["grammar", "formula"])
                 combined_controls["fields"] = [first_input, second_input]
                 overall_spec["controls"] = new_controls + [combined_controls]
-                # write_to_file("specification/specification.json", overall_spec) # TODO
-                print(json.dumps(overall_spec, indent=2))
+                write_to_file("specification/specification.json", overall_spec)
 
         return grammar, formula
 

@@ -48,26 +48,6 @@
       "formula": "3.isla"
     },
     {
-      "name": "pass[pass1]",
-      "type": "password",
-      "reference": {
-        "access_method": "id",
-        "access_value": "edit-pass-pass1"
-      },
-      "grammar": "4.bnf",
-      "formula": "4.isla"
-    },
-    {
-      "name": "pass[pass2]",
-      "type": "password",
-      "reference": {
-        "access_method": "id",
-        "access_value": "edit-pass-pass2"
-      },
-      "grammar": "5.bnf",
-      "formula": "5.isla"
-    },
-    {
       "name": "roles[authenticated]",
       "type": "checkbox",
       "value": "authenticated",
@@ -121,6 +101,29 @@
       },
       "grammar": "10.bnf",
       "formula": "10.isla"
+    },
+    {
+      "combined": true,
+      "fields": [
+        {
+          "name": "pass[pass1]",
+          "type": "password",
+          "reference": {
+            "access_method": "id",
+            "access_value": "edit-pass-pass1"
+          }
+        },
+        {
+          "name": "pass[pass2]",
+          "type": "password",
+          "reference": {
+            "access_method": "id",
+            "access_value": "edit-pass-pass2"
+          }
+        }
+      ],
+      "grammar": "5.bnf",
+      "formula": "5.isla"
     }
   ],
   "submit": {
