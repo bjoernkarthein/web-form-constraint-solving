@@ -228,12 +228,26 @@ class TestAutomationDriver:
 
             for elem in specifications:
                 spec, grammar, formula = elem
+
+                if not (
+                    # spec.name == "pass[pass1]" or 
+                    spec.name == "pass[pass2]"
+                ):
+                    continue
+
                 self.__constraint_candidate_finder.set_valid_value_sequence(
                     spec, grammar, formula, self.__magic_value_amount
                 )
 
             for elem in specifications:
                 spec, grammar, formula = elem
+
+                if not (
+                    # spec.name == "pass[pass1]" or 
+                    spec.name == "pass[pass2]"
+                ):
+                    continue
+
                 constraint_candidates = self.__constraint_candidate_finder.get_constraint_candidates_for_value_sequence(
                     spec
                 )

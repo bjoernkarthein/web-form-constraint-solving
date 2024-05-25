@@ -228,6 +228,10 @@ class ConstraintCandidateFinder:
             values,
         )
 
+        input("continue")
+        # return ConstraintCandidateResult({"candidates": []})
+        return ConstraintCandidateResult({"candidates": [{'type': 'VarComp', 'operator': '===', 'otherValue': {'type': 'reference', 'value': {'access_method': 'id', 'access_value': 'edit-pass-pass1'}}}]})
+
         set_trace_recording_flag(self.__driver, False)
 
         start_trace_recording({"spec": spec.get_as_dict(), "values": values})
@@ -257,7 +261,6 @@ class ConstraintCandidateFinder:
             ).content
         )
         set_trace_recording_flag(self.__driver, False)
-        # test = input("Enter values and continue")
 
         constraint_candidate_response = get_constraint_candidates(all_traces)
         response_str = decode_bytes(constraint_candidate_response.content)
@@ -451,7 +454,7 @@ class SpecificationBuilder:
                     )
                 case ConstraintCandidateType.VARIABLE_COMPARISON.value:
                     grammar, formula = self.__handle_var_comparison_candidate(
-                        grammar, formula, candidate
+                        grammar, formula, candidate, reference, index
                     )
                 case ConstraintCandidateType.LITERAL_LENGTH_COMPARISON.value:
                     grammar, formula = (
@@ -468,6 +471,7 @@ class SpecificationBuilder:
 
         self.reference_to_spec_map[reference] = grammar, formula, index
         self.write_specification_to_file(str(index), grammar, formula)
+
         return grammar, formula
 
     def __handle_literal_comparison_candidate(
@@ -505,7 +509,7 @@ class SpecificationBuilder:
         return grammar, formula
 
     def __handle_var_comparison_candidate(
-        self, grammar: str, formula: str, candidate: VarCompCandidate
+        self, grammar: str, formula: str, candidate: VarCompCandidate, other_reference: HTMLElementReference, index: int
     ) -> Tuple[str, str | None]:
         if candidate.other_value_type == ConstraintOtherValueType.REFERENCE.value:
             other_spec = self.reference_to_spec_map.get(candidate.other_value)
@@ -522,7 +526,36 @@ class SpecificationBuilder:
                 )
                 grammar = self.__grammar_dict_to_string(new_grammar_dict)
 
+            # Combine fields in existing specification file
+            overall_spec = load_json_from_file("specification/specification.json") # TODO
+            first_input = None
+            second_input = None
+            new_controls = []
+            combined_controls = {"combined": True, "fields": [], "grammar": f"{index}.bnf", "formula": f"{index}.isla"}
+            
+            print(other_reference.get_as_dict())
+            print(candidate.other_value)
+            for c in overall_spec["controls"]:
+                print(c)
+                if c["reference"] == other_reference.get_as_dict(): # TODO: wont work due to different types
+                    first_input = c
+                elif c["reference"] == candidate.other_value:
+                    second_input = c
+                else:
+                    new_controls.append(c)
+
+            if first_input is not None and second_input is not None:
+                first_input = self.__omit_keys(first_input, ["grammar", "formula"])
+                second_input = self.__omit_keys(second_input, ["grammar", "formula"])
+                combined_controls["fields"] = [first_input, second_input]
+                overall_spec["controls"] = new_controls + [combined_controls]
+                # write_to_file("specification/specification.json", overall_spec) # TODO
+                print(json.dumps(overall_spec, indent=2))
+
         return grammar, formula
+
+    def __omit_keys(self, original_dict: Dict, keys_to_omit: Dict | List):
+        return {key: value for key, value in original_dict.items() if key not in keys_to_omit}
 
     def __handle_pattern_candidate(
         self,

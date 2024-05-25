@@ -160,6 +160,17 @@ def load_file_content(file_name: str) -> str:
     return file_content
 
 
+def load_json_from_file(file_path: str) -> Dict:
+    try:
+        with open(file_path) as file:
+            file_json = json.load(file)
+    except Exception as e:
+        print(e)
+        return ""
+
+    return file_json
+
+
 def write_to_file(file_name: str, data: str | Dict) -> None:
     with open(file_name, "w") as file:
         if isinstance(data, str):
