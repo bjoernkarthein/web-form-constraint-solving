@@ -118,22 +118,30 @@ class SpecificationParser:
 
         controls = specification["controls"]
         for control in controls:
-            if control["type"] is None:
-                print("control is missing required fields")
+            if "grammar" not in control or "formula" not in control:
                 return False
 
-            control_type = control["type"]
-            required_keys = (
-                set(["type", "reference", "grammar", "options", "formula", "name"])
-                if control_type == "radio"
-                else set(["name", "type", "reference", "grammar", "formula"])
-            )
-            contained_keys = set(control.keys())
-            if not required_keys.issubset(
-                contained_keys
-            ) or not self.__is_valid_reference(control["reference"]):
-                print("control is missing required fields")
-                return False
+            fields = [control]
+            if "combined" in control:
+                fields = control["fields"]
+
+            for field in fields:
+                if field["type"] is None:
+                    print("control is missing required fields")
+                    return False
+
+                field_type = field["type"]
+                required_keys = (
+                    set(["type", "reference", "options", "name"])
+                    if field_type == "radio"
+                    else set(["name", "type", "reference"])
+                )
+                contained_keys = set(field.keys())
+                if not required_keys.issubset(
+                    contained_keys
+                ) or not self.__is_valid_reference(field["reference"]):
+                    print("control is missing required fields")
+                    return False
 
         return True
 
@@ -163,9 +171,10 @@ class ValueGenerationSpecification:
     def __init__(
         self,
         input_spec: HTMLInputSpecification | HTMLRadioGroupSpecification,
-        type: str,
+        field_type: str,
         grammar: str,
         formula: str | None = None,
+        combines: List[str] | None = None
     ):
         """Initializes a ValueGenerationSpecification
 
@@ -177,10 +186,11 @@ class ValueGenerationSpecification:
         """
 
         self.input_spec = input_spec
-        self.type = type
+        self.type = field_type
         self.grammar = grammar
         self.formula = formula
         self.value = input_spec.value
+        self.combines = combines
 
     def __str__(self):
         return f"ValueGenenerationSpecification:\nspec: {self.input_spec}\ngrammar: {self.grammar}\nformula: {self.formula}"
@@ -247,9 +257,7 @@ class FormTester:
 
         self.__generation_templates: List[ValueGenerationSpecification] = []
         for json_spec in self.__specification["controls"]:
-            self.__generation_templates.append(
-                self.__convert_json_to_specification(json_spec)
-            )
+            self.__generation_templates = self.__generation_templates + self.__convert_json_to_specification(json_spec)
 
         generator = InputGenerator()
         self.__test_monitor = TestMonitor(
@@ -286,7 +294,9 @@ class FormTester:
 
     def __convert_json_to_specification(
         self, control: Dict
-    ) -> ValueGenerationSpecification:
+    ) -> List[ValueGenerationSpecification]:
+        result = []
+
         grammar = load_file_content(
             f'{self.__specification_directory}/{control["grammar"]}'
         )
@@ -294,41 +304,50 @@ class FormTester:
             f'{self.__specification_directory}/{control["formula"]}'
         )
 
-        name = control["name"]
-        type = control["type"]
+        fields = [control]
+        combines = None
+        if "combined" in control:
+            combines = list(map(lambda f: f["name"], control["fields"]))
+            fields = control["fields"]
+                
+        for field in fields:
+            field_name = field["name"]
+            field_type = field["type"]
 
-        if control["type"] == InputType.RADIO.value:
-            options = control["options"]
-            options = list(
-                map(
-                    lambda o: (
-                        HTMLElementReference(
-                            o["reference"]["access_method"],
-                            o["reference"]["access_value"],
+            if field["type"] == InputType.RADIO.value:
+                options = field["options"]
+                options = list(
+                    map(
+                        lambda o: (
+                            HTMLElementReference(
+                                o["reference"]["access_method"],
+                                o["reference"]["access_value"],
+                            ),
+                            o["value"],
                         ),
-                        o["value"],
-                    ),
-                    options,
+                        options,
+                    )
                 )
-            )
-            element_spec = HTMLRadioGroupSpecification(name, options)
-        else:
-            element_reference = HTMLElementReference(
-                control["reference"]["access_method"],
-                control["reference"]["access_value"],
-            )
+                element_spec = HTMLRadioGroupSpecification(field_name, options)
+            else:
+                element_reference = HTMLElementReference(
+                    field["reference"]["access_method"],
+                    field["reference"]["access_value"],
+                )
 
-            value_property = None
-            if control["type"] == InputType.CHECKBOX.value:
-                value_property = control["value"] or "on"
+                value_property = None
+                if field["type"] == InputType.CHECKBOX.value:
+                    value_property = field["value"] or "on"
 
-            element_spec = HTMLInputSpecification(
-                element_reference, name=name, value=value_property
-            )
+                element_spec = HTMLInputSpecification(
+                    element_reference, name=field_name, value=value_property
+                )
 
-        return ValueGenerationSpecification(
-            element_spec, type, grammar, formula if formula != "" else None
-        )
+            result.append(ValueGenerationSpecification(
+                element_spec, field_type, grammar, formula if formula != "" else None, combines
+            ))
+            
+        return result
 
     def __fill_form_with_values_and_submit(
         self, generator: InputGenerator, validity: ValidityEnum = ValidityEnum.VALID
@@ -344,21 +363,48 @@ class FormTester:
             for idx in indices_to_change:
                 validities[idx] = ValidityEnum.INVALID
 
-        for idx, template in enumerate(self.__generation_templates):
-            generated_value = generator.generate_inputs(
-                template.grammar, template.formula, validities[idx]
-            )[0]
-            values.append(generated_value)
+        index = 0
+        while len(self.__generation_templates) > 0:
+            template = self.__generation_templates.pop(0)
+            
+            if template.combines is not None:
+                # Remove all the elements it combines from the list
+                indicies = [index for index, template in enumerate(self.__generation_templates) if template.input_spec.name in template.combines]
 
-            write_to_web_element_by_reference_with_clear(
-                self.__driver,
-                template.type,
-                template.value,
-                template.input_spec.reference,
-                template.input_spec.name,
-                generated_value.value,
-                False,
-            )
+                generated_values: str = generator.generate_inputs(
+                    template.grammar, template.formula, validities[index]
+                )[0].value
+                values = generated_values.split("###")
+                print(values)
+
+                for idx in indicies:
+                    template = self.__generation_templates.pop(idx)
+                    write_to_web_element_by_reference_with_clear(
+                        self.__driver,
+                        template.type,
+                        template.value,
+                        template.input_spec.reference,
+                        template.input_spec.name,
+                        values[0], # TODO somehow get right value for current field from combined grammar
+                        False,
+                    )
+            else:
+                generated_value = generator.generate_inputs(
+                    template.grammar, template.formula, validities[index]
+                )[0]
+                values.append(generated_value)
+
+                write_to_web_element_by_reference_with_clear(
+                    self.__driver,
+                    template.type,
+                    template.value,
+                    template.input_spec.reference,
+                    template.input_spec.name,
+                    generated_value.value,
+                    False,
+                )
+
+            index += 1 # TODO what to do with this index?
 
         self.__test_monitor.attempt_submit_and_save_response(
             get_current_values_from_form(), values, validity

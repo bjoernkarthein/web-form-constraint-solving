@@ -1032,7 +1032,7 @@ class SpecificationBuilder:
         nt2 = f"<nt{next_nt_number}>"
         compFormula = self.__get_formula_for_operator(nt1, nt2, compOperator)
 
-        start = {"<start>": [f"{nt1} {nt2}"]}
+        start = {"<start>": [f'{nt1} "###" {nt2} "###"']}
 
         return (start | grammar | other_grammar), (f" {ISLa.AND.value} ").join(
             filter(None, (f"({formula})", f"({other_formula})", f"({compFormula})"))
