@@ -19,7 +19,7 @@ wss.on("connection", function connection(ws) {
   ws.send("Successfully subscribed to service notifications");
 });
 
-let clean = (req, res) => {
+let clean = (_, res) => {
   constraintService.cleanUp();
   codeqlService.cleanUp();
   instrumentationService.cleanUp();
@@ -28,7 +28,7 @@ let clean = (req, res) => {
   res.send("Cleaned up all resources");
 };
 
-let getStats = (req, res) => {
+let getStats = (_, res) => {
   const stats = getCurrentStats();
   res.json(stats);
 };

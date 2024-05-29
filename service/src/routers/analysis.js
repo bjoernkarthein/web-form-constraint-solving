@@ -3,7 +3,7 @@ const analysis = require("../controllers/analysis");
 
 const app = Router();
 
+app.get("/candidates", analysis.getConstraintCandidatesForTraces);
 app.post("/record", analysis.record);
-app.post("/candidates", analysis.getConstraintCandidatesForTraces);
 
 module.exports = app;

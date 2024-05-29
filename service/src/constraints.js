@@ -30,14 +30,17 @@ function hasValue(object, value) {
   return [false, {}];
 }
 
-async function analyseTraces(traces) {
+async function analyseTraces() {
   const allTraces = [];
-  for (const t of traces) {
-    if (!!t) {
+  const traces = fs
+    .readFileSync(trace.traceLogFile, { encoding: "utf-8" })
+    .split(/\r\n|[\n\r\u2028\u2029]/);
+  for (let i = 0; i < traces.length; i++) {
+    if (!!traces[i]) {
       try {
-        allTraces.push(JSON.parse(t));
+        allTraces.push(JSON.parse(traces[i]));
       } catch (e) {
-        logger.error("error parsing trace");
+        logger.error(`error parsing trace ${i}`);
         logger.error(e.message);
       }
     }

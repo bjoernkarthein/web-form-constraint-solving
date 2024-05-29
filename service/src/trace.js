@@ -19,7 +19,7 @@ const ACTION_ENUM = {
 function addToTraceLog(req) {
   for (const trace of req.body) {
     try {
-      fs.appendFileSync(traceLogFile, `${JSON.stringify(trace)}\n`);
+      fs.appendFileSync(traceLogFile, `${trace}\n`);
     } catch (err) {
       logger.error(err);
     }

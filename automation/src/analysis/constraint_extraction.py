@@ -248,17 +248,16 @@ class ConstraintCandidateFinder:
 
             self.__attempt_submit()
 
-        all_traces = decode_bytes(
-            stop_trace_recording(
-                {
-                    "spec": spec.get_as_dict(),
-                    "values": values,
-                }
-            ).content
-        )
+        stop_trace_recording(
+            self.__driver,
+            {
+                "spec": spec.get_as_dict(),
+                "values": values,
+            },
+        ).content
         set_trace_recording_flag(self.__driver, False)
 
-        constraint_candidate_response = get_constraint_candidates(all_traces)
+        constraint_candidate_response = get_constraint_candidates()
         response_str = decode_bytes(constraint_candidate_response.content)
         return ConstraintCandidateResult(json.loads(response_str))
 
@@ -294,7 +293,7 @@ class ConstraintCandidateFinder:
         self.__interceptor.generated_values = get_current_values_from_form()
         clear_value_mapping()
 
-        record_trace(Action.ATTEMPT_SUBMIT)
+        # record_trace(Action.ATTEMPT_SUBMIT)
         click_web_element_by_reference(self.__driver, self.__submit_element)
 
         if not self.__stop_on_first_success:

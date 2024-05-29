@@ -134,7 +134,7 @@ class NetworkInterceptor:
             return
 
         record_script = etree.fromstring(
-            """
+            """      
 <script>
     var c989a310_3606_4512_bee4_2bc00a61e8ac = false;
     var a2f03da8_342a_4902_b4e4_4d7f59efacef = [];
@@ -144,16 +144,18 @@ class NetworkInterceptor:
             return;
         }
 
-        a2f03da8_342a_4902_b4e4_4d7f59efacef.push({
-            action,
-            args,
-            time: new Date().getTime(),
-            location,
-            pageFile: 1,
-        });
+        try {
+            a2f03da8_342a_4902_b4e4_4d7f59efacef.push(JSON.stringify({
+                action,
+                args,
+                time: new Date().getTime(),
+                location,
+                pageFile: 1,
+            }));
+        } catch (e) {}
     }
 
-    function d2a2dd41_ffc_-4542_8e4e_71dff9c8e5de() {
+    function d2a2dd41_ffce_4542_8e4e_71dff9c8e5de() {
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "http://localhost:4000/analysis/record", false); // make request synchronous to ensure that all traces arrive at the server before analysis starts
         xhr.setRequestHeader("Content-Type", "application/json");

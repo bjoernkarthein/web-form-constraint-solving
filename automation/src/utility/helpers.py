@@ -196,27 +196,32 @@ def start_trace_recording(data) -> Response:
     return requests.post(
         url,
         json=[
-            {
-                "action": Action.INTERACTION_START.value,
-                "args": data,
-                "time": math.floor(time.time() * 1000),
-                "pageFile": 0,
-            }
+            json.dumps(
+                {
+                    "action": Action.INTERACTION_START.value,
+                    "args": data,
+                    "time": math.floor(time.time() * 1000),
+                    "pageFile": 0,
+                }
+            )
         ],
     )
 
 
-def stop_trace_recording(data) -> Response:
+def stop_trace_recording(driver: Chrome, data) -> Response:
+    driver.execute_script("d2a2dd41_ffce_4542_8e4e_71dff9c8e5de();")
     url = f"{analysis_controller}/record"
     return requests.post(
         url,
         json=[
-            {
-                "action": Action.INTERACTION_END.value,
-                "args": data,
-                "time": math.floor(time.time() * 1000),
-                "pageFile": 0,
-            }
+            json.dumps(
+                {
+                    "action": Action.INTERACTION_END.value,
+                    "args": data,
+                    "time": math.floor(time.time() * 1000),
+                    "pageFile": 0,
+                }
+            )
         ],
     )
 
@@ -226,20 +231,20 @@ def record_trace(action: Action, args=None) -> Response:
     return requests.post(
         url,
         json=[
-            {
-                "action": action.value,
-                "args": args,
-                "time": math.floor(time.time() * 1000),
-                "pageFile": 0,
-            }
+            json.dumps(
+                {
+                    "action": action.value,
+                    "args": args,
+                    "time": math.floor(time.time() * 1000),
+                    "pageFile": 0,
+                }
+            )
         ],
     )
 
 
-def get_constraint_candidates(traces: str) -> Response:
-    trace_array = split_on_newline(traces)
-    url = f"{analysis_controller}/candidates"
-    return requests.post(url, json={"traces": trace_array})
+def get_constraint_candidates() -> Response:
+    return requests.get(f"{analysis_controller}/candidates")
 
 
 def split_on_newline(input: str) -> List[str]:
@@ -370,11 +375,11 @@ def write_to_web_element_by_reference_with_clear(
             clear_web_element(web_element)
             write_to_web_element(web_element, value)
 
-    if record:
-        record_trace(
-            Action.VALUE_INPUT,
-            {"reference": html_element_reference.get_as_dict(), "value": value},
-        )
+    # if record:
+    #     record_trace(
+    #         Action.VALUE_INPUT,
+    #         {"reference": html_element_reference.get_as_dict(), "value": value},
+    #     )
 
 
 def select_button(button: WebElement, value: str) -> None:
