@@ -32,7 +32,7 @@ function getLocation(path, filePath) {
 function buildTraceFunctionCall(path, state, action, args) {
   const file = toFilePath(state.filename);
   const location = JSON.stringify(getLocation(path, file));
-  return `b0aed879_987c_461b_af34_c9c06fe3ed46(${action}, ${args}, ${location});`;
+  return `try { b0aed879_987c_461b_af34_c9c06fe3ed46(${action}, ${args}, ${location}); } catch (e) {}`;
 }
 
 const toFilePath = (filePath) =>

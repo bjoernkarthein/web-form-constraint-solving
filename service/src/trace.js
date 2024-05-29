@@ -17,17 +17,12 @@ const ACTION_ENUM = {
 };
 
 function addToTraceLog(req) {
-  const traceEntry = new Object();
-  traceEntry.action = req.body.action;
-  traceEntry.args = req.body.args;
-  traceEntry.time = req.body.time;
-  traceEntry.location = req.body.location;
-  traceEntry.pageFile = req.body.pageFile;
-
-  try {
-    fs.appendFileSync(traceLogFile, `${JSON.stringify(traceEntry)}\n`);
-  } catch (err) {
-    logger.error(err);
+  for (const trace of req.body) {
+    try {
+      fs.appendFileSync(traceLogFile, `${JSON.stringify(trace)}\n`);
+    } catch (err) {
+      logger.error(err);
+    }
   }
 }
 

@@ -195,12 +195,14 @@ def start_trace_recording(data) -> Response:
     url = f"{analysis_controller}/record"
     return requests.post(
         url,
-        json={
-            "action": Action.INTERACTION_START.value,
-            "args": data,
-            "time": math.floor(time.time() * 1000),
-            "pageFile": 0,
-        },
+        json=[
+            {
+                "action": Action.INTERACTION_START.value,
+                "args": data,
+                "time": math.floor(time.time() * 1000),
+                "pageFile": 0,
+            }
+        ],
     )
 
 
@@ -208,12 +210,14 @@ def stop_trace_recording(data) -> Response:
     url = f"{analysis_controller}/record"
     return requests.post(
         url,
-        json={
-            "action": Action.INTERACTION_END.value,
-            "args": data,
-            "time": math.floor(time.time() * 1000),
-            "pageFile": 0,
-        },
+        json=[
+            {
+                "action": Action.INTERACTION_END.value,
+                "args": data,
+                "time": math.floor(time.time() * 1000),
+                "pageFile": 0,
+            }
+        ],
     )
 
 
@@ -221,12 +225,14 @@ def record_trace(action: Action, args=None) -> Response:
     url = f"{analysis_controller}/record"
     return requests.post(
         url,
-        json={
-            "action": action.value,
-            "args": args,
-            "time": math.floor(time.time() * 1000),
-            "pageFile": 0,
-        },
+        json=[
+            {
+                "action": action.value,
+                "args": args,
+                "time": math.floor(time.time() * 1000),
+                "pageFile": 0,
+            }
+        ],
     )
 
 
@@ -466,6 +472,7 @@ def clamp_to_range(input: int, start: int, end: int | None = None) -> int:
         return max(start, input)
     else:
         return max(start, min(input, end))
+
 
 def get_chromedriver_for_platform() -> str:
     system = platform.system()

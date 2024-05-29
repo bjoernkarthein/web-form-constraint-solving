@@ -16,12 +16,20 @@ module.exports = function conditionalPlugin() {
         const rightCode = generator(right).code;
         const op = path.node.operator;
         const params = [];
-    
-        if (generator(left).code !== "$mainInput[0].value") return; // TODO: remove
 
-        params.push(`{expression: ${JSON.stringify(leftCode)}, value: ${leftCode}, line: ${left.loc.start.line}}`);
+        // if (generator(left).code !== "$mainInput[0].value") return; // TODO: remove
+
+        params.push(
+          `{expression: ${JSON.stringify(
+            leftCode
+          )}, value: ${leftCode}, line: ${left.loc.start.line}}`
+        );
         params.push(`{operator: "${op}"}`);
-        params.push(`{expression: ${JSON.stringify(rightCode)}, value: ${rightCode}, line: ${right.loc.start.line}}`);
+        params.push(
+          `{expression: ${JSON.stringify(
+            rightCode
+          )}, value: ${rightCode}, line: ${right.loc.start.line}}`
+        );
 
         const code = getBinaryExpressionCode(path, state, params);
         const ast = template.ast(code);
@@ -36,10 +44,5 @@ module.exports = function conditionalPlugin() {
 };
 
 function getBinaryExpressionCode(path, state, args) {
-  return buildTraceFunctionCall(
-    path,
-    state,
-    "'BINARY_EXPRESSION'",
-    args
-  );
+  return buildTraceFunctionCall(path, state, "'BINARY_EXPRESSION'", args);
 }

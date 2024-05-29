@@ -86,10 +86,13 @@ class NetworkInterceptor:
         name = self.__get_file_name_from_url(request.url)
         file_type = name.split(".")[-1]
 
-        if any(
-            content_type.startswith(mime_type)
-            for mime_type in self.__javascript_mime_types
-        ) or file_type == "js":
+        if (
+            any(
+                content_type.startswith(mime_type)
+                for mime_type in self.__javascript_mime_types
+            )
+            or file_type == "js"
+        ):
             new_body = self.__handle_js_file(request, response)
             if new_body:
                 response.body = new_body
@@ -131,24 +134,34 @@ class NetworkInterceptor:
             return
 
         record_script = etree.fromstring(
-            """<script>var c989a310_3606_4512_bee4_2bc00a61e8ac = false;
-function b0aed879_987c_461b_af34_c9c06fe3ed46(action, args, location) {
-  if (!c989a310_3606_4512_bee4_2bc00a61e8ac) {
-    return;
-  }
-  var xhr = new XMLHttpRequest();
-  xhr.open("POST", "http://localhost:4000/analysis/record", false); // make request synchronous to ensure that all traces arrive at the server before analysis starts
-  xhr.setRequestHeader("Content-Type", "application/json");
-  xhr.send(
-    JSON.stringify({
-      action,
-      args,
-      time: new Date().getTime(),
-      location,
-      pageFile: 1,
-    })
-  );
-}</script>"""
+            """
+<script>
+    var c989a310_3606_4512_bee4_2bc00a61e8ac = false;
+    var a2f03da8_342a_4902_b4e4_4d7f59efacef = [];
+
+    function b0aed879_987c_461b_af34_c9c06fe3ed46(action, args, location) {
+        if (!c989a310_3606_4512_bee4_2bc00a61e8ac) {
+            return;
+        }
+
+        a2f03da8_342a_4902_b4e4_4d7f59efacef.push({
+            action,
+            args,
+            time: new Date().getTime(),
+            location,
+            pageFile: 1,
+        });
+    }
+
+    function d2a2dd41_ffc_-4542_8e4e_71dff9c8e5de() {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://localhost:4000/analysis/record", false); // make request synchronous to ensure that all traces arrive at the server before analysis starts
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.send(JSON.stringify(a2f03da8_342a_4902_b4e4_4d7f59efacef));
+        a2f03da8_342a_4902_b4e4_4d7f59efacef = [];
+    }
+</script>
+"""
         )
 
         # Add custom script to head
@@ -191,7 +204,7 @@ function b0aed879_987c_461b_af34_c9c06fe3ed46(action, args, location) {
         name = url.split("/")[-1]
         if "?" in name:
             name = name.split("?")[0]
-        
+
         return name
 
 

@@ -1,1 +1,1 @@
-((str.len(<nt1>) > 0) and (str.len(<nt1>) <= 128)) and ((str.len(<nt4>) > 0) and (str.len(<nt4>) <= 128)) and (<nt1> = <nt4>)
+(str.len(<start>) > 0) and (str.len(<start>) <= 128)

@@ -228,10 +228,6 @@ class ConstraintCandidateFinder:
             values,
         )
 
-        input("continue")
-        # return ConstraintCandidateResult({"candidates": []})
-        return ConstraintCandidateResult({"candidates": [{'type': 'VarComp', 'operator': '===', 'otherValue': {'type': 'reference', 'value': {'access_method': 'id', 'access_value': 'edit-pass-pass1'}}}]})
-
         set_trace_recording_flag(self.__driver, False)
 
         start_trace_recording({"spec": spec.get_as_dict(), "values": values})
@@ -509,7 +505,12 @@ class SpecificationBuilder:
         return grammar, formula
 
     def __handle_var_comparison_candidate(
-        self, grammar: str, formula: str, candidate: VarCompCandidate, other_reference: HTMLElementReference, index: int
+        self,
+        grammar: str,
+        formula: str,
+        candidate: VarCompCandidate,
+        other_reference: HTMLElementReference,
+        index: int,
     ) -> Tuple[str, str | None]:
         if candidate.other_value_type == ConstraintOtherValueType.REFERENCE.value:
             other_spec = self.reference_to_spec_map.get(candidate.other_value)
@@ -531,8 +532,13 @@ class SpecificationBuilder:
             first_input = None
             second_input = None
             new_controls = []
-            combined_controls = {"combined": True, "fields": [], "grammar": f"{index}.bnf", "formula": f"{index}.isla"}
-            
+            combined_controls = {
+                "combined": True,
+                "fields": [],
+                "grammar": f"{index}.bnf",
+                "formula": f"{index}.isla",
+            }
+
             for c in overall_spec["controls"]:
                 if c["reference"] == other_reference.get_as_dict():
                     second_input = c
@@ -551,7 +557,11 @@ class SpecificationBuilder:
         return grammar, formula
 
     def __omit_keys(self, original_dict: Dict, keys_to_omit: Dict | List):
-        return {key: value for key, value in original_dict.items() if key not in keys_to_omit}
+        return {
+            key: value
+            for key, value in original_dict.items()
+            if key not in keys_to_omit
+        }
 
     def __handle_pattern_candidate(
         self,
@@ -682,7 +692,8 @@ class SpecificationBuilder:
         self, html_constraints: HTMLConstraints, use_datalist_options=False
     ) -> Tuple[str, str | None]:
         grammar = load_file_content(f"{pre_built_specifications_path}/email/email.bnf")
-        formula = load_file_content(f"{pre_built_specifications_path}/email/email.isla")
+        # formula = load_file_content(f"{pre_built_specifications_path}/email/email.isla")
+        formula = None
 
         if use_datalist_options and html_constraints.list is not None:
             grammar = self.__replace_by_list_options(

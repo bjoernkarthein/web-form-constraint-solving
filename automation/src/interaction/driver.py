@@ -1,5 +1,6 @@
-import threading
 import sys
+import threading
+import time
 
 from copy import deepcopy
 from selenium.webdriver.chrome.service import Service
@@ -71,7 +72,11 @@ class TestAutomationDriver:
         )  # TODO: This is needed for the unit tests. Is it okay to keep this?
 
         # Options for the seleniumwire proxy
-        wire_options = {"disable_encoding": True}
+        wire_options = {
+            "disable_encoding": True,
+            "request_storage": "memory",
+            "request_storage_max_size": 100,  # Store no more than 100 requests in memory
+        }
 
         self.__driver = webdriver.Chrome(
             service=Service(get_chromedriver_for_platform()),
@@ -228,26 +233,12 @@ class TestAutomationDriver:
 
             for elem in specifications:
                 spec, grammar, formula = elem
-
-                if not (
-                    # spec.name == "pass[pass1]" or 
-                    spec.name == "pass[pass2]"
-                ):
-                    continue
-
                 self.__constraint_candidate_finder.set_valid_value_sequence(
                     spec, grammar, formula, self.__magic_value_amount
                 )
 
             for elem in specifications:
                 spec, grammar, formula = elem
-
-                if not (
-                    # spec.name == "pass[pass1]" or 
-                    spec.name == "pass[pass2]"
-                ):
-                    continue
-
                 constraint_candidates = self.__constraint_candidate_finder.get_constraint_candidates_for_value_sequence(
                     spec
                 )
