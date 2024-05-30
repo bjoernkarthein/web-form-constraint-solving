@@ -2,7 +2,7 @@
   "url": "http://localhost/",
   "controls": [
     {
-      "name": "email",
+      "name": null,
       "type": "email",
       "reference": {
         "access_method": "id",

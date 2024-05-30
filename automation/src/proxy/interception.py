@@ -94,8 +94,6 @@ class NetworkInterceptor:
             or file_type == "js"
         ):
             new_body = self.__handle_js_file(request, response)
-            print("here")
-            print(request)
             if new_body:
                 response.body = new_body
                 self.js_files_instrumented += 1

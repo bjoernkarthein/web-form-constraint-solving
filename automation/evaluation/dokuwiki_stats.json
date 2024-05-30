@@ -74,8 +74,13 @@
   ],
   "html_files_instrumented": 2,
   "js_files_instrumented": 2,
-  "time_instrumenting_ms": 11477.664600133896,
+  "time_instrumenting_ms": 9347.068000003695,
   "time_analyzing_ms": 0,
-  "constraint_candidates": [],
+  "points_of_interest": {
+    "login": [],
+    "fullname": [],
+    "email": []
+  },
+  "constraint_candidates": {},
   "js_files_analyzed": []
 }
