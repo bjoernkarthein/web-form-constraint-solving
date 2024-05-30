@@ -21,7 +21,7 @@ app.use(
 app.use("/static", express.static(path.join(__dirname, "../static")));
 
 app.use(bodyParser.urlencoded({ extended: false, limit: "50mb" }));
-app.use(bodyParser.json({ limit: "50mb" }));
+app.use(bodyParser.json({ limit: "500mb" }));
 
 // routers
 app.use("/admin", administrationController);

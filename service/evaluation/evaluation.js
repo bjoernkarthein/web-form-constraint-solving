@@ -1,7 +1,8 @@
 const defaultStats = {
   time_instrumenting_ms: 0,
   time_analyzing_ms: 0,
-  constraint_candidates: [],
+  points_of_interest: {},
+  constraint_candidates: {},
   js_files_analyzed: [],
 };
 var stats = defaultStats;

@@ -8,6 +8,7 @@ const { logger } = require("./log");
 const trace = require("./trace");
 const { getStat, saveStat } = require("../evaluation/evaluation");
 
+let currentInputName = "";
 const magicValueToReferenceMap = new Map();
 const expressionToFieldMap = new Map();
 
@@ -47,7 +48,11 @@ async function analyseTraces() {
   }
 
   const pointsOfInterest = processTraces(allTraces);
+  console.log(currentInputName);
   console.log(pointsOfInterest);
+  const points = getStat("points_of_interest");
+  points[currentInputName] = pointsOfInterest;
+  saveStat("points_of_interest", points);
   if (pointsOfInterest.length == 0) {
     return [];
   }
@@ -71,6 +76,8 @@ function processTraces(allTraces) {
 
   const start = startTraces[0].time;
   const end = endTraces[0].time;
+  currentInputName =
+    startTraces[0].args.spec.name || startTraces[0].args.spec.constraints.name;
 
   const interactionTraces = allTraces.filter(
     (t) => t.time >= start && t.time <= end
@@ -243,7 +250,7 @@ function extractConstraintCandidates(
   fs.rmSync(codeql.resultDirectory, { recursive: true, force: true });
 
   const candidates = getStat("constraint_candidates");
-  candidates.push(allCandidates);
+  candidates[currentInputName] = allCandidates;
   saveStat("constraint_candidates", candidates);
   return allCandidates;
 }
@@ -364,7 +371,7 @@ function handleVariableComparison(compSlice, comparedValue) {
       const possibleReferenceField = expressionToFieldMap.get(comparedValue);
       if (!!possibleReferenceField) {
         otherValue.type = "reference";
-        otherValue.value = JSON.parse(possibleReferenceField).references[0];
+        otherValue.value = JSON.parse(possibleReferenceField).references[0]; // TODO: what if multiple?
       } else {
         otherValue.type = "unknown variable";
         otherValue.value = comparedValue;
