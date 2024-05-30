@@ -1,1 +1,1 @@
-((str.len(<nt1>) > 0) and (str.len(<nt1>) <= 128)) and ((((str.len(<nt4>) > 0) and (str.len(<nt4>) <= 128)) or (<nt5> < "12")) or (not (<nt5> = "''"))) and (<nt1> = <nt4>)
+((str.len(<nt1>) > 0) and (str.len(<nt1>) <= 128)) and ((((str.len(<nt4>) > 0) and (str.len(<nt4>) <= 128)) or (not (<nt5> = "''"))) or (str.len(<nt5>) < 12)) and (<nt1> = <nt4>)

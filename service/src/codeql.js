@@ -16,7 +16,7 @@ const resultDirectory = `${codeqlDirectory}/results`;
 
 const allQueries = [
   "to_literal_comp",
-  // "to_literal_length_comp",
+  "to_literal_length_comp",
   "to_var_comp",
   "to_regex",
   "to_string_match",
@@ -52,7 +52,7 @@ function createDatabase(source) {
 
 function runQuery(queryFile, queryDir = queryDirectory) {
   const outFile = `${codeqlDirectory}/results/${queryFile}-${count}-results.csv`;
-  const command = `${codeqlPath} database analyze --format=csv --output=${outFile} ${databaseDirectory} ${queryDir}/${queryFile}.ql --rerun`;
+  const command = `${codeqlPath} database analyze --format=csv --output=${outFile} ${databaseDirectory} ${queryDir}/${queryFile}.ql --rerun --verbose`;
   count++;
   const start = performance.now();
   common.runCommandSync(command);
