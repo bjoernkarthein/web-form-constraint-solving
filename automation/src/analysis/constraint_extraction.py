@@ -798,7 +798,7 @@ class SpecificationBuilder:
                 html_constraints.list,
             )
 
-        if html_constraints.required is not None:
+        if html_constraints.required is not None and html_constraints.min is None:
             formula = self.__add_to_formula(
                 f"str.to.int(<start>) > 0", formula, ISLa.AND
             )

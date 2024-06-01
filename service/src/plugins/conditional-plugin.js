@@ -17,8 +17,6 @@ module.exports = function conditionalPlugin() {
         const op = path.node.operator;
         const params = [];
 
-        // if (generator(left).code !== "$mainInput[0].value") return; // TODO: remove
-
         params.push(
           `{expression: ${JSON.stringify(
             leftCode
@@ -44,5 +42,10 @@ module.exports = function conditionalPlugin() {
 };
 
 function getBinaryExpressionCode(path, state, args) {
-  return buildTraceFunctionCall(path, state, "'BINARY_EXPRESSION'", args);
+  return buildTraceFunctionCall(
+    path,
+    state,
+    "'BINARY_EXPRESSION'",
+    `[${args}]`
+  );
 }

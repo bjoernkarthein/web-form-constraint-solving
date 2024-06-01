@@ -34,8 +34,8 @@
   ],
   "html_files_instrumented": 1,
   "js_files_instrumented": 5,
-  "time_instrumenting_ms": 19045.80869999528,
-  "time_analyzing_ms": 6093.685700014234,
+  "time_instrumenting_ms": 19105.74580001831,
+  "time_analyzing_ms": 6560.910799950361,
   "points_of_interest": {
     "null": [
       {
@@ -48,5 +48,8 @@
   "constraint_candidates": {
     "null": []
   },
-  "js_files_analyzed": ["portal.min.js", "sodo-search.min.js"]
+  "js_files_analyzed": [
+    "portal.min.js",
+    "sodo-search.min.js"
+  ]
 }

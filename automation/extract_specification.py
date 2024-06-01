@@ -28,21 +28,6 @@ def access_form(automation: TestAutomationDriver) -> None:
     # You can access the selenium driver via automation.web_driver
     pass
 
-    user = automation.web_driver.find_element(By.ID, "username")
-    password = automation.web_driver.find_element(By.ID, "password")
-    submit = automation.web_driver.find_element(By.XPATH, "/html/body/form/button")
-
-    user.send_keys("user")
-    password.send_keys("12345678")
-    submit.click()
-
-
-def get_to_form(automation: TestAutomationDriver) -> None:
-    add = WebDriverWait(automation.web_driver, 5).until(
-        EC.visibility_of_element_located((By.ID, "openFormButton"))
-    )
-    add.click()
-
 
 def main(argv):
     """Handle command line arguments and start the analysis."""
@@ -67,11 +52,10 @@ def main(argv):
             test_automation_driver = TestAutomationDriver(
                 config,
                 url=arg,
-                setup_function=access_form,
                 evaluation=EvaluationStub(),  # TODO: remove when evaluation is done
             )
 
-            setup()
+            setup(test_automation_driver)
             test_automation_driver.run_analysis()
 
 

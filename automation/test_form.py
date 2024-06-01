@@ -49,7 +49,7 @@ def main(argv):
         evaluation=EvaluationStub(),  # TODO: remove when evaluation is done
     )
 
-    setup()
+    setup(test_automation_driver)
     test_automation_driver.run_test(specification_file)
 
 
