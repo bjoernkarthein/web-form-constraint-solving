@@ -223,7 +223,7 @@ class PatternParser:
             choices = list(set(self.__printable_characters) - set(excluded))
             return self.__create_choice_from_list(choices)
 
-        options = self.atom()
+        options = self.atom(True)
 
         if self.more() and self.peek() == "-":
             self.eat("-")
@@ -251,8 +251,11 @@ class PatternParser:
 
         return excluded
 
-    def atom(self) -> RegEx:
+    def atom(self, in_list=False) -> RegEx:
         c = self.peek()
+        if in_list and c != "\\":
+            self.eat(c)
+            return Primitive(c)
         match c:
             case ".":
                 # TODO: handle . correctly with quantifiers
@@ -349,17 +352,21 @@ class PatternParser:
 class GrammarBuilder:
     def __init__(self) -> None:
         self.__non_terminal_counter = 0
+        self.__rules = []
 
     def convert_pattern_to_cfg(self, pattern_ast: RegEx) -> str:
         start_symbol = self.__generate_non_terminal()
         pattern_cfg = self.__convert_ast_to_cfg(pattern_ast)
-        prettified = self.__perttify_grammar(pattern_cfg)
-        return f"{start_symbol} ::= {prettified}"
+        self.__add_rule(start_symbol, pattern_cfg)
+        return "\n".join(list(reversed(self.__rules)))
 
     def __generate_non_terminal(self):
         non_terminal = f"<nt{self.__non_terminal_counter}>"
         self.__non_terminal_counter += 1
         return non_terminal if self.__non_terminal_counter > 1 else "<start>"
+
+    def __add_rule(self, non_terminal, production):
+        self.__rules.append(f"{non_terminal} ::= {production}")
 
     def __convert_ast_to_cfg(self, ast: RegEx) -> str:
         if isinstance(ast, Sequence):
@@ -368,44 +375,49 @@ class GrammarBuilder:
             return f"{left} {right}"
 
         elif isinstance(ast, Alternative):
-            this = self.__convert_ast_to_cfg(ast.this)
-            that = self.__convert_ast_to_cfg(ast.that)
+            alternatives = []
+            self.__collect_alternatives(ast, alternatives)
             non_terminal = self.__generate_non_terminal()
-            return f"{non_terminal} ::= {this} | {that}"
+            self.__add_rule(
+                non_terminal,
+                f"{(' | ').join(list(map(lambda alt: self.__convert_ast_to_cfg(alt), alternatives)))}",
+            )
+            return non_terminal
 
         elif isinstance(ast, Repetition):
             expression = self.__convert_ast_to_cfg(ast.term)
             non_terminal = self.__generate_non_terminal()
             quantifier = ast.quantifier
 
-            result = f"{non_terminal} ::= "
-            if quantifier.min_repeat == 0:
-                result += '""'
-            else:
-                result += f'{(" ").join([expression] * quantifier.min_repeat)}'
+            if quantifier.min_repeat == 0 and quantifier.max_repeat is None:
+                self.__add_rule(non_terminal, f'"" | {expression} {non_terminal}')
 
-            if quantifier.max_repeat is None:
-                result += " | "
-                result += f"{expression} {non_terminal}"
-            elif (
-                quantifier.max_repeat is not None
-                and quantifier.max_repeat > quantifier.min_repeat
-            ):
-                result += " | "
-                result += (" | ").join(
-                    [
-                        (" ").join([expression] * i)
-                        for i in range(
-                            quantifier.min_repeat + 1, quantifier.max_repeat + 1
-                        )
-                    ]
+            if quantifier.min_repeat == 1 and quantifier.max_repeat is None:
+                self.__add_rule(
+                    non_terminal, f"{expression} | {expression} {non_terminal}"
                 )
 
-            return result
+            if quantifier.max_repeat is not None:
+                self.__add_rule(
+                    non_terminal,
+                    (" | ").join(
+                        [
+                            (" ").join([expression] * i)
+                            for i in range(
+                                quantifier.min_repeat, quantifier.max_repeat + 1
+                            )
+                        ]
+                    ),
+                )
+
+            return non_terminal
 
         elif isinstance(ast, Primitive):
             return f'"{ast.char}"'
 
-    # TODO: is this the best approach? Revisit grammar string building maybe
-    def __perttify_grammar(self, grammar: str) -> str:
-        return re.sub(r"(<[^>]+>) ::=", r"\1\n\1 ::=", grammar)
+    def __collect_alternatives(self, ast: RegEx, alternatives: List[RegEx]) -> None:
+        if isinstance(ast, Alternative):
+            self.__collect_alternatives(ast.this, alternatives)
+            self.__collect_alternatives(ast.that, alternatives)
+        else:
+            alternatives.append(ast)

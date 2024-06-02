@@ -293,7 +293,6 @@ class ConstraintCandidateFinder:
         self.__interceptor.generated_values = get_current_values_from_form()
         clear_value_mapping()
 
-        # record_trace(Action.ATTEMPT_SUBMIT)
         click_web_element_by_reference(self.__driver, self.__submit_element)
 
         if not self.__stop_on_first_success:
@@ -854,12 +853,11 @@ class SpecificationBuilder:
                 formula,
                 ISLa.AND,
             )
-        # TODO: Handle pattern constraint
-        # if html_constraints.pattern is not None:
-        #     pattern_converter = PatternConverter(html_constraints.pattern)
-        #     grammar = (
-        #         pattern_converter.convert_pattern_to_grammar() or grammar
-        #     )  # As the intersection of two CFGs is non-trivial to compute, we just replace the old type grammar with the pattern grammar
+        if html_constraints.pattern is not None:
+            pattern_converter = PatternConverter(html_constraints.pattern)
+            grammar = (
+                pattern_converter.convert_pattern_to_grammar() or grammar
+            )  # As the intersection of two CFGs is non-trivial to compute, we just replace the old type grammar with the pattern grammar
 
         return grammar, formula
 

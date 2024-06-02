@@ -1,5 +1,5 @@
 analysis:
-  html-only: false
+  html-only: true
   magic-value-amount: 2
   analysis-rounds: 1
   block-all-requests: false
