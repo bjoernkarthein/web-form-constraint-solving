@@ -212,9 +212,31 @@
     }
   ],
   "html_files_instrumented": 2,
-  "js_files_instrumented": 1,
-  "time_instrumenting_ms": 2705.4781999886036,
-  "time_analyzing_ms": 0,
-  "constraint_candidates": [],
-  "js_files_analyzed": []
+  "js_files_instrumented": 16,
+  "time_instrumenting_ms": 28165.246299998835,
+  "time_analyzing_ms": 141757.51910000015,
+  "points_of_interest": {
+    "id_gender": [],
+    "firstname": [],
+    "lastname": [],
+    "email": [],
+    "password": [
+      {
+        "expression": "d.slice(r, +n + 1 || 9e9)",
+        "line": 1,
+        "file": "8342d42b17603f2993b0-chunk.js"
+      }
+    ],
+    "birthday": [],
+    "optin": [],
+    "psgdpr": [],
+    "newsletter": [],
+    "customer_privacy": []
+  },
+  "constraint_candidates": {
+    "password": []
+  },
+  "js_files_analyzed": [
+    "8342d42b17603f2993b0-chunk.js"
+  ]
 }
