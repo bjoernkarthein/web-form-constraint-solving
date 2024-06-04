@@ -48,4 +48,5 @@ module.exports = {
   getBabelCommand,
   saveFile,
   originalDir,
+  instrumentedDir,
 };

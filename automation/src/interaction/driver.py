@@ -348,7 +348,7 @@ class TestAutomationDriver:
         exit_code (int | None): The code with which to exit the execution
         """
 
-        free_service_resources()
+        # free_service_resources() # TODO: reenable
         self.__driver.quit()
 
         # Saving measurements for evaluation

@@ -1,3 +1,4 @@
+const fs = require("fs");
 const path = require("path");
 const { performance } = require("perf_hooks");
 
@@ -8,8 +9,15 @@ const { getStat, saveStat } = require("../../evaluation/evaluation");
 
 let instrument = (req, res) => {
   const name = req.body.name || "no_name.js"; // TODO
-  const content = req.body.source;
 
+  // Check if the file already exists
+  if (fs.existsSync(`${instrumentationService.instrumentedDir}/${name}`)) {
+    logger.info(`file ${name} found in storage`);
+    res.sendFile(name, { root: path.join(__dirname, "..", "instrumented") });
+    return;
+  }
+
+  const content = req.body.source;
   instrumentationService.saveFile(name, content);
 
   const start = performance.now();
