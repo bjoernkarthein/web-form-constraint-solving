@@ -243,7 +243,6 @@ class TestAutomationDriver:
                     spec
                 )
 
-                # TODO: When to stop? How do I not apply the same candidates twice?
                 (
                     grammar,
                     formula,

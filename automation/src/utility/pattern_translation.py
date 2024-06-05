@@ -258,7 +258,6 @@ class PatternParser:
             return Primitive(c)
         match c:
             case ".":
-                # TODO: handle . correctly with quantifiers
                 self.eat(".")
                 no_line_terminators = self.__printable_characters.copy()
                 no_line_terminators.remove('"')

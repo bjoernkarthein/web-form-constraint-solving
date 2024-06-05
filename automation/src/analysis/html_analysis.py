@@ -441,7 +441,6 @@ class HTMLAnalyser:
             for v in values:
                 ref = self.__get_element_reference(v)
                 value = v.get("value")
-                # TODO: this a good idea?
                 # For the case that the radio option does not have a value, we do not add it to the spec
                 if value is not None:
                     specifications.append((ref, value))

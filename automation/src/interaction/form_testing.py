@@ -1,6 +1,7 @@
 import json
 import os
 import random
+import re
 
 from datetime import datetime
 from pathlib import Path
@@ -174,7 +175,7 @@ class ValueGenerationSpecification:
         field_type: str,
         grammar: str,
         formula: str | None = None,
-        combines: List[str] | None = None
+        combines: List[str] | None = None,
     ):
         """Initializes a ValueGenerationSpecification
 
@@ -257,7 +258,10 @@ class FormTester:
 
         self.__generation_templates: List[ValueGenerationSpecification] = []
         for json_spec in self.__specification["controls"]:
-            self.__generation_templates = self.__generation_templates + self.__convert_json_to_specification(json_spec)
+            self.__generation_templates = (
+                self.__generation_templates
+                + self.__convert_json_to_specification(json_spec)
+            )
 
         generator = InputGenerator()
         self.__test_monitor = TestMonitor(
@@ -309,7 +313,7 @@ class FormTester:
         if "combined" in control:
             combines = list(map(lambda f: f["name"], control["fields"]))
             fields = control["fields"]
-                
+
         for field in fields:
             field_name = field["name"]
             field_type = field["type"]
@@ -343,17 +347,24 @@ class FormTester:
                     element_reference, name=field_name, value=value_property
                 )
 
-            result.append(ValueGenerationSpecification(
-                element_spec, field_type, grammar, formula if formula != "" else None, combines
-            ))
-            
+            result.append(
+                ValueGenerationSpecification(
+                    element_spec,
+                    field_type,
+                    grammar,
+                    formula if formula != "" else None,
+                    combines,
+                )
+            )
+
         return result
 
     def __fill_form_with_values_and_submit(
         self, generator: InputGenerator, validity: ValidityEnum = ValidityEnum.VALID
     ) -> None:
         values: List[GeneratedValue] = []
-        validities = [ValidityEnum.VALID] * len(self.__generation_templates)
+        templates = self.__generation_templates.copy()
+        validities = [ValidityEnum.VALID] * len(templates)
 
         # If we want to also generate invalid values we choose between 1 and n elements
         # to be invalid for a for with n input fields
@@ -364,31 +375,53 @@ class FormTester:
                 validities[idx] = ValidityEnum.INVALID
 
         index = 0
-        while len(self.__generation_templates) > 0:
-            template = self.__generation_templates.pop(0)
-            
+        while len(templates) > 0:
+            template = templates[0]
+
             if template.combines is not None:
                 # Remove all the elements it combines from the list
-                indicies = [index for index, template in enumerate(self.__generation_templates) if template.input_spec.name in template.combines]
-
+                indicies = [
+                    index
+                    for index, template in enumerate(templates)
+                    if template.input_spec.name in template.combines
+                ]
                 generated_values: str = generator.generate_inputs(
                     template.grammar, template.formula, validities[index]
                 )[0].value
-                values = generated_values.split("###")
-                print(values)
 
+                pattern = r"(?:^|###)(.*?)(?=###|$)"
+                matches = re.finditer(pattern, generated_values)
+                distinct_values = [
+                    match.group(1) for match in matches if match.group(1)
+                ]
+
+                for value in distinct_values:
+                    values.append(GeneratedValue(value, validities[index]))
+
+                position = 0
                 for idx in indicies:
-                    template = self.__generation_templates.pop(idx)
+                    template = templates[idx]
+
                     write_to_web_element_by_reference_with_clear(
                         self.__driver,
                         template.type,
                         template.value,
                         template.input_spec.reference,
                         template.input_spec.name,
-                        values[0], # TODO somehow get right value for current field from combined grammar
+                        distinct_values[position],
                         False,
                     )
+                    position += 1
+
+                templates = list(
+                    filter(
+                        lambda t: t.input_spec.name not in template.combines,
+                        templates,
+                    )
+                )
+
             else:
+                templates.pop(0)
                 generated_value = generator.generate_inputs(
                     template.grammar, template.formula, validities[index]
                 )[0]
@@ -404,7 +437,7 @@ class FormTester:
                     False,
                 )
 
-            index += 1 # TODO what to do with this index?
+            index += 1  # TODO what to do with this index?
 
         self.__test_monitor.attempt_submit_and_save_response(
             get_current_values_from_form(), values, validity
@@ -444,6 +477,9 @@ class TestMonitor:
         generated_values: List[GeneratedValue],
         current_validity: ValidityEnum,
     ) -> None:
+        print(current_values)
+        print(generated_values)
+
         self.__interceptor.generated_values = current_values
 
         start_time = datetime.now()
