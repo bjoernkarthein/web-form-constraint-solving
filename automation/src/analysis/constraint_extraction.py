@@ -853,11 +853,11 @@ class SpecificationBuilder:
                 formula,
                 ISLa.AND,
             )
-        # if html_constraints.pattern is not None:
-        #     pattern_converter = PatternConverter(html_constraints.pattern)
-        #     grammar = (
-        #         pattern_converter.convert_pattern_to_grammar() or grammar
-        #     )  # As the intersection of two CFGs is non-trivial to compute, we just replace the old type grammar with the pattern grammar
+        if html_constraints.pattern is not None:
+            pattern_converter = PatternConverter(html_constraints.pattern)
+            grammar = (
+                pattern_converter.convert_pattern_to_grammar() or grammar
+            )  # As the intersection of two CFGs is non-trivial to compute, we just replace the old type grammar with the pattern grammar
 
         return grammar, formula
 
