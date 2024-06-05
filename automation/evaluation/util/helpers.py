@@ -6,6 +6,7 @@ import pstats
 import requests
 import shutil
 
+from pathlib import Path
 from typing import Dict
 
 from src.proxy.interception import decode_bytes
@@ -49,6 +50,9 @@ class Evaluation:
         self.__get_isla_csv(f"evaluation/{self.__file}_stats_time")
 
     def save_specification(self) -> None:
+        if Path("specification").is_dir:
+            return
+
         shutil.copytree(
             "specification",
             f"evaluation/specifications/{self.__file}",

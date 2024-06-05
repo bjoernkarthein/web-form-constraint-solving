@@ -1,1 +1,1 @@
-(str.len(<label>) >= 1 and str.len(<label>) <= 63) and str.len(<start>) <= 100
+str.len(<start>) <= 100
