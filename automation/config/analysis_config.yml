@@ -2,7 +2,5 @@ analysis:
   html-only: true
   magic-value-amount: 2
   analysis-rounds: 1
-  block-all-requests: false
-  stop-on-first-successful-submission: false
 generation:
   use-datalist-options: false

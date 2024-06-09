@@ -1,6 +1,6 @@
 __pycache__
 node_modules
-scripts/server_pid.txt
+venv
 
 # automation/evaluation
 automation/report

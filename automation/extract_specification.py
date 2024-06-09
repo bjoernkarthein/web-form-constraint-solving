@@ -52,6 +52,7 @@ def main(argv):
             test_automation_driver = TestAutomationDriver(
                 config,
                 url=arg,
+                setup_function=access_form,
                 evaluation=EvaluationStub(),  # TODO: remove when evaluation is done
             )
 

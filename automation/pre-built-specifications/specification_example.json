@@ -2,6 +2,7 @@
   "url": "https://some-web-page-with-a-form.com",
   "controls": [
     {
+      "name": "mail",
       "type": "email",
       "reference": {
         "access_method": "id",
@@ -11,6 +12,7 @@
       "formula": "formula_example.isla"
     },
     {
+      "name": "username",
       "type": "text",
       "reference": {
         "access_method": "xpath",
@@ -20,6 +22,7 @@
       "formula": "..."
     },
     {
+      "name": "age",
       "type": "radio",
       "reference": {
         "access_method": "name",
