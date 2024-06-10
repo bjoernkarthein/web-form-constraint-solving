@@ -1,5 +1,5 @@
 analysis:
-  html-only: true
+  html-only: false
   magic-value-amount: 2
   analysis-rounds: 1
 generation:

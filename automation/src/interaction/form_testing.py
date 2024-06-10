@@ -365,12 +365,15 @@ class FormTester:
         values: List[GeneratedValue] = []
         templates = self.__generation_templates.copy()
         validities = [ValidityEnum.VALID] * len(templates)
+        combined = list(filter(lambda t: t.combines is not None, templates))
 
         # If we want to also generate invalid values we choose between 1 and n elements
         # to be invalid for a for with n input fields
         if validity == ValidityEnum.INVALID:
-            num_changes = random.randint(1, len(validities))
-            indices_to_change = random.sample(range(len(validities)), num_changes)
+            num_changes = random.randint(1, len(validities) - len(combined))
+            indices_to_change = random.sample(
+                range(len(validities) - len(combined)), num_changes
+            )
             for idx in indices_to_change:
                 validities[idx] = ValidityEnum.INVALID
 
@@ -437,7 +440,7 @@ class FormTester:
                     False,
                 )
 
-            index += 1  # TODO what to do with this index?
+            index += 1
 
         self.__test_monitor.attempt_submit_and_save_response(
             get_current_values_from_form(), values, validity

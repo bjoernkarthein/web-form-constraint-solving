@@ -6,20 +6,21 @@
  */
 
 import lib.input_flow
+import DataFlow
 
 class VariableComparisonFlowConfiguration extends TaintTracking::Configuration {
   VariableComparisonFlowConfiguration() { this = "VariableComparisonFlowConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) {
+  override predicate isSource(Node source) {
     hasLocation(source.asExpr(), "FILE", 12345) and // LOCATION
     source.asExpr().toString() = "NAME" // EXPRESSION
   }
 
-  override predicate isSink(DataFlow::Node sink) { isInVarComparison(sink.asExpr()) }
+  override predicate isSink(Node sink) { isInVarComparison(sink.asExpr()) }
 }
 
 from
-  VariableComparisonFlowConfiguration cfg, DataFlow::Node source, DataFlow::Node sink, Expr parent,
+  VariableComparisonFlowConfiguration cfg, Node source, Node sink, Expr parent,
   Expr varValue
 where cfg.hasFlow(source, sink) and hasVarComparisonParent(sink.asExpr(), parent, varValue)
 select parent, "Full Comparison: $@, Compared Value: $@", parent, parent.toString(), varValue,

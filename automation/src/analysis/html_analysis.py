@@ -365,7 +365,7 @@ class HTMLAnalyser:
     ) -> List[HTMLInputSpecification]:
         self.__evaluation.save_stat("form_html", etree.tostring(form).decode("utf-8"))
 
-        # TODO does order here matter with selection dependent inputs? If so order should be kept
+        # TODO does order matter with selection dependent inputs? If so order from the original form should be kept
         all_inputs: List[HTMLInputElement] = form.xpath(
             f"{self.__form_access_xpath}/descendant::input"
         ) + form.xpath(f"{self.__form_access_xpath}/descendant::textarea")

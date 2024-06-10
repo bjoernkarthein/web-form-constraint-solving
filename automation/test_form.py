@@ -44,9 +44,7 @@ def main(argv):
 
     config = yaml.safe_load(open("config/test_config.yml"))
     test_automation_driver = TestAutomationDriver(
-        config,
-        setup_function=access_form,
-        evaluation=EvaluationStub(),  # TODO: remove when evaluation is done
+        config, setup_function=access_form, evaluation=EvaluationStub()
     )
 
     setup(test_automation_driver)

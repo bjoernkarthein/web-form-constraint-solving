@@ -1,4 +1,5 @@
 import os
+import re
 
 from enum import Enum
 from lxml.html import Element
@@ -35,6 +36,7 @@ class ConstraintCandidateType(str, Enum):
     VARIABLE_LENGTH_COMPARISON = "VarLengthComp"
     LITERAL_LENGTH_COMPARISON = "LiteralLengthComp"
     PATTERN_TEST = "PatternTest"
+    EXPRESSION = "Expression"
 
 
 class ConstraintOtherValueType(str, Enum):
@@ -69,6 +71,8 @@ class ConstraintCandidate:
                 )
             case ConstraintCandidateType.PATTERN_TEST.value:
                 return PatternMatchCandidate(json, ConstraintCandidateType.PATTERN_TEST)
+            case ConstraintCandidateType.EXPRESSION.value:
+                return ExpressionCandidate(json, ConstraintCandidateType.EXPRESSION)
             case _:
                 raise ValueError(f"type {constraint_type} not recognized")
 
@@ -129,6 +133,12 @@ class PatternMatchCandidate(ConstraintCandidate):
                 self.is_regex = True
 
         self.pattern = pattern
+
+
+class ExpressionCandidate(ConstraintCandidate):
+    def __init__(self, json: Dict, candidate_type: ConstraintCandidateType) -> None:
+        super().__init__(candidate_type)
+        self.expression: str = json.get("expression")
 
 
 class ConstraintCandidateResult:
@@ -319,6 +329,8 @@ class ISLa(Enum):
     GT = ">"
     LTE = "<="
     GTE = ">="
+    MOD = "mod"
+    DIV = "div"
 
 
 class SpecificationBuilder:
@@ -433,9 +445,10 @@ class SpecificationBuilder:
     ) -> Tuple[str, str]:
         existing_spec = self.reference_to_spec_map.get(reference)
         if existing_spec is None:
+            # In theory unreachable
             grammar = ""
             formula = None
-            index = 50  # TODO: What to do here?
+            index = 50
         else:
             grammar, formula, index = existing_spec
 
@@ -458,6 +471,10 @@ class SpecificationBuilder:
                     )
                 case ConstraintCandidateType.PATTERN_TEST.value:
                     grammar, formula = self.__handle_pattern_candidate(
+                        input_type, grammar, formula, candidate
+                    )
+                case ConstraintCandidateType.EXPRESSION.value:
+                    grammar, formula = self.__handle_expression_candidate(
                         input_type, grammar, formula, candidate
                     )
                 case _:
@@ -589,6 +606,39 @@ class SpecificationBuilder:
         #     grammar = self.__replace_by_any_string(grammar, grammar_identifier, pattern_grammar)
 
         return grammar, formula
+
+    def __handle_expression_candidate(
+        self,
+        input_type: str,
+        grammar: str,
+        formula: str,
+        candidate: ExpressionCandidate,
+    ) -> Tuple[str, str | None]:
+        if self.__is_valid_expression(candidate.expression):
+            converted_formula = self.__get_isla_formula_for_expression(
+                candidate.expression, input_type
+            )
+            formula = self.__add_to_formula(converted_formula, formula, ISLa.OR)
+
+        return grammar, formula
+
+    def __is_valid_expression(self, expression: str):
+        pattern = r"^(\s*(<FIELD-VALUE>|\"[^\"]*\"|'[^']*'|\d+(\.\d+)?|[+\-*/%]|==|!=|<=|>=|<|>)\s*)+$"
+        return bool(re.match(pattern, expression))
+
+    def __get_isla_formula_for_expression(
+        self, expression: str, input_type: str
+    ) -> str:
+        expression = expression.replace("%", ISLa.MOD.value)
+        expression = expression.replace("/", ISLa.DIV.value)
+        expression = expression.replace("===", ISLa.EQ.value)
+        expression = expression.replace("==", ISLa.EQ.value)
+        if "!=" in expression:
+            [left, right] = expression.split("!=")
+            expression = f"{ISLa.NOT.value} ({left} {ISLa.EQ.value} {right})"
+
+        expression = expression.replace("<FIELD-VALUE>", f"<{input_type}>")
+        return expression
 
     def __add_constraints_for_binary(self, required: str) -> Tuple[str, str | None]:
         grammar = load_file_content(

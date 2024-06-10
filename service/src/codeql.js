@@ -2,6 +2,7 @@ require("dotenv").config({ path: "../../.env" });
 
 const CSV = require("csv-string");
 const fs = require("fs");
+const path = require("path");
 const { performance } = require("perf_hooks");
 
 const common = require("./common");
@@ -14,13 +15,17 @@ const databaseDirectory = `${codeqlDirectory}/${databaseName}`;
 const queryDirectory = `${codeqlDirectory}/queries`;
 const resultDirectory = `${codeqlDirectory}/results`;
 
-const allQueries = [
-  "to_literal_comp",
-  "to_literal_length_comp",
-  "to_var_comp",
+const pathQueries = ["to_literal_comp_path", "to_literal_length_comp_path"];
+const otherQueries = [
+  // "to_literal_comp",
+  // "to_literal_length_comp",
   "to_regex",
   "to_string_match",
+  "to_var_comp",
 ];
+
+const allQueries = pathQueries.concat(otherQueries);
+
 const queryTypes = {
   COMPARISON_TO_A_LITERAL: "To Literal Comparison",
   COMPARISON_TO_ANOTHER_VARIABLE: "To Variable Comparison",
@@ -51,6 +56,14 @@ function createDatabase(source) {
 }
 
 function runQuery(queryFile, queryDir = queryDirectory) {
+  if (queryFile.includes("_path")) {
+    return runPathQuery(queryFile, queryDir);
+  } else {
+    return runRegularQuery(queryFile, queryDir);
+  }
+}
+
+function runRegularQuery(queryFile, queryDir = queryDirectory) {
   const outFile = `${codeqlDirectory}/results/${queryFile}-${count}-results.csv`;
   const command = `${codeqlPath} database analyze --format=csv --output=${outFile} ${databaseDirectory} ${queryDir}/${queryFile}.ql --rerun --verbose`;
   count++;
@@ -59,6 +72,20 @@ function runQuery(queryFile, queryDir = queryDirectory) {
   const end = performance.now();
   saveStat("time_analyzing_ms", getStat("time_analyzing_ms") + (end - start));
   return outFile;
+}
+
+function runPathQuery(queryFile, queryDir = queryDirectory) {
+  const bqrsOutFile = `${codeqlDirectory}/results/${queryFile}-${count}-results.bqrs`;
+  const jsonOutFile = `${codeqlDirectory}/results/${queryFile}-${count}-decoded.json`;
+  const runQueryCmd = `${codeqlPath} query run --database=${databaseDirectory} --output=${bqrsOutFile} ${queryDir}/${queryFile}.ql`;
+  const decodeFileCmd = `${codeqlPath} bqrs decode --output=${jsonOutFile} --format=json --entities=id,string,url ${bqrsOutFile}`;
+  count++;
+  const start = performance.now();
+  common.runCommandSync(runQueryCmd);
+  common.runCommandSync(decodeFileCmd);
+  const end = performance.now();
+  saveStat("time_analyzing_ms", getStat("time_analyzing_ms") + (end - start));
+  return jsonOutFile;
 }
 
 function runQueries(queryFiles, queryDir = queryDirectory) {
@@ -87,13 +114,7 @@ function addDataToQuery(
   fs.writeFileSync(`${queryDir}/${queryFile}.ql`, "");
   // This is needed because codeql for javascript automatically sanitizes long strings
   // (https://github.com/github/codeql/blob/7361ad977a5dd5252d21f5fd23de47d75b763651/javascript/extractor/src/com/semmle/js/extractor/TextualExtractor.java#L121)
-  if (expression.length > 20) {
-    expression =
-      expression.substring(0, 7) +
-      " ... " +
-      expression.substring(expression.length - 7);
-  }
-
+  expression = shortenCodeQLString(expression);
   const lines = data.split(/\r?\n/);
 
   for (let i = 0; i < lines.length; i++) {
@@ -116,7 +137,14 @@ function addDataToQuery(
   }
 }
 
-function readResults() {
+function shortenCodeQLString(input) {
+  if (input.length > 20) {
+    input = input.substring(0, 7) + " ... " + input.substring(input.length - 7);
+  }
+  return input;
+}
+
+function readCSVResults() {
   results = new Set();
 
   if (!fs.existsSync(resultDirectory)) {
@@ -125,17 +153,37 @@ function readResults() {
 
   const files = fs.readdirSync(resultDirectory);
   for (const file of files) {
-    const csv_str = fs.readFileSync(`${resultDirectory}/${file}`, "utf-8");
-    if (csv_str.trim()) {
-      const csv = CSV.parse(csv_str);
-      for (const line of csv) {
-        if (line.length > 0 && !!line[0]) {
-          results.add(JSON.stringify(line));
+    if (path.extname(file).toLowerCase() === ".csv") {
+      const csv_str = fs.readFileSync(`${resultDirectory}/${file}`, "utf-8");
+      if (csv_str.trim()) {
+        const csv = CSV.parse(csv_str);
+        for (const line of csv) {
+          if (line.length > 0 && !!line[0]) {
+            results.add(JSON.stringify(line));
+          }
         }
       }
     }
   }
   return [...results];
+}
+
+function readPathResults() {
+  const results = new Set();
+
+  if (!fs.existsSync(resultDirectory)) {
+    return [];
+  }
+
+  const files = fs.readdirSync(resultDirectory);
+  for (const file of files) {
+    if (path.extname(file).toLowerCase() === ".json") {
+      const res_json = fs.readFileSync(`${resultDirectory}/${file}`, "utf-8");
+      // TODO: do only add if the select tuples are not already in another object?
+      results.add(res_json);
+    }
+  }
+  return [...results].map((s) => JSON.parse(s));
 }
 
 function resetQueries() {
@@ -200,12 +248,14 @@ module.exports = {
   addDataToQuery,
   cleanUp,
   createDatabase,
-  readResults,
+  readCSVResults,
+  readPathResults,
   runQuery,
   runQueries,
   prepareQueries,
   resetQuery,
   resetQueries,
+  shortenCodeQLString,
   allQueries,
   databaseDirectory,
   queryTypes,

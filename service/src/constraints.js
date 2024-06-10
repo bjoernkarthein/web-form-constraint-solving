@@ -6,7 +6,11 @@ const fs = require("fs");
 const instrumentation = require("./instrument");
 const { logger } = require("./log");
 const trace = require("./trace");
-const { getStat, saveStat } = require("../evaluation/evaluation");
+const {
+  getStat,
+  saveStat,
+  getCurrentStats,
+} = require("../evaluation/evaluation");
 
 let currentInputName = "";
 const magicValueToReferenceMap = new Map();
@@ -59,7 +63,7 @@ async function analyseTraces() {
 
   const sourceDir = perpareForCodeQLQueries(allTraces);
   runQueries(pointsOfInterest, sourceDir);
-  return extractConstraintCandidates();
+  return getConstraintCandidates();
 }
 
 function processTraces(allTraces) {
@@ -82,7 +86,6 @@ function processTraces(allTraces) {
   const interactionTraces = allTraces.filter(
     (t) => t.time >= start && t.time <= end
   );
-  // interactionTraces.sort(compareTimestamps); // TODO: still needed?
 
   const browserTraces = interactionTraces.filter((t) => t.pageFile);
   if (browserTraces.length > 0) {
@@ -138,10 +141,6 @@ function processTraces(allTraces) {
   return [...new Set(importantTraces.map((e) => JSON.stringify(e)))].map((e) =>
     JSON.parse(e)
   );
-}
-
-function compareTimestamps(a, b) {
-  return a.time - b.time;
 }
 
 function findMagicValues(traceGroup) {
@@ -215,11 +214,24 @@ function perpareForCodeQLQueries(traces) {
   return "source";
 }
 
-function extractConstraintCandidates(
+function getConstraintCandidates(originalDir = instrumentation.originalDir) {
+  const pathCandidates = getPathConstraintCandidates(originalDir);
+  const otherCandidates = getOtherConstraintCandidates(originalDir);
+  const allCandidates = pathCandidates.concat(otherCandidates);
+
+  fs.rmSync(codeql.resultDirectory, { recursive: true, force: true });
+  const candidates = getStat("constraint_candidates");
+  candidates[currentInputName] = allCandidates;
+  saveStat("constraint_candidates", candidates);
+
+  console.log(allCandidates);
+  return allCandidates;
+}
+
+function getOtherConstraintCandidates(
   originalDir = instrumentation.originalDir
 ) {
-  const results = codeql.readResults();
-  console.log(results);
+  const results = codeql.readCSVResults();
   const codeLocations = results.map((res) => {
     csv = JSON.parse(res);
     return {
@@ -227,10 +239,8 @@ function extractConstraintCandidates(
       location: buildLocationsFromString(csv[3]),
     };
   });
-  console.log(codeLocations);
 
   let allCandidates = [];
-
   for (const codeLoc of codeLocations) {
     const slices = [];
     for (const loc of codeLoc.location) {
@@ -246,13 +256,106 @@ function extractConstraintCandidates(
     const candidates = buildConstraintCandidates(codeLoc.type, slices);
     allCandidates = allCandidates.concat(candidates);
   }
-
-  fs.rmSync(codeql.resultDirectory, { recursive: true, force: true });
-
-  const candidates = getStat("constraint_candidates");
-  candidates[currentInputName] = allCandidates;
-  saveStat("constraint_candidates", candidates);
   return allCandidates;
+}
+
+function getPathConstraintCandidates(
+  originalDir = instrumentation.originalDir
+) {
+  const candidates = [];
+  const results = codeql.readPathResults();
+
+  for (const res of results) {
+    const edges = res.edges.tuples.map((e) => [e[1], e[0]]); // reverse edges to traverse backwards
+    const selects = res["#select"].tuples;
+
+    for (const s of selects) {
+      const sourceId = s[1].id;
+      const sinkId = s[2].id;
+
+      let currentNodeId = sinkId;
+      let interestingEdges = [];
+      let path = [];
+      while (currentNodeId !== sourceId) {
+        interestingEdges = edges.filter((e) => e[0].id === currentNodeId);
+
+        if (interestingEdges.length == 0) {
+          console.log("edges are empty");
+          return [];
+        }
+
+        let index = 0;
+        if (interestingEdges.length > 1) {
+          // TODO: Somehow determine which edge is the right one. Could check all in depth first search with backtracking
+          console.log("more than one edge to choose from");
+          index = 1;
+        }
+
+        path.push(interestingEdges[index][0]);
+        currentNodeId = interestingEdges[index][1].id;
+      }
+
+      const expressions = path.map((n) =>
+        getSliceFromCodeQLResult(n, originalDir)
+      );
+      const sourceExpression = getSliceFromCodeQLResult(s[1], originalDir);
+      let res = combineExpressions(expressions);
+      res = res.replace(
+        sourceExpression,
+        "<FIELD-VALUE>"
+        // `<FIELD-VALUE> (${sourceExpression})`
+      );
+      candidates.push({ type: "Expression", expression: res });
+    }
+  }
+  return candidates;
+}
+
+function combineExpressions(expressions) {
+  let result = expressions[0];
+
+  for (let i = 1; i < expressions.length; i++) {
+    const currentExpression = expressions[i];
+
+    const assignmentIndex = currentExpression.indexOf("=");
+    if (assignmentIndex !== -1) {
+      const lhs = currentExpression.substring(0, assignmentIndex).trim();
+      const rhs = currentExpression.substring(assignmentIndex + 1).trim();
+
+      const regex = new RegExp(`\\b${lhs}\\b`, "g");
+      result = result.replace(regex, rhs);
+    }
+  }
+
+  return result;
+}
+
+function getSliceFromCodeQLResult(
+  codeQLResult,
+  originalDir = instrumentation.originalDir
+) {
+  const loc = getLocationFromCodeQLResult(codeQLResult);
+  return getCodeSliceFromFileByLocation(
+    loc.file,
+    loc.startPos,
+    loc.endPos,
+    originalDir
+  );
+}
+
+function getLocationFromCodeQLResult(codeQLResult) {
+  const fileName = codeQLResult.url.uri.replace(/^.*[\\/]/, "");
+  return {
+    file: `/${fileName}`,
+    startPos: {
+      line: codeQLResult.url.startLine,
+      col: codeQLResult.url.startColumn,
+    },
+    endPos: {
+      line: codeQLResult.url.endLine,
+      col: codeQLResult.url.endColumn,
+    },
+  };
 }
 
 function buildLocationsFromString(value) {
@@ -371,7 +474,7 @@ function handleVariableComparison(compSlice, comparedValue) {
       const possibleReferenceField = expressionToFieldMap.get(comparedValue);
       if (!!possibleReferenceField) {
         otherValue.type = "reference";
-        otherValue.value = JSON.parse(possibleReferenceField).references[0]; // TODO: what if multiple?
+        otherValue.value = JSON.parse(possibleReferenceField).references[0]; // TODO: what if multiple fields are assigned to the same expression?
       } else {
         otherValue.type = "unknown variable";
         otherValue.value = comparedValue;
@@ -393,5 +496,4 @@ module.exports = {
   analyseTraces,
   cleanUp,
   hasValue,
-  extractConstraintCandidates,
 };

@@ -25,6 +25,20 @@ predicate hasLocation(ControlFlowNode node, string file, int startLine) {
   node.getLocation().getStartLine() = startLine
 }
 
+class DirectLiteralComparison extends Comparison {
+  DirectLiteralComparison() { 
+    this.getRightOperand() instanceof Literal and not this.getLeftOperand().(PropAccess).getPropertyName() = "length" or
+    this.getLeftOperand() instanceof Literal and not this.getRightOperand().(PropAccess).getPropertyName() = "length"
+  }
+}
+
+class LengthToLiteralComparison extends Comparison {
+  LengthToLiteralComparison() { 
+    this.getRightOperand() instanceof Literal and this.getLeftOperand().(PropAccess).getPropertyName() = "length" or
+    this.getLeftOperand() instanceof Literal and this.getRightOperand().(PropAccess).getPropertyName() = "length"
+  }
+}
+
 class RegExpConstructor extends InvokeExpr {
   RegExpConstructor() { this instanceof NewExpr and this.getCallee().toString() = "RegExp" }
 
@@ -87,7 +101,10 @@ predicate isInStringMatch(Expr expr) {
 predicate hasLiteralComparisonParent(Expr expr, Expr parent, Literal lit) {
   parent = expr.getParent*() and
   parent instanceof Comparison and
-  (lit = parent.(Comparison).getRightOperand() or lit = parent.(Comparison).getLeftOperand())
+  (lit = parent.(Comparison).getRightOperand() and
+  not parent.(Comparison).getLeftOperand().(PropAccess).getPropertyName() = "length" or 
+  lit = parent.(Comparison).getLeftOperand() and
+  not parent.(Comparison).getRightOperand().(PropAccess).getPropertyName() = "length")
 }
 
 predicate isInLiteralComparison(Expr expr) {
@@ -126,16 +143,4 @@ predicate isInLiteralLengthComparison(Expr expr) {
   exists(Expr parent, NumberLiteral literal |
     hasLiteralLengthComparisonParent(expr, parent, literal)
   )
-}
-
-predicate hasVarLengthComparisonParent(Expr expr, Expr parent) {
-  parent = expr.getParent*() and
-  parent instanceof Comparison and
-  not parent.(Comparison).getRightOperand() instanceof NumberLiteral and
-  parent.(Comparison).getLeftOperand() instanceof PropAccess and
-  parent.(Comparison).getLeftOperand().(PropAccess).getPropertyName() = "length"
-}
-
-predicate isInVarLengthComparison(Expr expr) {
-  exists(Expr parent | hasVarLengthComparisonParent(expr, parent))
 }

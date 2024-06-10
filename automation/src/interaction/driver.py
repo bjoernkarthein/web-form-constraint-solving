@@ -105,9 +105,9 @@ class TestAutomationDriver:
         analyzes HTML and builds the specification from HTML and JavaScript validation.
         """
 
-        # subscribe to server messages
-        message_thread = threading.Thread(target=sub_to_service_messages, daemon=True)
-        message_thread.start()
+        # Uncommenting the following two lines displays the server messages directly when running the extraction
+        # message_thread = threading.Thread(target=sub_to_service_messages, daemon=True)
+        # message_thread.start()
 
         # start network interception for instrumentation if the analysis is not HTML only
         if not self.__html_only:
@@ -201,15 +201,12 @@ class TestAutomationDriver:
             ConfigKey.ANALYSIS_ROUNDS.value
         ]
         analysis_rounds = clamp_to_range(analysis_rounds, 1)
-        stop_on_first_success = self.__config[ConfigKey.ANALYSIS.value][
-            ConfigKey.STOP_ON_SUCCESS.value
-        ]
 
         self.__constraint_candidate_finder = ConstraintCandidateFinder(
             self.__driver,
             self.__html_analyser.submit_element,
             self.__interceptor,
-            stop_on_first_success,
+            False,
             self.__exit,
             self.__evaluation,
         )
@@ -347,7 +344,7 @@ class TestAutomationDriver:
         exit_code (int | None): The code with which to exit the execution
         """
 
-        # free_service_resources() # TODO: reenable
+        free_service_resources()
         self.__driver.quit()
 
         # Saving measurements for evaluation

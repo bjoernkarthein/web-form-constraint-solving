@@ -50,10 +50,7 @@ def main(argv):
         if opt in ("-u", "--url"):
             config = yaml.safe_load(open("config/analysis_config.yml"))
             test_automation_driver = TestAutomationDriver(
-                config,
-                url=arg,
-                setup_function=access_form,
-                evaluation=EvaluationStub(),  # TODO: remove when evaluation is done
+                config, url=arg, setup_function=access_form, evaluation=EvaluationStub()
             )
 
             setup(test_automation_driver)

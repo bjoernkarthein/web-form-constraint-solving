@@ -8,7 +8,7 @@ const { logger } = require("../log");
 const { getStat, saveStat } = require("../../evaluation/evaluation");
 
 let instrument = (req, res) => {
-  const name = req.body.name || "no_name.js"; // TODO
+  const name = req.body.name || "no_name.js"; // TODO: is it possible for a file to have no name?
 
   // Check if the file already exists
   if (fs.existsSync(`${instrumentationService.instrumentedDir}/${name}`)) {
